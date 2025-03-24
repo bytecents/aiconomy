@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
+
+<HBox maxHeight="720.0" maxWidth="1080.0" minHeight="720.0" minWidth="1080.0" prefHeight="100.0" prefWidth="200.0"
+      xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.se.aiconomy.controller.SidebarController">
+    <BorderPane maxWidth="220.0" minWidth="220.0" prefWidth="220.0">
+        <top>
+            <HBox alignment="CENTER_LEFT" spacing="5.0" BorderPane.alignment="CENTER_LEFT">
+                <padding>
+                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                </padding>
+                <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                    <Image url="@../assets/logo.png"/>
+                </ImageView>
+                <Label alignment="CENTER" minWidth="60.0" style="&#10;" text="AIconomy" textAlignment="CENTER"
+                       textFill="#111827">
+                    <font>
+                        <Font name="Arial Bold" size="23.25" fx:id="x1"/>
+                    </font>
+                </Label>
+            </HBox>
+        </top>
+        <center>
+            <FlowPane columnHalignment="CENTER" orientation="VERTICAL"
+                      style="-fx-border-color: #E5E7EB; -fx-border-width: 0 0 1 0;" vgap="10.0"
+                      BorderPane.alignment="CENTER">
+                <BorderPane.margin>
+                    <Insets top="20.0"/>
+                </BorderPane.margin>
+                <HBox fx:id="dashboardBtn" alignment="CENTER_LEFT" onMouseClicked="#switchToDashboard"
+                      prefWidth="172.0" spacing="5.0" style="-fx-background-radius: 8;">
+                    <padding>
+                        <Insets bottom="12.0" left="16.0" right="16.0" top="12.0"/>
+                    </padding>
+                    <ImageView fx:id="dashboardIcon" fitHeight="24.0" fitWidth="24.0" pickOnBounds="true"
+                               preserveRatio="true">
+                        <Image url="@../assets/dashboard.png"/>
+                    </ImageView>
+                    <Label fx:id="dashboardLabel" text="Dashboard">
+                        <font>
+                            <Font name="Arial" size="16.0"/>
+                        </font>
+                    </Label>
+                </HBox>
+                <HBox fx:id="transactionsBtn" alignment="CENTER_LEFT" onMouseClicked="#switchToTransactions"
+                      spacing="5.0" style="-fx-background-radius: 8;">
+                    <padding>
+                        <Insets bottom="12.0" left="16.0" right="16.0" top="12.0"/>
+                    </padding>
+                    <ImageView fx:id="transactionsIcon" fitHeight="24.0" fitWidth="24.0" pickOnBounds="true"
+                               preserveRatio="true">
+                        <Image url="@../assets/transactions.png"/>
+                    </ImageView>
+                    <Label fx:id="transactionsLabel" text="Transactions">
+                        <font>
+                            <Font name="Arial" size="16.0"/>
+                        </font>
+                    </Label>
+                </HBox>
+                <HBox fx:id="analyticsBtn" alignment="CENTER_LEFT" onMouseClicked="#switchToAnalytics" spacing="5.0"
+                      style="-fx-background-radius: 8;">
+                    <padding>
+                        <Insets bottom="12.0" left="16.0" right="16.0" top="12.0"/>
+                    </padding>
+                    <ImageView fx:id="analyticsIcon" fitHeight="24.0" fitWidth="24.0" pickOnBounds="true"
+                               preserveRatio="true">
+                        <Image url="@../assets/analytics.png"/>
+                    </ImageView>
+                    <Label fx:id="analyticsLabel" text="Analytics">
+                        <font>
+                            <Font name="Arial" size="16.0"/>
+                        </font>
+                    </Label>
+                </HBox>
+                <HBox fx:id="budgetsBtn" alignment="CENTER_LEFT" onMouseClicked="#switchToBudgets" spacing="5.0"
+                      style="-fx-background-radius: 8;">
+                    <padding>
+                        <Insets bottom="12.0" left="16.0" right="16.0" top="12.0"/>
+                    </padding>
+                    <ImageView fx:id="budgetsIcon" fitHeight="24.0" fitWidth="24.0" pickOnBounds="true"
+                               preserveRatio="true">
+                        <Image url="@../assets/budgets.png"/>
+                    </ImageView>
+                    <Label fx:id="budgetsLabel" text="Budgets">
+                        <font>
+                            <Font name="Arial" size="16.0"/>
+                        </font>
+                    </Label>
+                </HBox>
+                <HBox fx:id="accountsBtn" alignment="CENTER_LEFT" onMouseClicked="#switchToAccounts" spacing="5.0"
+                      style="-fx-background-radius: 8;">
+                    <padding>
+                        <Insets bottom="12.0" left="16.0" right="16.0" top="12.0"/>
+                    </padding>
+                    <ImageView fx:id="accountsIcon" fitHeight="24.0" fitWidth="24.0" pickOnBounds="true"
+                               preserveRatio="true">
+                        <Image url="@../assets/accounts.png"/>
+                    </ImageView>
+                    <Label fx:id="accountsLabel" text="Accounts">
+                        <font>
+                            <Font name="Arial" size="16.0"/>
+                        </font>
+                    </Label>
+                </HBox>
+            </FlowPane>
+        </center>
+        <padding>
+          <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+        </padding>
+        <bottom>
+            <HBox fx:id="settingsBtn" alignment="CENTER_LEFT" onMouseClicked="#switchToSettings" spacing="5.0"
+                  style="-fx-background-radius: 8;" BorderPane.alignment="CENTER">
+                <padding>
+                    <Insets bottom="12.0" left="16.0" right="16.0" top="12.0"/>
+                </padding>
+                <BorderPane.margin>
+                    <Insets top="20.0"/>
+                </BorderPane.margin>
+                <ImageView fx:id="settingsIcon" fitHeight="24.0" fitWidth="24.0" pickOnBounds="true"
+                           preserveRatio="true">
+                    <Image url="@../assets/settings.png"/>
+                </ImageView>
+                <Label fx:id="settingsLabel" text="Settings">
+                    <font>
+                        <Font name="Arial" size="16.0"/>
+                    </font>
+                </Label>
+            </HBox>
+        </bottom>
+    </BorderPane>
+    <ScrollPane fx:id="contentArea" prefHeight="720.0" prefWidth="860.0"/>
+</HBox>
