@@ -12,7 +12,7 @@
 
 <HBox maxHeight="720.0" maxWidth="1080.0" minHeight="720.0" minWidth="1080.0" prefHeight="100.0" prefWidth="200.0"
       xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.se.aiconomy.controller.SidebarController">
-    <BorderPane maxWidth="220.0" minWidth="220.0" prefWidth="220.0">
+    <BorderPane maxWidth="220.0" minWidth="220.0" prefWidth="220.0" style="-fx-background-color: #F9FAFB;">
         <top>
             <HBox alignment="CENTER_LEFT" spacing="5.0" BorderPane.alignment="CENTER_LEFT">
                 <padding>
@@ -24,7 +24,7 @@
                 <Label alignment="CENTER" minWidth="60.0" style="&#10;" text="AIconomy" textAlignment="CENTER"
                        textFill="#111827">
                     <font>
-                        <Font name="Arial Bold" size="23.25" fx:id="x1"/>
+                        <Font name="Arial Bold" size="23.25"/>
                     </font>
                 </Label>
             </HBox>

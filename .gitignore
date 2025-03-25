@@ -39,5 +39,4 @@ build/
 
 mvnw
 mvnw.cmd
-.env
 .mvn/*

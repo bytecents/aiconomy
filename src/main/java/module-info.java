@@ -6,6 +6,10 @@ module com.se.aiconomy {
     requires org.apache.commons.csv;
     requires jsondb.core;
     requires com.google.gson;
+    requires langchain4j.core;
+    requires langchain4j.open.ai;
+    requires jinjava;
+    requires io.github.cdimascio.dotenv.java;
 
 
     opens com.se.aiconomy to javafx.fxml;
