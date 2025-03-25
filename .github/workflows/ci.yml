@@ -1,0 +1,40 @@
+name: Unit Tests
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'corretto'
+          java-version: '21'
+
+      - name: Set Environment Variables from Secrets
+        run: |
+          echo "BASE_URL=${{ secrets.BASE_URL }}" >> $GITHUB_ENV
+          echo "API_KEY=${{ secrets.API_KEY }}" >> $GITHUB_ENV
+
+      - name: Verify Environment Variables
+        run: |
+          echo "BASE_URL=$BASE_URL"
+          echo "API_KEY is set"
+        env:
+          BASE_URL: ${{ secrets.BASE_URL }}
+          API_KEY: ${{ secrets.API_KEY }}
+
+      - name: Run Tests with Maven
+        run: mvn -B test --file pom.xml
+        env:
+          BASE_URL: ${{ secrets.BASE_URL }}
+          API_KEY: ${{ secrets.API_KEY }}
