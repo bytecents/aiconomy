@@ -1,67 +1,86 @@
 # AIconomy
 
-AIconomy is a financial management application designed to provide financial data analysis, budget tracking, and account management features through an intuitive user interface. The project uses JavaFX for the UI and follows an MVC architecture to separate the view, controller, and service layers, ensuring maintainability and scalability.
+AIconomy is a financial management application designed to provide financial data analysis, budget tracking, and account
+management features through an intuitive user interface. The project uses JavaFX for the client UI, follows a
+microservices architecture with separate client, server, and AI modules, ensuring maintainability and scalability.
 
 <p align="center">
-  <a href="https://github.com/bytecents/aiconomy/blob/main/README.md">English</a>
+  English
    • 
   <a href="https://github.com/bytecents/aiconomy/blob/main/README.cn.md">简体中文</a>
 </p>
 
 ## Project Structure
 
-The project directory structure is as follows:
+The project is organized into three main modules:
 
 ```
 .
-├── README.md                                                   # Project documentation
-├── pom.xml                                                     # Maven build configuration
-└── src
-    └── main
-        ├── java
-        │   ├── com
-        │   │   └── se
-        │   │       └── aiconomy
-        │   │           ├── AIconomyApplication.java            # Main class to launch the application
-        │   │           ├── common                              # Common utility classes
-        │   │           │   ├── CSVUtil.java                    # CSV file handling utility
-        │   │           │   └── JSONUtil.java                   # JSON file handling utility
-        │   │           ├── controller                          # Controller layer
-        │   │           │   ├── AccountsController.java         # Accounts controller
-        │   │           │   ├── AnalyticsController.java        # Analytics controller
-        │   │           │   ├── BudgetsController.java          # Budgets controller
-        │   │           │   ├── DashboardController.java        # Dashboard controller
-        │   │           │   ├── SettingsController.java         # Settings controller
-        │   │           │   ├── SidebarController.java          # Sidebar controller
-        │   │           │   └── TransactionsController.java     # Transactions controller
-        │   │           ├── dao                                 # Data access layer
-        │   │           │   └── AccountDao.java                 # Account data access object
-        │   │           ├── model                               # Data models
-        │   │           │   └── langchain                       # Business logic layer (e.g., transaction models)
-        │   │           │       └── Transaction.java            # Transaction model
-        │   │           └── service                             # Service layer
-        │   │               ├── AccountsService.java            # Accounts service
-        │   │               ├── AnalyticsService.java           # Analytics service
-        │   │               ├── BudgetsService.java             # Budgets service
-        │   │               ├── DashboardService.java           # Dashboard service
-        │   │               ├── SettingsService.java            # Settings service
-        │   │               └── TransactionsService.java        # Transactions service
-        │   └── module-info.java                                # Module configuration file
-        └── resources
-            ├── assets                                          # Application resources (images)
-            │   ├── accounts-active.png                         # Active account icon
-            │   ├── analytics-active.png                        # Active analytics icon
-            │   ├── dashboard-active.png                        # Active dashboard icon
-            │   ├── logo.png                                    # Application logo
-            │   ├── settings-active.png                         # Active settings icon
-            ├── fxml                                            # FXML files (UI layouts)
-            │   ├── accounts.fxml                               # Accounts page layout
-            │   ├── analytics.fxml                              # Analytics page layout
-            │   ├── dashboard.fxml                              # Dashboard page layout
-            │   ├── main.fxml                                   # Main page layout
-            │   ├── settings.fxml                               # Settings page layout
-            │   └── transactions.fxml                           # Transactions page layout
-            └── log4j2.xml                                      # Log configuration file
+├── README.cn.md                             # Chinese documentation
+├── README.md                                # English documentation
+├── aiconomy-client/                         # Client module
+│   ├── pom.xml                              # Client module Maven configuration
+│   └── src/
+│       ├── main/
+│       │   ├── java/
+│       │   │   └── com/se/aiconomy/client/
+│       │   │       ├── Application/         # Application entry and configuration
+│       │   │       ├── common/              # Common utilities and helpers
+│       │   │       │   └── utils/           # Utility classes (e.g., CSV processing)
+│       │   │       ├── controller/          # JavaFX controllers for UI interaction
+│       │   │       ├── model/               # Data models
+│       │   │       │   └── dto/             # Data Transfer Objects
+│       │   │       └── service/             # Client business logic services
+│       │   └── resources/
+│       │       ├── assets/                  # Static resources (images)
+│       │       ├── fxml/                    # JavaFX layout files
+│       │       └── log4j2.xml               # Logging configuration
+│       └── test/                            # Test directory
+│
+├── aiconomy-langchain/                      # AI functionality module
+│   ├── pom.xml                              # LangChain module Maven configuration
+│   └── src/
+│       ├── main/
+│       │   ├── java/
+│       │   │   └── com/se/aiconomy/langchain/
+│       │   │       ├── AIServices/          # AI service implementations
+│       │   │       │   └── classification/  # Classification services
+│       │   │       ├── chains/              # AI processing chains
+│       │   │       │   └── chat/            # Chat functionality
+│       │   │       ├── common/              # Common components
+│       │   │       │   ├── chain/           # Base chain framework
+│       │   │       │   ├── config/          # Configuration management
+│       │   │       │   ├── model/           # Model configurations
+│       │   │       │   ├── prompt/          # Prompt templates
+│       │   │       │   └── utils/           # Utility classes
+│       │   │       └── models/              # AI model definitions
+│       │   └── resources/
+│       └── test/                            # Test directory
+│           └── java/
+│               └── com/se/aiconomy/langchain/
+│                   ├── AIservices/          # AI service tests
+│                   ├── chain/               # Chain processing tests
+│                   └── utils/               # Utility tests
+│
+├── aiconomy-server/                         # Server module
+│   ├── pom.xml                              # Server module Maven configuration
+│   └── src/
+│       ├── main/
+│       │   └── java/
+│       │       └── com/se/aiconomy/server/
+│       │           ├── common/              # Common components
+│       │           │   ├── config/          # Server configurations
+│       │           │   ├── exception/       # Exception handling
+│       │           │   └── utils/           # Utility classes
+│       │           ├── dao/                 # Data Access Objects
+│       │           ├── handler/             # Request handlers
+│       │           ├── model/               # Data models
+│       │           │   ├── dto/             # Data Transfer Objects
+│       │           │   └── entity/          # Database entities
+│       │           └── service/             # Business logic services
+│       └── test/                            # Test directory
+│
+└── pom.xml                                  # Root Maven configuration file
 ```
 
 ## Development Guide
@@ -70,6 +89,7 @@ The project directory structure is as follows:
 
 - **JDK 21** or higher
 - **Maven** (for project build and dependency management)
+- **JavaFX SDK** (included in JDK)
 
 ### 2. Installation and Setup
 
@@ -84,63 +104,97 @@ cd aiconomy
 
 #### 2.2 Build the Project
 
-Use Maven to build the project:
+Use Maven to build all modules:
 
 ```bash
 mvn clean install
 ```
 
-This will compile the source code, run unit tests, and generate the executable JAR file.
+### 3. Module Structure
 
-#### 2.3 Run the Application
+#### 3.1 Client Module (aiconomy-client)
 
-Use the following command to run the application:
+- **Application**: Contains the main application class (`AIconomyApplication.java`)
+- **Controllers**: Handle user interface logic
+    - `AccountsController.java`
+    - `AnalyticsController.java`
+    - `BudgetsController.java`
+    - `DashboardController.java`
+    - `SettingsController.java`
+    - `TransactionsController.java`
+- **Services**: Client-side business logic
+- **Resources**: FXML layouts and assets
 
-```bash
-mvn javafx:run
-```
+#### 3.2 Server Module (aiconomy-server)
 
-This will start the JavaFX application and open the main interface.
+- **Handlers**: Process incoming requests
+- **Services**: Implement core business logic
+- **Models**: Define data structures
+- **DAO**: Handle data persistence
+- **Common**: Shared utilities and configurations
 
-### 3. Code Structure
+#### 3.3 LangChain Module (aiconomy-langchain)
 
-- **`AIconomyApplication.java`**: The entry point of the application that starts the JavaFX application.
-- **`controller`**: Contains all the controller classes. Each controller class handles the business logic for a specific page, such as the accounts controller, transactions controller, etc.
-- **`dao`**: The data access layer responsible for interacting with the database or other persistence stores.
-- **`model`**: Defines the application's data models, such as transaction models, account models, etc.
-- **`service`**: The service layer, which implements business logic and data processing functionalities.
+- **AIServices**: AI service implementations
+    - Classification services
+    - Data analysis services
+- **Chains**: Processing chain implementations
+- **Models**: AI model definitions
+- **Common**: Shared configurations and utilities
 
-### 4. FXML Structure
+### 4. UI Structure (Client Module)
 
-- The **`fxml`** folder contains all the UI layout files of the application. Each `.fxml` file corresponds to a page in the application, described using JavaFX's `FXML` markup language.
-- For example, `main.fxml` is the main page layout, `accounts.fxml` is for the accounts page, `dashboard.fxml` is for the dashboard, etc.
+The client module uses JavaFX with FXML for UI definition:
 
-### 5. Logging
+- `main.fxml`: Main application layout
+- `dashboard.fxml`: Dashboard view
+- `accounts.fxml`: Accounts management
+- `analytics.fxml`: Financial analytics
+- `budgets.fxml`: Budget management
+- `transactions.fxml`: Transaction history
+- `settings.fxml`: Application settings
 
-The project uses **Log4j2** for logging. The log configuration file `log4j2.xml` is located in the `resources` folder. You can modify the logging level and output settings as needed.
+### 5. Configuration
+
+Each module has its own configuration files:
+
+- Client: `src/main/resources/log4j2.xml`
+- Server: Configuration files in `common/config`
+- LangChain: AI model configurations in `common/config`
 
 ### 6. Testing
 
-- **Unit Testing**: All service classes should have unit tests. Test code is located in the `src/test/java` folder.
-- **JUnit** or **TestFX** (for JavaFX UI testing) can be used for writing and running tests.
+Each module contains its own test directory:
 
-### 7. Extending and Contributing
+- `src/test/java`: Unit tests
+- Use `mvn test` to run tests for individual modules
 
-We welcome developers to contribute to the project or submit feature requests. Before contributing code, please ensure that your changes are properly unit tested.
+### 7. Contributing
 
-#### 7.1 How to Contribute
+We welcome contributions to any of the modules:
 
-1. Fork the project and clone it to your local machine.
-2. Create a new branch for your changes:
+1. Fork the repository
+2. Create a feature branch:
    ```bash
    git checkout -b feature-branch
    ```
-3. Make your changes locally and commit them:
+3. Make your changes
+4. Run tests:
    ```bash
-   git commit -m "Describe your changes"
+   mvn test
    ```
-4. Push your branch to the remote repository:
+5. Commit your changes:
    ```bash
-   git push origin feature-branch
+   git commit -m "<type>(<scope>): <description> \n Author: <Author>"
    ```
-5. Submit a Pull Request to merge your changes.
+6. Push and create a Pull Request
+
+### 8. Module Dependencies
+
+- **Client**: Depends on Server module for data access
+- **Server**: Depends on LangChain module for AI features
+- **LangChain**: Independent module for AI/ML processing
+
+### 9. Logging
+
+All modules use Log4j2 for logging. Configuration files are located in each module's resources directory.

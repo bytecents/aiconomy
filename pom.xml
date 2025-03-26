@@ -7,7 +7,13 @@
     <groupId>com.se</groupId>
     <artifactId>aiconomy</artifactId>
     <version>1.0.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
     <name>aiconomy</name>
+    <modules>
+        <module>aiconomy-client</module>
+        <module>aiconomy-langchain</module>
+        <module>aiconomy-server</module>
+    </modules>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -18,43 +24,12 @@
     </properties>
 
     <dependencies>
-        <!--  jinja2   -->
-        <dependency>
-            <groupId>com.hubspot.jinjava</groupId>
-            <artifactId>jinjava</artifactId>
-            <version>2.7.2</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.yaml</groupId>
-            <artifactId>snakeyaml</artifactId>
-            <version>2.0</version>
-        </dependency>
-
-        <dependency>
-            <groupId>commons-beanutils</groupId>
-            <artifactId>commons-beanutils</artifactId>
-            <version>1.9.4</version>
-        </dependency>
-
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
             <version>32.1.2-jre</version>
         </dependency>
-
-        <!-- LangChain4J -->
-        <dependency>
-            <groupId>dev.langchain4j</groupId>
-            <artifactId>langchain4j</artifactId>
-            <version>${langchain4j.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>dev.langchain4j</groupId>
-            <artifactId>langchain4j-open-ai</artifactId>
-            <version>${langchain4j.version}</version>
-        </dependency>
-
+        
         <!-- Logging -->
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
@@ -95,13 +70,6 @@
             <version>23.0.2</version>
         </dependency>
 
-        <!--    Theme    -->
-        <dependency>
-            <groupId>io.github.mkpaz</groupId>
-            <artifactId>atlantafx-base</artifactId>
-            <version>2.0.0</version>
-        </dependency>
-
         <!-- CSV -->
         <dependency>
             <groupId>org.apache.commons</groupId>
@@ -114,13 +82,6 @@
             <groupId>com.alibaba.fastjson2</groupId>
             <artifactId>fastjson2</artifactId>
             <version>2.0.56</version>
-        </dependency>
-
-        <!-- https://mvnrepository.com/artifact/io.jsondb/jsondb-core -->
-        <dependency>
-            <groupId>io.jsondb</groupId>
-            <artifactId>jsondb-core</artifactId>
-            <version>1.0.106</version>
         </dependency>
 
         <dependency>
@@ -156,7 +117,8 @@
                         <!-- Default configuration for running with: mvn clean javafx:run -->
                         <id>default-cli</id>
                         <configuration>
-                            <mainClass>com.se.aiconomy/com.se.aiconomy.AIconomyApplication</mainClass>
+                            <mainClass>com.se.aiconomy/com.se.aiconomy.client.RunApp
+                            </mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>
                             <jlinkImageName>app</jlinkImageName>
