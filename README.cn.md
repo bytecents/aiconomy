@@ -103,6 +103,15 @@ cd aiconomy
 mvn clean install
 ```
 
+#### 2.3 运行应用程序
+
+使用以下命令运行应用程序：
+
+```bash
+cd aiconomy-client
+mvn javafx:run
+```
+
 ### 3. 模块结构
 
 #### 3.1 客户端模块 (aiconomy-client)

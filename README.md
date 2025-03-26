@@ -110,6 +110,15 @@ Use Maven to build all modules:
 mvn clean install
 ```
 
+#### 2.3 Run the Application
+
+Use the following command to run the application:
+
+```bash
+cd aiconomy-client
+mvn javafx:run
+```
+
 ### 3. Module Structure
 
 #### 3.1 Client Module (aiconomy-client)
