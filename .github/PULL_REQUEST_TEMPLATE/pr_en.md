@@ -8,7 +8,7 @@ New feature please send pull request to feature branch. Pull request will be mer
 
 - [ ] New feature
 - [ ] Bug fix
-- [ ] Site / document update
+- [ ] Document update
 - [ ] Component style update
 - [ ] Refactoring
 - [ ] Code style optimization

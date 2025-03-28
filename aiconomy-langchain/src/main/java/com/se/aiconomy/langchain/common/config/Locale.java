@@ -1,5 +1,8 @@
 package com.se.aiconomy.langchain.common.config;
 
+import lombok.Getter;
+
+@Getter
 public enum Locale {
     CN("CN"),
     EN("EN"),
@@ -9,10 +12,6 @@ public enum Locale {
 
     Locale(String value) {
         this.value = value;
-    }
-
-    public String getValue() {
-        return value;
     }
 
     @Override

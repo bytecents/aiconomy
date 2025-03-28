@@ -1,7 +1,9 @@
 package com.se.aiconomy.langchain.common.model;
 
 import dev.langchain4j.model.openai.OpenAiChatModelName;
+import lombok.Getter;
 
+@Getter
 public class ModelConfig {
     private final String baseUrl;
     private final String apiKey;
@@ -54,9 +56,4 @@ public class ModelConfig {
         }
     }
 
-    public String getBaseUrl() { return baseUrl; }
-    public String getApiKey() { return apiKey; }
-    public OpenAiChatModelName getModelName() { return modelName; }
-    public double getTemperature() { return temperature; }
-    public int getMaxTokens() { return maxTokens; }
 }

@@ -40,3 +40,5 @@ build/
 mvnw
 mvnw.cmd
 .mvn/*
+
+GitCommitMessageStorage.xml
