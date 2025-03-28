@@ -1,5 +1,8 @@
 package com.se.aiconomy.langchain.model;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
@@ -7,25 +10,33 @@ import java.util.Map;
 /**
  * 交易记录类，支持固定字段 + 可扩展字段
  */
+@Getter
 public class Transaction {
+    // Getters and Setters
+    @Setter
     private LocalDateTime transactionTime;  // 交易时间
+    @Setter
     private String transactionType;  // 交易类型 (如 "消费", "转账")
+    @Setter
     private String counterparty;  // 交易对方 (如 "Walmart", "支付宝")
+    @Setter
     private String product;  // 商品名称 (如 "iPhone 15")
+    @Setter
     private String incomeOrExpense;  // 收/支 ("收入" 或 "支出")
+    @Setter
     private String amount;  // 金额（元）
+    @Setter
     private String paymentMethod;  // 支付方式 (如 "微信支付", "信用卡")
+    @Setter
     private String status;  // 交易状态 (如 "成功", "待支付")
-
+    @Setter
     private String transactionId;  // 交易单号
+    @Setter
     private String merchantOrderId;  // 商户单号
+    @Setter
     private String remark;  // 备注
 
     private Map<String, Object> extraFields = new HashMap<>();
-
-    public Transaction() {
-
-    }
 
     public Transaction(LocalDateTime transactionTime, String transactionType, String counterparty,
                        String product, String incomeOrExpense, String amount, String paymentMethod,
@@ -51,99 +62,6 @@ public class Transaction {
     // 获取扩展字段
     public Object getExtraField(String key) {
         return extraFields.get(key);
-    }
-
-    // Getters and Setters
-    public LocalDateTime getTransactionTime() {
-        return transactionTime;
-    }
-
-    public void setTransactionTime(LocalDateTime transactionTime) {
-        this.transactionTime = transactionTime;
-    }
-
-    public String getTransactionType() {
-        return transactionType;
-    }
-
-    public void setTransactionType(String transactionType) {
-        this.transactionType = transactionType;
-    }
-
-    public String getCounterparty() {
-        return counterparty;
-    }
-
-    public void setCounterparty(String counterparty) {
-        this.counterparty = counterparty;
-    }
-
-    public String getProduct() {
-        return product;
-    }
-
-    public void setProduct(String product) {
-        this.product = product;
-    }
-
-    public String getIncomeOrExpense() {
-        return incomeOrExpense;
-    }
-
-    public void setIncomeOrExpense(String incomeOrExpense) {
-        this.incomeOrExpense = incomeOrExpense;
-    }
-
-    public String getAmount() {
-        return amount;
-    }
-
-    public void setAmount(String amount) {
-        this.amount = amount;
-    }
-
-    public String getPaymentMethod() {
-        return paymentMethod;
-    }
-
-    public void setPaymentMethod(String paymentMethod) {
-        this.paymentMethod = paymentMethod;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public String getTransactionId() {
-        return transactionId;
-    }
-
-    public void setTransactionId(String transactionId) {
-        this.transactionId = transactionId;
-    }
-
-    public String getMerchantOrderId() {
-        return merchantOrderId;
-    }
-
-    public void setMerchantOrderId(String merchantOrderId) {
-        this.merchantOrderId = merchantOrderId;
-    }
-
-    public String getRemark() {
-        return remark;
-    }
-
-    public void setRemark(String remark) {
-        this.remark = remark;
-    }
-
-    public Map<String, Object> getExtraFields() {
-        return extraFields;
     }
 
     @Override

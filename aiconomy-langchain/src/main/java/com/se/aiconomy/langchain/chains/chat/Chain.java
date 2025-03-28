@@ -7,14 +7,15 @@ import dev.langchain4j.model.chat.StreamingChatLanguageModel;
 import dev.langchain4j.model.chat.response.StreamingChatResponseHandler;
 import dev.langchain4j.model.openai.OpenAiChatModel;
 import dev.langchain4j.model.openai.OpenAiStreamingChatModel;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 
 public class Chain extends BaseChain {
 
-    private static final Logger LOGGER = LogManager.getLogger(Chain.class);
+
+    private static final Logger log = LoggerFactory.getLogger(Chain.class);
 
     @Override
     public String invoke(Locale locale, Map<String, Object> variables) {
@@ -35,7 +36,7 @@ public class Chain extends BaseChain {
 
         String prompt = new I18nPrompt(new Prompt()).render(locale, variables);
 
-        LOGGER.info("Prompt: {}", prompt);
+        log.info("Prompt: {}", prompt);
 
 //        ChatRequest chatRequest = ChatRequest.builder()
 //            .messages(UserMessage.from(prompt))
@@ -63,7 +64,7 @@ public class Chain extends BaseChain {
 
         String prompt = new I18nPrompt(new Prompt()).render(locale, variables);
 
-        LOGGER.info("Prompt: {}", prompt);
+        log.info("Prompt: {}", prompt);
 
 //        ChatRequest chatRequest = ChatRequest.builder()
 //            .messages(UserMessage.from(prompt))

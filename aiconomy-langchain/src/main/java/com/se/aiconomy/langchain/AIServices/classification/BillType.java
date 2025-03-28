@@ -1,5 +1,8 @@
 package com.se.aiconomy.langchain.AIServices.classification;
 
+import lombok.Getter;
+
+@Getter
 public enum BillType {
     GROCERIES("groceries"),
     RENT("rent"),
@@ -18,7 +21,4 @@ public enum BillType {
         this.type = type;
     }
 
-    public String getType() {
-        return type;
-    }
 }
