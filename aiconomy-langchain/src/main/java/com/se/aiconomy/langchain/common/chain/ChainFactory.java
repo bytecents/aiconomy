@@ -1,6 +1,6 @@
 package com.se.aiconomy.langchain.common.chain;
 
-import com.se.aiconomy.langchain.common.model.ModelConfig;
+import com.se.aiconomy.langchain.common.config.ModelConfig;
 import dev.langchain4j.model.chat.request.ChatRequestParameters;
 
 public class ChainFactory {

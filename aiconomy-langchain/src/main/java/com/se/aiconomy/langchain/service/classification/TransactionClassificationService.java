@@ -1,40 +1,46 @@
-package com.se.aiconomy.langchain.AIservices.classfication;
+package com.se.aiconomy.langchain.service.classification;
 
-import com.se.aiconomy.langchain.AIServices.classification.Assistant;
-import com.se.aiconomy.langchain.AIServices.classification.BillType;
-import com.se.aiconomy.langchain.AIServices.classification.Prompt;
-import com.se.aiconomy.langchain.model.Transaction;
 import com.se.aiconomy.langchain.common.config.Configs;
 import com.se.aiconomy.langchain.common.config.Locale;
+import com.se.aiconomy.langchain.common.model.BillType;
 import com.se.aiconomy.langchain.common.prompt.I18nPrompt;
+import com.se.aiconomy.langchain.common.model.Transaction;
 import dev.langchain4j.model.chat.ChatLanguageModel;
 import dev.langchain4j.model.openai.OpenAiChatModel;
 import dev.langchain4j.service.AiServices;
+import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ChatAssistantTest {
-    public static void main(String[] args) {
+public class TransactionClassificationService {
+    private static final Logger log = LoggerFactory.getLogger(TransactionClassificationService.class);
+    private final Assistant assistant;
+
+    public TransactionClassificationService() {
         ChatLanguageModel model = OpenAiChatModel.builder()
             .baseUrl(Configs.BASE_URL)
             .apiKey(Configs.API_KEY)
             .modelName(Configs.MODEL)
             .build();
-        Assistant assistant = AiServices.create(Assistant.class, model);
+        this.assistant = AiServices.create(Assistant.class, model);
+    }
 
-        Transaction transaction = new Transaction(
-            LocalDateTime.now(), "消费", "Starbucks", "Cappuccino",
-            "支出", "35.5", "信用卡", "成功",
-            "TXN123456", "M123456", "早餐"
-        );
+    public BillType classifyTransaction(Transaction transaction) {
+        return classifyTransaction(transaction, Locale.EN);
+    }
 
-        // 添加额外字段
-        transaction.addExtraField("loyaltyPoints", 10);
-        transaction.addExtraField("geoLocation", "Shanghai, China");
+    public BillType classifyTransaction(Transaction transaction, Locale locale) {
+        Map<String, Object> context = buildContext(transaction);
+        String prompt = new I18nPrompt(new Prompt()).render(locale, context);
+        log.info("Classification Prompt: {}", prompt);
+        return assistant.classifyTransactionFrom(prompt);
+    }
 
-        // 构建 Jinja 变量
+    @NotNull
+    private Map<String, Object> buildContext(@NotNull Transaction transaction) {
         Map<String, Object> context = new HashMap<>();
         context.put("transaction_time", transaction.getTransactionTime());
         context.put("transaction_type", transaction.getTransactionType());
@@ -50,10 +56,7 @@ public class ChatAssistantTest {
         context.put("remark", transaction.getRemark());
         context.put("extra_fields", transaction.getExtraFields());
 
-        String prompt = new I18nPrompt(new Prompt()).render(Locale.EN, context);
-        System.out.println(prompt);
-
-        BillType billType = assistant.classifyTransactionFrom(prompt);
-        System.out.println(billType);
+        log.info("Transaction Context: {}", context);
+        return context;
     }
 }

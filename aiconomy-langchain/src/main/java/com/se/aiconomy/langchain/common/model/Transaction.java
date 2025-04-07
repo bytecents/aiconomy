@@ -1,7 +1,8 @@
-package com.se.aiconomy.langchain.model;
+package com.se.aiconomy.langchain.common.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -11,8 +12,8 @@ import java.util.Map;
  * 交易记录类，支持固定字段 + 可扩展字段
  */
 @Getter
+@ToString
 public class Transaction {
-    // Getters and Setters
     @Setter
     private LocalDateTime transactionTime;  // 交易时间
     @Setter
@@ -62,23 +63,5 @@ public class Transaction {
     // 获取扩展字段
     public Object getExtraField(String key) {
         return extraFields.get(key);
-    }
-
-    @Override
-    public String toString() {
-        return "Transaction{" +
-            "transactionTime='" + transactionTime + '\'' +
-            ", transactionType='" + transactionType + '\'' +
-            ", counterparty='" + counterparty + '\'' +
-            ", product='" + product + '\'' +
-            ", incomeOrExpense='" + incomeOrExpense + '\'' +
-            ", amount='" + amount + '\'' +
-            ", paymentMethod='" + paymentMethod + '\'' +
-            ", status='" + status + '\'' +
-            ", transactionId='" + transactionId + '\'' +
-            ", merchantOrderId='" + merchantOrderId + '\'' +
-            ", remark='" + remark + '\'' +
-            ", extraFields=" + extraFields +
-            '}';
     }
 }

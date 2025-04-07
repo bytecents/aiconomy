@@ -1,4 +1,4 @@
-package com.se.aiconomy.langchain.AIServices.classification;
+package com.se.aiconomy.langchain.common.model;
 
 import lombok.Getter;
 
