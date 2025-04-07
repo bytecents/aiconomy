@@ -12,6 +12,7 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -37,6 +38,16 @@ public class TransactionClassificationService {
         String prompt = new I18nPrompt(new Prompt()).render(locale, context);
         log.info("Classification Prompt: {}", prompt);
         return assistant.classifyTransactionFrom(prompt);
+    }
+
+    public ArrayList<BillType> classifyTransactions(ArrayList<Transaction> transactions) {
+        return classifyTransactions(transactions, Locale.EN);
+    }
+
+    public ArrayList<BillType> classifyTransactions(ArrayList<Transaction> transactions, Locale locale) {
+        return new ArrayList<>(transactions.parallelStream()
+            .map(transaction -> classifyTransaction(transaction, locale != null ? locale : Locale.EN))
+            .toList());
     }
 
     @NotNull
