@@ -29,15 +29,15 @@ public class TransactionClassificationService {
         this.assistant = AiServices.create(Assistant.class, model);
     }
 
-    public BillType classifyTransaction(Transaction transaction) {
-        return classifyTransaction(transaction, Locale.EN);
-    }
-
     public BillType classifyTransaction(Transaction transaction, Locale locale) {
         Map<String, Object> context = buildContext(transaction);
         String prompt = new I18nPrompt(new Prompt()).render(locale, context);
         log.info("Classification Prompt: {}", prompt);
         return assistant.classifyTransactionFrom(prompt);
+    }
+
+    public BillType classifyTransaction(Transaction transaction) {
+        return classifyTransaction(transaction, Locale.EN);
     }
 
     public ArrayList<BillType> classifyTransactions(ArrayList<Transaction> transactions) {

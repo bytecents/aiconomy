@@ -36,10 +36,6 @@ public class Chain extends BaseChain {
 
         log.info("Prompt: {}", prompt);
 
-//        ChatRequest chatRequest = ChatRequest.builder()
-//            .messages(UserMessage.from(prompt))
-//            .build();
-
         return chatModel.chat(prompt);
     }
 
@@ -63,10 +59,6 @@ public class Chain extends BaseChain {
         String prompt = new I18nPrompt(new Prompt()).render(locale, variables);
 
         log.info("Prompt: {}", prompt);
-
-//        ChatRequest chatRequest = ChatRequest.builder()
-//            .messages(UserMessage.from(prompt))
-//            .build();
 
         chatModel.chat(prompt, responseHandler);
     }

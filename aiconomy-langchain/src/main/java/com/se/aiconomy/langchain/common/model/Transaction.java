@@ -1,5 +1,6 @@
 package com.se.aiconomy.langchain.common.model;
 
+import dev.langchain4j.model.output.structured.Description;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -9,34 +10,57 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 交易记录类，支持固定字段 + 可扩展字段
+ * Transaction record class, supports fixed fields + extensible fields
  */
 @Getter
 @ToString
 public class Transaction {
-    @Setter
-    private LocalDateTime transactionTime;  // 交易时间
-    @Setter
-    private String transactionType;  // 交易类型 (如 "消费", "转账")
-    @Setter
-    private String counterparty;  // 交易对方 (如 "Walmart", "支付宝")
-    @Setter
-    private String product;  // 商品名称 (如 "iPhone 15")
-    @Setter
-    private String incomeOrExpense;  // 收/支 ("收入" 或 "支出")
-    @Setter
-    private String amount;  // 金额（元）
-    @Setter
-    private String paymentMethod;  // 支付方式 (如 "微信支付", "信用卡")
-    @Setter
-    private String status;  // 交易状态 (如 "成功", "待支付")
-    @Setter
-    private String transactionId;  // 交易单号
-    @Setter
-    private String merchantOrderId;  // 商户单号
-    @Setter
-    private String remark;  // 备注
 
+    @Setter
+    @Description("The timestamp when the transaction occurred.")
+    private LocalDateTime transactionTime;
+
+    @Setter
+    @Description("The type of the transaction (e.g., '消费' for consumption or '转账' for transfer).")
+    private String transactionType;
+
+    @Setter
+    @Description("The counterparty involved in the transaction (e.g., 'Walmart', '支付宝').")
+    private String counterparty;
+
+    @Setter
+    @Description("The name of the product purchased (e.g., 'iPhone 15').")
+    private String product;
+
+    @Setter
+    @Description("Indicates whether the transaction is an income or expense ('收入' or '支出').")
+    private String incomeOrExpense;
+
+    @Setter
+    @Description("The amount of the transaction in Yuan (CNY).")
+    private String amount;
+
+    @Setter
+    @Description("The payment method used for the transaction (e.g., '微信支付', '信用卡').")
+    private String paymentMethod;
+
+    @Setter
+    @Description("The current status of the transaction (e.g., '成功' for successful, '待支付' for pending payment).")
+    private String status;
+
+    @Setter
+    @Description("The unique transaction identifier for tracking the transaction.")
+    private String transactionId;
+
+    @Setter
+    @Description("The merchant's order ID, used for reference within the merchant's system.")
+    private String merchantOrderId;
+
+    @Setter
+    @Description("Additional remarks or notes related to the transaction.")
+    private String remark;
+
+    @Description("A map to hold any extra, custom fields that may be included in the transaction.")
     private Map<String, Object> extraFields = new HashMap<>();
 
     public Transaction(LocalDateTime transactionTime, String transactionType, String counterparty,
@@ -55,12 +79,10 @@ public class Transaction {
         this.remark = remark;
     }
 
-    // 添加扩展字段
     public void addExtraField(String key, Object value) {
         extraFields.put(key, value);
     }
 
-    // 获取扩展字段
     public Object getExtraField(String key) {
         return extraFields.get(key);
     }

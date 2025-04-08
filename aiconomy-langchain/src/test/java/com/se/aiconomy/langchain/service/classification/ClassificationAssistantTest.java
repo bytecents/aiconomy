@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -23,9 +23,9 @@ public class ClassificationAssistantTest {
         TransactionClassificationService service = new TransactionClassificationService();
 
         Transaction transaction = new Transaction(
-            LocalDateTime.now(), "消费", "Starbucks", "Cappuccino",
-            "支出", "35.5", "信用卡", "成功",
-            "TXN123456", "M123456", "早餐"
+            LocalDateTime.now(), "Expense", "Starbucks", "Cappuccino",
+            "Expense", "35.5", "Credit Card", "Success",
+            "TXN123456", "M123456", "Breakfast"
         );
 
         transaction.addExtraField("loyaltyPoints", 10);
@@ -33,6 +33,7 @@ public class ClassificationAssistantTest {
 
         BillType billType = service.classifyTransaction(transaction);
         log.info("Bill Type: {}", billType);
+        assertNotNull(billType, "Classification result should not be null");
     }
 
     @Test
@@ -48,34 +49,15 @@ public class ClassificationAssistantTest {
     }
 
     private ArrayList<Transaction> createTestTransactions() {
-        ArrayList<Transaction> transactions = new ArrayList<>();
-
-        // 餐饮交易
-        transactions.add(new Transaction(
-            LocalDateTime.now(), "消费", "KFC", "汉堡套餐",
-            "支出", "45.0", "支付宝", "成功",
-            "TXN001", "M001", "午餐"
-        ));
-
-        // 交通交易
-        transactions.add(new Transaction(
-            LocalDateTime.now(), "消费", "滴滴出行", "快车",
-            "支出", "32.5", "微信支付", "成功",
-            "TXN002", "M002", "打车回家"
-        ));
-
-        // 购物交易
-        transactions.add(new Transaction(
-            LocalDateTime.now(), "消费", "京东", "电子产品",
-            "支出", "999.9", "信用卡", "成功",
-            "TXN003", "M003", "购买耳机"
-        ));
-
-        // 工资收入
-        transactions.add(new Transaction(
-            LocalDateTime.now(), "工资", "XX公司", "月薪",
-            "收入", "15000.0", "银行转账", "成功",
-            "TXN004", "M004", "3月工资"
+        ArrayList<Transaction> transactions = new ArrayList<>(List.of(
+            new Transaction(LocalDateTime.now(), "Expense", "KFC", "Burger Combo",
+                "Expense", "45.0", "Alipay", "Success", "TXN001", "M001", "Lunch"),
+            new Transaction(LocalDateTime.now(), "Expense", "DiDi", "Ride",
+                "Expense", "32.5", "WeChat Pay", "Success", "TXN002", "M002", "Ride home"),
+            new Transaction(LocalDateTime.now(), "Expense", "JD", "Electronics",
+                "Expense", "999.9", "Credit Card", "Success", "TXN003", "M003", "Buy headphones"),
+            new Transaction(LocalDateTime.now(), "Salary", "XX Company", "Monthly Salary",
+                "Income", "15000.0", "Bank Transfer", "Success", "TXN004", "M004", "March Salary")
         ));
 
         for (Transaction transaction : transactions) {
@@ -88,14 +70,14 @@ public class ClassificationAssistantTest {
 
     private void validateClassificationResults(ArrayList<Transaction> transactions, ArrayList<BillType> billTypes) {
         assertEquals(transactions.size(), billTypes.size(),
-            "分类结果数量应该与交易数量相同");
+            "The number of classification results should match the number of transactions");
 
         for (int i = 0; i < billTypes.size(); i++) {
             BillType billType = billTypes.get(i);
             Transaction transaction = transactions.get(i);
 
             assertNotNull(billType,
-                String.format("交易 %s 的分类结果不应为空", transaction.getTransactionId()));
+                String.format("The classification result for transaction %s should not be null", transaction.getTransactionId()));
 
             log.info("Transaction: {} -> Bill Type: {}",
                 transaction.getTransactionId(), billType);

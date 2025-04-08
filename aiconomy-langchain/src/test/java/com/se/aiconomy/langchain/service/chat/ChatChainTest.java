@@ -53,7 +53,7 @@ class ChatChainTest {
 
             @Override
             public void onError(Throwable throwable) {
-                fail("Streaming chat encountered an error: " + throwable.getMessage());
+                fail("Streaming stream encountered an error: " + throwable.getMessage());
             }
         });
     }
