@@ -5,7 +5,7 @@ import com.se.aiconomy.server.storage.common.Identifiable;
 import java.util.List;
 import java.util.Optional;
 
-public interface JSONDBService {
+public interface JSONStorageService {
     <T extends Identifiable> boolean initializeCollection(Class<T> entityClass);
 
     <T extends Identifiable> T insert(T entity);

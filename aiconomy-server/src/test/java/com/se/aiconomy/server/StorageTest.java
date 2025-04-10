@@ -1,8 +1,8 @@
 package com.se.aiconomy.server;
 
 import com.se.aiconomy.server.model.entity.Transaction;
-import com.se.aiconomy.server.storage.service.JSONDBService;
-import com.se.aiconomy.server.storage.service.impl.JSONDBServiceImpl;
+import com.se.aiconomy.server.storage.service.JSONStorageService;
+import com.se.aiconomy.server.storage.service.impl.JSONStorageServiceImpl;
 import org.junit.jupiter.api.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,7 +14,7 @@ import java.util.Optional;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class StorageTest {
     private static final Logger log = LoggerFactory.getLogger(StorageTest.class);
-    private static JSONDBService jsonDBService;
+    private static JSONStorageService jsonStorageService;
 
     private static final String TEST_TRANSACTION_ID = "T2025041001";
     private static final String TEST_MERCHANT_ORDER_ID = "M2025041001";
@@ -22,18 +22,18 @@ public class StorageTest {
 
     @BeforeAll
     static void setup() {
-        jsonDBService = JSONDBServiceImpl.getInstance();
-        if (jsonDBService.initializeCollection(Transaction.class)) {
+        jsonStorageService = JSONStorageServiceImpl.getInstance();
+        if (jsonStorageService.initializeCollection(Transaction.class)) {
             log.info("Collection initialized for Transaction");
         }
-        log.info("JSONDBService initialized with location: {}",
-            System.getProperty("jsondb.location"));
+        log.info("JSONStorageService initialized with location: {}",
+            System.getProperty("jsonStorage.location"));
     }
 
     @BeforeEach
     void cleanupBeforeTest() {
-        jsonDBService.findAll(Transaction.class)
-            .forEach(instance -> jsonDBService.delete(instance, Transaction.class));
+        jsonStorageService.findAll(Transaction.class)
+            .forEach(instance -> jsonStorageService.delete(instance, Transaction.class));
         log.info("Cleaned up test data");
     }
 
@@ -41,9 +41,9 @@ public class StorageTest {
     @Order(1)
     void testInsertTransaction() {
         Transaction transaction = createSampleTransaction();
-        Transaction inserted = jsonDBService.insert(transaction);
+        Transaction inserted = jsonStorageService.insert(transaction);
 
-        Optional<Transaction> found = jsonDBService.findById(TEST_TRANSACTION_ID, Transaction.class);
+        Optional<Transaction> found = jsonStorageService.findById(TEST_TRANSACTION_ID, Transaction.class);
         Assertions.assertTrue(found.isPresent());
         Assertions.assertEquals(TEST_TRANSACTION_ID, found.get().getId());
         Assertions.assertEquals("iPhone 15", found.get().getProduct());
@@ -55,15 +55,15 @@ public class StorageTest {
     void testUpdateTransaction() {
         // First insert
         Transaction transaction = createSampleTransaction();
-        jsonDBService.insert(transaction);
+        jsonStorageService.insert(transaction);
 
         // Update
         transaction.setAmount("2999.99");
         transaction.setStatus("已完成");
-        Transaction updated = jsonDBService.update(transaction, Transaction.class);
+        Transaction updated = jsonStorageService.update(transaction, Transaction.class);
 
         // Verify
-        Optional<Transaction> found = jsonDBService.findById(TEST_TRANSACTION_ID, Transaction.class);
+        Optional<Transaction> found = jsonStorageService.findById(TEST_TRANSACTION_ID, Transaction.class);
         Assertions.assertTrue(found.isPresent());
         Assertions.assertEquals("2999.99", found.get().getAmount());
         Assertions.assertEquals("已完成", found.get().getStatus());
@@ -74,11 +74,11 @@ public class StorageTest {
     @Order(3)
     void testDeleteTransaction() {
         Transaction transaction = createSampleTransaction();
-        jsonDBService.insert(transaction);
+        jsonStorageService.insert(transaction);
 
-        jsonDBService.delete(transaction, Transaction.class);
+        jsonStorageService.delete(transaction, Transaction.class);
 
-        Optional<Transaction> found = jsonDBService.findById(TEST_TRANSACTION_ID, Transaction.class);
+        Optional<Transaction> found = jsonStorageService.findById(TEST_TRANSACTION_ID, Transaction.class);
         Assertions.assertTrue(found.isEmpty());
         log.info("Successfully tested transaction deletion");
     }
@@ -92,10 +92,10 @@ public class StorageTest {
         transaction2.setId("T2025041002");
         transaction2.setMerchantOrderId("M2025041002");
 
-        jsonDBService.insert(transaction1);
-        jsonDBService.insert(transaction2);
+        jsonStorageService.insert(transaction1);
+        jsonStorageService.insert(transaction2);
 
-        List<Transaction> transactions = jsonDBService.findAll(Transaction.class);
+        List<Transaction> transactions = jsonStorageService.findAll(Transaction.class);
         Assertions.assertEquals(2, transactions.size());
         log.info("Successfully tested finding all transactions");
     }
@@ -106,14 +106,14 @@ public class StorageTest {
         Transaction transaction = createSampleTransaction();
 
         // Test insert via upsert
-        jsonDBService.upsert(transaction);
-        Optional<Transaction> found = jsonDBService.findById(TEST_TRANSACTION_ID, Transaction.class);
+        jsonStorageService.upsert(transaction);
+        Optional<Transaction> found = jsonStorageService.findById(TEST_TRANSACTION_ID, Transaction.class);
         Assertions.assertTrue(found.isPresent());
 
         // Test update via upsert
         transaction.setRemark("Updated via upsert");
-        jsonDBService.upsert(transaction);
-        found = jsonDBService.findById(TEST_TRANSACTION_ID, Transaction.class);
+        jsonStorageService.upsert(transaction);
+        found = jsonStorageService.findById(TEST_TRANSACTION_ID, Transaction.class);
         Assertions.assertTrue(found.isPresent());
         Assertions.assertEquals("Updated via upsert", found.get().getRemark());
         log.info("Successfully tested transaction upsert");
@@ -129,10 +129,10 @@ public class StorageTest {
         transaction.addExtraField("customerLevel", "VIP");
         transaction.addExtraField("discountRate", 0.85);
 
-        jsonDBService.insert(transaction);
+        jsonStorageService.insert(transaction);
 
         // Verify extra fields
-        Optional<Transaction> found = jsonDBService.findById(TEST_TRANSACTION_ID, Transaction.class);
+        Optional<Transaction> found = jsonStorageService.findById(TEST_TRANSACTION_ID, Transaction.class);
         Assertions.assertTrue(found.isPresent());
         Assertions.assertEquals("SPRING2025", found.get().getExtraField("promotionCode"));
         Assertions.assertEquals("VIP", found.get().getExtraField("customerLevel"));
@@ -148,9 +148,9 @@ public class StorageTest {
         transaction.setTime(TEST_TRANSACTION_TIME);
         // Deliberately leave other fields null
 
-        jsonDBService.insert(transaction);
+        jsonStorageService.insert(transaction);
 
-        Optional<Transaction> found = jsonDBService.findById(TEST_TRANSACTION_ID, Transaction.class);
+        Optional<Transaction> found = jsonStorageService.findById(TEST_TRANSACTION_ID, Transaction.class);
         Assertions.assertTrue(found.isPresent());
         Assertions.assertNull(found.get().getAmount());
         Assertions.assertNull(found.get().getStatus());

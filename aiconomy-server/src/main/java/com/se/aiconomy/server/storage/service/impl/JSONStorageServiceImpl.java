@@ -1,8 +1,8 @@
 package com.se.aiconomy.server.storage.service.impl;
 
 import com.se.aiconomy.server.storage.common.Identifiable;
-import com.se.aiconomy.server.storage.service.JSONDBService;
-import com.se.aiconomy.server.storage.common.JSONDBConfig;
+import com.se.aiconomy.server.storage.service.JSONStorageService;
+import com.se.aiconomy.server.storage.common.JSONStorageConfig;
 import io.jsondb.JsonDBTemplate;
 import io.jsondb.crypto.Default1Cipher;
 import io.jsondb.crypto.ICipher;
@@ -13,30 +13,30 @@ import java.security.GeneralSecurityException;
 import java.util.List;
 import java.util.Optional;
 
-public class JSONDBServiceImpl implements JSONDBService {
-    private static final Logger log = LoggerFactory.getLogger(JSONDBServiceImpl.class);
+public class JSONStorageServiceImpl implements JSONStorageService {
+    private static final Logger log = LoggerFactory.getLogger(JSONStorageServiceImpl.class);
     private final JsonDBTemplate jsonDBTemplate;
-    private static JSONDBServiceImpl instance;
+    private static JSONStorageServiceImpl instance;
 
-    private JSONDBServiceImpl(JSONDBConfig config) {
+    private JSONStorageServiceImpl(JSONStorageConfig config) {
         try {
             ICipher cipher = new Default1Cipher(config.getCipherKey());
             this.jsonDBTemplate = new JsonDBTemplate(
-                config.getDbLocation(),
+                config.getStorageLocation(),
                 config.getBasePackage(),
                 cipher
             );
-            log.info("Initialized JSONDBService with location: {}", config.getDbLocation());
+            log.info("Initialized JSONStorageService with location: {}", config.getStorageLocation());
         } catch (GeneralSecurityException e) {
-            log.error("Failed to initialize JSONDBService", e);
-            throw new RuntimeException("Failed to initialize JSONDBService", e);
+            log.error("Failed to initialize JSONStorageService", e);
+            throw new RuntimeException("Failed to initialize JSONStorageService", e);
         }
     }
 
-    public static synchronized JSONDBService getInstance() {
+    public static synchronized JSONStorageService getInstance() {
         if (instance == null) {
-            JSONDBConfig config = JSONDBConfig.load();
-            instance = new JSONDBServiceImpl(config);
+            JSONStorageConfig config = JSONStorageConfig.load();
+            instance = new JSONStorageServiceImpl(config);
         }
         return instance;
     }
