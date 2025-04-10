@@ -1,4 +1,4 @@
-package com.se.aiconomy.langchain.chains.chat;
+package com.se.aiconomy.langchain.service.chat;
 
 import com.se.aiconomy.langchain.common.chain.BaseChain;
 import com.se.aiconomy.langchain.common.config.Locale;
@@ -13,8 +13,6 @@ import org.slf4j.LoggerFactory;
 import java.util.Map;
 
 public class Chain extends BaseChain {
-
-
     private static final Logger log = LoggerFactory.getLogger(Chain.class);
 
     @Override
@@ -37,10 +35,6 @@ public class Chain extends BaseChain {
         String prompt = new I18nPrompt(new Prompt()).render(locale, variables);
 
         log.info("Prompt: {}", prompt);
-
-//        ChatRequest chatRequest = ChatRequest.builder()
-//            .messages(UserMessage.from(prompt))
-//            .build();
 
         return chatModel.chat(prompt);
     }
@@ -65,10 +59,6 @@ public class Chain extends BaseChain {
         String prompt = new I18nPrompt(new Prompt()).render(locale, variables);
 
         log.info("Prompt: {}", prompt);
-
-//        ChatRequest chatRequest = ChatRequest.builder()
-//            .messages(UserMessage.from(prompt))
-//            .build();
 
         chatModel.chat(prompt, responseHandler);
     }

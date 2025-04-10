@@ -28,11 +28,11 @@
             <version>1.18.36</version>
         </dependency>
 
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>2.14.2</version>
-        </dependency>
+        <!--        <dependency>-->
+        <!--            <groupId>com.fasterxml.jackson.core</groupId>-->
+        <!--            <artifactId>jackson-databind</artifactId>-->
+        <!--            <version>2.14.2</version>-->
+        <!--        </dependency>-->
 
         <dependency>
             <groupId>commons-beanutils</groupId>
@@ -45,7 +45,7 @@
             <artifactId>guava</artifactId>
             <version>32.1.2-jre</version>
         </dependency>
-        
+
         <!-- Logging -->
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>

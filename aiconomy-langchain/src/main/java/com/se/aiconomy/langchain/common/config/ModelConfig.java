@@ -1,4 +1,4 @@
-package com.se.aiconomy.langchain.common.model;
+package com.se.aiconomy.langchain.common.config;
 
 import dev.langchain4j.model.openai.OpenAiChatModelName;
 import lombok.Getter;
