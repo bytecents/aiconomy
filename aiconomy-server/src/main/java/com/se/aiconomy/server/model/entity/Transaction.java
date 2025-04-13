@@ -28,7 +28,7 @@ public class Transaction implements Identifiable {
     @Setter
     private String type;  // 交易类型 (如 "消费", "转账")
     @Setter
-    private String counterparty;  // 交易对方 (如 "Walmart", "支付宝")
+    private String counterparty;  // 交易对象 (如 "Walmart", "支付宝")
     @Setter
     private String product;  // 商品名称 (如 "iPhone 15")
     @Setter
