@@ -1,8 +1,8 @@
 package com.se.aiconomy.server.storage.service.impl;
 
 import com.se.aiconomy.server.storage.common.Identifiable;
-import com.se.aiconomy.server.storage.service.JSONStorageService;
 import com.se.aiconomy.server.storage.common.JSONStorageConfig;
+import com.se.aiconomy.server.storage.service.JSONStorageService;
 import io.jsondb.JsonDBTemplate;
 import io.jsondb.crypto.Default1Cipher;
 import io.jsondb.crypto.ICipher;
