@@ -1,5 +1,6 @@
 package com.se.aiconomy.client.controller;
 
+import com.se.aiconomy.client.Application.StyleClassFixer;
 import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -143,6 +144,8 @@ public class SidebarController implements Initializable {
         fadeOut.setOnFinished(event -> {
             try {
                 Node view = FXMLLoader.load(Objects.requireNonNull(getClass().getResource(fxmlPath)));
+                StyleClassFixer.fixStyleClasses(view);
+
                 contentArea.setContent(view);
 
                 FadeTransition fadeIn = new FadeTransition(Duration.millis(100), contentArea);
