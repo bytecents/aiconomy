@@ -24,7 +24,7 @@
             <Label text="Thursday, March 13, 2025" styleClass="text-gray-500 font-roboto"/>
         </VBox>
         <Region HBox.hgrow="ALWAYS"/>
-        <Button text="Quick Add" styleClass="hover-bg-blue-700 p-4-2 bg-blue-600 text-white font-roboto"/>
+        <Button text="Quick Add" styleClass="hover-bg-blue-700 p-4-2 bg-blue-600 text-white font-roboto cursor-pointer"/>
     </HBox>
 
     <GridPane hgap="24" vgap="24" styleClass="pb-8">
@@ -85,7 +85,7 @@
             <!-- Transaction List -->
             <VBox spacing="12">
                 <!-- Transaction Item 1 -->
-                <HBox alignment="CENTER_LEFT" spacing="12" styleClass="p-3 hover-bg-gray-50 rounded-lg">
+                <HBox alignment="CENTER_LEFT" spacing="12" styleClass="p-3 hover-bg-gray-50 rounded-lg cursor-pointer">
                     <!-- Left side -->
                     <HBox alignment="CENTER_LEFT" spacing="12">
                         <!-- Icon -->
@@ -107,7 +107,7 @@
                 </HBox>
 
                 <!-- Transaction Item 2 -->
-                <HBox alignment="CENTER_LEFT" spacing="12" styleClass="p-3 hover-bg-gray-50 rounded-lg">
+                <HBox alignment="CENTER_LEFT" spacing="12" styleClass="p-3 hover-bg-gray-50 rounded-lg cursor-pointer">
                     <!-- Left side -->
                     <HBox alignment="CENTER_LEFT" spacing="12">
                         <!-- Icon -->

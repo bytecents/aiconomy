@@ -38,7 +38,7 @@
                     <Insets top="20.0"/>
                 </BorderPane.margin>
                 <HBox fx:id="dashboardBtn" alignment="CENTER_LEFT" onMouseClicked="#switchToDashboard"
-                      spacing="12.0" style="-fx-background-radius: 8;">
+                      spacing="12.0" style="-fx-background-radius: 8;" styleClass="cursor-pointer">
                     <padding>
                         <Insets bottom="12.0" left="16.0" right="16.0" top="12.0"/>
                     </padding>
@@ -54,7 +54,7 @@
                     </Label>
                 </HBox>
                 <HBox fx:id="transactionsBtn" alignment="CENTER_LEFT" onMouseClicked="#switchToTransactions"
-                      spacing="12.0" style="-fx-background-radius: 8;">
+                      spacing="12.0" style="-fx-background-radius: 8;" styleClass="cursor-pointer">
                     <padding>
                         <Insets bottom="12.0" left="16.0" right="16.0" top="12.0"/>
                     </padding>
@@ -70,7 +70,7 @@
                     </Label>
                 </HBox>
                 <HBox fx:id="analyticsBtn" alignment="CENTER_LEFT" onMouseClicked="#switchToAnalytics" spacing="12.0"
-                      style="-fx-background-radius: 8;">
+                      style="-fx-background-radius: 8;" styleClass="cursor-pointer">
                     <padding>
                         <Insets bottom="12.0" left="16.0" right="16.0" top="12.0"/>
                     </padding>
@@ -86,7 +86,7 @@
                     </Label>
                 </HBox>
                 <HBox fx:id="budgetsBtn" alignment="CENTER_LEFT" onMouseClicked="#switchToBudgets" spacing="12.0"
-                      style="-fx-background-radius: 8;">
+                      style="-fx-background-radius: 8;" styleClass="cursor-pointer">
                     <padding>
                         <Insets bottom="12.0" left="16.0" right="16.0" top="12.0"/>
                     </padding>
@@ -102,7 +102,7 @@
                     </Label>
                 </HBox>
                 <HBox fx:id="accountsBtn" alignment="CENTER_LEFT" onMouseClicked="#switchToAccounts" spacing="12.0"
-                      style="-fx-background-radius: 8;">
+                      style="-fx-background-radius: 8;" styleClass="cursor-pointer">
                     <padding>
                         <Insets bottom="12.0" left="16.0" right="16.0" top="12.0"/>
                     </padding>
@@ -124,7 +124,7 @@
         </padding>
         <bottom>
             <HBox fx:id="settingsBtn" alignment="CENTER_LEFT" onMouseClicked="#switchToSettings" spacing="12.0"
-                  style="-fx-background-radius: 8;" BorderPane.alignment="CENTER">
+                  style="-fx-background-radius: 8;" BorderPane.alignment="CENTER" styleClass="cursor-pointer">
                 <padding>
                     <Insets bottom="12.0" left="16.0" right="16.0" top="12.0"/>
                 </padding>

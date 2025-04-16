@@ -352,3 +352,8 @@
     -fx-border-width: 1;
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 2, 0, 0, 1);
 }
+
+.cursor-pointer {
+    -fx-cursor: hand;
+}
+
