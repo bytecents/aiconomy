@@ -224,6 +224,10 @@
     -fx-spacing: 8;
 }
 
+.gap-2_5 {
+    -fx-spacing: 10;
+}
+
 .gap-3 {
     -fx-spacing: 12;
 }
@@ -316,6 +320,10 @@
     -fx-pref-width: 40;
 }
 
+.p-2_5 {
+    -fx-padding: 10;
+}
+
 .p-3 {
     -fx-padding: 12;
 }
@@ -366,6 +374,11 @@
 
 .p-3-1\.5 {
     -fx-padding: 6 12 6 12;
+}
+
+.border-b {
+    -fx-border-color: #E5E7EB;
+    -fx-border-width: 0 0 1 0;
 }
 
 .border-r {

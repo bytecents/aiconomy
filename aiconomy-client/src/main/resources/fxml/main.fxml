@@ -31,14 +31,12 @@
             </HBox>
         </top>
         <center>
-            <VBox spacing="10.0"
-                  style="-fx-border-color: #E5E7EB; -fx-border-width: 0 0 1 0;"
-                  BorderPane.alignment="CENTER">
+            <VBox styleClass="gap-2_5 border-b" BorderPane.alignment="CENTER">
                 <BorderPane.margin>
                     <Insets top="20.0"/>
                 </BorderPane.margin>
                 <HBox fx:id="dashboardBtn" alignment="CENTER_LEFT" onMouseClicked="#switchToDashboard"
-                      spacing="12.0" style="-fx-background-radius: 8;" styleClass="cursor-pointer">
+                      styleClass="cursor-pointer gap-3 rounded-lg">
                     <padding>
                         <Insets bottom="12.0" left="16.0" right="16.0" top="12.0"/>
                     </padding>
@@ -46,15 +44,10 @@
                                preserveRatio="true">
                         <Image url="@../assets/dashboard.png"/>
                     </ImageView>
-                    <Label fx:id="dashboardLabel" text="Dashboard">
-                        <styleClass>
-                            <String fx:value="font-roboto" />
-                            <String fx:value="text-base" />
-                        </styleClass>
-                    </Label>
+                    <Label fx:id="dashboardLabel" text="Dashboard" styleClass="font-roboto text-base" />
                 </HBox>
                 <HBox fx:id="transactionsBtn" alignment="CENTER_LEFT" onMouseClicked="#switchToTransactions"
-                      spacing="12.0" style="-fx-background-radius: 8;" styleClass="cursor-pointer">
+                      styleClass="cursor-pointer gap-3 rounded-lg">
                     <padding>
                         <Insets bottom="12.0" left="16.0" right="16.0" top="12.0"/>
                     </padding>
@@ -62,15 +55,10 @@
                                preserveRatio="true">
                         <Image url="@../assets/transactions.png"/>
                     </ImageView>
-                    <Label fx:id="transactionsLabel" text="Transactions">
-                        <styleClass>
-                            <String fx:value="font-roboto" />
-                            <String fx:value="text-base" />
-                        </styleClass>
-                    </Label>
+                    <Label fx:id="transactionsLabel" text="Transactions" styleClass="font-roboto text-base" />
                 </HBox>
-                <HBox fx:id="analyticsBtn" alignment="CENTER_LEFT" onMouseClicked="#switchToAnalytics" spacing="12.0"
-                      style="-fx-background-radius: 8;" styleClass="cursor-pointer">
+                <HBox fx:id="analyticsBtn" alignment="CENTER_LEFT" onMouseClicked="#switchToAnalytics"
+                      styleClass="cursor-pointer gap-3 rounded-lg">
                     <padding>
                         <Insets bottom="12.0" left="16.0" right="16.0" top="12.0"/>
                     </padding>
@@ -78,15 +66,10 @@
                                preserveRatio="true">
                         <Image url="@../assets/analytics.png"/>
                     </ImageView>
-                    <Label fx:id="analyticsLabel" text="Analytics">
-                        <styleClass>
-                            <String fx:value="font-roboto" />
-                            <String fx:value="text-base" />
-                        </styleClass>
-                    </Label>
+                    <Label fx:id="analyticsLabel" text="Analytics" styleClass="font-roboto text-base" />
                 </HBox>
-                <HBox fx:id="budgetsBtn" alignment="CENTER_LEFT" onMouseClicked="#switchToBudgets" spacing="12.0"
-                      style="-fx-background-radius: 8;" styleClass="cursor-pointer">
+                <HBox fx:id="budgetsBtn" alignment="CENTER_LEFT" onMouseClicked="#switchToBudgets"
+                      styleClass="cursor-pointer gap-3 rounded-lg">
                     <padding>
                         <Insets bottom="12.0" left="16.0" right="16.0" top="12.0"/>
                     </padding>
@@ -94,15 +77,10 @@
                                preserveRatio="true">
                         <Image url="@../assets/budgets.png"/>
                     </ImageView>
-                    <Label fx:id="budgetsLabel" text="Budgets">
-                        <styleClass>
-                            <String fx:value="font-roboto" />
-                            <String fx:value="text-base" />
-                        </styleClass>
-                    </Label>
+                    <Label fx:id="budgetsLabel" text="Budgets" styleClass="font-roboto text-base" />
                 </HBox>
-                <HBox fx:id="accountsBtn" alignment="CENTER_LEFT" onMouseClicked="#switchToAccounts" spacing="12.0"
-                      style="-fx-background-radius: 8;" styleClass="cursor-pointer">
+                <HBox fx:id="accountsBtn" alignment="CENTER_LEFT" onMouseClicked="#switchToAccounts"
+                      styleClass="cursor-pointer gap-3 rounded-lg">
                     <padding>
                         <Insets bottom="12.0" left="16.0" right="16.0" top="12.0"/>
                     </padding>
@@ -110,12 +88,7 @@
                                preserveRatio="true">
                         <Image url="@../assets/accounts.png"/>
                     </ImageView>
-                    <Label fx:id="accountsLabel" text="Accounts">
-                        <styleClass>
-                            <String fx:value="font-roboto" />
-                            <String fx:value="text-base" />
-                        </styleClass>
-                    </Label>
+                    <Label fx:id="accountsLabel" text="Accounts" styleClass="font-roboto text-base" />
                 </HBox>
             </VBox>
         </center>
@@ -123,8 +96,8 @@
           <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
         </padding>
         <bottom>
-            <HBox fx:id="settingsBtn" alignment="CENTER_LEFT" onMouseClicked="#switchToSettings" spacing="12.0"
-                  style="-fx-background-radius: 8;" BorderPane.alignment="CENTER" styleClass="cursor-pointer">
+            <HBox fx:id="settingsBtn" alignment="CENTER_LEFT" onMouseClicked="#switchToSettings"
+                  styleClass="cursor-pointer gap-3 rounded-lg">
                 <padding>
                     <Insets bottom="12.0" left="16.0" right="16.0" top="12.0"/>
                 </padding>
