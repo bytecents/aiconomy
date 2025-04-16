@@ -14,7 +14,7 @@
       xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.se.aiconomy.client.controller.SidebarController">
     <BorderPane maxWidth="220.0" minWidth="220.0" prefWidth="220.0" style="-fx-background-color: #F9FAFB;">
         <top>
-            <HBox alignment="CENTER_LEFT" spacing="5.0" BorderPane.alignment="CENTER_LEFT">
+            <HBox alignment="CENTER_LEFT" spacing="10.0" BorderPane.alignment="CENTER_LEFT">
                 <padding>
                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
                 </padding>
@@ -37,7 +37,7 @@
                     <Insets top="20.0"/>
                 </BorderPane.margin>
                 <HBox fx:id="dashboardBtn" alignment="CENTER_LEFT" onMouseClicked="#switchToDashboard"
-                      prefWidth="172.0" spacing="5.0" style="-fx-background-radius: 8;">
+                      prefWidth="172.0" spacing="12.0" style="-fx-background-radius: 8;">
                     <padding>
                         <Insets bottom="12.0" left="16.0" right="16.0" top="12.0"/>
                     </padding>
@@ -52,7 +52,7 @@
                     </Label>
                 </HBox>
                 <HBox fx:id="transactionsBtn" alignment="CENTER_LEFT" onMouseClicked="#switchToTransactions"
-                      spacing="5.0" style="-fx-background-radius: 8;">
+                      spacing="12.0" style="-fx-background-radius: 8;">
                     <padding>
                         <Insets bottom="12.0" left="16.0" right="16.0" top="12.0"/>
                     </padding>
@@ -66,7 +66,7 @@
                         </font>
                     </Label>
                 </HBox>
-                <HBox fx:id="analyticsBtn" alignment="CENTER_LEFT" onMouseClicked="#switchToAnalytics" spacing="5.0"
+                <HBox fx:id="analyticsBtn" alignment="CENTER_LEFT" onMouseClicked="#switchToAnalytics" spacing="12.0"
                       style="-fx-background-radius: 8;">
                     <padding>
                         <Insets bottom="12.0" left="16.0" right="16.0" top="12.0"/>
@@ -81,7 +81,7 @@
                         </font>
                     </Label>
                 </HBox>
-                <HBox fx:id="budgetsBtn" alignment="CENTER_LEFT" onMouseClicked="#switchToBudgets" spacing="5.0"
+                <HBox fx:id="budgetsBtn" alignment="CENTER_LEFT" onMouseClicked="#switchToBudgets" spacing="12.0"
                       style="-fx-background-radius: 8;">
                     <padding>
                         <Insets bottom="12.0" left="16.0" right="16.0" top="12.0"/>
@@ -96,7 +96,7 @@
                         </font>
                     </Label>
                 </HBox>
-                <HBox fx:id="accountsBtn" alignment="CENTER_LEFT" onMouseClicked="#switchToAccounts" spacing="5.0"
+                <HBox fx:id="accountsBtn" alignment="CENTER_LEFT" onMouseClicked="#switchToAccounts" spacing="12.0"
                       style="-fx-background-radius: 8;">
                     <padding>
                         <Insets bottom="12.0" left="16.0" right="16.0" top="12.0"/>
@@ -117,7 +117,7 @@
           <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
         </padding>
         <bottom>
-            <HBox fx:id="settingsBtn" alignment="CENTER_LEFT" onMouseClicked="#switchToSettings" spacing="5.0"
+            <HBox fx:id="settingsBtn" alignment="CENTER_LEFT" onMouseClicked="#switchToSettings" spacing="12.0"
                   style="-fx-background-radius: 8;" BorderPane.alignment="CENTER">
                 <padding>
                     <Insets bottom="12.0" left="16.0" right="16.0" top="12.0"/>
