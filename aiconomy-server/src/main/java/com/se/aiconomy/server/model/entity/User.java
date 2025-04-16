@@ -18,28 +18,28 @@ import java.util.Map;
 public class User implements Identifiable{
     @Id
     @Setter
-    private String id;
+    private String id; // 唯一标识符
     @Setter
-    private String email;
+    private String email; // 邮箱
     @Setter
     @Secret
-    private String password;
+    private String password; // 密码
     @Setter
-    private String avatarUrl;
+    private String avatarUrl; // 头像
     @Setter
-    private String firstName;
+    private String firstName; // 名字
     @Setter
-    private String lastName;
+    private String lastName; // 姓氏
     @Setter
-    private String phone;
+    private String phone; // 手机号
     @Setter
-    private LocalDate birthDate;
+    private LocalDate birthDate; // 出生日期
     @Setter
     private String currency; // 例如 USD, EUR, CNY
     @Setter
     private String financialGoal; // 理财目标：储蓄、投资、买房……
     @Setter
-    private Double monthlyIncome;
+    private Double monthlyIncome; // 月收入
     @Setter
     private String mainExpenseType; // 主要开销：房租、教育、交通等
 
