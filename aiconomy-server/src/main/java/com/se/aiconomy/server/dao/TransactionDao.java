@@ -7,7 +7,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public class TransactionDao {
-    private final JsonDBTemplate jsonDBTemplate;
+    private JsonDBTemplate jsonDBTemplate;
+
+    public TransactionDao(){}
 
     public TransactionDao(JsonDBTemplate jsonDBTemplate) {
         this.jsonDBTemplate = jsonDBTemplate;
