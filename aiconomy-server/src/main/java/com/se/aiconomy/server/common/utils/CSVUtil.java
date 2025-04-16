@@ -9,6 +9,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -55,5 +57,21 @@ public class CSVUtil {
             }
         }
         return result;
+    }
+
+//    测试用
+    public static void writeTestCSV(String filePath, List<Map<String, String>> data) throws IOException {
+        if (data.isEmpty()) return;
+
+        // 获取表头（使用第一行的key）
+        String[] headers = data.get(0).keySet().toArray(new String[0]);
+
+        // 写入CSV文件
+        Files.write(Paths.get(filePath), (
+                String.join(",", headers) + "\n" + // 表头行
+                        data.stream()
+                                .map(row -> String.join(",", row.values()))
+                                .reduce("", (a, b) -> a + b + "\n")
+        ).getBytes());
     }
 }

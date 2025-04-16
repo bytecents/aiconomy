@@ -3,6 +3,7 @@ package com.se.aiconomy.server.service;
 import com.se.aiconomy.server.dao.TransactionDao;
 import com.se.aiconomy.server.model.entity.Transaction;
 import com.se.aiconomy.server.common.utils.CSVUtil;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -21,16 +22,16 @@ public class TransactionService {
     // 映射 CSV列名 -> Transaction字段名
     private static final Map<String, String> FIELD_MAPPING = new HashMap<>();
     static {
-        FIELD_MAPPING.put("Time", "time");
-        FIELD_MAPPING.put("Type", "type");
-        FIELD_MAPPING.put("Counterparty", "counterparty");
-        FIELD_MAPPING.put("Product", "product");
-        FIELD_MAPPING.put("IncomeOrExpense", "incomeOrExpense");
-        FIELD_MAPPING.put("Amount", "amount");
-        FIELD_MAPPING.put("PaymentMethod", "paymentMethod");
-        FIELD_MAPPING.put("Status", "status");
-        FIELD_MAPPING.put("MerchantOrderId", "merchantOrderId");
-        FIELD_MAPPING.put("Remark", "remark");
+        FIELD_MAPPING.put("time", "time");
+        FIELD_MAPPING.put("type", "type");
+        FIELD_MAPPING.put("counterparty", "counterparty");
+        FIELD_MAPPING.put("product", "product");
+        FIELD_MAPPING.put("incomeorexpense", "incomeOrExpense"); // CSV列名统一小写
+        FIELD_MAPPING.put("amount", "amount");
+        FIELD_MAPPING.put("paymentmethod", "paymentMethod");
+        FIELD_MAPPING.put("status", "status");
+        FIELD_MAPPING.put("merchantorderid", "merchantOrderId");
+        FIELD_MAPPING.put("remark", "remark");
     }
 
     // 日期时间格式
@@ -79,104 +80,115 @@ public class TransactionService {
         return successList.size();
     }
 
-//   反射字段映射
-    private void setFieldValue(Transaction tx, String fieldName, String value)
-            throws DataConversionException
-    {
-        try {
-            Method setter = getSetterMethod(fieldName);
-            Object convertedValue = convertValue(fieldName, value);
-            setter.invoke(tx, convertedValue);
-        } catch (InvocationTargetException | IllegalAccessException e) {
-            throw new DataConversionException("Field assignment failed: " + fieldName);
-        }
-    }
-
 //  数据转换
-    private Transaction convertRowToTransaction(Map<String, String> row)
-            throws DataConversionException
-    {
-        Transaction tx = new Transaction();
+private Transaction convertRowToTransaction(Map<String, String> row) throws DataConversionException {
+    logger.info("正在转换记录: " + row);
+    Transaction tx = new Transaction();
 
-        for (Map.Entry<String, String> entry : row.entrySet()) {
-            String csvHeader = entry.getKey();
-            String value = entry.getValue();
+    for (Map.Entry<String, String> entry : row.entrySet()) {
+        String csvHeader = entry.getKey();
+        String value = entry.getValue();
 
-            String fieldName = FIELD_MAPPING.get(csvHeader);
-            if (fieldName != null) {
-                try {
-                    setFieldValue(tx, fieldName, value);
-                } catch (DataConversionException e) {
-                    e.printStackTrace();
-                }
-            } else {
-                tx.addExtraField(csvHeader, value);
+        // 统一转换为小写匹配映射键
+        String normalizedHeader = csvHeader.toLowerCase().trim();
+        String fieldName = FIELD_MAPPING.get(normalizedHeader);
+
+        if (fieldName != null) {
+            try {
+                setFieldValue(tx, fieldName, value);
+            } catch (DataConversionException e) {
+                logger.warning("字段转换失败: " + fieldName + " -> " + value);
+                throw e;
             }
+        } else {
+            tx.addExtraField(csvHeader, value);
         }
-
-        // 校验必要字段（如交易时间、金额）
-        validateRequiredFields(tx);
-        return tx;
     }
 
-//    获取字段setter方法
+    validateRequiredFields(tx);
+    return tx;
+}
+
+    // 修复2：增强 getSetterMethod 方法
     private Method getSetterMethod(String fieldName) throws DataConversionException {
-        String methodName = "set" + capitalize(fieldName);
         try {
-            return Transaction.class.getMethod(methodName, getFieldType(fieldName));
+            // 空值检查
+            if (fieldName == null) {
+                throw new DataConversionException("字段名不能为null");
+            }
+
+            String actualFieldName = FIELD_MAPPING.get(fieldName.toLowerCase());
+            if (actualFieldName == null) {
+                throw new DataConversionException("无效的字段映射: " + fieldName);
+            }
+
+            String methodName = "set" + StringUtils.capitalize(actualFieldName);
+            return Transaction.class.getMethod(methodName, getFieldType(actualFieldName));
         } catch (NoSuchMethodException e) {
-            throw new DataConversionException("Invalid field mapping: " + fieldName);
+            throw new DataConversionException("找不到Setter方法: " + fieldName);
         }
     }
+
 
 //    类型转换
-    private Object convertValue(String fieldName, String value)
-            throws DataConversionException
-    {
-        if (value == null || value.isEmpty()) return null;
+private Object convertValue(String fieldName, String value) throws DataConversionException {
+    if (value == null || value.trim().isEmpty()) return null;
 
-        try {
-            switch (fieldName) {
-                case "Time":
-                    return parseDateTime(value);
-                case "Amount":
-                    return validateAmount(value);
-                default:
-                    return value;
-            }
-        } catch (DateTimeParseException e) {
-            throw new DataConversionException("Time format error: " + value);
-        } catch (NumberFormatException e) {
-            throw new DataConversionException("Amount format error: " + value);
+    try {
+        switch (fieldName) {
+            case "time":
+                return parseDateTime(value);
+            case "amount":
+                return value;  // 直接返回字符串
+            case "incomeOrExpense":
+            case "type":
+            case "status":
+                return value.trim().toLowerCase();
+            default:
+                return value;
         }
+    } catch (DateTimeParseException e) {
+        throw new DataConversionException("时间格式错误: " + value);
     }
+}
 
 //    必要字段验证
-    private void validateRequiredFields(Transaction tx)
-            throws DataConversionException
-    {
-        if (tx.getTime() == null) {
-            throw new DataConversionException("Time cannot be empty");
-        }
-        if (tx.getAmount() == null) {
-            throw new DataConversionException("Amount cannot be empty");
-        }
+//    private void validateRequiredFields(Transaction tx)
+//            throws DataConversionException
+//    {
+//        if (tx.getTime() == null) {
+//            throw new DataConversionException("Time cannot be empty");
+//        }
+//        if (tx.getAmount() == null) {
+//            throw new DataConversionException("Amount cannot be empty");
+//        }
+//    }
+private void validateRequiredFields(Transaction tx) throws DataConversionException {
+    if (tx.getTime() == null) {
+        logger.severe("验证失败: 交易时间为空");
+        throw new DataConversionException("交易时间不能为空");
     }
+    if (tx.getAmount() == null) {
+        logger.severe("验证失败: 金额为空");
+        throw new DataConversionException("金额不能为空");
+    }
+    if (tx.getType() == null) { // 假设这是必填字段
+        logger.severe("验证失败: 交易类型为空");
+        throw new DataConversionException("交易类型不能为空");
+    }
+}
 
-
-    private void validateTransaction(Transaction tx)
-            throws DataConversionException
-    {
+    private void validateTransaction(Transaction tx) throws DataConversionException {
         // 验证收支类型
-        if (!Arrays.asList("Income", "Expese").contains(tx.getIncomeOrExpense())) {
-            throw new DataConversionException("Invalid income and expense type: " + tx.getIncomeOrExpense());
+        if (!Arrays.asList("income", "expense").contains(tx.getIncomeOrExpense())) {
+            throw new DataConversionException("无效的收支类型: " + tx.getIncomeOrExpense());
         }
 
-        // 验证金额有效性
+        // 验证金额是否为有效数字
         try {
-            new BigDecimal(tx.getAmount());
+            new BigDecimal(tx.getAmount());  // 检查是否为合法数字
         } catch (NumberFormatException e) {
-            throw new DataConversionException("Incorrect amount format: " + tx.getAmount());
+            throw new DataConversionException("金额格式错误: " + tx.getAmount());
         }
     }
 
@@ -210,14 +222,38 @@ public class TransactionService {
     }
 
     private Class<?> getFieldType(String fieldName) {
+        if (fieldName == null) {
+            throw new IllegalArgumentException("字段名不能为null");
+        }
+
         switch (fieldName) {
-            case "Time": return LocalDateTime.class;
-            default:     return String.class;
+            case "time":         return LocalDateTime.class;
+            case "amount":       return String.class;
+            case "incomeOrExpense":
+            case "type":
+            case "status":       return String.class;
+            default:            return String.class;
         }
     }
 
+    // 修改8：在关键位置添加日志
+    private void setFieldValue(Transaction tx, String fieldName, String value) throws DataConversionException {
+        try {
+            Object convertedValue = convertValue(fieldName, value);
+            Method setter = getSetterMethod(fieldName);
+            setter.invoke(tx, convertedValue);
+
+            logger.fine(String.format("字段设置成功: %s = %s", fieldName, convertedValue));
+        } catch (InvocationTargetException | IllegalAccessException e) {
+            logger.severe(String.format("字段设置失败: %s -> %s (%s)", fieldName, value, e.getMessage()));
+            throw new DataConversionException("字段赋值失败: " + fieldName);
+        }
+    }
+
+    // 修复3：增强时间解析逻辑（支持带空格和T的格式）
     private LocalDateTime parseDateTime(String value) throws DateTimeParseException {
-        return LocalDateTime.parse(value, DATE_TIME_FORMATTER);
+        String normalizedValue = value.replace(" ", "T"); // 处理 "2024-01-01 12:00:00" 格式
+        return LocalDateTime.parse(normalizedValue, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
     }
 
     private String validateAmount(String value) throws NumberFormatException {

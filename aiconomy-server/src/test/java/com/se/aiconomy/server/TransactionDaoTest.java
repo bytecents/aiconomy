@@ -5,6 +5,7 @@ import com.se.aiconomy.server.model.entity.Transaction;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class TransactionDaoTest extends TransactionDao {
     // 记录保存的批次数据
