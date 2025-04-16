@@ -156,26 +156,6 @@
     -fx-font-size: 12px;
 }
 
-.my-1 {
-    -fx-translate-y: 4px;
-}
-
-.my-2 {
-    -fx-translate-y: 8px;
-}
-
-.px-4 {
-    -fx-padding: 0 16 0 16;
-}
-
-.py-2 {
-    -fx-padding: 8 0 8 0;
-}
-
-.p-4-2 {
-    -fx-padding: 8 16 8 16;
-}
-
 .bg-blue-600 {
     -fx-background-color: #2563EB;
 }
@@ -196,13 +176,26 @@
     -fx-text-fill: #10B981;
 }
 
+.text-gray-400 {
+    -fx-text-fill: #9CA3AF;
+}
+
+.text-red-500 {
+    -fx-text-fill: #EF4444;
+}
+.rounded {
+    -fx-background-radius: 4;
+    -fx-border-radius: 4;
+}
+
 .rounded-lg {
     -fx-background-radius: 8;
     -fx-border-radius: 8;
 }
 
-.hover\:bg-blue-700:hover {
-    -fx-background-color: #1D4ED8;
+.rounded-xl {
+    -fx-background-radius: 16;
+    -fx-border-radius: 16;
 }
 
 .gap-2 {
@@ -213,8 +206,80 @@
     -fx-background-color: black;
 }
 
+.bg-background {
+    -fx-background-color: #F3F4F6;
+}
+
+.bg-secondary {
+    -fx-background-color: #F9FAFB;
+}
+
+.hover-bg-blue-700:hover {
+    -fx-background-color: #1D4ED8;
+}
+
+.hover-bg-gray-50:hover {
+    -fx-background-color: #F9FAFB;
+}
+
+.hover-bg-black:hover {
+    -fx-background-color: black;
+}
+
+.bg-red-100 {
+    -fx-background-color: #FEF2F2;
+}
+
+.bg-green-100 {
+    -fx-background-color: #D1FAE5;
+}
+
+.bg-gray-50 {
+    -fx-background-color: #F9FAFB;
+}
+
+.bg-gray-400 {
+    -fx-background-color: #9CA3AF;
+}
+
+.min-h-0 {
+    -fx-min-height: 0;
+}
+
+.min-h-6 {
+    -fx-min-height: 24;
+}
+
+.min-h-10 {
+    -fx-min-height: 40;
+}
+
+.h-3 {
+    -fx-pref-height: 12;
+}
+
+.h-6 {
+    -fx-pref-height: 24;
+}
+
+.h-10 {
+    -fx-cell-size: 40;
+}
+
+.h-36 {
+    -fx-pref-height: 144;
+}
+
+.p-3 {
+    -fx-padding: 12;
+}
+
 .p-6 {
     -fx-padding: 24;
+}
+
+.p-2_5-6-6-6 {
+    -fx-padding: 10 24 24 24;
 }
 
 .p-8 {
@@ -229,16 +294,32 @@
     -fx-padding: 0 0 8 0;
 }
 
+.pb-4 {
+    -fx-padding: 0 0 16 0;
+}
+
 .pb-8 {
     -fx-padding: 0 0 32 0;
 }
 
-.bg-background {
-    -fx-background-color: #F3F4F6;
+.p-0 {
+    -fx-padding: 0;
 }
 
-.bg-secondary {
-    -fx-background-color: #F9FAFB;
+.px-4 {
+    -fx-padding: 0 16 0 16;
+}
+
+.py-2 {
+    -fx-padding: 8 0 8 0;
+}
+
+.p-4-2 {
+    -fx-padding: 8 16 8 16;
+}
+
+.p-3-1\.5 {
+    -fx-padding: 6 12 6 12;
 }
 
 .border-r {
@@ -248,11 +329,6 @@
 
 .bg-white {
     -fx-background-color: white;
-}
-
-.rounded-xl {
-    -fx-background-radius: 16;
-    -fx-border-radius: 16;
 }
 
 .border {
@@ -268,6 +344,11 @@
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 2, 0, 0, 1);
 }
 
-.text-red-500 {
-    -fx-text-fill: #EF4444;
+.card {
+    -fx-background-color: white;
+    -fx-background-radius: 16;
+    -fx-border-radius: 16;
+    -fx-border-color: #F3F4F6;
+    -fx-border-width: 1;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 2, 0, 0, 1);
 }
