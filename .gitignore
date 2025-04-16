@@ -42,3 +42,4 @@ mvnw.cmd
 .mvn/*
 
 GitCommitMessageStorage.xml
+logs/
