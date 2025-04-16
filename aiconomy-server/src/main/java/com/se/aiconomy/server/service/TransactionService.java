@@ -3,6 +3,7 @@ package com.se.aiconomy.server.service;
 import com.se.aiconomy.server.dao.TransactionDao;
 import com.se.aiconomy.server.model.entity.Transaction;
 import com.se.aiconomy.server.common.utils.CSVUtil;
+import com.se.aiconomy.server.storage.service.JSONStorageService;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
@@ -13,21 +14,21 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.*;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class TransactionService {
-    private Logger logger = Logger.getLogger(TransactionService.class.getName());
+    private final Logger logger = Logger.getLogger(TransactionService.class.getName());
 
-    // 映射 CSV列名 -> Transaction字段名
+    // CSV列名 -> Transaction字段映射
     private static final Map<String, String> FIELD_MAPPING = new HashMap<>();
+
     static {
         FIELD_MAPPING.put("time", "time");
         FIELD_MAPPING.put("type", "type");
+        FIELD_MAPPING.put("incomeorexpense", "incomeOrExpense");
+        FIELD_MAPPING.put("amount", "amount");
         FIELD_MAPPING.put("counterparty", "counterparty");
         FIELD_MAPPING.put("product", "product");
-        FIELD_MAPPING.put("incomeorexpense", "incomeOrExpense"); // CSV列名统一小写
-        FIELD_MAPPING.put("amount", "amount");
         FIELD_MAPPING.put("paymentmethod", "paymentMethod");
         FIELD_MAPPING.put("status", "status");
         FIELD_MAPPING.put("merchantorderid", "merchantOrderId");
@@ -35,26 +36,23 @@ public class TransactionService {
     }
 
     // 日期时间格式
-    private DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+    private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 
-    private TransactionDao transactionDao;
+    private JSONStorageService jsonStorageService;
 
-    public TransactionService(){}
-
-    public TransactionService(TransactionDao transactionDao) {
-        this.transactionDao = transactionDao;
+    public TransactionService(JSONStorageService jsonStorageService) {
+        this.jsonStorageService = jsonStorageService;
     }
 
     /**
      * 执行CSV文件导入
-     * @param filePath CSV文件路径
-     * @param failureRecords 输出参数：存储失败记录的原始数据
+     *
+     * @param filePath       CSV文件路径
+     * @param failureRecords 输出参数：存储失败记录的原始数据及错误原因
      * @return 成功导入的记录数量
-     * @throws IOException 文件读取异常
      */
     public int importTransactions(String filePath, List<Map<String, String>> failureRecords)
-            throws IOException
-    {
+            throws IOException {
         List<Transaction> successList = new ArrayList<>();
         List<Map<String, String>> csvData = CSVUtil.readCSV(filePath, ',', true);
 
@@ -64,15 +62,14 @@ public class TransactionService {
                 validateTransaction(tx);
                 successList.add(tx);
             } catch (DataConversionException e) {
-                logFailure(row, e.getMessage());
-                failureRecords.add(row);
+                logFailure(row, e.getMessage(), failureRecords);
             }
         }
 
         if (!successList.isEmpty()) {
             batchSave(successList);
             logger.info(() -> String.format(
-                    "Import %d records successfully，%d records failed.",
+                    "成功导入 %d 条记录，失败 %d 条",
                     successList.size(),
                     failureRecords.size()
             ));
@@ -80,186 +77,156 @@ public class TransactionService {
         return successList.size();
     }
 
-//  数据转换
-private Transaction convertRowToTransaction(Map<String, String> row) throws DataConversionException {
-    logger.info("正在转换记录: " + row);
-    Transaction tx = new Transaction();
+    //================ 核心数据转换逻辑 ================//
+    private Transaction convertRowToTransaction(Map<String, String> row)
+            throws DataConversionException {
+        logger.info("转换记录: " + row);
+        Transaction tx = new Transaction();
 
-    for (Map.Entry<String, String> entry : row.entrySet()) {
-        String csvHeader = entry.getKey();
-        String value = entry.getValue();
+        // 处理映射字段
+        for (Map.Entry<String, String> entry : row.entrySet()) {
+            String csvHeader = entry.getKey().toLowerCase().trim();
+            String value = entry.getValue();
 
-        // 统一转换为小写匹配映射键
-        String normalizedHeader = csvHeader.toLowerCase().trim();
-        String fieldName = FIELD_MAPPING.get(normalizedHeader);
-
-        if (fieldName != null) {
-            try {
+            if (FIELD_MAPPING.containsKey(csvHeader)) {
+                String fieldName = FIELD_MAPPING.get(csvHeader);
                 setFieldValue(tx, fieldName, value);
-            } catch (DataConversionException e) {
-                logger.warning("字段转换失败: " + fieldName + " -> " + value);
-                throw e;
+            } else {
+                tx.addExtraField(csvHeader, value); // 非映射字段存储为额外字段
             }
-        } else {
-            tx.addExtraField(csvHeader, value);
+        }
+
+        validateRequiredFields(tx);
+        return tx;
+    }
+
+    //================ 必填字段校验 ================//
+    private void validateRequiredFields(Transaction tx)
+            throws DataConversionException {
+        List<String> missingFields = new ArrayList<>();
+
+        // 检查所有必填字段
+        if (tx.getTime() == null) missingFields.add("time");
+        if (isBlank(tx.getType())) missingFields.add("type");
+        if (isBlank(tx.getIncomeOrExpense())) missingFields.add("incomeOrExpense");
+        if (isBlank(tx.getAmount())) missingFields.add("amount");
+
+        if (!missingFields.isEmpty()) {
+            String errorMsg = "必填字段缺失: " + String.join(", ", missingFields);
+            logger.severe(errorMsg);
+            throw new DataConversionException(errorMsg);
         }
     }
 
-    validateRequiredFields(tx);
-    return tx;
-}
-
-    // 修复2：增强 getSetterMethod 方法
-    private Method getSetterMethod(String fieldName) throws DataConversionException {
-        try {
-            // 空值检查
-            if (fieldName == null) {
-                throw new DataConversionException("字段名不能为null");
-            }
-
-            String actualFieldName = FIELD_MAPPING.get(fieldName.toLowerCase());
-            if (actualFieldName == null) {
-                throw new DataConversionException("无效的字段映射: " + fieldName);
-            }
-
-            String methodName = "set" + StringUtils.capitalize(actualFieldName);
-            return Transaction.class.getMethod(methodName, getFieldType(actualFieldName));
-        } catch (NoSuchMethodException e) {
-            throw new DataConversionException("找不到Setter方法: " + fieldName);
-        }
+    private boolean isBlank(String value) {
+        return value == null || value.trim().isEmpty();
     }
 
-
-//    类型转换
-private Object convertValue(String fieldName, String value) throws DataConversionException {
-    if (value == null || value.trim().isEmpty()) return null;
-
-    try {
-        switch (fieldName) {
-            case "time":
-                return parseDateTime(value);
-            case "amount":
-                return value;  // 直接返回字符串
-            case "incomeOrExpense":
-            case "type":
-            case "status":
-                return value.trim().toLowerCase();
-            default:
-                return value;
-        }
-    } catch (DateTimeParseException e) {
-        throw new DataConversionException("时间格式错误: " + value);
-    }
-}
-
-//    必要字段验证
-//    private void validateRequiredFields(Transaction tx)
-//            throws DataConversionException
-//    {
-//        if (tx.getTime() == null) {
-//            throw new DataConversionException("Time cannot be empty");
-//        }
-//        if (tx.getAmount() == null) {
-//            throw new DataConversionException("Amount cannot be empty");
-//        }
-//    }
-private void validateRequiredFields(Transaction tx) throws DataConversionException {
-    if (tx.getTime() == null) {
-        logger.severe("验证失败: 交易时间为空");
-        throw new DataConversionException("交易时间不能为空");
-    }
-    if (tx.getAmount() == null) {
-        logger.severe("验证失败: 金额为空");
-        throw new DataConversionException("金额不能为空");
-    }
-    if (tx.getType() == null) { // 假设这是必填字段
-        logger.severe("验证失败: 交易类型为空");
-        throw new DataConversionException("交易类型不能为空");
-    }
-}
-
-    private void validateTransaction(Transaction tx) throws DataConversionException {
-        // 验证收支类型
-        if (!Arrays.asList("income", "expense").contains(tx.getIncomeOrExpense())) {
+    //================ 数据校验 ================//
+    private void validateTransaction(Transaction tx)
+            throws DataConversionException {
+        // 校验收支类型值域
+        if (!Arrays.asList("income", "expense").contains(tx.getIncomeOrExpense().toLowerCase())) {
             throw new DataConversionException("无效的收支类型: " + tx.getIncomeOrExpense());
         }
 
-        // 验证金额是否为有效数字
+        // 验证金额格式（允许字符串但必须是数字）
         try {
-            new BigDecimal(tx.getAmount());  // 检查是否为合法数字
+            new BigDecimal(tx.getAmount());
         } catch (NumberFormatException e) {
             throw new DataConversionException("金额格式错误: " + tx.getAmount());
         }
     }
 
-//  批量保存
-    private void batchSave(List<Transaction> transactions) {
+    //================ 类型转换 ================//
+    private Object convertValue(String fieldName, String value)
+            throws DataConversionException {
+        if (value == null || value.trim().isEmpty()) return null;
+
         try {
-            transactionDao.batchSave(transactions);
-        } catch (Exception e) {
-            logger.severe(() -> String.format(
-                    "Data saving failed",
-                    e.getMessage(),
-                    transactions.size()
-            ));
-            throw new ServiceException("Data saving failed", e);
+            switch (fieldName) {
+                case "time":
+                    return parseDateTime(value.trim());
+                case "incomeOrExpense":
+                    return value.trim().toLowerCase(); // 统一存储为小写
+                case "amount":
+                case "type":
+                default:
+                    return value.trim(); // 其他字段保持原始字符串
+            }
+        } catch (DateTimeParseException e) {
+            throw new DataConversionException("时间格式错误: " + value);
         }
     }
 
-//日志记录
-    private void logFailure(Map<String, String> row, String reason) {
-        String logMessage = String.format(
-                "Records import failed",
-                reason,
-                String.join(", ", row.values())
-        );
-        logger.log(Level.WARNING, logMessage);
+    //================ 工具方法 ================//
+    private LocalDateTime parseDateTime(String value)
+            throws DateTimeParseException {
+        // 兼容带空格的时间格式（如 "2024-01-01 12:00:00"）
+        String normalized = value.replace(" ", "T");
+        return LocalDateTime.parse(normalized, dateTimeFormatter);
     }
 
-//    大写
-    private String capitalize(String str) {
-        return str.substring(0, 1).toUpperCase() + str.substring(1);
-    }
-
-    private Class<?> getFieldType(String fieldName) {
-        if (fieldName == null) {
-            throw new IllegalArgumentException("字段名不能为null");
-        }
-
-        switch (fieldName) {
-            case "time":         return LocalDateTime.class;
-            case "amount":       return String.class;
-            case "incomeOrExpense":
-            case "type":
-            case "status":       return String.class;
-            default:            return String.class;
-        }
-    }
-
-    // 修改8：在关键位置添加日志
-    private void setFieldValue(Transaction tx, String fieldName, String value) throws DataConversionException {
+    private void setFieldValue(Transaction tx, String fieldName, String value)
+            throws DataConversionException {
         try {
             Object convertedValue = convertValue(fieldName, value);
             Method setter = getSetterMethod(fieldName);
             setter.invoke(tx, convertedValue);
-
-            logger.fine(String.format("字段设置成功: %s = %s", fieldName, convertedValue));
+            logger.fine("字段设置成功: " + fieldName + " = " + convertedValue);
         } catch (InvocationTargetException | IllegalAccessException e) {
-            logger.severe(String.format("字段设置失败: %s -> %s (%s)", fieldName, value, e.getMessage()));
             throw new DataConversionException("字段赋值失败: " + fieldName);
         }
     }
 
-    // 修复3：增强时间解析逻辑（支持带空格和T的格式）
-    private LocalDateTime parseDateTime(String value) throws DateTimeParseException {
-        String normalizedValue = value.replace(" ", "T"); // 处理 "2024-01-01 12:00:00" 格式
-        return LocalDateTime.parse(normalizedValue, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+    private Method getSetterMethod(String fieldName)
+            throws DataConversionException {
+        try {
+            String methodName = "set" + StringUtils.capitalize(fieldName);
+            return Transaction.class.getMethod(methodName, getFieldType(fieldName));
+        } catch (NoSuchMethodException e) {
+            throw new DataConversionException("无效字段: " + fieldName);
+        }
     }
 
-    private String validateAmount(String value) throws NumberFormatException {
-        return new BigDecimal(value).toString();
+    private Class<?> getFieldType(String fieldName) {
+        switch (fieldName) {
+            case "time":
+                return LocalDateTime.class;
+            default:
+                return String.class; // 其他字段均为String类型
+        }
     }
 
+    //================ 批量保存 ================//
+    private void batchSave(List<Transaction> transactions) {
+        try {
+            // 使用 JSONStorageService 的批量插入方法
+            transactions.forEach(tx -> jsonStorageService.upsert(tx));
+        } catch (Exception e) {
+            logger.severe("数据保存失败: " + e.getMessage());
+            throw new ServiceException("数据保存失败", e);
+        }
+    }
+
+    //================ 失败日志 ================//
+    private void logFailure(Map<String, String> row, String reason,
+                            List<Map<String, String>> failureRecords) {
+        // 记录结构化错误信息
+        Map<String, String> failureEntry = new LinkedHashMap<>(row);
+        failureEntry.put("error", reason);
+        failureRecords.add(failureEntry);
+
+        // 输出可读日志
+        String logMsg = String.format(
+                "记录导入失败 | 原因: %s | 数据: %s",
+                reason,
+                String.join(", ", row.values())
+        );
+        logger.warning(logMsg);
+    }
+
+    //================ 异常定义 ================//
     public static class DataConversionException extends Exception {
         public DataConversionException(String message) {
             super(message);

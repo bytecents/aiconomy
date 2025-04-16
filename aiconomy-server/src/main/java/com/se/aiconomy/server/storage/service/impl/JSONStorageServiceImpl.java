@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import java.security.GeneralSecurityException;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 public class JSONStorageServiceImpl implements JSONStorageService {
     private static final Logger log = LoggerFactory.getLogger(JSONStorageServiceImpl.class);
@@ -83,11 +84,17 @@ public class JSONStorageServiceImpl implements JSONStorageService {
     }
 
     @Override
-    public <T extends Identifiable> T upsert(T entity) {
-        jsonDBTemplate.upsert(entity);
-        log.info("Upsert {}", entity);
-        return entity;
-    }
+//    public <T extends Identifiable> T upsert(T entity) {
+//        jsonDBTemplate.upsert(entity);
+//        log.info("Upsert {}", entity);
+//        return entity;
+//    }
+        public <T extends Identifiable> T upsert(T entity) {
+            if (entity.getId() == null || entity.getId().isEmpty()) {
+                entity.setId(UUID.randomUUID().toString());
+            }
+            return insert(entity);
+        }
 
     @Override
     public <T extends Identifiable> boolean collectionExists(Class<T> entityClass) {

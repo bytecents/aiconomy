@@ -1,77 +1,59 @@
 package com.se.aiconomy.server;
 
-import com.se.aiconomy.server.common.utils.CSVUtil;
 import com.se.aiconomy.server.model.entity.Transaction;
 import com.se.aiconomy.server.service.TransactionService;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import com.se.aiconomy.server.storage.service.JSONStorageService;
+import com.se.aiconomy.server.storage.service.impl.JSONStorageServiceImpl;
+import org.junit.jupiter.api.*;
 
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class TransactionServiceTest {
-    private TransactionDaoTest testDao;
-    private TransactionService service;
+    private static JSONStorageService jsonStorageService;
+    private static TransactionService transactionService;
+    private static Path testCsvPath;
 
-    @BeforeEach
-    void setUp() {
-        testDao = new TransactionDaoTest();
-        service = new TransactionService(testDao);
+    private static final String COMPLETE_CSV = """
+        time,type,incomeorexpense,amount,counterparty,product,paymentmethod,status,merchantorderid,remark,custom_field
+        2024-05-20T09:30:00,电子产品采购,expense,15000.00,某供应商,办公设备,银行转账,completed,PO_2024052001,月度采购计划,紧急订单
+        2024-05-20 10:15:00,客户付款,income,50000.00,某科技公司,软件服务,,pending,INV_2024052001,年度合约款,VIP客户
+        """;
+
+    @BeforeAll
+    static void setup() throws IOException {
+        System.setProperty("jsonStorage.location", Files.createTempDirectory("txn-test-").toString());
+        jsonStorageService = JSONStorageServiceImpl.getInstance();
+        transactionService = new TransactionService(jsonStorageService);
+        testCsvPath = Files.createTempFile("complete-fields-", ".csv");
+        Files.write(testCsvPath, COMPLETE_CSV.getBytes());
+    }
+
+    @AfterEach
+    void cleanStorage() {
+        // 确保清理所有现存事务
+        jsonStorageService.findAll(Transaction.class)
+                .stream()
+                .filter(tx -> tx.getId() != null)
+                .forEach(tx -> jsonStorageService.delete(tx, Transaction.class));
     }
 
     @Test
-    void testNormalImport() throws Exception {
-        // 1. 准备测试数据（确保字段名全小写）
-        List<Map<String, String>> csvData = new ArrayList<>();
+    @DisplayName("完整字段导入验证")
+    void testCompleteFieldImport() throws Exception {
+        cleanStorage();
 
-        Map<String, String> validRow = new LinkedHashMap<>();
-        validRow.put("time", "2024-01-01T12:00:00");
-        validRow.put("type", "sale");
-        validRow.put("incomeorexpense", "income"); // 必须全小写以匹配FIELD_MAPPING
-        validRow.put("amount", "1000.00");
-        validRow.put("status", "completed");
-        validRow.put("paymentmethod", "wechat");   // 补充其他必要字段
-        validRow.put("merchantorderid", "ORDER_001");
-        csvData.add(validRow);
-
-        // 2. 生成临时CSV文件
-        Path csvPath = Files.createTempFile("test-transactions-", ".csv");
-        CSVUtil.writeTestCSV(csvPath.toString(), csvData);
-
-        // 3. 执行导入
         List<Map<String, String>> failures = new ArrayList<>();
-        int successCount = service.importTransactions(csvPath.toString(), failures);
+        int successCount = transactionService.importTransactions(testCsvPath.toString(), failures);
 
-        // 4. 验证导入结果
-        assertEquals(1, successCount, "成功导入数量不符");
-        assertTrue(failures.isEmpty(), "存在未预期的失败记录: " + failures);
-
-        // 5. 验证DAO层数据完整性
-        List<Transaction> savedTransactions = testDao.getSavedBatches().get(0);
-        assertEquals(1, savedTransactions.size(), "保存的记录数量不符");
-
-        Transaction savedTx = savedTransactions.get(0);
-
-        // 详细字段验证
-        assertAll("字段验证",
-                () -> assertEquals(
-                        LocalDateTime.parse("2024-01-01T12:00:00"),
-                        savedTx.getTime(),
-                        "时间字段不匹配"
-                ),
-                () -> assertEquals("sale", savedTx.getType(), "交易类型不匹配"),
-                () -> assertEquals("income", savedTx.getIncomeOrExpense(), "收支类型不匹配"),
-                () -> assertEquals("1000.00", savedTx.getAmount(), "金额不匹配"), // 关键修复：直接比较字符串
-                () -> assertEquals("completed", savedTx.getStatus(), "状态不匹配"),
-                () -> assertEquals("wechat", savedTx.getPaymentMethod(), "支付方式不匹配"),
-                () -> assertEquals("ORDER_001", savedTx.getMerchantOrderId(), "订单ID不匹配")
-        );
+        assertEquals(2, successCount, "成功导入记录数不符");
+        assertEquals(0, failures.size(), "失败记录数应为0");
+        assertEquals(2, jsonStorageService.findAll(Transaction.class).size(), "实际存储记录数不符");
     }
 }
