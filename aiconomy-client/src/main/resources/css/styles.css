@@ -183,6 +183,11 @@
 .text-red-500 {
     -fx-text-fill: #EF4444;
 }
+
+.text-blue-500 {
+    -fx-text-fill: #3B82F6;
+}
+
 .rounded {
     -fx-background-radius: 4;
     -fx-border-radius: 4;
@@ -198,8 +203,37 @@
     -fx-border-radius: 16;
 }
 
+.rounded-full {
+    -fx-background-radius: 9999;
+    -fx-border-radius: 9999;
+}
+
+.gap-0_5 {
+    -fx-spacing: 2;
+}
+
+.gap-1 {
+    -fx-spacing: 4;
+}
+
+.gap-1_5 {
+    -fx-spacing: 6;
+}
+
 .gap-2 {
     -fx-spacing: 8;
+}
+
+.gap-3 {
+    -fx-spacing: 12;
+}
+
+.gap-4 {
+    -fx-spacing: 16;
+}
+
+.gap-5 {
+    -fx-spacing: 20;
 }
 
 .bg-black {
@@ -230,6 +264,10 @@
     -fx-background-color: #FEF2F2;
 }
 
+.bg-blue-100 {
+    -fx-background-color: #DBEAFE;
+}
+
 .bg-green-100 {
     -fx-background-color: #D1FAE5;
 }
@@ -244,6 +282,10 @@
 
 .min-h-0 {
     -fx-min-height: 0;
+}
+
+.min-h-2 {
+    -fx-min-height: 8;
 }
 
 .min-h-6 {
@@ -268,6 +310,10 @@
 
 .h-36 {
     -fx-pref-height: 144;
+}
+
+.w-10 {
+    -fx-pref-width: 40;
 }
 
 .p-3 {
@@ -357,3 +403,23 @@
     -fx-cursor: hand;
 }
 
+.red-bar .track {
+    -fx-background-color: #f3f4f6;
+}
+.red-bar .bar {
+    -fx-background-color: #EF4444;
+}
+
+.green-bar .track {
+    -fx-background-color: #f3f4f6;
+}
+.green-bar .bar {
+    -fx-background-color: #10B981;
+}
+
+.blue-bar .track {
+    -fx-background-color: #f3f4f6;
+}
+.blue-bar .bar {
+    -fx-background-color: #3B82F6;
+}

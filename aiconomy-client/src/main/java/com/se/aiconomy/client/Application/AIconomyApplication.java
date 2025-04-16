@@ -26,7 +26,7 @@ public class AIconomyApplication extends Application {
         Parent root = loader.load();
         StyleClassFixer.fixStyleClasses(root);
 
-        Scene scene = new Scene(root, 1200, 720);
+        Scene scene = new Scene(root, 1200, 820);
         stage.setTitle("AIconomy");
         stage.setScene(scene);
         stage.show();

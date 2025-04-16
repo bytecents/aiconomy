@@ -14,12 +14,13 @@
 <?import javafx.collections.FXCollections?>
 <?import java.lang.String?>
 
+<?import javafx.scene.control.ProgressBar?>
 <VBox id="Content"
       xmlns="http://javafx.com/javafx/23.0.1"
       styleClass="p-8"
       fx:controller="com.se.aiconomy.client.controller.DashboardController" xmlns:fx="http://javafx.com/fxml/1" stylesheets="/css/styles.css">
-    <HBox spacing="20" alignment="CENTER" styleClass="pb-8">
-        <VBox spacing="5">
+    <HBox alignment="CENTER" styleClass="pb-8 gap-5">
+        <VBox styleClass="gap-1">
             <Label text="Welcome back, Alex!" styleClass="text-2xl font-semibold text-gray-900 pb-1"/>
             <Label text="Thursday, March 13, 2025" styleClass="text-gray-500 font-roboto"/>
         </VBox>
@@ -74,24 +75,24 @@
             <RowConstraints percentHeight="50"/>
         </rowConstraints>
 
-        <VBox GridPane.columnIndex="0" GridPane.rowIndex="0" spacing="12" styleClass="card p-6">
+        <VBox GridPane.columnIndex="0" GridPane.rowIndex="0" styleClass="card p-6 gap-4">
             <!-- Header -->
-            <HBox alignment="CENTER_LEFT" styleClass="pb-4">
+            <HBox alignment="CENTER_LEFT">
                 <Label text="Recent Transactions" styleClass="font-semibold text-base text-gray-900"/>
                 <Region HBox.hgrow="ALWAYS"/>
                 <Hyperlink text="View All" styleClass="text-sm font-roboto text-blue-600"/>
             </HBox>
 
             <!-- Transaction List -->
-            <VBox spacing="12">
+            <VBox styleClass="gap-3">
                 <!-- Transaction Item 1 -->
-                <HBox alignment="CENTER_LEFT" spacing="12" styleClass="p-3 hover-bg-gray-50 rounded-lg cursor-pointer">
+                <HBox alignment="CENTER_LEFT" styleClass="p-3 gap-3 hover-bg-gray-50 rounded-lg cursor-pointer">
                     <!-- Left side -->
-                    <HBox alignment="CENTER_LEFT" spacing="12">
+                    <HBox alignment="CENTER_LEFT" styleClass="gap-3">
                         <!-- Icon -->
-                        <Region prefWidth="40" prefHeight="40" styleClass="w-10 h-10 rounded-lg bg-red-100"/>
+                        <Region styleClass="w-10 h-10 rounded-lg bg-red-100"/>
                         <!-- Text -->
-                        <VBox spacing="2">
+                        <VBox styleClass="gap-0_5">
                             <Label text="Starbucks" styleClass="font-medium text-base"/>
                             <Label text="Food &amp; Dining" styleClass="text-sm text-gray-500 font-roboto"/>
                         </VBox>
@@ -100,20 +101,20 @@
                     <Region HBox.hgrow="ALWAYS"/>
 
                     <!-- Right side -->
-                    <VBox alignment="CENTER_RIGHT" spacing="2" styleClass="text-right">
+                    <VBox alignment="CENTER_RIGHT" styleClass="gap-0_5">
                         <Label text="-$32.00" styleClass="font-medium text-red-500 text-base"/>
                         <Label text="10:30 AM" styleClass="text-sm text-gray-500 font-roboto"/>
                     </VBox>
                 </HBox>
 
                 <!-- Transaction Item 2 -->
-                <HBox alignment="CENTER_LEFT" spacing="12" styleClass="p-3 hover-bg-gray-50 rounded-lg cursor-pointer">
+                <HBox alignment="CENTER_LEFT" styleClass="p-3 gap-3 hover-bg-gray-50 rounded-lg cursor-pointer">
                     <!-- Left side -->
-                    <HBox alignment="CENTER_LEFT" spacing="12">
+                    <HBox alignment="CENTER_LEFT" styleClass="gap-3">
                         <!-- Icon -->
-                        <Region prefWidth="40" prefHeight="40" styleClass="rounded-lg bg-green-100"/>
+                        <Region styleClass="w-10 h-10 rounded-lg bg-green-100"/>
                         <!-- Text -->
-                        <VBox spacing="2">
+                        <VBox styleClass="gap-0_5">
                             <Label text="Salary Deposit" styleClass="font-medium text-base"/>
                             <Label text="Income" styleClass="text-sm text-gray-500 font-roboto"/>
                         </VBox>
@@ -122,7 +123,7 @@
                     <Region HBox.hgrow="ALWAYS"/>
 
                     <!-- Right side -->
-                    <VBox alignment="CENTER_RIGHT" spacing="2" styleClass="text-right">
+                    <VBox alignment="CENTER_RIGHT" styleClass="gap-0_5">
                         <Label text="+$8,650.00" styleClass="font-medium text-green-500 text-base"/>
                         <Label text="Yesterday" styleClass="text-sm text-gray-500 font-roboto"/>
                     </VBox>
@@ -131,9 +132,9 @@
             </VBox>
         </VBox>
 
-        <VBox GridPane.columnIndex="1" GridPane.rowIndex="0" spacing="12" styleClass="card p-2_5-6-6-6">
+        <VBox GridPane.columnIndex="1" GridPane.rowIndex="0" styleClass="card p-2_5-6-6-6 gap-4">
             <!-- Header -->
-            <HBox alignment="CENTER_LEFT" spacing="12">
+            <HBox alignment="CENTER_LEFT" styleClass="gap-3">
                 <Label text="Spending Trends" styleClass="font-semibold text-base text-gray-900"/>
                 <Region HBox.hgrow="ALWAYS"/>
                 <ComboBox fx:id="trendSelect" styleClass="text-sm font-roboto rounded border border-gray-200 min-h-10">
@@ -147,11 +148,100 @@
             </HBox>
 
             <!-- Chart Placeholder -->
-            <StackPane prefHeight="144" styleClass="bg-gray-50 rounded-lg">
-                <Label text="Trend Chart Area"
-                       alignment="CENTER"
-                       styleClass="text-gray-400"/>
+            <StackPane styleClass="h-36 bg-gray-50 rounded-lg">
+                <Label text="Trend Chart Area" styleClass="text-gray-400"/>
             </StackPane>
         </VBox>
+
+        <VBox GridPane.columnIndex="0" GridPane.rowIndex="1" styleClass="card p-6 gap-4">
+            <!-- Header -->
+            <HBox alignment="CENTER_LEFT" styleClass="gap-3">
+                <Label text="Budget Progress" styleClass="font-semibold text-base text-gray-900"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <Hyperlink text="View Details" styleClass="text-sm font-roboto text-blue-600"/>
+            </HBox>
+
+            <!-- Budget Items -->
+            <VBox styleClass="gap-4">
+                <!-- Food & Dining -->
+                <VBox styleClass="gap-1_5">
+                    <HBox alignment="CENTER_LEFT" styleClass="gap-3 text-sm font-roboto pb-2">
+                        <Label text="Food &amp; Dining"/>
+                        <Region HBox.hgrow="ALWAYS"/>
+                        <Label text="85%" styleClass="text-red-500"/>
+                    </HBox>
+                    <ProgressBar progress="0.85" maxWidth="Infinity" styleClass="min-h-2 bg-gray-100 rounded-full red-bar"/>
+                </VBox>
+
+                <!-- Shopping -->
+                <VBox styleClass="gap-1_5">
+                    <HBox alignment="CENTER_LEFT" styleClass="gap-3 text-sm font-roboto pb-2">
+                        <Label text="Shopping"/>
+                        <Region HBox.hgrow="ALWAYS"/>
+                        <Label text="45%" styleClass="text-green-500"/>
+                    </HBox>
+                    <ProgressBar progress="0.45" maxWidth="Infinity" styleClass="min-h-2 bg-gray-100 rounded-full green-bar"/>
+                </VBox>
+
+                <!-- Transportation -->
+                <VBox styleClass="gap-1_5">
+                    <HBox alignment="CENTER_LEFT" styleClass="gap-3 text-sm font-roboto pb-2">
+                        <Label text="Transportation"/>
+                        <Region HBox.hgrow="ALWAYS"/>
+                        <Label text="60%" styleClass="text-blue-500"/>
+                    </HBox>
+                    <ProgressBar progress="0.6" maxWidth="Infinity" styleClass="min-h-2 bg-gray-100 rounded-full blue-bar"/>
+                </VBox>
+            </VBox>
+        </VBox>
+
+        <VBox GridPane.columnIndex="1" GridPane.rowIndex="1" styleClass="card p-6 gap-4">
+            <!-- Header -->
+            <HBox alignment="CENTER_LEFT" styleClass="gap-3">
+                <Label text="Accounts Overview" styleClass="text-base font-semibold text-gray-900"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <Hyperlink text="Manage Accounts" styleClass="font-roboto text-sm text-blue-600"/>
+            </HBox>
+
+            <!-- Accounts List -->
+            <VBox styleClass="gap-3">
+                <!-- Checking Account -->
+                <HBox alignment="CENTER_LEFT" styleClass="p-3 gap-3 hover-bg-gray-50 rounded-lg cursor-pointer">
+                    <!-- Left side -->
+                    <HBox alignment="CENTER_LEFT" styleClass="gap-3">
+                        <Region styleClass="w-10 h-10 bg-blue-100 rounded-lg"/>
+                        <VBox styleClass="gap-0_5">
+                            <Label text="Chase Bank" styleClass="text-base font-medium"/>
+                            <Label text="Checking" styleClass="font-roboto text-sm text-gray-500"/>
+                        </VBox>
+                    </HBox>
+                    <Region HBox.hgrow="ALWAYS"/>
+                    <!-- Right side -->
+                    <VBox alignment="CENTER_RIGHT">
+                        <Label text="\$15,380.50" styleClass="text-base font-medium"/>
+                    </VBox>
+                </HBox>
+
+                <!-- Savings Account -->
+                <HBox alignment="CENTER_LEFT" styleClass="p-3 gap-3 hover-bg-gray-50 rounded-lg cursor-pointer">
+                    <!-- Left side -->
+                    <HBox alignment="CENTER_LEFT" styleClass="gap-3">
+                        <Region styleClass="w-10 h-10 bg-green-100 rounded-lg"/>
+                        <VBox styleClass="gap-0_5">
+                            <Label text="Wells Fargo" styleClass="text-base font-medium"/>
+                            <Label text="Savings" styleClass="font-roboto text-sm text-gray-500"/>
+                        </VBox>
+                    </HBox>
+                    <Region HBox.hgrow="ALWAYS"/>
+                    <!-- Right side -->
+                    <VBox alignment="CENTER_RIGHT">
+                        <Label text="\$28,650.00" styleClass="text-base font-medium"/>
+                    </VBox>
+                </HBox>
+
+            </VBox>
+        </VBox>
+
+
     </GridPane>
 </VBox>
