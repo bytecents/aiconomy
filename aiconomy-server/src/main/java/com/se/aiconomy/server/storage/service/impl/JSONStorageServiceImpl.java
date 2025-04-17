@@ -84,17 +84,17 @@ public class JSONStorageServiceImpl implements JSONStorageService {
     }
 
     @Override
-//    public <T extends Identifiable> T upsert(T entity) {
-//        jsonDBTemplate.upsert(entity);
-//        log.info("Upsert {}", entity);
-//        return entity;
-//    }
-        public <T extends Identifiable> T upsert(T entity) {
-            if (entity.getId() == null || entity.getId().isEmpty()) {
-                entity.setId(UUID.randomUUID().toString());
-            }
-            return insert(entity);
-        }
+    public <T extends Identifiable> T upsert(T entity) {
+        jsonDBTemplate.upsert(entity);
+        log.info("Upsert {}", entity);
+        return entity;
+    }
+//        public <T extends Identifiable> T upsert(T entity) {
+//            if (entity.getId() == null || entity.getId().isEmpty()) {
+//                entity.setId(UUID.randomUUID().toString());
+//            }
+//            return insert(entity);
+//        }
 
     @Override
     public <T extends Identifiable> boolean collectionExists(Class<T> entityClass) {

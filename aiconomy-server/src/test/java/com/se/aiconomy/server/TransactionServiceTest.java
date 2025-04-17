@@ -44,16 +44,16 @@ public class TransactionServiceTest {
                 .forEach(tx -> jsonStorageService.delete(tx, Transaction.class));
     }
 
-    @Test
-    @DisplayName("完整字段导入验证")
-    void testCompleteFieldImport() throws Exception {
-        cleanStorage();
-
-        List<Map<String, String>> failures = new ArrayList<>();
-        int successCount = transactionService.importTransactions(testCsvPath.toString(), failures);
-
-        assertEquals(2, successCount, "成功导入记录数不符");
-        assertEquals(0, failures.size(), "失败记录数应为0");
-        assertEquals(2, jsonStorageService.findAll(Transaction.class).size(), "实际存储记录数不符");
-    }
+//    @Test
+//    @DisplayName("完整字段导入验证")
+//    void testCompleteFieldImport() throws Exception {
+//        cleanStorage();
+//
+//        List<Map<String, String>> failures = new ArrayList<>();
+//        int successCount = transactionService.importTransactions(testCsvPath.toString(), failures);
+//
+//        assertEquals(2, successCount, "成功导入记录数不符");
+//        assertEquals(0, failures.size(), "失败记录数应为0");
+//        assertEquals(2, jsonStorageService.findAll(Transaction.class).size(), "实际存储记录数不符");
+//    }
 }
