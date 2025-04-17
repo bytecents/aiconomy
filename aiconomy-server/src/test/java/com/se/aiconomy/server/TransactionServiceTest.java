@@ -1,6 +1,5 @@
 package com.se.aiconomy.server;
 
-import com.se.aiconomy.langchain.common.model.Transaction;
 import com.se.aiconomy.server.dao.TransactionDao;
 import com.se.aiconomy.server.model.dto.TransactionDto;
 import com.se.aiconomy.server.service.TransactionService;
