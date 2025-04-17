@@ -24,7 +24,7 @@ public class BudgetAnalysisService {
         ChatLanguageModel model = OpenAiChatModel.builder()
             .baseUrl(Configs.BASE_URL)
             .apiKey(Configs.API_KEY)
-            .modelName(Configs.MODEL)
+            .modelName(String.valueOf(Configs.MODEL))
             .build();
         this.assistant = AiServices.create(Assistant.class, model);
     }
