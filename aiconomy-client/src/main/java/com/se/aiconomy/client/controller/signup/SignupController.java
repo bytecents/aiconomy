@@ -1,4 +1,4 @@
-package com.se.aiconomy.client.controller;
+package com.se.aiconomy.client.controller.signup;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -6,7 +6,6 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.layout.HBox;
 
-import java.awt.*;
 import java.io.IOException;
 import java.util.Objects;
 

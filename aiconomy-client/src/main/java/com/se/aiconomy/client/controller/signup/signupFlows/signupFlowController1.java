@@ -27,6 +27,7 @@ public class signupFlowController1 {
         Scene scene = new Scene(root, currentWidth, currentHeight);
         stage.setScene(scene);
         stage.show();
+
     }
 
     public void switchToNextStep(ActionEvent event) throws IOException {

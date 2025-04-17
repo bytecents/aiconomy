@@ -57,6 +57,7 @@ public class LoginController {
         stage.show();
 //        FadeTransition fadeOut = getFadeTransition(stage, scene);
 //        fadeOut.play();
+
     }
 
     private static @NotNull FadeTransition getFadeTransition(Stage stage, Scene scene) {
