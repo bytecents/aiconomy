@@ -1,241 +1,271 @@
 package com.se.aiconomy.server.service;
 
+import com.se.aiconomy.langchain.common.model.Transaction;
+import com.se.aiconomy.server.common.exception.ServiceException;
+import com.se.aiconomy.server.common.utils.CSVUtils;
 import com.se.aiconomy.server.dao.TransactionDao;
-import com.se.aiconomy.server.model.entity.Transaction;
-import com.se.aiconomy.server.common.utils.CSVUtil;
-import com.se.aiconomy.server.storage.service.JSONStorageService;
+import com.se.aiconomy.server.model.dto.TransactionDto;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import java.util.*;
-import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
+/**
+ * 交易记录服务类，提供交易记录的业务逻辑处理
+ */
 public class TransactionService {
-    private final Logger logger = Logger.getLogger(TransactionService.class.getName());
+    private static final Logger log = LoggerFactory.getLogger(TransactionService.class);
+    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-    // CSV列名 -> Transaction字段映射
-    private static final Map<String, String> FIELD_MAPPING = new HashMap<>();
+    private final TransactionDao transactionDao;
 
-    static {
-        FIELD_MAPPING.put("time", "time");
-        FIELD_MAPPING.put("type", "type");
-        FIELD_MAPPING.put("incomeorexpense", "incomeOrExpense");
-        FIELD_MAPPING.put("amount", "amount");
-        FIELD_MAPPING.put("counterparty", "counterparty");
-        FIELD_MAPPING.put("product", "product");
-        FIELD_MAPPING.put("paymentmethod", "paymentMethod");
-        FIELD_MAPPING.put("status", "status");
-        FIELD_MAPPING.put("merchantorderid", "merchantOrderId");
-        FIELD_MAPPING.put("remark", "remark");
-    }
-
-    // 日期时间格式
-    private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
-
-    private JSONStorageService jsonStorageService;
-
-    public TransactionService(JSONStorageService jsonStorageService) {
-        this.jsonStorageService = jsonStorageService;
+    public TransactionService() {
+        this.transactionDao = TransactionDao.getInstance();
     }
 
     /**
      * 执行CSV文件导入
      *
-     * @param filePath       CSV文件路径
-     * @param failureRecords 输出参数：存储失败记录的原始数据及错误原因
-     * @return 成功导入的记录数量
+     * @param filePath CSV文件路径
+     * @return 成功导入的记录列表
+     * @throws IOException      文件读取异常
+     * @throws ServiceException 服务异常
      */
-    public int importTransactions(String filePath, List<Map<String, String>> failureRecords)
-            throws IOException {
-        List<Transaction> successList = new ArrayList<>();
-        List<Map<String, String>> csvData = CSVUtil.readCSV(filePath, ',', true);
+    public List<TransactionDto> importTransactions(String filePath) throws IOException, ServiceException {
+        List<TransactionDto> transactions;
+        List<TransactionDto> validTransactions = new ArrayList<>();
 
-        for (Map<String, String> row : csvData) {
-            try {
-                Transaction tx = convertRowToTransaction(row);
-                validateTransaction(tx);
-                successList.add(tx);
-            } catch (DataConversionException e) {
-                logFailure(row, e.getMessage(), failureRecords);
+        try {
+            // 读取CSV文件，转换为Transaction对象列表
+            transactions = CSVUtils.readCsv(filePath, TransactionDto.class);
+            log.info("Read {} records from CSV file: {}", transactions.size(), filePath);
+
+            // 处理每一条记录
+            for (TransactionDto transaction : transactions) {
+                // 生成ID（如果不存在）
+                if (StringUtils.isBlank(transaction.getId())) {
+                    transaction.setId(UUID.randomUUID().toString());
+                }
+
+                // 设置时间（如果不存在）
+                if (transaction.getTime() == null) {
+                    transaction.setTime(LocalDateTime.now());
+                }
+
+                // 添加到有效记录列表
+                validTransactions.add(transaction);
+                log.debug("Valid transaction processed: {}", transaction);
             }
-        }
 
-        if (!successList.isEmpty()) {
-            batchSave(successList);
-            logger.info(() -> String.format(
-                    "成功导入 %d 条记录，失败 %d 条",
-                    successList.size(),
-                    failureRecords.size()
-            ));
-        }
-        return successList.size();
-    }
-
-    //================ 核心数据转换逻辑 ================//
-    private Transaction convertRowToTransaction(Map<String, String> row)
-            throws DataConversionException {
-        logger.info("转换记录: " + row);
-        Transaction tx = new Transaction();
-
-        // 处理映射字段
-        for (Map.Entry<String, String> entry : row.entrySet()) {
-            String csvHeader = entry.getKey().toLowerCase().trim();
-            String value = entry.getValue();
-
-            if (FIELD_MAPPING.containsKey(csvHeader)) {
-                String fieldName = FIELD_MAPPING.get(csvHeader);
-                setFieldValue(tx, fieldName, value);
+            // 批量保存有效交易记录
+            if (!validTransactions.isEmpty()) {
+                batchSave(validTransactions);
+                log.info("Successfully imported {} transactions out of {} total records",
+                    validTransactions.size(), transactions.size());
             } else {
-                tx.addExtraField(csvHeader, value); // 非映射字段存储为额外字段
+                log.warn("No valid transactions found to import");
             }
-        }
 
-        validateRequiredFields(tx);
-        return tx;
-    }
-
-    //================ 必填字段校验 ================//
-    private void validateRequiredFields(Transaction tx)
-            throws DataConversionException {
-        List<String> missingFields = new ArrayList<>();
-
-        // 检查所有必填字段
-        if (tx.getTime() == null) missingFields.add("time");
-        if (isBlank(tx.getType())) missingFields.add("type");
-        if (isBlank(tx.getIncomeOrExpense())) missingFields.add("incomeOrExpense");
-        if (isBlank(tx.getAmount())) missingFields.add("amount");
-
-        if (!missingFields.isEmpty()) {
-            String errorMsg = "必填字段缺失: " + String.join(", ", missingFields);
-            logger.severe(errorMsg);
-            throw new DataConversionException(errorMsg);
-        }
-    }
-
-    private boolean isBlank(String value) {
-        return value == null || value.trim().isEmpty();
-    }
-
-    //================ 数据校验 ================//
-    private void validateTransaction(Transaction tx)
-            throws DataConversionException {
-        // 校验收支类型值域
-        if (!Arrays.asList("income", "expense").contains(tx.getIncomeOrExpense().toLowerCase())) {
-            throw new DataConversionException("无效的收支类型: " + tx.getIncomeOrExpense());
-        }
-
-        // 验证金额格式（允许字符串但必须是数字）
-        try {
-            new BigDecimal(tx.getAmount());
-        } catch (NumberFormatException e) {
-            throw new DataConversionException("金额格式错误: " + tx.getAmount());
-        }
-    }
-
-    //================ 类型转换 ================//
-    private Object convertValue(String fieldName, String value)
-            throws DataConversionException {
-        if (value == null || value.trim().isEmpty()) return null;
-
-        try {
-            switch (fieldName) {
-                case "time":
-                    return parseDateTime(value.trim());
-                case "incomeOrExpense":
-                    return value.trim().toLowerCase(); // 统一存储为小写
-                case "amount":
-                case "type":
-                default:
-                    return value.trim(); // 其他字段保持原始字符串
-            }
-        } catch (DateTimeParseException e) {
-            throw new DataConversionException("时间格式错误: " + value);
-        }
-    }
-
-    //================ 工具方法 ================//
-    private LocalDateTime parseDateTime(String value)
-            throws DateTimeParseException {
-        // 兼容带空格的时间格式（如 "2024-01-01 12:00:00"）
-        String normalized = value.replace(" ", "T");
-        return LocalDateTime.parse(normalized, dateTimeFormatter);
-    }
-
-    private void setFieldValue(Transaction tx, String fieldName, String value)
-            throws DataConversionException {
-        try {
-            Object convertedValue = convertValue(fieldName, value);
-            Method setter = getSetterMethod(fieldName);
-            setter.invoke(tx, convertedValue);
-            logger.fine("字段设置成功: " + fieldName + " = " + convertedValue);
-        } catch (InvocationTargetException | IllegalAccessException e) {
-            throw new DataConversionException("字段赋值失败: " + fieldName);
-        }
-    }
-
-    private Method getSetterMethod(String fieldName)
-            throws DataConversionException {
-        try {
-            String methodName = "set" + StringUtils.capitalize(fieldName);
-            return Transaction.class.getMethod(methodName, getFieldType(fieldName));
-        } catch (NoSuchMethodException e) {
-            throw new DataConversionException("无效字段: " + fieldName);
-        }
-    }
-
-    private Class<?> getFieldType(String fieldName) {
-        switch (fieldName) {
-            case "time":
-                return LocalDateTime.class;
-            default:
-                return String.class; // 其他字段均为String类型
-        }
-    }
-
-    //================ 批量保存 ================//
-    private void batchSave(List<Transaction> transactions) {
-        try {
-            // 使用 JSONStorageService 的批量插入方法
-            transactions.forEach(tx -> jsonStorageService.upsert(tx));
+        } catch (IOException e) {
+            log.error("Failed to read CSV file: {}", filePath, e);
+            throw new IOException("Failed to read CSV file: " + e.getMessage(), e);
         } catch (Exception e) {
-            logger.severe("数据保存失败: " + e.getMessage());
+            log.error("Unexpected error during import: {}", e.getMessage(), e);
+            throw new ServiceException("Failed to import transactions: " + e.getMessage(), e);
+        }
+
+        return validTransactions;
+    }
+
+    /**
+     * 批量保存交易记录
+     */
+    private void batchSave(List<TransactionDto> transactions) throws ServiceException {
+        try {
+            for (TransactionDto transaction : transactions) {
+                transactionDao.create(transaction);
+            }
+        } catch (Exception e) {
+            log.error("Failed to save transactions: {}", e.getMessage(), e);
             throw new ServiceException("数据保存失败", e);
         }
     }
 
-    //================ 失败日志 ================//
-    private void logFailure(Map<String, String> row, String reason,
-                            List<Map<String, String>> failureRecords) {
-        // 记录结构化错误信息
-        Map<String, String> failureEntry = new LinkedHashMap<>(row);
-        failureEntry.put("error", reason);
-        failureRecords.add(failureEntry);
-
-        // 输出可读日志
-        String logMsg = String.format(
-                "记录导入失败 | 原因: %s | 数据: %s",
-                reason,
-                String.join(", ", row.values())
-        );
-        logger.warning(logMsg);
+    /**
+     * 获取指定时间范围内的交易记录
+     */
+    public List<TransactionDto> getTransactionsByDateRange(LocalDateTime startTime, LocalDateTime endTime) {
+        return transactionDao.findByTimeRange(startTime, endTime);
     }
 
-    //================ 异常定义 ================//
-    public static class DataConversionException extends Exception {
-        public DataConversionException(String message) {
-            super(message);
+    /**
+     * 获取指定时间范围内的收支统计
+     */
+    public Map<String, String> getIncomeAndExpenseStatistics(LocalDateTime startTime, LocalDateTime endTime) {
+        List<TransactionDto> transactions = getTransactionsByDateRange(startTime, endTime);
+
+        double totalIncome = transactions.stream()
+            .filter(t -> "收入".equals(t.getIncomeOrExpense()))
+            .mapToDouble(t -> Double.parseDouble(t.getAmount()))
+            .sum();
+
+        double totalExpense = transactions.stream()
+            .filter(t -> "支出".equals(t.getIncomeOrExpense()))
+            .mapToDouble(t -> Double.parseDouble(t.getAmount()))
+            .sum();
+
+        Map<String, String> statistics = new HashMap<>();
+        statistics.put("totalIncome", String.format("%.2f", totalIncome));
+        statistics.put("totalExpense", String.format("%.2f", totalExpense));
+        statistics.put("netAmount", String.format("%.2f", totalIncome - totalExpense));
+
+        return statistics;
+    }
+
+    /**
+     * 获取按支付方式分组的交易统计
+     */
+    public Map<String, String> getPaymentMethodStatistics() {
+        List<TransactionDto> allTransactions = transactionDao.findAll();
+
+        return allTransactions.stream()
+            .filter(t -> t.getPaymentMethod() != null)
+            .collect(Collectors.groupingBy(
+                TransactionDto::getPaymentMethod,
+                Collectors.collectingAndThen(
+                    Collectors.summingDouble(t -> Double.parseDouble(t.getAmount())),
+                    sum -> String.format("%.2f", sum)
+                )
+            ));
+    }
+
+    /**
+     * 按交易对手统计交易金额
+     */
+    public Map<String, String> getCounterpartyStatistics() {
+        List<TransactionDto> allTransactions = transactionDao.findAll();
+
+        return allTransactions.stream()
+            .filter(t -> t.getCounterparty() != null)
+            .collect(Collectors.groupingBy(
+                TransactionDto::getCounterparty,
+                Collectors.collectingAndThen(
+                    Collectors.summingDouble(t -> Double.parseDouble(t.getAmount())),
+                    sum -> String.format("%.2f", sum)
+                )
+            ));
+    }
+
+    /**
+     * 更新交易记录状态
+     */
+    public TransactionDto updateTransactionStatus(String transactionId, String newStatus) throws ServiceException {
+        TransactionDto updated = transactionDao.updateStatus(transactionId, newStatus);
+        if (updated == null) {
+            throw new ServiceException("Transaction not found with ID: " + transactionId, null);
+        }
+        return updated;
+    }
+
+    /**
+     * 搜索交易记录
+     * 支持按多个条件组合搜索
+     */
+    public List<TransactionDto> searchTransactions(TransactionSearchCriteria criteria) {
+        List<TransactionDto> allTransactions = transactionDao.findAll();
+
+        return allTransactions.stream()
+            .filter(criteria::matches)
+            .collect(Collectors.toList());
+    }
+
+    /**
+     * 删除交易记录
+     */
+    public void deleteTransaction(String transactionId) throws ServiceException {
+        Optional<TransactionDto> transaction = transactionDao.findById(transactionId);
+        if (transaction.isPresent()) {
+            transactionDao.delete(transaction.get());
+        } else {
+            throw new ServiceException("Transaction not found with ID: " + transactionId, null);
         }
     }
 
-    public static class ServiceException extends RuntimeException {
-        public ServiceException(String message, Throwable cause) {
-            super(message, cause);
+    /**
+     * 内部类：交易搜索条件
+     */
+    @Getter
+    @Setter
+    public static class TransactionSearchCriteria {
+        private String type;
+        private String counterparty;
+        private String paymentMethod;
+        private String status;
+        private LocalDateTime startTime;
+        private LocalDateTime endTime;
+        private String incomeOrExpense;
+        private String product;
+
+        public boolean matches(TransactionDto transaction) {
+            return (type == null || type.equals(transaction.getType())) &&
+                (counterparty == null || counterparty.equals(transaction.getCounterparty())) &&
+                (paymentMethod == null || paymentMethod.equals(transaction.getPaymentMethod())) &&
+                (status == null || status.equals(transaction.getStatus())) &&
+                (incomeOrExpense == null || incomeOrExpense.equals(transaction.getIncomeOrExpense())) &&
+                (product == null || product.equals(transaction.getProduct())) &&
+                (startTime == null || !transaction.getTime().isBefore(startTime)) &&
+                (endTime == null || !transaction.getTime().isAfter(endTime));
+        }
+
+        public static class Builder {
+            private final TransactionSearchCriteria criteria = new TransactionSearchCriteria();
+
+            public Builder withType(String type) {
+                criteria.type = type;
+                return this;
+            }
+
+            public Builder withCounterparty(String counterparty) {
+                criteria.counterparty = counterparty;
+                return this;
+            }
+
+            public Builder withPaymentMethod(String paymentMethod) {
+                criteria.paymentMethod = paymentMethod;
+                return this;
+            }
+
+            public Builder withStatus(String status) {
+                criteria.status = status;
+                return this;
+            }
+
+            public Builder withDateRange(LocalDateTime startTime, LocalDateTime endTime) {
+                criteria.startTime = startTime;
+                criteria.endTime = endTime;
+                return this;
+            }
+
+            public Builder withIncomeOrExpense(String incomeOrExpense) {
+                criteria.incomeOrExpense = incomeOrExpense;
+                return this;
+            }
+
+            public Builder withProduct(String product) {
+                criteria.product = product;
+                return this;
+            }
+
+            public TransactionSearchCriteria build() {
+                return criteria;
+            }
         }
     }
 }
