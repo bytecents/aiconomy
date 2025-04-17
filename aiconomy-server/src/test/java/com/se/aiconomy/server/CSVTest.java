@@ -28,7 +28,7 @@ public class CSVTest {
         assertNotNull(transactions, "Transactions list should not be null");
         assertFalse(transactions.isEmpty(), "Transactions list should not be empty");
 
-        Transaction transaction = transactions.get(0);
+        Transaction transaction = transactions.getFirst();
         assertEquals("12345", transaction.getId(), "Transaction ID should be '12345'");
         assertEquals("2025-04-16T10:30", transaction.getTime().toString(), "Transaction time should be '2025-04-16T10:30'");
         assertEquals("消费", transaction.getType(), "Transaction type should be '消费'");

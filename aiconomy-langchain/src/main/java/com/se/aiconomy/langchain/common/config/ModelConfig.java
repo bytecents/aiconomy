@@ -1,13 +1,13 @@
 package com.se.aiconomy.langchain.common.config;
 
-import dev.langchain4j.model.openai.OpenAiChatModelName;
+import com.se.aiconomy.langchain.common.model.ChatModelName;
 import lombok.Getter;
 
 @Getter
 public class ModelConfig {
     private final String baseUrl;
     private final String apiKey;
-    private final OpenAiChatModelName modelName;
+    private final ChatModelName modelName;
     private final double temperature;
     private final int maxTokens;
 
@@ -22,7 +22,7 @@ public class ModelConfig {
     public static class Builder {
         private String baseUrl;
         private String apiKey;
-        private OpenAiChatModelName modelName;
+        private ChatModelName modelName;
         private double temperature = 0.7;
         private int maxTokens = 2048;
 
@@ -36,7 +36,7 @@ public class ModelConfig {
             return this;
         }
 
-        public Builder modelName(OpenAiChatModelName modelName) {
+        public Builder modelName(ChatModelName modelName) {
             this.modelName = modelName;
             return this;
         }
