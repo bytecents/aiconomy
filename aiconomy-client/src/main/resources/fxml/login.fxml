@@ -22,7 +22,7 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
-<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" fx:controller="com.se.aiconomy.client.controller.LoginController" prefWidth="1000.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <VBox maxWidth="700.0" prefHeight="720.0" prefWidth="520.0" spacing="10.0" style="-fx-background-color: white;" HBox.hgrow="ALWAYS">
         <HBox.margin>
             <Insets />
@@ -111,7 +111,7 @@
                   </right>
                  </BorderPane>
               </VBox>
-               <Button mnemonicParsing="false" prefHeight="44.0" prefWidth="634.0" style="-fx-background-color: #2563eb; -fx-background-radius: 12px;" text="Sign in" textFill="WHITE" VBox.vgrow="ALWAYS">
+               <Button mnemonicParsing="false" fx:id="loginButton" onAction="#login" prefHeight="44.0" prefWidth="634.0" style="-fx-background-color: #2563eb; -fx-background-radius: 12px;" text="Sign in" textFill="WHITE" VBox.vgrow="ALWAYS">
                <font>
                   <Font name="Roboto" size="16.0" />
                </font>
