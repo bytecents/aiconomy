@@ -6,30 +6,92 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            styleClass="border-l border-gray-200 bg-gray-50 min-w-96"
-            stylesheets="/css/styles.css"
-            fx:controller="com.se.aiconomy.client.controller.AiController">
-    <VBox AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-          styleClass="gap-6 p-6">
+<?import javafx.scene.shape.SVGPath?>
+<?import javafx.scene.text.TextFlow?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.chart.BubbleChart?>
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      styleClass="border-l border-gray-200 bg-gray-50 min-w-96 p-6 gap-5"
+      stylesheets="/css/styles.css"
+      fx:controller="com.se.aiconomy.client.controller.AiController">
+    <HBox>
         <VBox styleClass="gap-1">
             <Label styleClass="text-lg font-semibold text-gray-900">AI Insights</Label>
             <Label styleClass="text-sm text-gray-500 break-words">
                 Get personalized insights and recommendations based on your spending patterns.
             </Label>
         </VBox>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Button text="×" onAction="#closeAiPanel"
+                styleClass="bg-transparent hover-bg-gray-200 border-none p-0 text-gray-900 text-base rounded-lg w-6 h-6 cursor-pointer"/>
+    </HBox>
 
-        <ScrollPane fx:id="aiScrollPane" fitToWidth="true" fitToHeight="true">
-            <VBox fx:id="aiContent" styleClass="gap-2_5">
-                <!-- AI content will be dynamically loaded here -->
-            </VBox>
-        </ScrollPane>
+    <VBox styleClass="gap-2 pb-2">
+        <VBox styleClass="p-4 bg-white rounded-lg border border-gray-100 shadow-sm">
+            <HBox alignment="CENTER_LEFT" styleClass="gap-2 pb-2">
+                <Region styleClass="w-4 h-4 bg-blue-500" />
+                <Label styleClass="font-medium text-base text-gray-900">Spending Pattern</Label>
+            </HBox>
+            <TextFlow lineSpacing="2">
+                <Text text="Your spending increased by "
+                      styleClass="text-sm font-roboto text-gray-600"/>
+                <Text text="14%"
+                      styleClass="text-red-500 text-sm font-medium"/>
+                <Text text=" compared to last month, mainly in the Food &amp; Dining category."
+                      styleClass="text-sm font-roboto text-gray-600"/>
+            </TextFlow>
+        </VBox>
+
+        <VBox styleClass="p-4 bg-white rounded-lg border border-gray-100 shadow-sm">
+            <HBox alignment="CENTER_LEFT" styleClass="gap-2 pb-2">
+                <Region styleClass="w-4 h-4 bg-amber-500" />
+                <Label styleClass="font-medium text-base text-gray-900">Unusual Activity</Label>
+            </HBox>
+            <TextFlow lineSpacing="2">
+                <Text text="We noticed unusually high spending on weekends, especially at restaurants between 7-10 PM."
+                      styleClass="text-sm font-roboto text-gray-600"/>
+            </TextFlow>
+        </VBox>
+
+        <VBox styleClass="p-4 bg-white rounded-lg border border-gray-100 shadow-sm">
+            <HBox alignment="CENTER_LEFT" styleClass="gap-2 pb-2">
+                <Region styleClass="w-4 h-4 bg-green-500" />
+                <Label styleClass="font-medium text-base text-gray-900">Recommendation</Label>
+            </HBox>
+            <TextFlow lineSpacing="2">
+                <Text text="Consider home cooking on weekends to reduce your Food &amp; Dining expenses by approximately $120/month."
+                      styleClass="text-sm font-roboto text-gray-600"/>
+            </TextFlow>
+        </VBox>
     </VBox>
 
-    <Button text="×" onAction="#closeAiPanel"
-        styleClass="bg-transparent hover-bg-gray-200 border-none p-0 text-gray-900 whitespace-nowrap text-lg rounded-full w-6 h-6 cursor-pointer"
-        AnchorPane.topAnchor="16.0" AnchorPane.rightAnchor="16.0" />
-</AnchorPane>
+<!--    <ScrollPane fx:id="aiScrollPane" fitToWidth="true" fitToHeight="true">-->
+<!--        <VBox fx:id="aiContent" styleClass="gap-2_5">-->
+<!--            &lt;!&ndash; AI content will be dynamically loaded here &ndash;&gt;-->
+<!--        </VBox>-->
 
-<!--        bg-transparent hover:bg-gray-100 text-gray-900-->
+
+<!--    </ScrollPane>-->
+
+    <VBox styleClass="gap-3">
+        <Label styleClass="text-sm font-medium text-gray-700">Ask about your spending</Label>
+        <HBox styleClass="gap-2">
+            <TextField promptText="E.g., Where can I save money?" styleClass="border border-gray-200 rounded-lg text-sm focus-border-blue-500" HBox.hgrow="ALWAYS" />
+            <Button styleClass="p-2 bg-blue-600 text-white rounded-lg hover-bg-blue-700 cursor-pointer">
+                Send
+            </Button>
+        </HBox>
+        <FlowPane hgap="8" vgap="8">
+            <Button styleClass="p-3-1_5 border-none text-xs bg-gray-100 text-gray-700 rounded-full hover-bg-gray-200 cursor-pointer">
+                Budget optimization?
+            </Button>
+            <Button styleClass="p-3-1_5 border-none text-xs bg-gray-100 text-gray-700 rounded-full hover-bg-gray-200 cursor-pointer">
+                Savings potential?
+            </Button>
+            <Button styleClass="p-3-1_5 border-none text-xs bg-gray-100 text-gray-700 rounded-full hover-bg-gray-200 cursor-pointer">
+                Weekend spending?
+            </Button>
+        </FlowPane>
+    </VBox>
+</VBox>

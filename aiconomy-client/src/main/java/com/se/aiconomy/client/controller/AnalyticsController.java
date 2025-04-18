@@ -7,9 +7,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.chart.LineChart;
-import javafx.scene.chart.NumberAxis;
-import javafx.scene.chart.XYChart;
+import javafx.scene.chart.*;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.ColumnConstraints;
@@ -28,7 +26,8 @@ public class AnalyticsController implements Initializable {
     @FXML private GridPane analyticsGrid;
     @FXML private ColumnConstraints mainCol;
     @FXML private ColumnConstraints aiCol;
-    @FXML private LineChart<String, Number> lineChart;
+    @FXML private LineChart<String, Number> spendingTrends;
+    @FXML private PieChart categoryDistribution;
     @FXML private NumberAxis yAxis;
 
 //    private boolean isOpenAiPanel = false;
@@ -49,28 +48,38 @@ public class AnalyticsController implements Initializable {
         aiCol.setPercentWidth(0);
         setColumnCount(analyticsGrid, 1);
 
-        XYChart.Series<String, Number> series = new XYChart.Series<>();
-
-        String[] labels = {"1", "5", "10", "15", "20", "25", "30"};
-        int[] data = {500, 800, 600, 1200, 800, 950, 700};
-
-        for (int i = 0; i < labels.length; i++) {
-            series.getData().add(new XYChart.Data<>(labels[i], data[i]));
-        }
+        spendingTrends.setLegendVisible(false);
 
         yAxis.setTickLabelFormatter(new StringConverter<Number>() {
             @Override
             public String toString(Number object) {
-                return "$" + object.intValue(); // 或者 format 为 "$#,###.00"
+                return "$" + object.intValue();
             }
-
             @Override
             public Number fromString(String string) {
-                return Double.parseDouble(string.replace("$", ""));
+                return Integer.parseInt(string.replace("$", ""));
             }
         });
 
-        lineChart.getData().add(series);
+        XYChart.Series<String, Number> series = new XYChart.Series<>();
+        series.setName("Expenses");
+        series.getData().add(new XYChart.Data<>("1", 500));
+        series.getData().add(new XYChart.Data<>("5", 800));
+        series.getData().add(new XYChart.Data<>("10", 600));
+        series.getData().add(new XYChart.Data<>("15", 1200));
+        series.getData().add(new XYChart.Data<>("20", 800));
+        series.getData().add(new XYChart.Data<>("25", 950));
+        series.getData().add(new XYChart.Data<>("30", 700));
+
+        spendingTrends.getData().add(series);
+
+        categoryDistribution.getData().addAll(
+                new PieChart.Data("Food & Dining",    35),
+                new PieChart.Data("Shopping",         25),
+                new PieChart.Data("Transportation",   20),
+                new PieChart.Data("Entertainment",    15),
+                new PieChart.Data("Others",            5)
+        );
     }
 
     private void closeAiPanel() {

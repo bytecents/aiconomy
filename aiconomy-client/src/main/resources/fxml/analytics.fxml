@@ -30,6 +30,8 @@
 <?import javafx.scene.chart.LineChart?>
 <?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.PieChart?>
 <GridPane id="Content" xmlns="http://javafx.com/javafx/23.0.1"
           fx:controller="com.se.aiconomy.client.controller.AnalyticsController" xmlns:fx="http://javafx.com/fxml/1" stylesheets="/css/styles.css">
     <columnConstraints>
@@ -89,11 +91,11 @@
                         </ComboBox>
                     </HBox>
                     <StackPane styleClass="min-h-48" VBox.vgrow="ALWAYS">
-                        <LineChart fx:id="lineChart"
+                        <LineChart fx:id="spendingTrends"
                                    legendVisible="false"
                                    createSymbols="false"
-                                   prefWidth="600"
-                                   prefHeight="400">
+                                   stylesheets="/css/chart.css"
+                        >
                             <xAxis>
                                 <CategoryAxis />
                             </xAxis>
@@ -121,16 +123,17 @@
                     </HBox>
                     <GridPane hgap="16" vgap="16" VBox.vgrow="ALWAYS">
                         <columnConstraints>
-                            <ColumnConstraints percentWidth="50"/>
-                            <ColumnConstraints percentWidth="50"/>
+                            <ColumnConstraints percentWidth="60"/>
+                            <ColumnConstraints percentWidth="40"/>
                         </columnConstraints>
 
                         <rowConstraints>
                             <RowConstraints vgrow="ALWAYS" percentHeight="100" />
                         </rowConstraints>
 
-                        <StackPane styleClass="bg-gray-50 rounded-lg h-48" GridPane.columnIndex="0">
-                            <Label text="Trend Chart Area" styleClass="text-gray-400"/>
+                        <StackPane styleClass="h-48" GridPane.columnIndex="0" stylesheets="/css/chart.css">
+<!--                            <Label text="Trend Chart Area" styleClass="text-gray-400"/>-->
+                            <PieChart fx:id="categoryDistribution" legendVisible="false" />
                         </StackPane>
 
                         <VBox styleClass="gap-1" GridPane.columnIndex="1">
