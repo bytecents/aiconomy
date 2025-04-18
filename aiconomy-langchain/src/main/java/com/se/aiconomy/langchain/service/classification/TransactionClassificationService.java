@@ -3,8 +3,8 @@ package com.se.aiconomy.langchain.service.classification;
 import com.se.aiconomy.langchain.common.config.Configs;
 import com.se.aiconomy.langchain.common.config.Locale;
 import com.se.aiconomy.langchain.common.model.BillType;
-import com.se.aiconomy.langchain.common.prompt.I18nPrompt;
 import com.se.aiconomy.langchain.common.model.Transaction;
+import com.se.aiconomy.langchain.common.prompt.I18nPrompt;
 import dev.langchain4j.model.chat.ChatLanguageModel;
 import dev.langchain4j.model.openai.OpenAiChatModel;
 import dev.langchain4j.service.AiServices;
@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class TransactionClassificationService {
@@ -40,11 +41,11 @@ public class TransactionClassificationService {
         return classifyTransaction(transaction, Locale.EN);
     }
 
-    public ArrayList<BillType> classifyTransactions(ArrayList<Transaction> transactions) {
+    public List<BillType> classifyTransactions(List<Transaction> transactions) {
         return classifyTransactions(transactions, Locale.EN);
     }
 
-    public ArrayList<BillType> classifyTransactions(ArrayList<Transaction> transactions, Locale locale) {
+    public List<BillType> classifyTransactions(List<Transaction> transactions, Locale locale) {
         return new ArrayList<>(transactions.parallelStream()
             .map(transaction -> classifyTransaction(transaction, locale != null ? locale : Locale.EN))
             .toList());
@@ -53,8 +54,9 @@ public class TransactionClassificationService {
     @NotNull
     private Map<String, Object> buildContext(@NotNull Transaction transaction) {
         Map<String, Object> context = new HashMap<>();
-        context.put("transaction_time", transaction.getTransactionTime());
-        context.put("transaction_type", transaction.getTransactionType());
+        context.put("id", transaction.getId());
+        context.put("time", transaction.getTime());
+        context.put("type", transaction.getType());
         context.put("counterparty", transaction.getCounterparty());
         context.put("product", transaction.getProduct());
         context.put("income_or_expense", transaction.getIncomeOrExpense());
@@ -62,10 +64,8 @@ public class TransactionClassificationService {
         context.put("currency", "CNY");
         context.put("payment_method", transaction.getPaymentMethod());
         context.put("status", transaction.getStatus());
-        context.put("transaction_id", transaction.getTransactionId());
         context.put("merchant_order_id", transaction.getMerchantOrderId());
         context.put("remark", transaction.getRemark());
-        context.put("extra_fields", transaction.getExtraFields());
 
         log.info("Transaction Context: {}", context);
         return context;

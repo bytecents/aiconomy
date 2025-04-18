@@ -2,6 +2,7 @@ package com.se.aiconomy.server.model.dto;
 
 import com.opencsv.bean.CsvBindByPosition;
 import com.opencsv.bean.CsvDate;
+import com.se.aiconomy.langchain.common.model.BillType;
 import com.se.aiconomy.server.storage.common.Identifiable;
 import io.jsondb.annotation.Document;
 import io.jsondb.annotation.Id;
@@ -10,13 +11,14 @@ import lombok.*;
 import java.time.LocalDateTime;
 
 /**
- * 交易记录类，支持固定字段 + 可扩展字段
+ * 交易记录类
  */
 @Setter
 @Getter
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Document(collection = "transactions", schemaVersion = "1.0")
 public class TransactionDto implements Identifiable {
     @Id
@@ -53,6 +55,8 @@ public class TransactionDto implements Identifiable {
 
     @CsvBindByPosition(position = 10)
     private String remark;  // 备注
+
+    private BillType billType;
 
     private String userId;
 }
