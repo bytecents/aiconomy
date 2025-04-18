@@ -2,7 +2,7 @@ package com.se.aiconomy.server.model.dto;
 
 import com.opencsv.bean.CsvBindByPosition;
 import com.opencsv.bean.CsvDate;
-import com.se.aiconomy.langchain.common.model.BillType;
+import com.se.aiconomy.server.langchain.common.model.BillType;
 import com.se.aiconomy.server.storage.common.Identifiable;
 import io.jsondb.annotation.Document;
 import io.jsondb.annotation.Id;

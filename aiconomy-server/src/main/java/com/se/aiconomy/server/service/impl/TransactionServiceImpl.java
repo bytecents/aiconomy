@@ -1,12 +1,12 @@
 package com.se.aiconomy.server.service.impl;
 
-import com.se.aiconomy.langchain.common.model.BillType;
-import com.se.aiconomy.langchain.common.model.Transaction;
-import com.se.aiconomy.langchain.service.classification.TransactionClassificationService;
 import com.se.aiconomy.server.common.exception.ServiceException;
 import com.se.aiconomy.server.common.utils.CSVUtils;
 import com.se.aiconomy.server.common.utils.ExcelUtils;
 import com.se.aiconomy.server.dao.TransactionDao;
+import com.se.aiconomy.server.langchain.common.model.BillType;
+import com.se.aiconomy.server.langchain.common.model.Transaction;
+import com.se.aiconomy.server.langchain.service.classification.TransactionClassificationService;
 import com.se.aiconomy.server.model.dto.TransactionDto;
 import com.se.aiconomy.server.service.TransactionService;
 import lombok.*;
@@ -125,6 +125,31 @@ public class TransactionServiceImpl implements TransactionService {
         processImportedTransactions(transactionDtos);
 
         return classifiedTransactions;
+    }
+
+    @Override
+    public List<Transaction> getTransactionsByUserId(String userId) throws ServiceException {
+        List<TransactionDto> transactionDtos = transactionDao.findByUserId(userId);
+        if (transactionDtos == null || transactionDtos.isEmpty()) {
+            throw new ServiceException("No transactions found for user ID: " + userId, null);
+        }
+
+        return transactionDtos.stream()
+            .map(transactionDto -> new Transaction(
+                transactionDto.getId(),
+                transactionDto.getTime(),
+                transactionDto.getType(),
+                transactionDto.getCounterparty(),
+                transactionDto.getProduct(),
+                transactionDto.getIncomeOrExpense(),
+                transactionDto.getAmount(),
+                "CNY",
+                transactionDto.getPaymentMethod(),
+                transactionDto.getStatus(),
+                transactionDto.getProduct(),
+                transactionDto.getRemark()
+            ))
+            .collect(Collectors.toList());
     }
 
     /**

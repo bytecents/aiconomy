@@ -1,6 +1,6 @@
 package com.se.aiconomy.server;
 
-import com.se.aiconomy.langchain.common.model.BillType;
+import com.se.aiconomy.server.langchain.common.model.BillType;
 import com.se.aiconomy.server.model.dto.TransactionDto;
 import com.se.aiconomy.server.storage.service.JSONStorageService;
 import com.se.aiconomy.server.storage.service.impl.JSONStorageServiceImpl;
