@@ -27,9 +27,9 @@ public class JSONStorageConfig {
             }
             props.load(input);
             return new JSONStorageConfig(
-                props.getProperty("jsonStorage.location", "src/main/resources/storage"),
-                props.getProperty("jsonStorage.base.package", "com.se.aiconomy.storage"),
-                props.getProperty("jsonStorage.cipher.key", "1r8+24pibarAWgS85/Heeg==")
+                    props.getProperty("jsonStorage.location", "src/main/resources/storage"),
+                    props.getProperty("jsonStorage.base.package", "com.se.aiconomy.storage"),
+                    props.getProperty("jsonStorage.cipher.key", "1r8+24pibarAWgS85/Heeg==")
             );
         } catch (IOException e) {
             return getDefaultConfig();
@@ -38,9 +38,9 @@ public class JSONStorageConfig {
 
     private static JSONStorageConfig getDefaultConfig() {
         return new JSONStorageConfig(
-            "src/main/resources/storage",
-            "com.se.aiconomy.storage",
-            "1r8+24pibarAWgS85/Heeg=="
+                "src/main/resources/storage",
+                "com.se.aiconomy.storage",
+                "1r8+24pibarAWgS85/Heeg=="
         );
     }
 

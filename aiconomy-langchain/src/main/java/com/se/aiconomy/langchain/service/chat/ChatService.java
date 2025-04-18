@@ -18,13 +18,13 @@ public class ChatService {
     private final ChatLanguageModel model = OpenAiChatModel.builder()
         .baseUrl(Configs.BASE_URL)
         .apiKey(Configs.API_KEY)
-        .modelName(Configs.MODEL)
+        .modelName(String.valueOf(Configs.MODEL))
         .build();
 
     private final StreamingChatLanguageModel streamingModel = OpenAiStreamingChatModel.builder()
         .baseUrl(Configs.BASE_URL)
         .apiKey(Configs.API_KEY)
-        .modelName(Configs.MODEL)
+        .modelName(String.valueOf(Configs.MODEL))
         .build();
 
     private final I18nPrompt prompt = new I18nPrompt(new Prompt());
