@@ -60,22 +60,19 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public double getTotalBalance(String userId) {
-
-        return 0;
-    }
-
-    @Override
     public double getNumberOfAccounts(String userId) {
         return getAccountsByUserId(userId).size();
     }
 
     @Override
     public double calculateNetWorth(String userId) {
-        double totalBalance = getTotalBalance(userId);
-
+        double totalBalance = 0.0;
         double totalIncome = 0.0;
         double totalSpending = 0.0;
+
+        for (Account account : getAccountsByUserId(userId)) {
+            totalBalance += account.getBalance();
+        }
 
         for (TransactionDto tx : getTransactionsByUserId(userId)) {
             if (Objects.equals(tx.getIncomeOrExpense(), "Income")) {
@@ -121,7 +118,28 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public double calculateCreditDue(String userId) {
-        // TODO: Implement credit due calculation
-        return 0;
+        List<Account> allAccounts = getAccountsByUserId(userId);
+        double totalDue = 0.0;
+        for (Account account : allAccounts) {
+            if (account.getAccountType().equals("CreditCard")) {
+                totalDue += account.getCurrentDebt();
+            }
+        }
+        return totalDue; // 返回计算出的总欠款
+    }
+
+    @Override
+    public LocalDateTime getLatestPaymentDueDate(String userId) {
+        List<Account> allAccounts = getAccountsByUserId(userId);
+        LocalDateTime latestPaymentDueDate = LocalDateTime.MAX; // 初始化为最大日期，以便后续比较
+        for (Account account : allAccounts) {
+            if (account.getAccountType().equals("CreditCard")) {
+                LocalDateTime paymentDueDate = account.getPaymentDueDate();
+                if (paymentDueDate.isBefore(latestPaymentDueDate)) {
+                    latestPaymentDueDate = paymentDueDate;
+                }
+            }
+        }
+        return latestPaymentDueDate;
     }
 }

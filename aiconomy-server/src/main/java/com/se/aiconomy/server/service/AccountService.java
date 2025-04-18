@@ -2,6 +2,7 @@ package com.se.aiconomy.server.service;
 
 import com.se.aiconomy.server.model.entity.Account;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface AccountService {
@@ -14,7 +15,6 @@ public interface AccountService {
 
     List<Account> getAccountsByUserId(String userId);
 
-    double getTotalBalance(String userId); // Account界面上面的TotalBalance
 
     double getNumberOfAccounts(String userId); // Account界面上面的ActiveAccounts
 
@@ -25,4 +25,6 @@ public interface AccountService {
     double calculateMonthlyIncome(String userId); // Dashboard界面上面的MonthlyIncome
 
     double calculateCreditDue(String userId); // Dashboard界面上面的CreditCardDue
+
+    LocalDateTime getLatestPaymentDueDate(String userId); // Dashboard界面上面的CreditCardDue的日期
 }
