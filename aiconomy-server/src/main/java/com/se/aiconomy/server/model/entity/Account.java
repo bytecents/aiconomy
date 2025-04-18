@@ -8,37 +8,35 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Getter
 @Setter
 @ToString
-@Document(collection = "Accounts", schemaVersion = "1.0")
+@Document(collection = "BankAccounts", schemaVersion = "1.0")
 public class Account implements Identifiable {
     @Id
-    private String id; // 用户账户ID
-    private String totalSavings; // 用户所有账户的总金额
-    private String availableAmount; // 用户可用金额
-    private String numAccounts; // 用户账户数量
-    private String totalExpense; // 用户所有账户的总支出
-    private String totalIncome; // 用户所有账户的总收入
-    private String totalBudget; // 用户所有账户的总预算
-    private List<BankAccount> accounts;
+    private String id; // 账户ID
+    private String bankName; // 银行名称
+    private String accountType; //账户类型
+    private String accountName; // 账户名称
+    private String expense; // 支出
+    private String income; // 收入
+    private String balance; // 余额
 
     private Map<String, Object> extraFields = new HashMap<>();
 
-    public Account() {}
+    public Account() {
+    }
 
-    public Account(String id, String totalSavings, String availableAmount, String numAccounts, String totalExpense, String totalIncome, String totalBudget, List<BankAccount> accounts) {
+    public Account(String id, String bankName, String accountType, String accountName, String expense, String income, String balance) {
         this.id = id;
-        this.totalSavings = totalSavings;
-        this.availableAmount = availableAmount;
-        this.numAccounts = numAccounts;
-        this.totalExpense = totalExpense;
-        this.totalIncome = totalIncome;
-        this.totalBudget = totalBudget;
-        this.accounts = accounts;
+        this.bankName = bankName;
+        this.accountType = accountType;
+        this.accountName = accountName;
+        this.expense = expense;
+        this.income = income;
+        this.balance = balance;
     }
 
     // 添加扩展字段
