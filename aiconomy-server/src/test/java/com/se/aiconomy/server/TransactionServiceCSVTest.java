@@ -17,15 +17,15 @@ import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.*;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class TransactionServiceTest {
-    private static final Logger log = LoggerFactory.getLogger(TransactionServiceTest.class);
+public class TransactionServiceCSVTest {
+    private static final Logger log = LoggerFactory.getLogger(TransactionServiceCSVTest.class);
     private static TransactionService transactionService;
     private static TransactionDao transactionDao;
     private final String testCsvPath = Objects.requireNonNull(getClass().getClassLoader().getResource("transactions.csv")).getPath();
 
     // 测试用时间
     private static final LocalDateTime TEST_TIME = LocalDateTime.parse("2025-04-17T10:11:09");
-    private static final String TEST_USER = "CharlesZZY";
+    private static final String TEST_USER = "AureliaSKY";
 
     @BeforeAll
     static void setup() {
