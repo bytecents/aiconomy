@@ -1,5 +1,6 @@
 package com.se.aiconomy.client.controller.signup;
 
+import com.se.aiconomy.client.Application.StyleClassFixer;
 import com.se.aiconomy.client.controller.signup.signupFlows.SignupFlowController1;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
