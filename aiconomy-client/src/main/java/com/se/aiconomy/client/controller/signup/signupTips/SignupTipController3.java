@@ -1,4 +1,4 @@
 package com.se.aiconomy.client.controller.signup.signupTips;
 
-public class signupTipController1 {
+public class SignupTipController3 {
 }
