@@ -4,15 +4,19 @@ import com.se.aiconomy.server.dao.TransactionDao;
 import com.se.aiconomy.server.model.dto.TransactionDto;
 import com.se.aiconomy.server.service.TransactionService;
 import com.se.aiconomy.server.service.TransactionService.TransactionSearchCriteria;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.junit.jupiter.api.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -22,16 +26,71 @@ public class TransactionServiceExcelTest {
     private static final Logger log = LoggerFactory.getLogger(TransactionServiceExcelTest.class);
     private static TransactionService transactionService;
     private static TransactionDao transactionDao;
-    private final String testExcelPath = Objects.requireNonNull(getClass().getClassLoader().getResource("transactions.xlsx")).getPath();
+    private static String testExcelPath;
 
     // 测试用时间
     private static final LocalDateTime TEST_TIME = LocalDateTime.parse("2025-04-18T10:11:09");
-    private static final String TEST_USER = "AureliaSKY";
+
+    /**
+     * 创建 Excel 文件用于测试
+     */
+    private static void createTestExcelFile() throws IOException {
+        // 创建工作簿和表格
+        Workbook workbook = new XSSFWorkbook();
+        Sheet sheet = workbook.createSheet("Transactions");
+
+        // 创建表头
+        String[] headers = {
+                "id", "time", "type", "counterparty", "product", "incomeOrExpense", "amount",
+                "paymentMethod", "status", "merchantOrderId", "remark"
+        };
+        Row headerRow = sheet.createRow(0);
+        for (int i = 0; i < headers.length; i++) {
+            Cell cell = headerRow.createCell(i);
+            cell.setCellValue(headers[i]);
+        }
+
+        // 创建交易数据
+        List<String[]> data = new ArrayList<>();
+        data.add(new String[]{"12345", "2025-04-16T10:30:00", "消费", "Walmart", "iPhone 15", "支出", "5999.99", "微信支付", "成功", "7890", "购买iPhone 15"});
+        data.add(new String[]{"12346", "2025-04-17T12:45:00", "转账", "支付宝", "MacBook Pro", "收入", "12999.00", "信用卡", "成功", "7891", "收到MacBook款项"});
+        data.add(new String[]{"12347", "2025-04-18T09:00:00", "消费", "京东", "耳机", "支出", "299.99", "支付宝", "待支付", "7892", "购买耳机"});
+        data.add(new String[]{"12348", "2025-04-19T15:00:00", "转账", "支付宝", "电视", "收入", "4999.00", "现金", "成功", "7893", "收到电视款项"});
+
+        // 将数据写入 Excel
+        int rowNum = 1;
+        for (String[] transaction : data) {
+            Row row = sheet.createRow(rowNum++);
+            for (int i = 0; i < transaction.length; i++) {
+                row.createCell(i).setCellValue(transaction[i]);
+            }
+        }
+
+        // 自动调整列宽
+        for (int i = 0; i < headers.length; i++) {
+            sheet.autoSizeColumn(i);
+        }
+
+        // 写入文件
+        try (FileOutputStream fileOut = new FileOutputStream("src/test/resources/transactions.xlsx")) {
+            workbook.write(fileOut);
+        }
+
+        // 关闭工作簿
+        workbook.close();
+        log.info("Excel 文件创建成功!");
+    }
 
     @BeforeAll
-    static void setup() {
+    static void setup() throws IOException {
         transactionService = new TransactionService();
         transactionDao = TransactionDao.getInstance();
+
+        // 创建 Excel 文件
+        createTestExcelFile();
+
+        // 获取 Excel 文件路径
+        testExcelPath = Objects.requireNonNull(TransactionServiceExcelTest.class.getClassLoader().getResource("transactions.xlsx")).getPath();
     }
 
     @BeforeEach
