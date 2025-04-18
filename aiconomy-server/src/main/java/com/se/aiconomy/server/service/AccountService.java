@@ -7,12 +7,23 @@ import java.util.List;
 public interface AccountService {
     void addBankAccount(Account account);
     void updateAccount(Account account);
-    void deleteAccount(Long accountId);
-    Account getAccountById(Long accountId);
+
+    void deleteAccount(String accountId);
+
+    Account getAccountById(String accountId);
     List<Account> getAllAccounts();
-    List<Account> getAccountsByUserId(Long userId);
-    void transferMoney(Long fromBankAccountId, Long toBankAccountId, double amount);
-    void depositMoney(Long bankAccountId, double amount);
-    void withdrawMoney(Long bankAccountId, double amount);
-    double checkBalance(Long bankAccountId);
+
+    List<Account> getAccountsByUserId(String userId);
+
+    double getTotalBalance(); // Account界面上面的TotalBalance
+
+    double getNumberOfAccounts(); // Account界面上面的ActiveAccounts
+
+    double calculateNetWorth(); // Dashboard界面上面的NetWorth
+
+    double calculateMonthlySpending(); // Dashboard界面上面的MonthlySpending
+
+    double calculateMonthlyIncome(); // Dashboard界面上面的MonthlyIncome
+
+    double calculateCreditDue(); // Dashboard界面上面的CreditCardDue
 }

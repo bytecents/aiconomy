@@ -20,8 +20,8 @@ public class Account implements Identifiable {
     private String bankName; // 银行名称
     private String accountType; //账户类型
     private String accountName; // 账户名称
-    private String expense; // 支出
-    private String income; // 收入
+    private double expense; // 支出
+    private double income; // 收入
     private String balance; // 余额
 
     private Map<String, Object> extraFields = new HashMap<>();
@@ -29,7 +29,7 @@ public class Account implements Identifiable {
     public Account() {
     }
 
-    public Account(String id, String bankName, String accountType, String accountName, String expense, String income, String balance) {
+    public Account(String id, String bankName, String accountType, String accountName, double expense, double income, String balance) {
         this.id = id;
         this.bankName = bankName;
         this.accountType = accountType;
