@@ -54,7 +54,7 @@ public class TransactionService {
      */
     public List<TransactionDto> importTransactions(String filePath) throws IOException, ServiceException {
         String fileExtension = getFileExtension(filePath);  // 获取文件扩展名
-        List<TransactionDto> transactions = null;
+        List<TransactionDto> transactions;
 
         try {
             // 根据文件扩展名判断文件类型，选择使用相应的导入工具

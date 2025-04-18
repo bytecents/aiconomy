@@ -25,8 +25,7 @@ public class UserServiceImpl implements UserService {
     public void register(User user) {
         if (emailExists(user.getEmail())) {
             throw new RuntimeException("Email already exists");
-        }
-        else {
+        } else {
             jsonStorageService.insert(user);
         }
     }
@@ -34,15 +33,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public User login(String email, String password) {
         return jsonStorageService.findAll(User.class).stream()
-                .filter(u -> email.equals(u.getEmail()) && password.equals(u.getPassword()))
-                .findFirst()
-                .orElseThrow(() -> new RuntimeException("Invalid email or password"));
+            .filter(u -> email.equals(u.getEmail()) && password.equals(u.getPassword()))
+            .findFirst()
+            .orElseThrow(() -> new RuntimeException("Invalid email or password"));
     }
 
     @Override
     public boolean emailExists(String email) {
         return jsonStorageService.findAll(User.class).stream()
-                .anyMatch(user -> email.equals(user.getEmail()));
+            .anyMatch(user -> email.equals(user.getEmail()));
     }
 
     @Override
@@ -58,7 +57,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void updateUser(User user) {
-        if (!jsonStorageService.findById(user.getId(), User.class).isPresent()) {
+        if (jsonStorageService.findById(user.getId(), User.class).isEmpty()) {
             throw new RuntimeException("User not found with id: " + user.getId());
         }
         jsonStorageService.update(user, User.class);

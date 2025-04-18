@@ -8,6 +8,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class ExcelUtils {
@@ -59,6 +61,7 @@ public class ExcelUtils {
     private static <T> T createBeanFromRow(Row row, Class<T> beanClass, List<String> headers) throws IOException {
         try {
             T beanInstance = beanClass.getDeclaredConstructor().newInstance();
+
             for (int i = 0; i < row.getPhysicalNumberOfCells(); i++) {
                 Cell cell = row.getCell(i);
                 String header = headers.get(i).trim();
@@ -77,13 +80,30 @@ public class ExcelUtils {
                 if (cell != null) {
                     switch (cell.getCellType()) {
                         case STRING:
-                            field.set(beanInstance, cell.getStringCellValue());
+                            if (field.getType() == LocalDateTime.class) {
+                                // 如果字段是 LocalDateTime 类型，解析日期字符串
+                                String dateString = cell.getStringCellValue();
+                                DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+                                LocalDateTime dateTime = LocalDateTime.parse(dateString, formatter);
+                                field.set(beanInstance, dateTime);
+                            } else {
+                                field.set(beanInstance, cell.getStringCellValue());
+                            }
                             break;
                         case NUMERIC:
                             if (DateUtil.isCellDateFormatted(cell)) {
-                                field.set(beanInstance, cell.getDateCellValue());
+                                // 如果是日期格式的单元格，转换为 LocalDateTime
+                                LocalDateTime dateTime = cell.getDateCellValue().toInstant()
+                                        .atZone(java.time.ZoneId.systemDefault())
+                                        .toLocalDateTime();
+                                field.set(beanInstance, dateTime);
                             } else {
-                                field.set(beanInstance, cell.getNumericCellValue());
+                                // 如果是数字类型，直接设置
+                                if (field.getType() == Double.class) {
+                                    field.set(beanInstance, cell.getNumericCellValue());
+                                } else {
+                                    field.set(beanInstance, cell.getNumericCellValue());
+                                }
                             }
                             break;
                         case BOOLEAN:
@@ -138,11 +158,11 @@ public class ExcelUtils {
     /**
      * 根据 Excel 表格中的行数据和列映射创建 Java Bean 实例
      *
-     * @param row            当前行
-     * @param beanClass      Java Bean 类型
-     * @param headers        表头列名列表
-     * @param columnMapping  列映射关系 (Excel列名 -> Java字段名)
-     * @param <T>            Java Bean 类型
+     * @param row           当前行
+     * @param beanClass     Java Bean 类型
+     * @param headers       表头列名列表
+     * @param columnMapping 列映射关系 (Excel列名 -> Java字段名)
+     * @param <T>           Java Bean 类型
      * @return Java Bean 实例
      * @throws IOException
      */
