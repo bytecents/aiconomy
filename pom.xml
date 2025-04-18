@@ -83,6 +83,14 @@
             <version>5.7.1</version>
         </dependency>
 
+        <!-- Excel -->
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>5.2.3</version> <!-- 使用最新版本 -->
+        </dependency>
+
+
         <!--    JSON    -->
         <dependency>
             <groupId>com.alibaba.fastjson2</groupId>
@@ -123,7 +131,7 @@
                         <!-- Default configuration for running with: mvn clean javafx:run -->
                         <id>default-cli</id>
                         <configuration>
-                            <mainClass>com.se.aiconomy.client.Application.AIconomyApplication</mainClass>
+                            <mainClass>com.se.aiconomy.client.Application.AIconomyApplication_old</mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>
                             <jlinkImageName>app</jlinkImageName>

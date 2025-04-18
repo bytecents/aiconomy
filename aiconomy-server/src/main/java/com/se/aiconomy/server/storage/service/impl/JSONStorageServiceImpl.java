@@ -1,8 +1,8 @@
 package com.se.aiconomy.server.storage.service.impl;
 
 import com.se.aiconomy.server.storage.common.Identifiable;
-import com.se.aiconomy.server.storage.service.JSONStorageService;
 import com.se.aiconomy.server.storage.common.JSONStorageConfig;
+import com.se.aiconomy.server.storage.service.JSONStorageService;
 import io.jsondb.JsonDBTemplate;
 import io.jsondb.crypto.Default1Cipher;
 import io.jsondb.crypto.ICipher;
@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import java.security.GeneralSecurityException;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 public class JSONStorageServiceImpl implements JSONStorageService {
     private static final Logger log = LoggerFactory.getLogger(JSONStorageServiceImpl.class);
@@ -53,6 +54,9 @@ public class JSONStorageServiceImpl implements JSONStorageService {
 
     @Override
     public <T extends Identifiable> T insert(T entity) {
+        if (entity.getId() == null || entity.getId().isEmpty()) {
+            entity.setId(UUID.randomUUID().toString());
+        }
         jsonDBTemplate.insert(entity);
         log.info("Inserted {}", entity);
         return entity;
@@ -84,6 +88,9 @@ public class JSONStorageServiceImpl implements JSONStorageService {
 
     @Override
     public <T extends Identifiable> T upsert(T entity) {
+        if (entity.getId() == null || entity.getId().isEmpty()) {
+            entity.setId(UUID.randomUUID().toString());
+        }
         jsonDBTemplate.upsert(entity);
         log.info("Upsert {}", entity);
         return entity;

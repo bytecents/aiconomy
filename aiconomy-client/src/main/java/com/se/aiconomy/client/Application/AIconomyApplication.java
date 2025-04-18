@@ -32,3 +32,4 @@ public class AIconomyApplication extends Application {
         launch();
     }
 }
+
