@@ -18,5 +18,4 @@ public interface UserService {
     void updateUser(User user); // 更新用户信息
 
     void deleteUserById(String id); // 根据ID删除用户
-
 }
