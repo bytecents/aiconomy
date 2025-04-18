@@ -25,7 +25,7 @@ public class TransactionServiceTest {
 
     // 测试用时间
     private static final LocalDateTime TEST_TIME = LocalDateTime.parse("2025-04-17T10:11:09");
-    private static final String TEST_USER = "CharlesZZY";
+    private static final String TEST_USER = "AureliaSKY";
 
     @BeforeAll
     static void setup() {
