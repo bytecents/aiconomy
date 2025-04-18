@@ -5,7 +5,9 @@ import com.se.aiconomy.server.model.entity.Account;
 import com.se.aiconomy.server.service.AccountService;
 import com.se.aiconomy.server.storage.service.JSONStorageService;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 public class AccountServiceImpl implements AccountService {
@@ -17,7 +19,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     private void initializeAccountCollection() {
-        if(!jsonStorageService.collectionExists(Account.class)) {
+        if (!jsonStorageService.collectionExists(Account.class)) {
             jsonStorageService.initializeCollection(Account.class);
         }
     }
@@ -51,7 +53,10 @@ public class AccountServiceImpl implements AccountService {
     }
 
     private List<TransactionDto> getTransactionsByUserId(String userId) {
-        return null;
+        List<TransactionDto> allTransactions = jsonStorageService.findAll(TransactionDto.class);
+        return allTransactions.stream()
+                .filter(tx -> tx.getUserId().equals(userId))
+                .toList();
     }
 
     @Override
@@ -67,36 +72,56 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public double calculateNetWorth(String userId) {
-        double totalBalance = getTotalBalance(userId);  // 总余额
+        double totalBalance = getTotalBalance(userId);
+
         double totalIncome = 0.0;
         double totalSpending = 0.0;
 
-        // 遍历用户所有账户的交易记录
-//        for (Account account : getAccountsByUserId(userId)) {
-//            for (Transaction transaction : transactions.getTransactions(userId)) {
-//                if (transaction.getType() == TransactionType.INCOME) {
-//                    totalIncome += transaction.getAmount(); // 收入
-//                } else if (transaction.getType() == TransactionType.EXPENSE) {
-//                    totalSpending += transaction.getAmount(); // 支出
-//                }
-//            }
-//        }
+        for (TransactionDto tx : getTransactionsByUserId(userId)) {
+            if (Objects.equals(tx.getIncomeOrExpense(), "Income")) {
+                totalIncome += Double.parseDouble(tx.getAmount());
+            } else if (Objects.equals(tx.getIncomeOrExpense(), "Expense")) {
+                totalSpending += Double.parseDouble(tx.getAmount());
+            }
+        }
 
-        return totalBalance + totalIncome - totalSpending;  // 净资产 = 余额 + 收入 - 支出
+        return totalBalance + totalIncome - totalSpending;
     }
+
 
     @Override
     public double calculateMonthlySpending(String userId) {
-        return 0;
+        List<TransactionDto> allTransactions = getTransactionsByUserId(userId);
+        double total = 0.0;
+        LocalDateTime firstDayOfMonth = LocalDateTime.now().withDayOfMonth(1);
+        LocalDateTime lastDayOfMonth = LocalDateTime.now().withDayOfMonth(1).plusMonths(1).minusDays(1);
+
+        for (TransactionDto tx : allTransactions) {
+            if (Objects.equals(tx.getIncomeOrExpense(), "Expense") && tx.getTime().isAfter(firstDayOfMonth) && tx.getTime().isBefore(lastDayOfMonth)) {
+                total += Double.parseDouble(tx.getAmount());
+            }
+        }
+        return total;
     }
 
     @Override
     public double calculateMonthlyIncome(String userId) {
-        return 0;
+        List<TransactionDto> allTransactions = getTransactionsByUserId(userId);
+        double total = 0.0;
+        LocalDateTime firstDayOfMonth = LocalDateTime.now().withDayOfMonth(1);
+        LocalDateTime lastDayOfMonth = LocalDateTime.now().withDayOfMonth(1).plusMonths(1).minusDays(1);
+
+        for (TransactionDto tx : allTransactions) {
+            if (Objects.equals(tx.getIncomeOrExpense(), "Income") && tx.getTime().isAfter(firstDayOfMonth) && tx.getTime().isBefore(lastDayOfMonth)) {
+                total += Double.parseDouble(tx.getAmount());
+            }
+        }
+        return total;
     }
 
     @Override
     public double calculateCreditDue(String userId) {
+        // TODO: Implement credit due calculation
         return 0;
     }
 }
