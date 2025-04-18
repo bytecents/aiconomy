@@ -1,10 +1,10 @@
 package com.se.aiconomy.server;
 
-import com.se.aiconomy.langchain.common.model.BillType;
-import com.se.aiconomy.langchain.common.model.Transaction;
 import com.se.aiconomy.server.common.exception.ServiceException;
 import com.se.aiconomy.server.dao.TransactionDao;
 import com.se.aiconomy.server.handler.TransactionRequestHandler;
+import com.se.aiconomy.server.langchain.common.model.BillType;
+import com.se.aiconomy.server.langchain.common.model.Transaction;
 import com.se.aiconomy.server.model.dto.transaction.request.TransactionClassificationRequest;
 import com.se.aiconomy.server.model.dto.transaction.request.TransactionImportRequest;
 import org.junit.jupiter.api.AfterEach;

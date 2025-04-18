@@ -1,9 +1,9 @@
 package com.se.aiconomy.server.handler;
 
-import com.se.aiconomy.langchain.common.model.BillType;
-import com.se.aiconomy.langchain.common.model.Transaction;
 import com.se.aiconomy.server.common.exception.ServiceException;
 import com.se.aiconomy.server.common.utils.FileUtils;
+import com.se.aiconomy.server.langchain.common.model.BillType;
+import com.se.aiconomy.server.langchain.common.model.Transaction;
 import com.se.aiconomy.server.model.dto.transaction.request.TransactionClassificationRequest;
 import com.se.aiconomy.server.model.dto.transaction.request.TransactionImportRequest;
 import com.se.aiconomy.server.service.TransactionService;

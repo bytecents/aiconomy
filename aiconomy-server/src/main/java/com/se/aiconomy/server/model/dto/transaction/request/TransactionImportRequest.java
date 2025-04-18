@@ -1,7 +1,7 @@
 package com.se.aiconomy.server.model.dto.transaction.request;
 
-import com.se.aiconomy.langchain.common.model.BillType;
-import com.se.aiconomy.langchain.common.model.Transaction;
+import com.se.aiconomy.server.langchain.common.model.BillType;
+import com.se.aiconomy.server.langchain.common.model.Transaction;
 import com.se.aiconomy.server.model.dto.BaseRequest;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
