@@ -54,5 +54,5 @@ public class TransactionDto implements Identifiable {
     @CsvBindByPosition(position = 10)
     private String remark;  // 备注
 
-    private String userId;  // 用户ID
+    private String userId;
 }

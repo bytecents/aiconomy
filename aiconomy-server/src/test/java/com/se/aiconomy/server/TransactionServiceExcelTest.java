@@ -24,12 +24,11 @@ import static org.junit.jupiter.api.Assertions.*;
 public class TransactionServiceExcelTest {
 
     private static final Logger log = LoggerFactory.getLogger(TransactionServiceExcelTest.class);
+    // 测试用时间
+    private static final LocalDateTime TEST_TIME = LocalDateTime.parse("2025-04-18T10:11:09");
     private static TransactionService transactionService;
     private static TransactionDao transactionDao;
     private static String testExcelPath;
-
-    // 测试用时间
-    private static final LocalDateTime TEST_TIME = LocalDateTime.parse("2025-04-18T10:11:09");
 
     /**
      * 创建 Excel 文件用于测试
