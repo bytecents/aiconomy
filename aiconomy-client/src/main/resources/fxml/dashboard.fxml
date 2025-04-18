@@ -64,7 +64,7 @@
         </VBox>
     </GridPane>
 
-    <GridPane hgap="24" vgap="24">
+    <GridPane hgap="24" vgap="24" VBox.vgrow="ALWAYS">
         <columnConstraints>
             <ColumnConstraints percentWidth="50"/>
             <ColumnConstraints percentWidth="50"/>
@@ -132,12 +132,12 @@
             </VBox>
         </VBox>
 
-        <VBox GridPane.columnIndex="1" GridPane.rowIndex="0" styleClass="card p-2_5-6-6-6 gap-4">
+        <VBox GridPane.columnIndex="1" GridPane.rowIndex="0" styleClass="card p-4-6-6-6 gap-4">
             <!-- Header -->
             <HBox alignment="CENTER_LEFT" styleClass="gap-3">
                 <Label text="Spending Trends" styleClass="font-semibold text-base text-gray-900"/>
                 <Region HBox.hgrow="ALWAYS"/>
-                <ComboBox fx:id="trendSelect" styleClass="text-sm font-roboto rounded border border-gray-200 min-h-10">
+                <ComboBox fx:id="trendSelect" styleClass="text-sm font-roboto">
                     <items>
                         <FXCollections fx:factory="observableArrayList">
                             <String fx:value="Last 7 Days"/>
@@ -148,7 +148,7 @@
             </HBox>
 
             <!-- Chart Placeholder -->
-            <StackPane styleClass="h-36 bg-gray-50 rounded-lg">
+            <StackPane styleClass="bg-gray-50 rounded-lg" VBox.vgrow="ALWAYS">
                 <Label text="Trend Chart Area" styleClass="text-gray-400"/>
             </StackPane>
         </VBox>

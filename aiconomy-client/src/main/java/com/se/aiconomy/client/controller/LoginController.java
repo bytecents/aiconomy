@@ -1,5 +1,6 @@
 package com.se.aiconomy.client.controller;
 
+import com.se.aiconomy.client.Application.StyleClassFixer;
 import javafx.animation.FadeTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -43,6 +44,7 @@ public class LoginController {
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/main.fxml"));
         Parent root = loader.load();
+        StyleClassFixer.fixStyleClasses(root);
 
         // Get the current window, and load main page
         Stage stage = (Stage) loginButton.getScene().getWindow();

@@ -1,5 +1,6 @@
 package com.se.aiconomy.client.controller.signup.signupFlows;
 
+import com.se.aiconomy.client.Application.StyleClassFixer;
 import com.se.aiconomy.client.controller.signup.SignupController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -37,6 +38,7 @@ public class SignupFlowController1 {
     @FXML
     public void switchToLogin(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/login.fxml")));
+
         Stage stage = (Stage) loginEntry.getScene().getWindow();
         Scene currentScene = stage.getScene();
 
