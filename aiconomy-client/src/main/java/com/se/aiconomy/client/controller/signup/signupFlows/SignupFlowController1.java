@@ -34,7 +34,8 @@ public class SignupFlowController1 {
         }
     }
 
-    public void switchToSignup(ActionEvent event) throws IOException {
+    @FXML
+    public void switchToLogin(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/login.fxml")));
         Stage stage = (Stage) loginEntry.getScene().getWindow();
         Scene currentScene = stage.getScene();
