@@ -1,0 +1,438 @@
+@font-face {
+    font-family: 'Roboto Black';
+    src: url('/assets/fonts/Roboto-Black.ttf');
+}
+
+@font-face {
+    font-family: 'Roboto Black Italic';
+    src: url('/assets/fonts/Roboto-BlackItalic.ttf');
+}
+
+@font-face {
+    font-family: 'Roboto Bold';
+    src: url('/assets/fonts/Roboto-Bold.ttf');
+}
+
+@font-face {
+    font-family: 'Roboto Bold Italic';
+    src: url('/assets/fonts/Roboto-BoldItalic.ttf');
+}
+
+@font-face {
+    font-family: 'Roboto Italic';
+    src: url('/assets/fonts/Roboto-Italic.ttf');
+}
+
+@font-face {
+    font-family: 'Roboto Light';
+    src: url('/assets/fonts/Roboto-Light.ttf');
+}
+
+@font-face {
+    font-family: 'Roboto Light Italic';
+    src: url('/assets/fonts/Roboto-LightItalic.ttf');
+}
+
+@font-face {
+    font-family: 'Roboto Medium';
+    src: url('/assets/fonts/Roboto-Medium.ttf');
+}
+
+@font-face {
+    font-family: 'Roboto Medium Italic';
+    src: url('/assets/fonts/Roboto-MediumItalic.ttf');
+}
+
+@font-face {
+    font-family: 'Roboto';
+    src: url('/assets/fonts/Roboto-Regular.ttf');
+}
+
+@font-face {
+    font-family: 'Roboto Thin';
+    src: url('/assets/fonts/Roboto-Thin.ttf');
+}
+
+@font-face {
+    font-family: 'Roboto Thin Italic';
+    src: url('/assets/fonts/Roboto-ThinItalic.ttf');
+}
+
+@font-face {
+    font-family: 'Roboto SemiBold';
+    src: url('/assets/fonts/Roboto-SemiBold.ttf');
+}
+
+@font-face {
+    font-family: 'Roboto SemiBold Italic';
+    src: url('/assets/fonts/Roboto-SemiBoldItalic.ttf');
+}
+
+@font-face {
+    font-family: 'Roboto ExtraLight';
+    src: url('/assets/fonts/Roboto-ExtraLight.ttf');
+}
+
+@font-face {
+    font-family: 'Roboto ExtraLight Italic';
+    src: url('/assets/fonts/Roboto-ExtraLightItalic.ttf');
+}
+
+@font-face {
+    font-family: 'Roboto ExtraBold';
+    src: url('/assets/fonts/Roboto-ExtraBold.ttf');
+}
+
+@font-face {
+    font-family: 'Roboto ExtraBold Italic';
+    src: url('/assets/fonts/Roboto-ExtraBoldItalic.ttf');
+}
+
+.font-roboto {
+    -fx-font-family: 'Roboto';
+}
+
+.font-bold {
+    -fx-font-family: 'Roboto Bold';
+}
+
+.font-black {
+    -fx-font-family: 'Roboto Black';
+}
+
+.font-light {
+    -fx-font-family: 'Roboto Light';
+}
+
+.font-thin {
+    -fx-font-family: 'Roboto Thin';
+}
+
+.font-medium {
+    -fx-font-family: 'Roboto Medium';
+}
+
+.font-semibold {
+    -fx-font-family: 'Roboto SemiBold';
+}
+
+.font-extralight {
+    -fx-font-family: 'Roboto ExtraLight';
+}
+
+.font-extrabold {
+    -fx-font-family: 'Roboto ExtraBold';
+}
+
+.font-italic {
+    -fx-font-style: italic;
+}
+
+.font-normal {
+    -fx-font-style: normal;
+}
+
+.text-xl {
+    -fx-font-size: 20px;
+}
+
+.text-2xl {
+    -fx-font-size: 24px;
+}
+
+.text-lg {
+    -fx-font-size: 18px;
+}
+
+.text-base {
+    -fx-font-size: 16px;
+}
+
+.text-sm {
+    -fx-font-size: 14px;
+}
+
+.text-xs {
+    -fx-font-size: 12px;
+}
+
+.bg-blue-600 {
+    -fx-background-color: #2563EB;
+}
+
+.text-gray-500 {
+    -fx-text-fill: #6B7280;
+}
+
+.text-gray-900 {
+    -fx-text-fill: #111827;
+}
+
+.text-white {
+    -fx-text-fill: white;
+}
+
+.text-green-500 {
+    -fx-text-fill: #10B981;
+}
+
+.text-gray-400 {
+    -fx-text-fill: #9CA3AF;
+}
+
+.text-red-500 {
+    -fx-text-fill: #EF4444;
+}
+
+.text-blue-500 {
+    -fx-text-fill: #3B82F6;
+}
+
+.rounded {
+    -fx-background-radius: 4;
+    -fx-border-radius: 4;
+}
+
+.rounded-lg {
+    -fx-background-radius: 8;
+    -fx-border-radius: 8;
+}
+
+.rounded-xl {
+    -fx-background-radius: 16;
+    -fx-border-radius: 16;
+}
+
+.rounded-full {
+    -fx-background-radius: 9999;
+    -fx-border-radius: 9999;
+}
+
+.gap-0_5 {
+    -fx-spacing: 2;
+}
+
+.gap-1 {
+    -fx-spacing: 4;
+}
+
+.gap-1_5 {
+    -fx-spacing: 6;
+}
+
+.gap-2 {
+    -fx-spacing: 8;
+}
+
+.gap-2_5 {
+    -fx-spacing: 10;
+}
+
+.gap-3 {
+    -fx-spacing: 12;
+}
+
+.gap-4 {
+    -fx-spacing: 16;
+}
+
+.gap-5 {
+    -fx-spacing: 20;
+}
+
+.bg-black {
+    -fx-background-color: black;
+}
+
+.bg-background {
+    -fx-background-color: #F3F4F6;
+}
+
+.bg-secondary {
+    -fx-background-color: #F9FAFB;
+}
+
+.hover-bg-blue-700:hover {
+    -fx-background-color: #1D4ED8;
+}
+
+.hover-bg-gray-50:hover {
+    -fx-background-color: #F9FAFB;
+}
+
+.hover-bg-black:hover {
+    -fx-background-color: black;
+}
+
+.bg-red-100 {
+    -fx-background-color: #FEF2F2;
+}
+
+.bg-blue-100 {
+    -fx-background-color: #DBEAFE;
+}
+
+.bg-green-100 {
+    -fx-background-color: #D1FAE5;
+}
+
+.bg-gray-50 {
+    -fx-background-color: #F9FAFB;
+}
+
+.bg-gray-400 {
+    -fx-background-color: #9CA3AF;
+}
+
+.min-h-0 {
+    -fx-min-height: 0;
+}
+
+.min-h-2 {
+    -fx-min-height: 8;
+}
+
+.min-h-6 {
+    -fx-min-height: 24;
+}
+
+.min-h-10 {
+    -fx-min-height: 40;
+}
+
+.h-3 {
+    -fx-pref-height: 12;
+}
+
+.h-6 {
+    -fx-pref-height: 24;
+}
+
+.h-10 {
+    -fx-cell-size: 40;
+}
+
+.h-36 {
+    -fx-pref-height: 144;
+}
+
+.w-10 {
+    -fx-pref-width: 40;
+}
+
+.p-2_5 {
+    -fx-padding: 10;
+}
+
+.p-3 {
+    -fx-padding: 12;
+}
+
+.p-6 {
+    -fx-padding: 24;
+}
+
+.p-2_5-6-6-6 {
+    -fx-padding: 10 24 24 24;
+}
+
+.p-8 {
+    -fx-padding: 32;
+}
+
+.pb-1 {
+    -fx-padding: 0 0 4 0;
+}
+
+.pb-2 {
+    -fx-padding: 0 0 8 0;
+}
+
+.pb-4 {
+    -fx-padding: 0 0 16 0;
+}
+
+.pb-8 {
+    -fx-padding: 0 0 32 0;
+}
+
+.p-0 {
+    -fx-padding: 0;
+}
+
+.px-4 {
+    -fx-padding: 0 16 0 16;
+}
+
+.py-2 {
+    -fx-padding: 8 0 8 0;
+}
+
+.p-4-2 {
+    -fx-padding: 8 16 8 16;
+}
+
+.p-3-1\.5 {
+    -fx-padding: 6 12 6 12;
+}
+
+.border-b {
+    -fx-border-color: #E5E7EB;
+    -fx-border-width: 0 0 1 0;
+}
+
+.border-r {
+    -fx-border-color: #E5E7EB;
+    -fx-border-width: 0 1 0 0;
+}
+
+.bg-white {
+    -fx-background-color: white;
+}
+
+.border {
+    -fx-border-color: #E5E7EB;
+    -fx-border-width: 1;
+}
+
+.border-gray-100 {
+    -fx-border-color: #F3F4F6;
+}
+
+.shadow-sm {
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 2, 0, 0, 1);
+}
+
+.card {
+    -fx-background-color: white;
+    -fx-background-radius: 16;
+    -fx-border-radius: 16;
+    -fx-border-color: #F3F4F6;
+    -fx-border-width: 1;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 2, 0, 0, 1);
+}
+
+.cursor-pointer {
+    -fx-cursor: hand;
+}
+
+.red-bar .track {
+    -fx-background-color: #f3f4f6;
+}
+.red-bar .bar {
+    -fx-background-color: #EF4444;
+}
+
+.green-bar .track {
+    -fx-background-color: #f3f4f6;
+}
+.green-bar .bar {
+    -fx-background-color: #10B981;
+}
+
+.blue-bar .track {
+    -fx-background-color: #f3f4f6;
+}
+.blue-bar .bar {
+    -fx-background-color: #3B82F6;
+}
