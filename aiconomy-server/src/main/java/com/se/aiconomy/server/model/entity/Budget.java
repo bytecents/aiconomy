@@ -11,23 +11,17 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Getter
+@Setter
 @ToString
 @Document(collection = "Budgets", schemaVersion = "1.0")
 public class Budget implements Identifiable {
-    @Setter
     @Id
     private String Id; // 预算ID
-    @Setter
     private String userId; // 用户ID
-    @Setter
     private String budgetCategory; // 预算类别 (如 "餐饮", "交通")
-    @Setter
     private double budgetAmount; // 预算金额（元）
-    @Setter
     private String budgetPeriod; // 预算周期 (如 "月", "季度")
-    @Setter
     private String alertSettings; // 预算预警设置 (如 "超过80%时提醒")
-    @Setter
     private String notes; // 备注
 
     private Map<String, Object> extraFields = new HashMap<>();
