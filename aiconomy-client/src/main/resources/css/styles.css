@@ -412,6 +412,10 @@
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 2, 0, 0, 1);
 }
 
+.date-picker-padding .text-field {
+    -fx-padding: 10px 48px 10px 48px;
+}
+
 .cursor-pointer {
     -fx-cursor: hand;
 }
