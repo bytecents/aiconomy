@@ -10,17 +10,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
-import java.util.Optional;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class UserServiceTest {
     private static final Logger log = LoggerFactory.getLogger(User.class);
-    private static JSONStorageService jsonStorageService;
-    private static UserService userService;
-
     private static final String TEST_USER_ID = "U2025041409";
     private static final String TEST_EMAIL = "test@example.com";
     private static final String TEST_PASSWORD = "123456";
+    private static JSONStorageService jsonStorageService;
+    private static UserService userService;
 
     @BeforeAll
     static void setup() {
@@ -29,9 +27,9 @@ public class UserServiceTest {
     }
 
     @BeforeEach
-    void cleanUp(){
+    void cleanUp() {
         jsonStorageService.findAll(User.class)
-                .forEach(u -> jsonStorageService.delete(u, User.class));
+            .forEach(u -> jsonStorageService.delete(u, User.class));
         log.info("Cleaned up all users before test");
     }
 
@@ -63,7 +61,7 @@ public class UserServiceTest {
     @Order(3)
     void testInvalidLogin() {
         RuntimeException exception = Assertions.assertThrows(RuntimeException.class,
-                () -> userService.login("nonexistent@example.com", "wrong"));
+            () -> userService.login("nonexistent@example.com", "wrong"));
         Assertions.assertEquals("Invalid email or password", exception.getMessage());
         log.info("Successfully test invalid login");
     }
@@ -91,7 +89,7 @@ public class UserServiceTest {
         userService.deleteUserById(TEST_USER_ID);
 
         RuntimeException exception = Assertions.assertThrows(RuntimeException.class,
-                () -> userService.getUserById(TEST_USER_ID));
+            () -> userService.getUserById(TEST_USER_ID));
         Assertions.assertEquals("User not found with id: " + TEST_USER_ID, exception.getMessage());
         log.info("Successfully test delete user");
     }
@@ -117,7 +115,7 @@ public class UserServiceTest {
         List<User> allUsers = userService.getAllUsers();
         Assertions.assertFalse(allUsers.isEmpty());
         Assertions.assertEquals(1, allUsers.size());
-        Assertions.assertEquals(TEST_USER_ID, allUsers.get(0).getId());
+        Assertions.assertEquals(TEST_USER_ID, allUsers.getFirst().getId());
         log.info("Successfully test get all users");
     }
 

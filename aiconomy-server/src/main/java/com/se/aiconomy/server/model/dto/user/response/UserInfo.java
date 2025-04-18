@@ -1,26 +1,20 @@
-package com.se.aiconomy.server.model.entity;
+package com.se.aiconomy.server.model.dto.user.response;
 
-import com.se.aiconomy.server.storage.common.Identifiable;
-import io.jsondb.annotation.Document;
-import io.jsondb.annotation.Id;
-import io.jsondb.annotation.Secret;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDate;
 import java.util.List;
 
 @Getter
 @Setter
-@ToString
-@Document(collection = "User", schemaVersion = "1.0")
-@NoArgsConstructor
 @AllArgsConstructor
-public class User implements Identifiable {
-    @Id
+@Builder
+public class UserInfo {
     private String id; // 唯一标识符
     private String email; // 邮箱
-    @Secret
-    private String password; // 密码
     private String avatarUrl; // 头像
     private String firstName; // 名字
     private String lastName; // 姓氏
