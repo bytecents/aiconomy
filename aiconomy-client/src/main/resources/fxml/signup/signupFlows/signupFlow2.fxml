@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
+<?import javafx.collections.FXCollections?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Hyperlink?>
 <?import javafx.scene.control.Label?>
@@ -20,9 +22,9 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
-<HBox prefHeight="883.0" prefWidth="541.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.se.aiconomy.client.controller.signup.signupFlows.SignupFlowController2">
+<HBox prefHeight="883.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.se.aiconomy.client.controller.signup.signupFlows.SignupFlowController2">
    <children>
-      <VBox maxWidth="700.0" prefHeight="720.0" prefWidth="520.0" spacing="16.0" style="-fx-background-color: white;">
+      <VBox maxWidth="700.0" prefHeight="720.0" prefWidth="520.0" spacing="16.0" style="-fx-background-color: white;" HBox.hgrow="ALWAYS">
          <padding>
             <Insets bottom="48.0" left="48.0" right="48.0" top="48.0" />
          </padding>
@@ -33,7 +35,7 @@
                      <children>
                         <Label text="Complete Your Profile" textFill="#1f2937" wrapText="true" VBox.vgrow="SOMETIMES">
                            <font>
-                              <Font name="System Bold" size="32.0" />
+                              <Font name="System Bold" size="28.0" />
                            </font>
                         </Label>
                         <Label text="Tell us a bit about yourself" textFill="#6b7280" />
@@ -95,7 +97,7 @@
                                                 <Circle fill="#f3f4f6" radius="40.0" stroke="BLACK" strokeType="INSIDE" />
                                                 <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
-                                                      <Image url="@../../../assets/default_avatar.png"/>
+                                                      <Image url="@../../../assets/default_avatar.png" />
                                                    </image>
                                                 </ImageView>
                                              </children>
@@ -211,13 +213,22 @@
                         </HBox>
                      </children>
                   </VBox>
-                  <HBox alignment="CENTER_LEFT" prefHeight="0.0" prefWidth="424.0" spacing="4.0">
+                  <HBox prefHeight="0.0" prefWidth="445.0">
                      <children>
-                        <CheckBox mnemonicParsing="false" />
-                        <Label text="I agree to the" />
-                        <Hyperlink text="Terms of Service" textFill="#2563eb" />
-                        <Label text="and" />
-                        <Hyperlink text="Privacy Policy" textFill="#2563eb" />
+                        <VBox prefHeight="1.0" prefWidth="445.0">
+                           <children>
+                              <ChoiceBox fx:id="currencyChoiceBox" prefHeight="25.0" prefWidth="550.0" style="-fx-background-color: white; -fx-border-image-width: 2px; -fx-border-color: #b3b9c4; -fx-border-radius: 4px;" VBox.vgrow="ALWAYS">
+                                 <items>
+                                    <FXCollections fx:factory="observableArrayList">
+                                       <String fx:value="USD - US Dollar" />
+                                       <String fx:value="EUR - Euro" />
+                                       <String fx:value="GBP - British Pound" />
+                                       <String fx:value="JPY - Japanese Yen" />
+                                    </FXCollections>
+                                 </items>
+                              </ChoiceBox>
+                           </children>
+                        </VBox>
                      </children>
                   </HBox>
                   <HBox prefHeight="34.0" prefWidth="424.0" spacing="12.0">

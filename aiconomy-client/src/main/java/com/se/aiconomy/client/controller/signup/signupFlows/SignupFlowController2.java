@@ -7,6 +7,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Hyperlink;
 import javafx.stage.Stage;
 import lombok.Setter;
@@ -21,8 +22,15 @@ public class SignupFlowController2 {
     public Button goBackButton;
     @FXML
     public Hyperlink loginEntry;
+    @FXML
+    public ChoiceBox<String> currencyChoiceBox;
     @Setter  // Lombok generates the setter method for parentController
     private SignupController parentController;  // Automatically generates a setter
+
+    public void initialize() {
+        // Optionally set the default value
+        currencyChoiceBox.setValue("USD - US Dollar");
+    }
 
     @FXML
     public void switchToLogin(ActionEvent event) throws IOException {

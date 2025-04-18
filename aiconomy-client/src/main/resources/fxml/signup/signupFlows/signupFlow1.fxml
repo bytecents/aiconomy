@@ -18,7 +18,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<HBox prefHeight="883.0" prefWidth="541.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.se.aiconomy.client.controller.signup.signupFlows.SignupFlowController1">
+<HBox prefHeight="883.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.se.aiconomy.client.controller.signup.signupFlows.SignupFlowController1">
    <children>
       <VBox maxWidth="700.0" prefHeight="720.0" prefWidth="520.0" spacing="16.0" style="-fx-background-color: white;" HBox.hgrow="ALWAYS">
          <padding>
@@ -31,7 +31,7 @@
                      <children>
                         <Label text="Create Account" textFill="#1f2937" wrapText="true" VBox.vgrow="SOMETIMES">
                            <font>
-                              <Font name="System Bold" size="32.0" />
+                              <Font name="System Bold" size="28.0" />
                            </font>
                         </Label>
                         <Label text="Start your financial journey with AIconomy" textFill="#6b7280" />
@@ -91,10 +91,8 @@
                                                 <Insets bottom="10.0" left="48.0" right="48.0" top="10.0" />
                                              </padding>
                                           </TextField>
-                                          <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true"
-                                                     preserveRatio="true" AnchorPane.leftAnchor="10.0"
-                                                     AnchorPane.topAnchor="9.0">
-                                             <Image url="@../../../assets/mail.png"/>
+                                          <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="9.0">
+                                             <Image url="@../../../assets/mail.png" />
                                           </ImageView>
                                        </children>
                                     </AnchorPane>
@@ -150,10 +148,8 @@
                                                 <Insets bottom="10.0" left="48.0" right="48.0" top="10.0" />
                                              </padding>
                                           </PasswordField>
-                                          <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true"
-                                                     preserveRatio="true" AnchorPane.leftAnchor="10.0"
-                                                     AnchorPane.topAnchor="9.0">
-                                             <Image url="@../../../assets/lock.png"/>
+                                          <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="9.0">
+                                             <Image url="@../../../assets/lock.png" />
                                           </ImageView>
                                        </children>
                                     </AnchorPane>
@@ -174,7 +170,7 @@
                   </HBox>
                   <HBox prefHeight="10.0" prefWidth="445.0">
                      <children>
-                        <Button fx:id="continueButton" onAction="#switchToNextStep" mnemonicParsing="false" prefHeight="44.0" prefWidth="634.0" style="-fx-background-color: #2563eb; -fx-background-radius: 12px;" text="Continue" textFill="WHITE">
+                        <Button fx:id="continueButton" mnemonicParsing="false" onAction="#switchToNextStep" prefHeight="44.0" prefWidth="634.0" style="-fx-background-color: #2563eb; -fx-background-radius: 12px;" text="Continue" textFill="WHITE">
                            <font>
                               <Font name="Roboto" size="16.0" />
                            </font>
