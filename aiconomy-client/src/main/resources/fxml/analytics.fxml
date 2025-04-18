@@ -25,133 +25,160 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.control.Hyperlink?>
 <?import javafx.scene.layout.RowConstraints?>
-<VBox id="Content"
-      xmlns="http://javafx.com/javafx/23.0.1"
-      styleClass="p-8"
-      fx:controller="com.se.aiconomy.client.controller.DashboardController" xmlns:fx="http://javafx.com/fxml/1" stylesheets="/css/styles.css">
-    <HBox styleClass="pb-6">
-        <Label styleClass="text-2xl font-semibold text-gray-900">Analytics</Label>
-        <Region HBox.hgrow="ALWAYS"/>
-        <HBox styleClass="gap-3">
-            <ComboBox fx:id="trendSelect" styleClass="text-sm font-roboto">
-                <items>
-                    <FXCollections fx:factory="observableArrayList">
-                        <String fx:value="Last 30 Days"/>
-                        <String fx:value="This Month"/>
-                        <String fx:value="Last Month"/>
-                        <String fx:value="Last 3 Months"/>
-                        <String fx:value="Custom Range"/>
-                    </FXCollections>
-                </items>
-            </ComboBox>
-            <Button text="Export Report" styleClass="hover-bg-blue-700 p-4-2 bg-blue-600 text-white font-roboto cursor-pointer"/>
+
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
+<GridPane id="Content" xmlns="http://javafx.com/javafx/23.0.1"
+          fx:controller="com.se.aiconomy.client.controller.AnalyticsController" xmlns:fx="http://javafx.com/fxml/1" stylesheets="/css/styles.css">
+    <columnConstraints>
+        <ColumnConstraints fx:id="mainCol" percentWidth="70" hgrow="ALWAYS"/>
+        <ColumnConstraints fx:id="aiCol" percentWidth="30" hgrow="ALWAYS"/>
+    </columnConstraints>
+
+    <rowConstraints>
+        <RowConstraints vgrow="ALWAYS" percentHeight="100" />
+    </rowConstraints>
+
+    <VBox GridPane.columnIndex="0" styleClass="p-8">
+        <HBox styleClass="pb-6">
+            <Label styleClass="text-2xl font-semibold text-gray-900">Analytics</Label>
+            <Region HBox.hgrow="ALWAYS"/>
+            <HBox styleClass="gap-3">
+                <ComboBox fx:id="trendSelect" styleClass="text-sm font-roboto" value="Last 30 Days">
+                    <items>
+                        <FXCollections fx:factory="observableArrayList">
+                            <String fx:value="Last 30 Days"/>
+                            <String fx:value="This Month"/>
+                            <String fx:value="Last Month"/>
+                            <String fx:value="Last 3 Months"/>
+                            <String fx:value="Custom Range"/>
+                        </FXCollections>
+                    </items>
+                </ComboBox>
+                <Button text="Export Report" styleClass="hover-bg-blue-700 p-4-2 bg-blue-600 text-white font-roboto cursor-pointer"/>
+            </HBox>
         </HBox>
-    </HBox>
-    <GridPane hgap="24" vgap="24" VBox.vgrow="ALWAYS">
-        <columnConstraints>
-            <ColumnConstraints percentWidth="50" hgrow="ALWAYS"/>
-            <ColumnConstraints percentWidth="50" hgrow="ALWAYS"/>
-        </columnConstraints>
+        <GridPane hgap="24" vgap="24" VBox.vgrow="ALWAYS"
+                  fx:id="analyticsGrid">
+            <columnConstraints>
+                <ColumnConstraints percentWidth="50" hgrow="ALWAYS"/>
+                <ColumnConstraints percentWidth="50" hgrow="ALWAYS"/>
+            </columnConstraints>
 
-        <rowConstraints>
-            <RowConstraints vgrow="ALWAYS" percentHeight="100" />
-        </rowConstraints>
+            <rowConstraints>
+                <RowConstraints vgrow="ALWAYS" percentHeight="100" />
+            </rowConstraints>
 
-        <VBox styleClass="gap-6" GridPane.columnIndex="0">
-            <VBox styleClass="card p-4-6-6-6 gap-4" VBox.vgrow="SOMETIMES">
-                <HBox alignment="CENTER_LEFT" >
-                    <Label styleClass="font-semibold text-base text-gray-900">Spending Trends</Label>
-                    <Region HBox.hgrow="ALWAYS"/>
-                    <ComboBox styleClass="text-sm font-roboto">
-                        <items>
-                            <FXCollections fx:factory="observableArrayList">
-                                <String fx:value="Last 30 Days"/>
-                                <String fx:value="This Month"/>
-                                <String fx:value="Last Month"/>
-                                <String fx:value="Last 3 Months"/>
-                                <String fx:value="Custom Range"/>
-                            </FXCollections>
-                        </items>
-                    </ComboBox>
-                </HBox>
-                <StackPane styleClass="bg-gray-50 rounded-lg min-h-48" VBox.vgrow="ALWAYS">
-                    <Label text="Trend Chart Area" styleClass="text-gray-400"/>
-                </StackPane>
-                <!-- AI Analysis -->
-                <HBox styleClass="p-3 bg-blue-50 rounded-lg gap-2">
-                    <Region styleClass="w-4 h-4 text-blue-600 pt-0_5" />
-                    <VBox styleClass="gap-2">
-                        <Label styleClass="text-sm font-roboto text-blue-900 break-words">
-                            Your highest spending days are typically Fridays and Saturdays.
-                        </Label>
-                        <Hyperlink text="View AI Insights" styleClass="text-sm font-medium text-blue-700 hover-text-blue-800"/>
-                    </VBox>
-                </HBox>
-            </VBox>
-            <VBox styleClass="card p-6 gap-4">
-                <HBox>
-                    <Label styleClass="font-semibold text-base text-gray-900">Category Distribution</Label>
-                    <Region HBox.hgrow="ALWAYS"/>
-                    <Hyperlink text="View Details" styleClass="text-sm font-medium text-blue-700 hover-text-blue-800"/>
-                </HBox>
-                <GridPane hgap="16" vgap="16" VBox.vgrow="ALWAYS">
-                    <columnConstraints>
-                        <ColumnConstraints percentWidth="50"/>
-                        <ColumnConstraints percentWidth="50"/>
-                    </columnConstraints>
-
-                    <rowConstraints>
-                        <RowConstraints vgrow="ALWAYS" percentHeight="100" />
-                    </rowConstraints>
-
-                    <StackPane styleClass="bg-gray-50 rounded-lg h-48" GridPane.columnIndex="0">
-                        <Label text="Trend Chart Area" styleClass="text-gray-400"/>
+            <VBox styleClass="gap-6" GridPane.columnIndex="0">
+                <VBox styleClass="card p-4-6-6-6 gap-4" VBox.vgrow="SOMETIMES">
+                    <HBox alignment="CENTER_LEFT" >
+                        <Label styleClass="font-semibold text-base text-gray-900">Spending Trends</Label>
+                        <Region HBox.hgrow="ALWAYS"/>
+                        <ComboBox styleClass="text-sm font-roboto" value="Last 30 Days">
+                            <items>
+                                <FXCollections fx:factory="observableArrayList">
+                                    <String fx:value="Last 30 Days"/>
+                                    <String fx:value="This Month"/>
+                                    <String fx:value="Last Month"/>
+                                    <String fx:value="Last 3 Months"/>
+                                    <String fx:value="Custom Range"/>
+                                </FXCollections>
+                            </items>
+                        </ComboBox>
+                    </HBox>
+                    <StackPane styleClass="min-h-48" VBox.vgrow="ALWAYS">
+                        <LineChart fx:id="lineChart"
+                                   legendVisible="false"
+                                   createSymbols="false"
+                                   prefWidth="600"
+                                   prefHeight="400">
+                            <xAxis>
+                                <CategoryAxis />
+                            </xAxis>
+                            <yAxis>
+                                <NumberAxis fx:id="yAxis" />
+                            </yAxis>
+                        </LineChart>
                     </StackPane>
+                    <!-- AI Analysis -->
+                    <HBox styleClass="p-3 bg-blue-50 rounded-lg gap-2">
+                        <Region styleClass="w-4 h-4 text-blue-600 pt-0_5" />
+                        <VBox styleClass="gap-2">
+                            <Label styleClass="text-sm font-roboto text-blue-900 break-words">
+                                Your highest spending days are typically Fridays and Saturdays.
+                            </Label>
+                            <Hyperlink onMouseClicked="#openAiPanel" text="View AI Insights" styleClass="text-sm font-medium text-blue-700 hover-text-blue-800"/>
+                        </VBox>
+                    </HBox>
+                </VBox>
+                <VBox styleClass="card p-6 gap-4">
+                    <HBox>
+                        <Label styleClass="font-semibold text-base text-gray-900">Category Distribution</Label>
+                        <Region HBox.hgrow="ALWAYS"/>
+                        <Hyperlink text="View Details" styleClass="text-sm font-medium text-blue-700 hover-text-blue-800"/>
+                    </HBox>
+                    <GridPane hgap="16" vgap="16" VBox.vgrow="ALWAYS">
+                        <columnConstraints>
+                            <ColumnConstraints percentWidth="50"/>
+                            <ColumnConstraints percentWidth="50"/>
+                        </columnConstraints>
 
-                    <VBox styleClass="gap-1" GridPane.columnIndex="1">
-                        <HBox styleClass="p-2 bg-gray-50 rounded-lg">
-                            <HBox alignment="CENTER_LEFT" styleClass="gap-2">
-                                <Region styleClass="w-3 h-3 rounded-full bg-blue-500" />
-                                <Label styleClass="text-sm font-roboto">Food &amp; Dining</Label>
+                        <rowConstraints>
+                            <RowConstraints vgrow="ALWAYS" percentHeight="100" />
+                        </rowConstraints>
+
+                        <StackPane styleClass="bg-gray-50 rounded-lg h-48" GridPane.columnIndex="0">
+                            <Label text="Trend Chart Area" styleClass="text-gray-400"/>
+                        </StackPane>
+
+                        <VBox styleClass="gap-1" GridPane.columnIndex="1">
+                            <HBox styleClass="p-2 bg-gray-50 rounded-lg">
+                                <HBox alignment="CENTER_LEFT" styleClass="gap-2">
+                                    <Region styleClass="w-3 h-3 rounded-full bg-blue-500" />
+                                    <Label styleClass="text-sm font-roboto">Food &amp; Dining</Label>
+                                </HBox>
+                                <Region HBox.hgrow="ALWAYS"/>
+                                <Label styleClass="text-sm font-medium">35%</Label>
                             </HBox>
-                            <Region HBox.hgrow="ALWAYS"/>
-                            <Label styleClass="text-sm font-medium">35%</Label>
-                        </HBox>
-                        <HBox styleClass="p-2 bg-gray-50 rounded-lg">
-                            <HBox alignment="CENTER_LEFT" styleClass="gap-2">
-                                <Region styleClass="w-3 h-3 rounded-full bg-green-500" />
-                                <Label styleClass="text-sm font-roboto">Shopping</Label>
+                            <HBox styleClass="p-2 bg-gray-50 rounded-lg">
+                                <HBox alignment="CENTER_LEFT" styleClass="gap-2">
+                                    <Region styleClass="w-3 h-3 rounded-full bg-green-500" />
+                                    <Label styleClass="text-sm font-roboto">Shopping</Label>
+                                </HBox>
+                                <Region HBox.hgrow="ALWAYS"/>
+                                <Label styleClass="text-sm font-medium">25%</Label>
                             </HBox>
-                            <Region HBox.hgrow="ALWAYS"/>
-                            <Label styleClass="text-sm font-medium">25%</Label>
-                        </HBox>
-                        <HBox styleClass="p-2 bg-gray-50 rounded-lg">
-                            <HBox alignment="CENTER_LEFT" styleClass="gap-2">
-                                <Region styleClass="w-3 h-3 rounded-full bg-purple-500" />
-                                <Label styleClass="text-sm font-roboto">Transportation</Label>
+                            <HBox styleClass="p-2 bg-gray-50 rounded-lg">
+                                <HBox alignment="CENTER_LEFT" styleClass="gap-2">
+                                    <Region styleClass="w-3 h-3 rounded-full bg-purple-500" />
+                                    <Label styleClass="text-sm font-roboto">Transportation</Label>
+                                </HBox>
+                                <Region HBox.hgrow="ALWAYS"/>
+                                <Label styleClass="text-sm font-medium">20%</Label>
                             </HBox>
-                            <Region HBox.hgrow="ALWAYS"/>
-                            <Label styleClass="text-sm font-medium">20%</Label>
-                        </HBox>
-                        <HBox styleClass="p-2 bg-gray-50 rounded-lg">
-                            <HBox alignment="CENTER_LEFT" styleClass="gap-2">
-                                <Region styleClass="w-3 h-3 rounded-full bg-yellow-500" />
-                                <Label styleClass="text-sm font-roboto">Entertainment</Label>
+                            <HBox styleClass="p-2 bg-gray-50 rounded-lg">
+                                <HBox alignment="CENTER_LEFT" styleClass="gap-2">
+                                    <Region styleClass="w-3 h-3 rounded-full bg-yellow-500" />
+                                    <Label styleClass="text-sm font-roboto">Entertainment</Label>
+                                </HBox>
+                                <Region HBox.hgrow="ALWAYS"/>
+                                <Label styleClass="text-sm font-medium">15%</Label>
                             </HBox>
-                            <Region HBox.hgrow="ALWAYS"/>
-                            <Label styleClass="text-sm font-medium">15%</Label>
-                        </HBox>
-                        <HBox styleClass="p-2 bg-gray-50 rounded-lg">
-                            <HBox alignment="CENTER_LEFT" styleClass="gap-2">
-                                <Region styleClass="w-3 h-3 rounded-full bg-gray-500" />
-                                <Label styleClass="text-sm font-roboto">Others</Label>
+                            <HBox styleClass="p-2 bg-gray-50 rounded-lg">
+                                <HBox alignment="CENTER_LEFT" styleClass="gap-2">
+                                    <Region styleClass="w-3 h-3 rounded-full bg-gray-500" />
+                                    <Label styleClass="text-sm font-roboto">Others</Label>
+                                </HBox>
+                                <Region HBox.hgrow="ALWAYS"/>
+                                <Label styleClass="text-sm font-medium">5%</Label>
                             </HBox>
-                            <Region HBox.hgrow="ALWAYS"/>
-                            <Label styleClass="text-sm font-medium">5%</Label>
-                        </HBox>
-                    </VBox>
-                </GridPane>
+                        </VBox>
+                    </GridPane>
+                </VBox>
             </VBox>
-        </VBox>
-    </GridPane>
-</VBox>
+        </GridPane>
+    </VBox>
+    <ScrollPane fx:id="aiPanel" GridPane.columnIndex="1" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" />
+</GridPane>

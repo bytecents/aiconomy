@@ -8,7 +8,28 @@
 
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.se.aiconomy.client.controller.AiController"
-            prefHeight="400.0" prefWidth="600.0">
+            styleClass="border-l border-gray-200 bg-gray-50 min-w-96"
+            stylesheets="/css/styles.css"
+            fx:controller="com.se.aiconomy.client.controller.AiController">
+    <VBox AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+          styleClass="gap-6 p-6">
+        <VBox styleClass="gap-1">
+            <Label styleClass="text-lg font-semibold text-gray-900">AI Insights</Label>
+            <Label styleClass="text-sm text-gray-500 break-words">
+                Get personalized insights and recommendations based on your spending patterns.
+            </Label>
+        </VBox>
 
+        <ScrollPane fx:id="aiScrollPane" fitToWidth="true" fitToHeight="true">
+            <VBox fx:id="aiContent" styleClass="gap-2_5">
+                <!-- AI content will be dynamically loaded here -->
+            </VBox>
+        </ScrollPane>
+    </VBox>
+
+    <Button text="×" onAction="#closeAiPanel"
+        styleClass="bg-transparent hover-bg-gray-200 border-none p-0 text-gray-900 whitespace-nowrap text-lg rounded-full w-6 h-6 cursor-pointer"
+        AnchorPane.topAnchor="16.0" AnchorPane.rightAnchor="16.0" />
 </AnchorPane>
+
+<!--        bg-transparent hover:bg-gray-100 text-gray-900-->
