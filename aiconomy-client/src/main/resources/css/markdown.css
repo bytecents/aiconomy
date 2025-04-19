@@ -1,0 +1,40 @@
+* {
+    -mdfx-font-color: #374151;
+    -mdfx-link-color: blue;
+    -mdfx-border-color-1: #888;
+
+    -mdfx-bg-color-1: #ccc;
+    -mdfx-bg-color-2: #ddd;
+    -mdfx-bg-color-3: #eee;
+
+    -mdfx-bq-color-border: #4488cc; /* the blockquote's border color */
+    -mdfx-bq-color-background: #0000ff0c; /* the blockquote's background color */
+}
+
+.markdown-text {
+    -fx-font-family: Roboto;
+    -fx-font-style: normal;
+    -fx-font-size: 14px;
+}
+
+.markdown-italic {
+    -fx-font-family: Roboto;
+    -fx-font-style: italic;
+    -fx-font-size: 14px;
+}
+
+.markdown-bold {
+    -fx-font-family: Roboto;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+}
+
+.markdown-strikethrough {
+    -fx-strikethrough: true;
+}
+
+h1 {
+    -fx-font-family: Roboto;
+    -fx-font-weight: bold;
+    -fx-font-size: 16px;
+}

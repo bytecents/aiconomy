@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+<?import com.se.aiconomy.client.common.MyMarkdownView?>
+
+<HBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      stylesheets="/css/styles.css"
+      styleClass="gap-3"
+      fx:controller="com.se.aiconomy.client.controller.ai.AiMessageController">
+    <Region styleClass="bg-purple-100 rounded-full w-8 h-8" />
+    <VBox styleClass="bg-white rounded-lg p-3">
+        <MyMarkdownView fx:id="contentView" />
+    </VBox>
+</HBox>

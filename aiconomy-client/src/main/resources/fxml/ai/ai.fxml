@@ -12,10 +12,10 @@
 <?import javafx.scene.chart.BubbleChart?>
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
-      styleClass="border-l border-gray-200 bg-gray-50 min-w-96 p-6 gap-5"
+      styleClass="border-l border-gray-200 bg-gray-50 min-w-96"
       stylesheets="/css/styles.css"
-      fx:controller="com.se.aiconomy.client.controller.AiController">
-    <HBox>
+      fx:controller="com.se.aiconomy.client.controller.ai.AiController">
+    <HBox styleClass="p-6-6-4-6">
         <VBox styleClass="gap-1">
             <Label styleClass="text-lg font-semibold text-gray-900">AI Insights</Label>
             <Label styleClass="text-sm text-gray-500 break-words">
@@ -27,7 +27,7 @@
                 styleClass="bg-transparent hover-bg-gray-200 border-none p-0 text-gray-900 text-base rounded-lg w-6 h-6 cursor-pointer"/>
     </HBox>
 
-    <VBox styleClass="gap-2 pb-2">
+    <VBox fx:id="insightContent" styleClass="gap-2 px-6">
         <VBox styleClass="p-4 bg-white rounded-lg border border-gray-100 shadow-sm">
             <HBox alignment="CENTER_LEFT" styleClass="gap-2 pb-2">
                 <Region styleClass="w-4 h-4 bg-blue-500" />
@@ -66,32 +66,30 @@
         </VBox>
     </VBox>
 
-<!--    <ScrollPane fx:id="aiScrollPane" fitToWidth="true" fitToHeight="true">-->
-<!--        <VBox fx:id="aiContent" styleClass="gap-2_5">-->
-<!--            &lt;!&ndash; AI content will be dynamically loaded here &ndash;&gt;-->
-<!--        </VBox>-->
+    <ScrollPane fx:id="messagePanel" fitToWidth="true" fitToHeight="true" VBox.vgrow="ALWAYS">
+        <VBox fx:id="messageContent" styleClass="">
+            <!-- AI content will be dynamically loaded here -->
+        </VBox>
+    </ScrollPane>
 
-
-<!--    </ScrollPane>-->
-
-    <VBox styleClass="gap-3">
+    <VBox styleClass="gap-3 p-3-6-6-6 border-t border-gray-200">
         <Label styleClass="text-sm font-medium text-gray-700">Ask about your spending</Label>
         <HBox styleClass="gap-2">
-            <TextField promptText="E.g., Where can I save money?" styleClass="border border-gray-200 rounded-lg text-sm focus-border-blue-500" HBox.hgrow="ALWAYS" />
-            <Button styleClass="p-2 bg-blue-600 text-white rounded-lg hover-bg-blue-700 cursor-pointer">
-                Send
+            <TextField fx:id="inputField" onKeyPressed="#handleEnterPressed" onInputMethodTextChanged="#handleInput" promptText="E.g., Where can I save money?" HBox.hgrow="ALWAYS" styleClass="border h-8 border-gray-200 rounded-lg text-sm focus-border-blue-500" />
+            <Button fx:id="sendBtn" onMouseClicked="#handleSend" styleClass="p-2 w-8 h-8 bg-blue-600 text-white rounded-lg hover-bg-blue-700 cursor-pointer">
+
             </Button>
         </HBox>
-        <FlowPane hgap="8" vgap="8">
-            <Button styleClass="p-3-1_5 border-none text-xs bg-gray-100 text-gray-700 rounded-full hover-bg-gray-200 cursor-pointer">
-                Budget optimization?
-            </Button>
-            <Button styleClass="p-3-1_5 border-none text-xs bg-gray-100 text-gray-700 rounded-full hover-bg-gray-200 cursor-pointer">
-                Savings potential?
-            </Button>
-            <Button styleClass="p-3-1_5 border-none text-xs bg-gray-100 text-gray-700 rounded-full hover-bg-gray-200 cursor-pointer">
-                Weekend spending?
-            </Button>
+        <FlowPane fx:id="questionBtnContainer" hgap="8" vgap="8">
+<!--            <Button styleClass="p-3-1_5 border-none text-xs bg-gray-100 text-gray-700 rounded-full hover-bg-gray-200 cursor-pointer">-->
+<!--                Budget optimization?-->
+<!--            </Button>-->
+<!--            <Button styleClass="p-3-1_5 border-none text-xs bg-gray-100 text-gray-700 rounded-full hover-bg-gray-200 cursor-pointer">-->
+<!--                Savings potential?-->
+<!--            </Button>-->
+<!--            <Button styleClass="p-3-1_5 border-none text-xs bg-gray-100 text-gray-700 rounded-full hover-bg-gray-200 cursor-pointer">-->
+<!--                Weekend spending?-->
+<!--            </Button>-->
         </FlowPane>
     </VBox>
 </VBox>

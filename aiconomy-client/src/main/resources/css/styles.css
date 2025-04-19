@@ -156,6 +156,10 @@
     -fx-font-size: 12px;
 }
 
+.bg-blue-50 {
+    -fx-background-color: #EFF6FF;
+}
+
 .bg-blue-500 {
     -fx-background-color: #3B82F6;
 }
@@ -409,10 +413,34 @@
     -fx-max-height: 24;
 }
 
+.h-8 {
+    -fx-pref-height: 32;
+    -fx-min-height: 32;
+    -fx-max-height: 32;
+}
+
 .h-10 {
     -fx-pref-height: 40;
     -fx-min-height: 40;
     -fx-max-height: 40;
+}
+
+.h-12 {
+    -fx-pref-height: 48;
+    -fx-min-height: 48;
+    -fx-max-height: 48;
+}
+
+.h-18 {
+    -fx-pref-height: 72;
+    -fx-min-height: 72;
+    -fx-max-height: 72;
+}
+
+.h-24 {
+    -fx-pref-height: 96;
+    -fx-min-height: 96;
+    -fx-max-height: 96;
 }
 
 .h-36 {
@@ -463,6 +491,12 @@
     -fx-max-width: 24;
 }
 
+.w-8 {
+    -fx-pref-width: 32;
+    -fx-min-width: 32;
+    -fx-max-width: 32;
+}
+
 .w-10 {
     -fx-pref-width: 40;
     -fx-min-width: 40;
@@ -496,6 +530,18 @@
     -fx-padding: 6 12 6 12;
 }
 
+.p-3-6-6-6 {
+    -fx-padding: 12 24 24 24;
+}
+
+.p-6-6-4-6 {
+    -fx-padding: 24 24 16 24;
+}
+
+.p-2-6-2-6 {
+    -fx-padding: 8 24 8 24;
+}
+
 .p-4-6-6-6 {
     -fx-padding: 16 24 24 24;
 }
@@ -508,6 +554,14 @@
     -fx-padding: 2 0 0 0;
 }
 
+.pt-1 {
+    -fx-padding: 4 0 0 0;
+}
+
+.pt-3 {
+    -fx-padding: 12 0 0 0;
+}
+
 .pb-1 {
     -fx-padding: 0 0 4 0;
 }
@@ -518,6 +572,10 @@
 
 .pb-4 {
     -fx-padding: 0 0 16 0;
+}
+
+.pb-5 {
+    -fx-padding: 0 0 20 0;
 }
 
 .pb-6 {
@@ -540,12 +598,21 @@
     -fx-padding: 0 16 0 16;
 }
 
+.px-6 {
+    -fx-padding: 0 24 0 24;
+}
+
 .py-2 {
     -fx-padding: 8 0 8 0;
 }
 
 .p-4-2 {
     -fx-padding: 8 16 8 16;
+}
+
+.border-t {
+    -fx-border-color: #E5E7EB;
+    -fx-border-width: 1 0 0 0;
 }
 
 .border-b {
@@ -624,12 +691,12 @@
 .blue-bar .bar {
     -fx-background-color: #3B82F6;
 }
-/* 灰色进度条 */
+
 .gray-bar .track {
-    -fx-background-color: #f3f4f6; /* 轨道颜色 */
+    -fx-background-color: #f3f4f6;
 }
 .gray-bar .bar {
-    -fx-background-color: #71717A; /* 进度条颜色 */
+    -fx-background-color: #71717A;
 }
 
 .whitespace-nowrap {
@@ -643,34 +710,33 @@
 .focus-border-blue-500:focused {
     -fx-border-color: #3B82F6;
 }
-/* 黄色进度条 */
+
 .yellow-bar .track {
-    -fx-background-color: #f3f4f6; /* 轨道颜色 */
-}
-.yellow-bar .bar {
-    -fx-background-color: #FBBF24; /* 进度条颜色 */
+    -fx-background-color: #f3f4f6;
 }
 
-/* 橘色进度条 */
+.yellow-bar .bar {
+    -fx-background-color: #FBBF24;
+}
+
 .orange-bar .track {
-    -fx-background-color: #f3f4f6; /* 轨道颜色 */
+    -fx-background-color: #f3f4f6;
 }
+
 .orange-bar .bar {
-    -fx-background-color: #F97316; /* 进度条颜色 */
+    -fx-background-color: #F97316;
 }
+
 .bg-purple-200 {
-    -fx-background-color: #E0E7FF; /* 紫色背景 */
-    -fx-background-radius: 8px; /* 圆角 */
+    -fx-background-color: #E0E7FF;
+    /*-fx-background-radius: 8px;*/
 }
-.bg-yellow-500 {
-    -fx-background-color: #fefce8; /* 紫色背景 */
-    -fx-background-radius: 8px; /* 圆角 */
-}
+
 .bg-yellow-100 {
-    -fx-background-color: #fef9c3; /* 紫色背景 */
-    -fx-background-radius: 8px; /* 圆角 */
+    -fx-background-color: #fef9c3;
+    /*-fx-background-radius: 8px;*/
 }
-.text-yellow-500 {
-    -fx-text-color: #eab308; /* 紫色背景 */
-    -fx-background-radius: 8px; /* 圆角 */
+
+.bg-purple-100 {
+    -fx-background-color: #EDE9FE;
 }
