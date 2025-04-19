@@ -22,12 +22,12 @@ public class Account implements Identifiable {
     private String bankName; // 银行名称
     private String accountType; //账户类型
     private String accountName; // 账户名称
-    private double balance; // 余额
+    private Double balance; // 余额
     // 信用卡专有属性（我懒得再写一个实体类了）
-    private double creditLimit; // 信用卡的额度
-    private double currentDebt; // 当前欠款
+    private Double creditLimit; // 信用卡的额度
+    private Double currentDebt; // 当前欠款
     private LocalDateTime paymentDueDate; // 还款期限
-    private double minimumPayment; // 最低还款额度
+    private Double minimumPayment; // 最低还款额度
 
     private Map<String, Object> extraFields = new HashMap<>();
 
