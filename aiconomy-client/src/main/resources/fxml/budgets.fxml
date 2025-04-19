@@ -6,7 +6,9 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
 
-        <StackPane fx:id="rootPane" xmlns:fx="http://javafx.com/fxml" fx:controller="com.se.aiconomy.client.controller.AddBudgetController">
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.shape.Circle?>
+<StackPane fx:id="rootPane" xmlns:fx="http://javafx.com/fxml" fx:controller="com.se.aiconomy.client.controller.AddBudgetController">
 
         <VBox fx:id="mainVBox" spacing="20">
             <padding>
@@ -64,7 +66,7 @@
 
                 <!-- Budget Management -->
                 <HBox  spacing="20" styleClass="pb-0">
-                    <VBox spacing="10" styleClass="card p-6" GridPane.columnIndex="0" style="-fx-background-color: white; -fx-border-color; -fx-padding: 15; -fx-background-radius: 10;" HBox.hgrow="ALWAYS">
+                    <VBox spacing="10" styleClass=" p-6" GridPane.columnIndex="0" style="-fx-background-color: white; -fx-border-color; -fx-padding: 5;" HBox.hgrow="ALWAYS">
                         <!-- 顶部标题 + 按钮 -->
                         <HBox alignment="CENTER_LEFT" spacing="10" >
                             <Label text="Category Budgets" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #333333;" />
@@ -88,11 +90,18 @@
 
                                 <HBox alignment="CENTER_LEFT" styleClass="p-3 gap-3 hover-bg-gray-50 rounded-lg cursor-pointer">
                                     <HBox alignment="CENTER_LEFT" styleClass="gap-3">
-                                        <Region styleClass="w-10 h-10 rounded-lg bg-blue-100" HBox.hgrow="NEVER"/>
+
+                    <StackPane prefHeight="50.0" prefWidth="50.0">
+                                        <Circle fill="#e0f2fe" radius="24.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+                                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                            <Image url="@../assets/FoodDining.png" />
+                                        </ImageView>
+                    </StackPane>
                                         <VBox styleClass="gap-0_5" HBox.hgrow="NEVER">
                                             <Label text="Food &amp; Dining" styleClass="font-medium text-base"/>
                                             <Label text="\$1,500.00 / month" styleClass="text-sm text-gray-500 font-roboto"/>
                                         </VBox>
+
                                     </HBox>
                                     <Region HBox.hgrow="ALWAYS"/>
                                     <StackPane styleClass="clickable-icon" style="-fx-cursor: hand; -fx-padding: 0;">
@@ -117,7 +126,12 @@
 
                                 <HBox alignment="CENTER_LEFT" styleClass="p-3 gap-3 hover-bg-gray-50 rounded-lg cursor-pointer">
                                     <HBox alignment="CENTER_LEFT" styleClass="gap-3">
-                                        <Region styleClass="w-10 h-10 rounded-lg bg-green-100" HBox.hgrow="NEVER"/>
+                                        <StackPane prefHeight="50.0" prefWidth="50.0">
+                                            <Circle fill="#dcfce7" radius="24.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+                                            <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                                <Image url="@../assets/Transportation.png" />
+                                            </ImageView>
+                                        </StackPane>
                                         <VBox styleClass="gap-0_5" HBox.hgrow="NEVER">
                                             <Label text="Transportation" styleClass="font-medium text-base"/>
                                             <Label text="\$800.00 / month" styleClass="text-sm text-gray-500 font-roboto"/>
@@ -148,7 +162,12 @@
                                 <!-- Same content as Card 1 -->
                                 <HBox alignment="CENTER_LEFT" styleClass="p-3 gap-3 hover-bg-gray-50 rounded-lg cursor-pointer">
                                     <HBox alignment="CENTER_LEFT" styleClass="gap-3">
-                                        <Region styleClass="w-10 h-10 rounded-lg " style="-fx-background-color: #e0bbff;"  HBox.hgrow="NEVER"/>
+                                        <StackPane prefHeight="50.0" prefWidth="50.0">
+                                            <Circle fill="#e0bbff" radius="24.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+                                            <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                                <Image url="@../assets/Shopping.png" />
+                                            </ImageView>
+                                        </StackPane>
                                         <VBox styleClass="gap-0_5" HBox.hgrow="NEVER">
                                             <Label text="Shopping" styleClass="font-medium text-base"/>
                                             <Label text="\$1,000.00 / month" styleClass="text-sm text-gray-500 font-roboto"/>
@@ -175,7 +194,13 @@
                                   GridPane.columnIndex="1" GridPane.rowIndex="1">
                                 <HBox alignment="CENTER_LEFT" styleClass="p-3 gap-3 hover-bg-gray-50 rounded-lg cursor-pointer">
                                     <HBox alignment="CENTER_LEFT" styleClass="gap-3">
-                                        <Region styleClass="w-10 h-10 rounded-lg bg-yellow-100" HBox.hgrow="NEVER"/>
+                                        <StackPane prefHeight="50.0" prefWidth="50.0">
+                                            <Circle fill="#fef9c3" radius="24.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+                                            <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                                <Image url="@../assets/Entertainment.png" />
+                                            </ImageView>
+                                        </StackPane>
+
                                         <VBox styleClass="gap-0_5" HBox.hgrow="NEVER">
                                             <Label text="Entertainment" styleClass="font-medium text-base"/>
                                             <Label text="\$600.00 / month" styleClass="text-sm text-gray-500 font-roboto"/>
@@ -206,7 +231,13 @@
                                 <!-- Same content as Card 1 -->
                                 <HBox alignment="CENTER_LEFT" styleClass="p-3 gap-3 hover-bg-gray-50 rounded-lg cursor-pointer">
                                     <HBox alignment="CENTER_LEFT" styleClass="gap-3">
-                                        <Region styleClass="w-10 h-10 rounded-lg bg-orange-100" HBox.hgrow="NEVER"/>
+                                        <StackPane prefHeight="50.0" prefWidth="50.0">
+                                            <Circle fill="#ffedd5" radius="24.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+                                            <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                                <Image url="@../assets/Utilities.png" />
+                                            </ImageView>
+                                        </StackPane>
+
                                         <VBox styleClass="gap-0_5" HBox.hgrow="NEVER">
                                             <Label text="Utilities" styleClass="font-medium text-base"/>
                                             <Label text="\$400.00 / month" styleClass="text-sm text-gray-500 font-roboto"/>
@@ -235,7 +266,13 @@
                                 <!-- Same content as Card 1 -->
                                 <HBox alignment="CENTER_LEFT" styleClass="p-3 gap-3 hover-bg-gray-50 rounded-lg cursor-pointer">
                                     <HBox alignment="CENTER_LEFT" styleClass="gap-3">
-                                        <Region styleClass="w-10 h-10 rounded-lg bg-gray-100" HBox.hgrow="NEVER"/>
+                                        <StackPane prefHeight="50.0" prefWidth="50.0">
+                                            <Circle fill="#f3f4f6" radius="24.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+                                            <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                                <Image url="@../assets/Other.png" />
+                                            </ImageView>
+                                        </StackPane>
+
                                         <VBox styleClass="gap-0_5" HBox.hgrow="NEVER">
                                             <Label text="Other Categories" styleClass="font-medium text-base"/>
                                             <Label text="\$300.00 / month" styleClass="text-sm text-gray-500 font-roboto"/>

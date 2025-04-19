@@ -40,7 +40,7 @@
 
             <!-- 主卡片容器 -->
             <VBox  HBox.hgrow="ALWAYS"
-                  style="-fx-background-color: white; -fx-padding: 16;">
+                  style="-fx-background-color: white; -fx-padding: 6;">
                 <HBox alignment="CENTER_LEFT">
                     <Label text="Category" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #333333;"/>
                     <Region HBox.hgrow="ALWAYS"/>
@@ -120,9 +120,9 @@
 
 
         <VBox HBox.hgrow="ALWAYS"
-              style="-fx-background-color: white; -fx-padding: 16;">
+              style="-fx-background-color: white; -fx-padding: 6;">
             <HBox alignment="CENTER_LEFT">
-                <Label text="Budget Amount" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #333333;"/>
+                <Label text="Budget Amount" styleClass="pb-4" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #333333;"/>
                 <Region HBox.hgrow="ALWAYS"/>
             </HBox>
             <TextField fx:id="budgetAmountInput" promptText="\$ 0.00" VBox.vgrow="NEVER"
@@ -133,7 +133,7 @@
 
         <!-- 时间段容器 -->
         <VBox  HBox.hgrow="ALWAYS"
-               style="-fx-background-color: white; -fx-padding: 16;">
+               style="-fx-background-color: white; -fx-padding: 6;">
         <HBox alignment="CENTER_LEFT">
             <Label text="Category" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #333333;"/>
             <Region HBox.hgrow="ALWAYS"/>
@@ -181,7 +181,7 @@
 
         <!-- alert容器 -->
         <VBox HBox.hgrow="ALWAYS"
-              style="-fx-background-color: white; -fx-padding: 16;">
+              style="-fx-background-color: white; -fx-padding: 6;">
             <HBox alignment="CENTER_LEFT">
                 <Label text="Alert Settings" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #333333;"/>
                 <Region HBox.hgrow="ALWAYS"/>
@@ -207,7 +207,7 @@
         </VBox>
 
         <VBox HBox.hgrow="ALWAYS"
-              style="-fx-background-color: white; -fx-padding: 16;">
+              style="-fx-background-color: white; -fx-padding: 6;">
             <HBox alignment="CENTER_LEFT">
                 <Label text="Notes (Optional)" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #333333;"/>
                 <Region HBox.hgrow="ALWAYS"/>
