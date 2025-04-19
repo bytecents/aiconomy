@@ -3,9 +3,7 @@ package com.se.aiconomy.client.controller.ai;
 import com.se.aiconomy.client.Application.StyleClassFixer;
 import com.se.aiconomy.client.common.MyFXMLLoader;
 import com.se.aiconomy.server.langchain.common.config.Locale;
-import com.se.aiconomy.server.langchain.common.model.ChatModelName;
 import com.se.aiconomy.server.langchain.service.chat.ChatService;
-import io.github.cdimascio.dotenv.Dotenv;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -13,21 +11,17 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.input.InputMethodEvent;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.ResourceBundle;
-
-import static com.se.aiconomy.server.langchain.common.model.ChatModelName.GPT_4_1_MINI;
-import static dev.langchain4j.internal.Utils.getOrDefault;
 
 public class AiController implements Initializable {
     @FXML private Button sendBtn;
@@ -38,10 +32,7 @@ public class AiController implements Initializable {
     @FXML private VBox insightContent;
     @FXML private ScrollPane messagePanel;
 
-    public void handleInput(InputMethodEvent inputMethodEvent) {
-        String input = inputField.getText();
-        sendBtn.setDisable(input == null || input.isEmpty());
-    }
+    private boolean isGenerating = false;
 
     public void handleSend(MouseEvent mouseEvent) {
         String input = inputField.getText();
@@ -51,10 +42,15 @@ public class AiController implements Initializable {
         }
     }
 
+    public void updateSendDisable() {
+        String input = inputField.getText();
+        sendBtn.setDisable(isGenerating || input == null || input.isEmpty());
+    }
+
     public void handleEnterPressed(KeyEvent keyEvent) {
         if (keyEvent.getCode().getName().equals("Enter")) {
             String input = inputField.getText();
-            if (input != null && !input.trim().isEmpty()) {
+            if (input != null && !input.trim().isEmpty() && !isGenerating) {
                 sendMessage(input);
                 inputField.clear();
             }
@@ -83,8 +79,11 @@ public class AiController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        Dotenv dotenv = Dotenv.configure().ignoreIfMissing().load();
-        System.out.println(dotenv.get("BASE_URL"));
+        inputField.textProperty().addListener((obs, oldText, newText) -> {
+            updateSendDisable();
+        });
+        updateSendDisable();
+
         // Initialize the AI panel
         questionBtnContainer.getChildren().clear();
         String[] questions = {
@@ -112,7 +111,8 @@ public class AiController implements Initializable {
     public void sendMessage(String content) {
         Message message = new Message(content, true);
         messageList.add(message);
-//        String reply = chatService.chat(content, Locale.EN);
+        isGenerating = true;
+        updateSendDisable();
         Message aiMessage = new Message("Generating...", false);
         messageList.add(aiMessage);
         chatService.stream(content, Locale.EN,
@@ -123,18 +123,27 @@ public class AiController implements Initializable {
                     messageList.getLast().content += partialResponse;
                     Platform.runLater(() -> {
                         refreshMessageList();
-                        messagePanel.setVvalue(1.0);
+                        Platform.runLater(() -> messagePanel.setVvalue(1.0));
                     });
                 },
                 chatResponse -> {
                     messageList.getLast().content = chatResponse.aiMessage().text();
+                    isGenerating = false;
+                    updateSendDisable();
                     Platform.runLater(() -> {
                         refreshMessageList();
-                        messagePanel.setVvalue(1.0);
+                        Platform.runLater(() -> messagePanel.setVvalue(1.0));
                     });
+
                 },
                 throwable -> {
-                    System.err.println("Error: " + throwable.getMessage());
+                    messageList.getLast().content = throwable.getMessage();
+                    isGenerating = false;
+                    updateSendDisable();
+                    Platform.runLater(() -> {
+                        refreshMessageList();
+                        Platform.runLater(() -> messagePanel.setVvalue(1.0));
+                    });
                 });
         refreshMessageList();
     }
@@ -153,7 +162,6 @@ public class AiController implements Initializable {
                     Parent root = loader.load();
                     UserMessageController userMessageController = loader.getController();
                     userMessageController.setContent(message.content);
-
                     messageContent.getChildren().add(root);
                 }
                 catch (Exception e) {

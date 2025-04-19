@@ -75,7 +75,7 @@
     <VBox styleClass="gap-3 p-3-6-6-6 border-t border-gray-200">
         <Label styleClass="text-sm font-medium text-gray-700">Ask about your spending</Label>
         <HBox styleClass="gap-2">
-            <TextField fx:id="inputField" onKeyPressed="#handleEnterPressed" onInputMethodTextChanged="#handleInput" promptText="E.g., Where can I save money?" HBox.hgrow="ALWAYS" styleClass="border h-8 border-gray-200 rounded-lg text-sm focus-border-blue-500" />
+            <TextField fx:id="inputField" onKeyPressed="#handleEnterPressed" promptText="E.g., Where can I save money?" HBox.hgrow="ALWAYS" styleClass="border h-8 border-gray-200 rounded-lg text-sm focus-border-blue-500" />
             <Button fx:id="sendBtn" onMouseClicked="#handleSend" styleClass="p-2 w-8 h-8 bg-blue-600 text-white rounded-lg hover-bg-blue-700 cursor-pointer">
 
             </Button>

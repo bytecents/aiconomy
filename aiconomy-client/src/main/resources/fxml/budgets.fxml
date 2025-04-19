@@ -9,7 +9,7 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.shape.Circle?>
 <StackPane fx:id="rootPane" xmlns:fx="http://javafx.com/fxml" fx:controller="com.se.aiconomy.client.controller.AddBudgetController">
-    <VBox fx:id="mainVBox" spacing="20">
+    <VBox fx:id="mainVBox" styleClass="p-8">
         <padding>
             <Insets top="20" right="20" bottom="20" left="20"/>
         </padding>
@@ -61,10 +61,8 @@
                     <Label text="30 days left" styleClass="text-sm text-gray-500 font-roboto"/>
                 </VBox>
             </GridPane>
-
-
             <!-- Budget Management -->
-            <HBox  spacing="20" styleClass="pb-0">
+            <HBox styleClass="gap-5">
                 <VBox spacing="10" styleClass="p-6" GridPane.columnIndex="0" style="-fx-background-color: white; -fx-padding: 5;" HBox.hgrow="ALWAYS">
                     <!-- 顶部标题 + 按钮 -->
                     <HBox alignment="CENTER_LEFT" spacing="10" >

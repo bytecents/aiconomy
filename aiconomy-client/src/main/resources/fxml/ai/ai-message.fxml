@@ -6,6 +6,7 @@
 <?import com.se.aiconomy.client.common.MyMarkdownView?>
 
 <HBox xmlns="http://javafx.com/javafx"
+      fx:id="root"
       xmlns:fx="http://javafx.com/fxml"
       stylesheets="/css/styles.css"
       styleClass="gap-3"
