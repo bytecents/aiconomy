@@ -1,5 +1,6 @@
 package com.se.aiconomy.server;
 
+import com.se.aiconomy.server.common.exception.ServiceException;
 import com.se.aiconomy.server.dao.TransactionDao;
 import com.se.aiconomy.server.model.dto.TransactionDto;
 import com.se.aiconomy.server.service.impl.TransactionServiceImpl;
@@ -35,7 +36,7 @@ public class TransactionServiceCSVTest {
     @AfterEach
     void cleanStorage() {
         transactionDao.findAll().forEach(tx ->
-            transactionDao.delete(tx));
+                transactionDao.delete(tx));
     }
 
     @Test
@@ -56,16 +57,16 @@ public class TransactionServiceCSVTest {
         createTestTransactions();
 
         Map<String, String> statistics = transactionService.getIncomeAndExpenseStatistics(
-            TEST_TIME.minusDays(1),
-            TEST_TIME.plusDays(1)
+                TEST_TIME.minusDays(1),
+                TEST_TIME.plusDays(1)
         );
 
         assertNotNull(statistics);
         assertTrue(Double.parseDouble(statistics.get("totalIncome")) > 0);
         assertTrue(Double.parseDouble(statistics.get("totalExpense")) > 0);
         assertEquals(
-            Double.parseDouble(statistics.get("totalIncome")) - Double.parseDouble(statistics.get("totalExpense")),
-            Double.parseDouble(statistics.get("netAmount"))
+                Double.parseDouble(statistics.get("totalIncome")) - Double.parseDouble(statistics.get("totalExpense")),
+                Double.parseDouble(statistics.get("netAmount"))
         );
     }
 
@@ -119,11 +120,11 @@ public class TransactionServiceCSVTest {
         createTestTransactions();
 
         TransactionSearchCriteria criteria = TransactionSearchCriteria.builder()
-            .paymentMethod("支付宝")
-            .incomeOrExpense("支出")
-            .startTime(TEST_TIME.minusDays(1))
-            .endTime(TEST_TIME.plusDays(1))
-            .build();
+                .paymentMethod("支付宝")
+                .incomeOrExpense("支出")
+                .startTime(TEST_TIME.minusDays(1))
+                .endTime(TEST_TIME.plusDays(1))
+                .build();
 
         List<TransactionDto> results = transactionService.searchTransactions(criteria);
 
@@ -157,7 +158,7 @@ public class TransactionServiceCSVTest {
         String nonExistentId = UUID.randomUUID().toString();
 
         assertThrows(Exception.class, () ->
-            transactionService.updateTransactionStatus(nonExistentId, "已完成"));
+                transactionService.updateTransactionStatus(nonExistentId, "已完成"));
     }
 
     // 辅助方法：创建测试交易记录
@@ -173,6 +174,7 @@ public class TransactionServiceCSVTest {
         transaction.setPaymentMethod("支付宝");
         transaction.setStatus("待支付");
         transaction.setMerchantOrderId("JD" + UUID.randomUUID().toString().substring(0, 8));
+        transaction.setAccountId("userAcc001");
         transaction.setRemark("测试交易");
 
         return transactionDao.create(transaction);
@@ -194,8 +196,32 @@ public class TransactionServiceCSVTest {
         incomeTransaction.setPaymentMethod("银行转账");
         incomeTransaction.setStatus("已完成");
         incomeTransaction.setMerchantOrderId("SAL" + UUID.randomUUID().toString().substring(0, 8));
+        incomeTransaction.setAccountId("userAcc002");
         incomeTransaction.setRemark("月度工资");
 
         transactionDao.create(incomeTransaction);
+    }
+
+    @Test
+    @Order(9)
+    @DisplayName("测试根据 accountId 查找所有交易记录")
+    void testGetTransactionsByAccountId() throws ServiceException {
+        // 准备测试数据
+        createTestTransactions();
+
+        // 查找特定的 accountId (例如 "userAcc002")
+        String accountId = "userAcc002";
+        List<TransactionDto> transactions = transactionService.getTransactionsByAccountId(accountId);
+
+        // 断言返回的交易记录不为空
+        assertNotNull(transactions, "交易记录为空");
+        assertFalse(transactions.isEmpty(), "没有找到任何交易记录");
+
+        // 断言返回的每一条交易记录的 accountId 匹配
+        transactions.forEach(transaction -> {
+            assertEquals(accountId, transaction.getAccountId(), "accountId 不匹配");
+        });
+
+        transactions.forEach(transaction -> log.info("Found transaction with accountId {}: {}", accountId, transaction));
     }
 }
