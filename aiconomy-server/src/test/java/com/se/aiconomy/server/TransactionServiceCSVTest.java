@@ -2,8 +2,8 @@ package com.se.aiconomy.server;
 
 import com.se.aiconomy.server.dao.TransactionDao;
 import com.se.aiconomy.server.model.dto.TransactionDto;
-import com.se.aiconomy.server.service.TransactionService;
-import com.se.aiconomy.server.service.TransactionService.TransactionSearchCriteria;
+import com.se.aiconomy.server.service.impl.TransactionServiceImpl;
+import com.se.aiconomy.server.service.impl.TransactionServiceImpl.TransactionSearchCriteria;
 import org.junit.jupiter.api.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,17 +19,15 @@ import static org.junit.jupiter.api.Assertions.*;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class TransactionServiceCSVTest {
     private static final Logger log = LoggerFactory.getLogger(TransactionServiceCSVTest.class);
-    private static TransactionService transactionService;
+    private static final LocalDateTime TEST_TIME = LocalDateTime.parse("2025-04-17T10:11:09");
+    private static final String TEST_USER = "AureliaSKY";
+    private static TransactionServiceImpl transactionService;
     private static TransactionDao transactionDao;
     private final String testCsvPath = Objects.requireNonNull(getClass().getClassLoader().getResource("transactions.csv")).getPath();
 
-    // 测试用时间
-    private static final LocalDateTime TEST_TIME = LocalDateTime.parse("2025-04-17T10:11:09");
-    private static final String TEST_USER = "AureliaSKY";
-
     @BeforeAll
     static void setup() {
-        transactionService = new TransactionService();
+        transactionService = new TransactionServiceImpl();
         transactionDao = TransactionDao.getInstance();
     }
 
@@ -120,10 +118,11 @@ public class TransactionServiceCSVTest {
         // 准备测试数据
         createTestTransactions();
 
-        TransactionSearchCriteria criteria = new TransactionSearchCriteria.Builder()
-            .withPaymentMethod("支付宝")
-            .withIncomeOrExpense("支出")
-            .withDateRange(TEST_TIME.minusDays(1), TEST_TIME.plusDays(1))
+        TransactionSearchCriteria criteria = TransactionSearchCriteria.builder()
+            .paymentMethod("支付宝")
+            .incomeOrExpense("支出")
+            .startTime(TEST_TIME.minusDays(1))
+            .endTime(TEST_TIME.plusDays(1))
             .build();
 
         List<TransactionDto> results = transactionService.searchTransactions(criteria);

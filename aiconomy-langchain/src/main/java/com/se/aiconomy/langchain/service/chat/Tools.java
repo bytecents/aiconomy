@@ -22,20 +22,15 @@ public class Tools {
         log.info("Tool Executed: Fetching transactions for userId: {}", userId);
 
         ArrayList<Transaction> transactions = new ArrayList<>(List.of(
-            new Transaction(LocalDateTime.now(), "Expense", "KFC", "Burger Combo",
-                "Expense", "45.0", "Alipay", "Success", "TXN001", "M001", "Lunch"),
-            new Transaction(LocalDateTime.now(), "Expense", "DiDi", "Ride",
-                "Expense", "32.5", "WeChat Pay", "Success", "TXN002", "M002", "Ride home"),
-            new Transaction(LocalDateTime.now(), "Expense", "JD", "Electronics",
-                "Expense", "999.9", "Credit Card", "Success", "TXN003", "M003", "Buy headphones"),
-            new Transaction(LocalDateTime.now(), "Salary", "XX Company", "Monthly Salary",
-                "Income", "15000.0", "Bank Transfer", "Success", "TXN004", "M004", "March Salary")
+            new Transaction("1", LocalDateTime.now(), "Expense", "KFC", "Burger Combo",
+                "Expense", "45.0", "CNY", "Alipay", "Success", "TXN001", "Lunch"),
+            new Transaction("2", LocalDateTime.now(), "Expense", "DiDi", "Ride",
+                "Expense", "32.5", "CNY", "WeChat Pay", "Success", "TXN002", "Ride home"),
+            new Transaction("3", LocalDateTime.now(), "Expense", "JD", "Electronics",
+                "Expense", "999.9", "CNY", "Credit Card", "Success", "TXN003", "Buy headphones"),
+            new Transaction("4", LocalDateTime.now(), "Salary", "XX Company", "Monthly Salary",
+                "Income", "15000.0", "CNY", "Bank Transfer", "Success", "TXN004", "March Salary")
         ));
-
-        for (Transaction transaction : transactions) {
-            transaction.addExtraField("processTime", LocalDateTime.now().toString());
-            transaction.addExtraField("deviceId", "TEST-DEVICE-001");
-        }
 
         log.info("Fetched {} transactions for userId: {}", transactions.size(), userId);
 
