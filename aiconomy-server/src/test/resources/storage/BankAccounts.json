@@ -1,0 +1,29 @@
+{
+  "schemaVersion": "1.0"
+}
+{
+  "id": "4",
+  "userId": "user1",
+  "bankName": null,
+  "accountType": "Checking",
+  "accountName": null,
+  "balance": 1000.0,
+  "creditLimit": 0.0,
+  "currentDebt": 0.0,
+  "paymentDueDate": null,
+  "minimumPayment": 0.0,
+  "extraFields": {}
+}
+{
+  "id": "5",
+  "userId": "user1",
+  "bankName": null,
+  "accountType": "Savings",
+  "accountName": null,
+  "balance": 2000.0,
+  "creditLimit": 0.0,
+  "currentDebt": 0.0,
+  "paymentDueDate": null,
+  "minimumPayment": 0.0,
+  "extraFields": {}
+}
