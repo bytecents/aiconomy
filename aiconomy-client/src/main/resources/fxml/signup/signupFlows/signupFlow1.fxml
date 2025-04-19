@@ -86,7 +86,7 @@
                                     </Label>
                                     <AnchorPane prefWidth="500.0">
                                        <children>
-                                          <TextField promptText="Enter your email" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                                          <TextField fx:id="emailField" promptText="Enter your email" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                                              <padding>
                                                 <Insets bottom="10.0" left="48.0" right="48.0" top="10.0" />
                                              </padding>
@@ -111,17 +111,22 @@
                                     </Label>
                                     <AnchorPane prefWidth="500.0">
                                        <children>
-                                          <PasswordField layoutX="3.0" promptText="Enter your password" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                                          <PasswordField fx:id="passwordField" layoutX="3.0" promptText="Enter your password" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                                              <padding>
                                                 <Insets bottom="10.0" left="48.0" right="48.0" top="10.0" />
                                              </padding>
                                           </PasswordField>
+                                          <TextField fx:id="passwordTextField" layoutX="3.0" promptText="Enter your password" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                                             <padding>
+                                                <Insets bottom="10.0" left="48.0" right="48.0" top="10.0" />
+                                             </padding>
+                                          </TextField>
                                           <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="9.0">
                                              <image>
                                                 <Image url="@../../../assets/lock.png" />
                                              </image>
                                           </ImageView>
-                                          <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="9.0">
+                                          <ImageView onMouseClicked="#handlePasswordVisibility" fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="9.0">
                                              <image>
                                                 <Image url="@../../../assets/eye.png" />
                                              </image>
@@ -143,7 +148,7 @@
                                     </Label>
                                     <AnchorPane prefWidth="500.0">
                                        <children>
-                                          <PasswordField layoutX="3.0" promptText="Confirm Password" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                                          <PasswordField fx:id="confirmedPasswordField" layoutX="3.0" promptText="Confirm Password" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                                              <padding>
                                                 <Insets bottom="10.0" left="48.0" right="48.0" top="10.0" />
                                              </padding>
@@ -161,7 +166,7 @@
                   </VBox>
                   <HBox alignment="CENTER_LEFT" prefHeight="0.0" prefWidth="424.0" spacing="4.0">
                      <children>
-                        <CheckBox mnemonicParsing="false" />
+                        <CheckBox fx:id="isAgreePolicy" mnemonicParsing="false" />
                         <Label text="I agree to the" />
                         <Hyperlink text="Terms of Service" textFill="#2563eb" />
                         <Label text="and" />

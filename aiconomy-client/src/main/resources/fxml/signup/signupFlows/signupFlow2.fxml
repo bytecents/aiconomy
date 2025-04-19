@@ -142,7 +142,7 @@
                               <VBox prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
                                  <children>
                                     <Label text="First Name" />
-                                    <TextField promptText="Enter first name">
+                                    <TextField fx:id="firstNameField" promptText="Enter first name">
                                        <padding>
                                           <Insets bottom="10.0" left="16.0" right="16.0" top="10.0" />
                                        </padding>
@@ -152,7 +152,7 @@
                               <VBox prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
                                  <children>
                                     <Label text="Last Name" />
-                                    <TextField promptText="Enter last name">
+                                    <TextField fx:id="lastNameField" promptText="Enter last name">
                                        <padding>
                                           <Insets bottom="10.0" left="16.0" right="16.0" top="10.0" />
                                        </padding>
@@ -172,7 +172,7 @@
                                     </Label>
                                     <AnchorPane prefWidth="500.0">
                                        <children>
-                                          <TextField promptText="Enter phone number" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                                          <TextField fx:id="phoneNumberField" promptText="Enter phone number" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                                              <padding>
                                                 <Insets bottom="10.0" left="48.0" right="48.0" top="10.0" />
                                              </padding>
@@ -197,9 +197,12 @@
                                           <Font name="Roboto" size="12.0" />
                                        </font>
                                     </Label>
-                                    <AnchorPane prefWidth="500.0">
+                                    <AnchorPane onMouseClicked="#openDatePicker" prefWidth="500.0">
                                        <children>
-                                          <DatePicker prefHeight="23.0" prefWidth="337.0" styleClass="date-picker-padding" stylesheets="@../../../css/styles.css" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+                                          <DatePicker fx:id="dateOfBirthPicker" onMouseClicked="#openDatePicker" prefHeight="23.0" prefWidth="337.0" styleClass="date-picker-padding" stylesheets="@../../../css/styles.css" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                                             <cursor>
+                                                <Cursor fx:constant="HAND" />
+                                             </cursor></DatePicker>
                                           <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="9.0">
                                              <image>
                                                 <Image url="@../../../assets/calendar.png" />
