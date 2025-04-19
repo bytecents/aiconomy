@@ -1,0 +1,23 @@
+.chart-vertical-grid-lines line,
+.chart-horizontal-grid-lines line {
+    -fx-stroke: transparent;
+}
+
+.chart-series-line {
+    -fx-stroke: #4F46E5;
+    -fx-stroke-width: 4px;
+}
+
+.chart-series-area-fill {
+    -fx-fill: rgba(79, 70, 229, 0.1);
+}
+
+.chart-pie {
+    -fx-pie-inner-radius: 70%;
+}
+
+.default-color0.chart-pie { -fx-pie-color: #4F46E5; }
+.default-color1.chart-pie { -fx-pie-color: #10B981; }
+.default-color2.chart-pie { -fx-pie-color: #8B5CF6; }
+.default-color3.chart-pie { -fx-pie-color: #F59E0B; }
+.default-color4.chart-pie { -fx-pie-color: #6B7280; }

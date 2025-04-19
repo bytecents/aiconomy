@@ -1,0 +1,624 @@
+@font-face {
+    font-family: 'Roboto Black';
+    src: url('/assets/fonts/Roboto-Black.ttf');
+}
+
+@font-face {
+    font-family: 'Roboto Black Italic';
+    src: url('/assets/fonts/Roboto-BlackItalic.ttf');
+}
+
+@font-face {
+    font-family: 'Roboto Bold';
+    src: url('/assets/fonts/Roboto-Bold.ttf');
+}
+
+@font-face {
+    font-family: 'Roboto Bold Italic';
+    src: url('/assets/fonts/Roboto-BoldItalic.ttf');
+}
+
+@font-face {
+    font-family: 'Roboto Italic';
+    src: url('/assets/fonts/Roboto-Italic.ttf');
+}
+
+@font-face {
+    font-family: 'Roboto Light';
+    src: url('/assets/fonts/Roboto-Light.ttf');
+}
+
+@font-face {
+    font-family: 'Roboto Light Italic';
+    src: url('/assets/fonts/Roboto-LightItalic.ttf');
+}
+
+@font-face {
+    font-family: 'Roboto Medium';
+    src: url('/assets/fonts/Roboto-Medium.ttf');
+}
+
+@font-face {
+    font-family: 'Roboto Medium Italic';
+    src: url('/assets/fonts/Roboto-MediumItalic.ttf');
+}
+
+@font-face {
+    font-family: 'Roboto';
+    src: url('/assets/fonts/Roboto-Regular.ttf');
+}
+
+@font-face {
+    font-family: 'Roboto Thin';
+    src: url('/assets/fonts/Roboto-Thin.ttf');
+}
+
+@font-face {
+    font-family: 'Roboto Thin Italic';
+    src: url('/assets/fonts/Roboto-ThinItalic.ttf');
+}
+
+@font-face {
+    font-family: 'Roboto SemiBold';
+    src: url('/assets/fonts/Roboto-SemiBold.ttf');
+}
+
+@font-face {
+    font-family: 'Roboto SemiBold Italic';
+    src: url('/assets/fonts/Roboto-SemiBoldItalic.ttf');
+}
+
+@font-face {
+    font-family: 'Roboto ExtraLight';
+    src: url('/assets/fonts/Roboto-ExtraLight.ttf');
+}
+
+@font-face {
+    font-family: 'Roboto ExtraLight Italic';
+    src: url('/assets/fonts/Roboto-ExtraLightItalic.ttf');
+}
+
+@font-face {
+    font-family: 'Roboto ExtraBold';
+    src: url('/assets/fonts/Roboto-ExtraBold.ttf');
+}
+
+@font-face {
+    font-family: 'Roboto ExtraBold Italic';
+    src: url('/assets/fonts/Roboto-ExtraBoldItalic.ttf');
+}
+
+.font-roboto {
+    -fx-font-family: 'Roboto';
+}
+
+.font-bold {
+    -fx-font-family: 'Roboto Bold';
+}
+
+.font-black {
+    -fx-font-family: 'Roboto Black';
+}
+
+.font-light {
+    -fx-font-family: 'Roboto Light';
+}
+
+.font-thin {
+    -fx-font-family: 'Roboto Thin';
+}
+
+.font-medium {
+    -fx-font-family: 'Roboto Medium';
+}
+
+.font-semibold {
+    -fx-font-family: 'Roboto SemiBold';
+}
+
+.font-extralight {
+    -fx-font-family: 'Roboto ExtraLight';
+}
+
+.font-extrabold {
+    -fx-font-family: 'Roboto ExtraBold';
+}
+
+.font-italic {
+    -fx-font-style: italic;
+}
+
+.font-normal {
+    -fx-font-style: normal;
+}
+
+.text-xl {
+    -fx-font-size: 20px;
+}
+
+.text-2xl {
+    -fx-font-size: 24px;
+}
+
+.text-lg {
+    -fx-font-size: 18px;
+}
+
+.text-base {
+    -fx-font-size: 16px;
+}
+
+.text-sm {
+    -fx-font-size: 14px;
+}
+
+.text-xs {
+    -fx-font-size: 12px;
+}
+
+.bg-blue-500 {
+    -fx-background-color: #3B82F6;
+}
+
+.bg-blue-600 {
+    -fx-background-color: #2563EB;
+}
+
+.text-gray-500 {
+    -fx-text-fill: #6B7280;
+}
+
+.text-gray-700 {
+    -fx-text-fill: #374151;
+    -fx-fill: #374151;
+}
+
+.text-gray-900 {
+    -fx-text-fill: #111827;
+    -fx-fill: #111827;
+}
+
+.text-red-500 {
+    -fx-text-fill: #EF4444;
+    -fx-fill: #EF4444;
+}
+
+.text-blue-900 {
+    -fx-text-fill: #1E3A8A;
+}
+
+.text-white {
+    -fx-text-fill: white;
+}
+
+.text-green-500 {
+    -fx-text-fill: #10B981;
+}
+
+.text-gray-400 {
+    -fx-text-fill: #9CA3AF;
+}
+
+.text-red-500 {
+    -fx-text-fill: #EF4444;
+}
+
+.text-blue-500 {
+    -fx-text-fill: #3B82F6;
+}
+
+.text-blue-700 {
+    -fx-text-fill: #1D4ED8;
+}
+
+.hover-text-blue-800:hover {
+    -fx-text-fill: #1E40AF;
+}
+
+.rounded {
+    -fx-background-radius: 4;
+    -fx-border-radius: 4;
+}
+
+.rounded-lg {
+    -fx-background-radius: 8;
+    -fx-border-radius: 8;
+}
+
+.rounded-xl {
+    -fx-background-radius: 16;
+    -fx-border-radius: 16;
+}
+
+.rounded-full {
+    -fx-background-radius: 9999;
+    -fx-border-radius: 9999;
+}
+
+.gap-0_5 {
+    -fx-spacing: 2;
+}
+
+.gap-1 {
+    -fx-spacing: 4;
+}
+
+.gap-1_5 {
+    -fx-spacing: 6;
+}
+
+.gap-2 {
+    -fx-spacing: 8;
+}
+
+.gap-2_5 {
+    -fx-spacing: 10;
+}
+
+.gap-3 {
+    -fx-spacing: 12;
+}
+
+.gap-4 {
+    -fx-spacing: 16;
+}
+
+.gap-5 {
+    -fx-spacing: 20;
+}
+
+.gap-6 {
+    -fx-spacing: 24;
+}
+
+.bg-black {
+    -fx-background-color: black;
+}
+
+.bg-blue-50 {
+    -fx-background-color: #EFF6FF;
+}
+
+.bg-red-500 {
+    -fx-background-color: #EF4444;
+}
+
+.bg-amber-500 {
+    -fx-background-color: #FBBF24;
+}
+
+.bg-green-500 {
+    -fx-background-color: #10B981;
+}
+
+.bg-background {
+    -fx-background-color: #F3F4F6;
+}
+
+.bg-green-500 {
+    -fx-background-color: #10B981;
+}
+
+.bg-gray-500 {
+    -fx-background-color: #6B7280;
+}
+
+.bg-purple-500 {
+    -fx-background-color: #A855F7;
+}
+
+.bg-yellow-500 {
+    -fx-background-color: #FBBF24;
+}
+
+.bg-secondary {
+    -fx-background-color: #F9FAFB;
+}
+
+.hover-bg-blue-700:hover {
+    -fx-background-color: #1D4ED8;
+}
+
+.hover-bg-gray-50:hover {
+    -fx-background-color: #F9FAFB;
+}
+
+.hover-bg-black:hover {
+    -fx-background-color: black;
+}
+
+.bg-red-100 {
+    -fx-background-color: #FEF2F2;
+}
+
+.bg-blue-100 {
+    -fx-background-color: #DBEAFE;
+}
+
+.bg-green-100 {
+    -fx-background-color: #D1FAE5;
+}
+
+.bg-gray-50 {
+    -fx-background-color: #F9FAFB;
+}
+
+.bg-gray-400 {
+    -fx-background-color: #9CA3AF;
+}
+
+.min-h-0 {
+    -fx-min-height: 0;
+}
+
+.min-h-2 {
+    -fx-min-height: 8;
+}
+
+.min-h-6 {
+    -fx-min-height: 24;
+}
+
+.min-h-10 {
+    -fx-min-height: 40;
+}
+
+.min-h-48 {
+    -fx-min-height: 192;
+}
+
+.min-h-64 {
+    -fx-min-height: 256;
+}
+
+.h-3 {
+    -fx-pref-height: 12;
+    -fx-min-height: 12;
+    -fx-max-height: 12;
+}
+
+.h-4 {
+    -fx-pref-height: 16;
+    -fx-min-height: 16;
+    -fx-max-height: 16;
+}
+
+.h-5 {
+    -fx-pref-height: 20;
+    -fx-min-height: 20;
+    -fx-max-height: 20;
+}
+
+.h-6 {
+    -fx-pref-height: 24;
+    -fx-min-height: 24;
+    -fx-max-height: 24;
+}
+
+.h-10 {
+    -fx-pref-height: 40;
+    -fx-min-height: 40;
+    -fx-max-height: 40;
+}
+
+.h-36 {
+    -fx-pref-height: 144;
+    -fx-min-height: 144;
+    -fx-max-height: 144;
+}
+
+.h-48 {
+    -fx-pref-height: 192;
+    -fx-min-height: 192;
+    -fx-max-height: 192;
+}
+
+.h-64 {
+    -fx-pref-height: 256;
+    -fx-min-height: 256;
+    -fx-max-height: 256;
+}
+
+.h-96 {
+    -fx-pref-height: 384;
+    -fx-min-height: 384;
+    -fx-max-height: 384;
+}
+
+.w-3 {
+    -fx-pref-width: 12;
+    -fx-min-width: 12;
+    -fx-max-width: 12;
+}
+
+.w-4 {
+    -fx-pref-width: 16;
+    -fx-min-width: 16;
+    -fx-max-width: 16;
+}
+
+.w-5 {
+    -fx-pref-width: 20;
+    -fx-min-width: 20;
+    -fx-max-width: 20;
+}
+
+.w-6 {
+    -fx-pref-width: 24;
+    -fx-min-width: 24;
+    -fx-max-width: 24;
+}
+
+.w-10 {
+    -fx-pref-width: 40;
+    -fx-min-width: 40;
+}
+
+.p-2 {
+    -fx-padding: 8;
+}
+
+.p-2_5 {
+    -fx-padding: 10;
+}
+
+.p-3 {
+    -fx-padding: 12;
+}
+
+.p-6 {
+    -fx-padding: 24;
+}
+
+.p-3-2 {
+    -fx-padding: 12 8 12 8
+}
+
+.p-2_5-6-6-6 {
+    -fx-padding: 10 24 24 24;
+}
+
+.p-3-1_5 {
+    -fx-padding: 6 12 6 12;
+}
+
+.p-4-6-6-6 {
+    -fx-padding: 16 24 24 24;
+}
+
+.p-8 {
+    -fx-padding: 32;
+}
+
+.pt-0_5 {
+    -fx-padding: 2 0 0 0;
+}
+
+.pb-1 {
+    -fx-padding: 0 0 4 0;
+}
+
+.pb-2 {
+    -fx-padding: 0 0 8 0;
+}
+
+.pb-4 {
+    -fx-padding: 0 0 16 0;
+}
+
+.pb-6 {
+    -fx-padding: 0 0 24 0;
+}
+
+.pb-8 {
+    -fx-padding: 0 0 32 0;
+}
+
+.p-0 {
+    -fx-padding: 0;
+}
+
+.p-4 {
+    -fx-padding: 16;
+}
+
+.px-4 {
+    -fx-padding: 0 16 0 16;
+}
+
+.py-2 {
+    -fx-padding: 8 0 8 0;
+}
+
+.p-4-2 {
+    -fx-padding: 8 16 8 16;
+}
+
+.border-b {
+    -fx-border-color: #E5E7EB;
+    -fx-border-width: 0 0 1 0;
+}
+
+.border-l {
+    -fx-border-color: #E5E7EB;
+    -fx-border-width: 0 0 0 1;
+}
+
+.border-r {
+    -fx-border-color: #E5E7EB;
+    -fx-border-width: 0 1 0 0;
+}
+
+.border-none {
+    -fx-border-color: transparent;
+    -fx-border-width: 0;
+}
+
+.bg-white {
+    -fx-background-color: white;
+}
+
+.border {
+    -fx-border-color: #E5E7EB;
+    -fx-border-width: 1;
+}
+
+.border-gray-100 {
+    -fx-border-color: #F3F4F6;
+}
+
+.shadow-sm {
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 2, 0, 0, 1);
+}
+
+.card {
+    -fx-background-color: white;
+    -fx-background-radius: 16;
+    -fx-border-radius: 16;
+    -fx-border-color: #F3F4F6;
+    -fx-border-width: 1;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 2, 0, 0, 1);
+}
+
+.date-picker-padding .text-field {
+    -fx-padding: 10px 48px 10px 48px;
+}
+
+.cursor-pointer {
+    -fx-cursor: hand;
+}
+
+.red-bar .track {
+    -fx-background-color: #f3f4f6;
+}
+.red-bar .bar {
+    -fx-background-color: #EF4444;
+}
+
+.green-bar .track {
+    -fx-background-color: #f3f4f6;
+}
+
+.green-bar .bar {
+    -fx-background-color: #10B981;
+}
+
+.blue-bar .track {
+    -fx-background-color: #f3f4f6;
+}
+
+.blue-bar .bar {
+    -fx-background-color: #3B82F6;
+}
+
+.whitespace-nowrap {
+    -fx-wrap-text: false;
+}
+
+.break-words {
+    -fx-wrap-text: true;
+}
+
+.focus-border-blue-500:focused {
+    -fx-border-color: #3B82F6;
+}
