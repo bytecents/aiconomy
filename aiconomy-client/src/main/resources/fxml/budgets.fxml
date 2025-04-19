@@ -6,9 +6,9 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane xmlns:fx="http://javafx.com/fxml">
-    <center>
-        <VBox spacing="20">
+        <StackPane fx:id="rootPane" xmlns:fx="http://javafx.com/fxml" fx:controller="com.se.aiconomy.client.controller.AddBudgetController">
+
+        <VBox fx:id="mainVBox" spacing="20">
             <padding>
                 <Insets top="20" right="20" bottom="20" left="20"/>
             </padding>
@@ -19,9 +19,11 @@
                         <Label text="Budgets" styleClass="text-2xl font-bold text-gray-900 pb-1"/>
                     </VBox>
                     <Region HBox.hgrow="ALWAYS"/>
-                    <Button text="Add Budgets" styleClass="hover-bg-blue-700 p-4-2 bg-blue-600 text-white font-roboto cursor-pointer"/>
+                    <Button text="Add Budgets"
+                            onAction="#onAddBudgetClick"
+                            fx:id="addBudgetBtn"
+                            styleClass="hover-bg-blue-700 p-4-2 bg-blue-600 text-white font-roboto cursor-pointer"/>
                 </HBox>
-
                 <!-- Overview Cards -->
                 <GridPane hgap="24" vgap="24" styleClass="pb-4">
                     <columnConstraints>
@@ -262,5 +264,7 @@
 
             </children>
         </VBox>
-    </center>
-</BorderPane>
+
+        </StackPane>
+
+
