@@ -4,6 +4,9 @@ public class AddBudget {
     @FXML private StackPane rootPane;
 
     @FXML
+    private ToggleGroup toggleGroup;
+
+    @FXML
     private void onAddBudgetClick() {
         private StackPane rootPane; // ✅ 传入的外层容器
         public void setRootPane(StackPane rootPane) {
