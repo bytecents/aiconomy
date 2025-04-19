@@ -1,8 +1,8 @@
 package com.se.aiconomy.langchain.service.classification;
 
 import com.se.aiconomy.langchain.common.config.Locale;
-import com.se.aiconomy.langchain.common.model.Transaction;
 import com.se.aiconomy.langchain.common.model.BillType;
+import com.se.aiconomy.langchain.common.model.Transaction;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,13 +23,10 @@ public class ClassificationAssistantTest {
         TransactionClassificationService service = new TransactionClassificationService();
 
         Transaction transaction = new Transaction(
-            LocalDateTime.now(), "Expense", "Starbucks", "Cappuccino",
-            "Expense", "35.5", "Credit Card", "Success",
-            "TXN123456", "M123456", "Breakfast"
+            "1", LocalDateTime.now(), "Expense", "Starbucks", "Cappuccino",
+            "Expense", "35.5", "CNY", "Credit Card", "Success",
+            "TXN123456", "Breakfast"
         );
-
-        transaction.addExtraField("loyaltyPoints", 10);
-        transaction.addExtraField("geoLocation", "Shanghai, China");
 
         BillType billType = service.classifyTransaction(transaction);
         log.info("Bill Type: {}", billType);
@@ -39,36 +36,30 @@ public class ClassificationAssistantTest {
     @Test
     void testParallelClassification() {
         TransactionClassificationService service = new TransactionClassificationService();
-        ArrayList<Transaction> transactions = createTestTransactions();
+        List<Transaction> transactions = createTestTransactions();
 
-        ArrayList<BillType> billTypes = service.classifyTransactions(transactions);
+        List<BillType> billTypes = service.classifyTransactions(transactions);
         validateClassificationResults(transactions, billTypes);
 
-        ArrayList<BillType> billTypesCN = service.classifyTransactions(transactions, Locale.CN);
+        List<BillType> billTypesCN = service.classifyTransactions(transactions, Locale.CN);
         validateClassificationResults(transactions, billTypesCN);
     }
 
     private ArrayList<Transaction> createTestTransactions() {
-        ArrayList<Transaction> transactions = new ArrayList<>(List.of(
-            new Transaction(LocalDateTime.now(), "Expense", "KFC", "Burger Combo",
-                "Expense", "45.0", "Alipay", "Success", "TXN001", "M001", "Lunch"),
-            new Transaction(LocalDateTime.now(), "Expense", "DiDi", "Ride",
-                "Expense", "32.5", "WeChat Pay", "Success", "TXN002", "M002", "Ride home"),
-            new Transaction(LocalDateTime.now(), "Expense", "JD", "Electronics",
-                "Expense", "999.9", "Credit Card", "Success", "TXN003", "M003", "Buy headphones"),
-            new Transaction(LocalDateTime.now(), "Salary", "XX Company", "Monthly Salary",
-                "Income", "15000.0", "Bank Transfer", "Success", "TXN004", "M004", "March Salary")
+
+        return new ArrayList<>(List.of(
+            new Transaction("1", LocalDateTime.now(), "Expense", "KFC", "Burger Combo",
+                "Expense", "45.0", "CNY", "Alipay", "Success", "TXN001", "Lunch"),
+            new Transaction("2", LocalDateTime.now(), "Expense", "DiDi", "Ride",
+                "Expense", "32.5", "CNY", "WeChat Pay", "Success", "TXN002", "Ride home"),
+            new Transaction("3", LocalDateTime.now(), "Expense", "JD", "Electronics",
+                "Expense", "999.9", "CNY", "Credit Card", "Success", "TXN003", "Buy headphones"),
+            new Transaction("4", LocalDateTime.now(), "Salary", "XX Company", "Monthly Salary",
+                "Income", "15000.0", "CNY", "Bank Transfer", "Success", "TXN004", "March Salary")
         ));
-
-        for (Transaction transaction : transactions) {
-            transaction.addExtraField("processTime", LocalDateTime.now().toString());
-            transaction.addExtraField("deviceId", "TEST-DEVICE-001");
-        }
-
-        return transactions;
     }
 
-    private void validateClassificationResults(ArrayList<Transaction> transactions, ArrayList<BillType> billTypes) {
+    private void validateClassificationResults(List<Transaction> transactions, List<BillType> billTypes) {
         assertEquals(transactions.size(), billTypes.size(),
             "The number of classification results should match the number of transactions");
 
@@ -77,10 +68,10 @@ public class ClassificationAssistantTest {
             Transaction transaction = transactions.get(i);
 
             assertNotNull(billType,
-                String.format("The classification result for transaction %s should not be null", transaction.getTransactionId()));
+                String.format("The classification result for transaction %s should not be null", transaction.getId()));
 
             log.info("Transaction: {} -> Bill Type: {}",
-                transaction.getTransactionId(), billType);
+                transaction.getId(), billType);
         }
     }
 }

@@ -6,6 +6,7 @@
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -15,7 +16,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<?import javafx.scene.image.Image?>
 <HBox prefHeight="883.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.se.aiconomy.client.controller.signup.signupFlows.SignupFlowController3">
    <children>
       <VBox maxWidth="700.0" prefHeight="720.0" prefWidth="520.0" spacing="16.0" style="-fx-background-color: white;" HBox.hgrow="ALWAYS">
@@ -73,28 +73,25 @@
             </VBox>
             <VBox spacing="12.0" VBox.vgrow="ALWAYS">
                <children>
-                  <VBox alignment="CENTER_LEFT" prefHeight="181.0" prefWidth="504.0" spacing="4.0">
+                  <VBox alignment="CENTER_LEFT" prefHeight="181.0" prefWidth="504.0" spacing="8.0">
                      <children>
-                        <Label text="What are your primary financial goals?">
+                        <Label prefHeight="20.0" prefWidth="206.0" text="What are your primary financial goals?">
                            <font>
                               <Font name="Roboto" size="12.0" />
                            </font>
-                           <padding>
-                              <Insets bottom="12.0" />
-                           </padding>
                         </Label>
                         <VBox prefHeight="200.0" prefWidth="100.0" spacing="16.0" VBox.vgrow="ALWAYS">
                            <children>
                               <HBox prefHeight="100.0" prefWidth="200.0" spacing="16.0" VBox.vgrow="ALWAYS">
                                  <children>
-                                    <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" spacing="8.0" style="-fx-border-color: #d6dbe7; -fx-border-radius: 8px;" HBox.hgrow="ALWAYS">
+                                    <VBox fx:id="goal1" alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" spacing="8.0" style="-fx-border-color: #d6dbe7; -fx-border-radius: 8px;" HBox.hgrow="ALWAYS">
                                        <children>
                                           <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="12.0">
                                              <children>
                                                 <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
-                                                   <Image url="@../../../assets/piggy-bank.png"/>
+                                                   <Image url="@../../../assets/piggy-bank.png" />
                                                 </ImageView>
-                                                <Label text="Save Money">
+                                                <Label fx:id="primaryFinancialGoal1" text="Save Money">
                                                    <font>
                                                       <Font size="16.0" />
                                                    </font>
@@ -109,15 +106,18 @@
                                        <padding>
                                           <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                        </padding>
+                                       <cursor>
+                                          <Cursor fx:constant="HAND" />
+                                       </cursor>
                                     </VBox>
-                                    <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" spacing="8.0" style="-fx-border-color: #d6dbe7; -fx-border-radius: 8px;" HBox.hgrow="ALWAYS">
+                                    <VBox fx:id="goal2" alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" spacing="8.0" style="-fx-border-color: #d6dbe7; -fx-border-radius: 8px;" HBox.hgrow="ALWAYS">
                                        <children>
-                                          <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="12.0">
+                                          <HBox  alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="12.0">
                                              <children>
                                                 <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
-                                                   <Image url="@../../../assets/trending-up.png"/>
+                                                   <Image url="@../../../assets/trending-up.png" />
                                                 </ImageView>
-                                                <Label text="Invest">
+                                                <Label fx:id="primaryFinancialGoal2" text="Invest">
                                                    <font>
                                                       <Font size="16.0" />
                                                    </font>
@@ -132,19 +132,22 @@
                                        <padding>
                                           <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                        </padding>
+                                       <cursor>
+                                          <Cursor fx:constant="HAND" />
+                                       </cursor>
                                     </VBox>
                                  </children>
                               </HBox>
                               <HBox prefHeight="100.0" prefWidth="200.0" spacing="16.0" VBox.vgrow="ALWAYS">
                                  <children>
-                                    <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" spacing="8.0" style="-fx-border-color: #d6dbe7; -fx-border-radius: 8px;" HBox.hgrow="ALWAYS">
+                                    <VBox fx:id="goal3" alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" spacing="8.0" style="-fx-border-color: #d6dbe7; -fx-border-radius: 8px;" HBox.hgrow="ALWAYS">
                                        <children>
-                                          <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="12.0">
+                                          <HBox  alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="12.0">
                                              <children>
                                                 <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
-                                                   <Image url="@../../../assets/credit-card.png"/>
+                                                   <Image url="@../../../assets/credit-card.png" />
                                                 </ImageView>
-                                                <Label text="Budget">
+                                                <Label fx:id="primaryFinancialGoal3" text="Budget">
                                                    <font>
                                                       <Font size="16.0" />
                                                    </font>
@@ -159,15 +162,18 @@
                                        <padding>
                                           <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                        </padding>
+                                       <cursor>
+                                          <Cursor fx:constant="HAND" />
+                                       </cursor>
                                     </VBox>
-                                    <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" spacing="8.0" style="-fx-border-color: #d6dbe7; -fx-border-radius: 8px;" HBox.hgrow="ALWAYS">
+                                    <VBox fx:id="goal4" alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" spacing="8.0" style="-fx-border-color: #d6dbe7; -fx-border-radius: 8px;" HBox.hgrow="ALWAYS">
                                        <children>
-                                          <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="12.0">
+                                          <HBox  alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="12.0">
                                              <children>
                                                 <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
-                                                   <Image url="@../../../assets/wallet.png"/>
+                                                   <Image url="@../../../assets/wallet.png" />
                                                 </ImageView>
-                                                <Label text="Debt Free">
+                                                <Label fx:id="primaryFinancialGoal4" text="Debt Free">
                                                    <font>
                                                       <Font size="16.0" />
                                                    </font>
@@ -182,6 +188,9 @@
                                        <padding>
                                           <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                        </padding>
+                                       <cursor>
+                                          <Cursor fx:constant="HAND" />
+                                       </cursor>
                                     </VBox>
                                  </children>
                               </HBox>
@@ -190,9 +199,6 @@
                               <Insets left="12.0" right="12.0" />
                            </padding>
                         </VBox>
-                        <HBox prefHeight="100.0" prefWidth="424.0" spacing="24.0" />
-                        <HBox VBox.vgrow="ALWAYS" />
-                        <HBox />
                      </children>
                   </VBox>
                   <VBox prefHeight="92.0" prefWidth="445.0" spacing="8.0">
@@ -200,7 +206,7 @@
                         <Label text="What's your monthly income?" />
                         <AnchorPane prefWidth="500.0">
                            <children>
-                              <TextField promptText="Enter amount" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                              <TextField fx:id="monthlyIncomeField" promptText="Enter amount" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                                  <padding>
                                     <Insets bottom="10.0" left="48.0" right="48.0" top="10.0" />
                                  </padding>
@@ -218,15 +224,15 @@
                   <VBox prefHeight="123.0" prefWidth="445.0" spacing="8.0">
                      <children>
                         <Label text="Select your main expense categories" />
-                        <CheckBox mnemonicParsing="false" text="Housing &amp; Utilities" />
-                        <CheckBox mnemonicParsing="false" text="Food &amp; Dining" />
-                        <CheckBox mnemonicParsing="false" text="Transportation" />
-                        <CheckBox mnemonicParsing="false" text="Shopping &amp; Entertainment" />
+                        <CheckBox fx:id="checkBox1" mnemonicParsing="false" text="Housing &amp; Utilities" />
+                        <CheckBox fx:id="checkBox2" mnemonicParsing="false" text="Food &amp; Dining" />
+                        <CheckBox fx:id="checkBox3" mnemonicParsing="false" text="Transportation" />
+                        <CheckBox fx:id="checkBox4" mnemonicParsing="false" text="Shopping &amp; Entertainment" />
                      </children>
                   </VBox>
                   <HBox prefHeight="34.0" prefWidth="424.0" spacing="12.0">
                      <children>
-                        <Button fx:id="goBackButton" mnemonicParsing="false" onAction="#goBackToSignupFlow1" prefHeight="44.0" prefWidth="634.0" style="-fx-background-radius: 12px; -fx-background-color: white; -fx-border-color: #e5e7eb; -fx-border-radius: 12px;" text="Back" textFill="#374151">
+                        <Button fx:id="goBackButton" mnemonicParsing="false" onAction="#goBackToSignupFlow2" prefHeight="44.0" prefWidth="634.0" style="-fx-background-radius: 12px; -fx-background-color: white; -fx-border-color: #e5e7eb; -fx-border-radius: 12px;" text="Back" textFill="#374151">
                            <font>
                               <Font name="Roboto" size="16.0" />
                            </font>

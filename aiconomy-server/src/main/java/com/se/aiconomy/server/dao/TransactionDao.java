@@ -171,4 +171,11 @@ public class TransactionDao extends AbstractDao<TransactionDto> {
             .filter(t -> t.getRemark() != null && t.getRemark().contains(keyword))
             .collect(Collectors.toList());
     }
+
+    public List<TransactionDto> findByUserId(String userId) {
+        log.debug("Finding transactions for user ID: {}", userId);
+        return findAll().stream()
+            .filter(t -> userId.equals(t.getUserId()))
+            .collect(Collectors.toList());
+    }
 }

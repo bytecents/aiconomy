@@ -1,28 +1,88 @@
 package com.se.aiconomy.client.controller;
 
 import com.se.aiconomy.client.Application.StyleClassFixer;
+import com.se.aiconomy.client.common.CustomDialog;
+import com.se.aiconomy.server.handler.UserRequestHandler;
+import com.se.aiconomy.server.model.dto.user.request.UserLoginRequest;
+import com.se.aiconomy.server.model.dto.user.request.UserRegisterRequest;
+import com.se.aiconomy.server.model.entity.User;
+import com.se.aiconomy.server.service.UserService;
+import com.se.aiconomy.server.service.impl.UserServiceImpl;
+import com.se.aiconomy.server.storage.service.impl.JSONStorageServiceImpl;
 import javafx.animation.FadeTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Hyperlink;
+import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.util.Objects;
+import java.util.function.UnaryOperator;
 
 public class LoginController {
-    public Button loginButton;
-    public Hyperlink signUpEntry;
+    @FXML public Button loginButton;
+    @FXML public Hyperlink signUpEntry;
+    @FXML public TextField emailField;
+    @FXML public PasswordField passwordField;
+    @FXML public TextField passwordTextField;
+    private UserRequestHandler userRequestHandler;
+
+    private boolean showPassword = false;
+
+    @FXML public void initialize() {
+        passwordTextField.setVisible(false);
+        UnaryOperator<TextFormatter.Change> filter = change -> {
+            // not allow " "
+            if (change.getText().contains(" ")) {
+                return null;
+            }
+            return change;
+        };
+        emailField.setTextFormatter(new TextFormatter<>(filter));
+        passwordField.setTextFormatter(new TextFormatter<>(filter));
+        passwordTextField.setTextFormatter(new TextFormatter<>(filter));
+
+//        UserRegisterRequest registerRequest = new UserRegisterRequest();
+//        registerRequest.setEmail("test@example.com");
+//        registerRequest.setPassword("test");
+//        registerRequest.setFirstName("test");
+//        registerRequest.setLastName("example");
+//        try{
+//            userRequestHandler.handleRegisterRequest(registerRequest);
+//        } catch (Exception e){
+//            e.printStackTrace();
+//        }
+    }
 
     @FXML
     public void login(ActionEvent event) throws IOException {
-        switchToMain(event);
+        String userInputEmail = emailField.getText();
+        String userInputPassword;
+        if (showPassword)
+            userInputPassword = passwordTextField.getText();
+        else
+            userInputPassword = passwordField.getText();
+
+        try {
+            this.userRequestHandler = new UserRequestHandler(new UserServiceImpl(JSONStorageServiceImpl.getInstance()));
+            UserLoginRequest userLoginRequest = new UserLoginRequest();
+            userLoginRequest.setEmail(userInputEmail);
+            userLoginRequest.setPassword(userInputPassword);
+            userRequestHandler.handleLoginRequest(userLoginRequest);
+
+            switchToMain(event);
+            CustomDialog.show("Success", "Login successfully", "success", "OK");
+
+        } catch (RuntimeException rte) {
+            System.out.println(rte.getMessage());
+            CustomDialog.show("Error", rte.getMessage(), "error", "Try Again");
+        }
     }
 
     public void switchToSignup(ActionEvent event) throws IOException {
@@ -78,5 +138,18 @@ public class LoginController {
             fadeIn.play();             // play the fade-in animation
         });
         return fadeOut;
+    }
+
+    public void handlePasswordVisibility(MouseEvent mouseEvent) {
+        this.showPassword = !this.showPassword;
+        String userInputPassword;
+        if (showPassword)
+            userInputPassword = passwordField.getText();
+        else
+            userInputPassword = passwordTextField.getText();
+        passwordField.setVisible(!showPassword);
+        passwordField.setText(userInputPassword);
+        passwordTextField.setVisible(showPassword);
+        passwordTextField.setText(userInputPassword);
     }
 }
