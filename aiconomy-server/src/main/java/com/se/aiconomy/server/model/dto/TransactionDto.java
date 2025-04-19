@@ -59,4 +59,6 @@ public class TransactionDto implements Identifiable {
     private BillType billType;
 
     private String userId;
+
+    private String accountId; // 账户ID
 }

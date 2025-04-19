@@ -1,5 +1,6 @@
 package com.se.aiconomy.server.service;
 
+import com.se.aiconomy.server.langchain.common.model.BillType;
 import com.se.aiconomy.server.model.entity.User;
 
 import java.util.List;
