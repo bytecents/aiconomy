@@ -39,192 +39,122 @@
         </HBox>
 
         <!-- 主体内容 -->
+        <!-- 主体内容 -->
         <VBox spacing="8" alignment="TOP_LEFT">
-
             <!-- 主卡片容器 -->
-            <VBox  HBox.hgrow="ALWAYS"
-                  style="-fx-background-color: white; -fx-padding: 6;">
+            <VBox HBox.hgrow="NEVER" style="-fx-background-color: white; -fx-padding: 6;">
                 <HBox alignment="CENTER_LEFT">
                     <Label text="Category" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #333333;"/>
-                    <Region HBox.hgrow="ALWAYS"/>
+                    <Region HBox.hgrow="NEVER"/>
                 </HBox>
                 <!-- 卡片统计内容 -->
                 <GridPane hgap="24" vgap="24" styleClass="pb-4" style="-fx-padding: 10 0 0 0;">
                     <columnConstraints>
-                        <ColumnConstraints percentWidth="33"/>
-                        <ColumnConstraints percentWidth="33"/>
-                        <ColumnConstraints percentWidth="33"/>
+                        <!-- 每列的宽度限制 -->
+                        <ColumnConstraints minWidth="200" maxWidth="200" percentWidth="25"/>
+                        <ColumnConstraints minWidth="200" maxWidth="200" percentWidth="25"/>
+                        <ColumnConstraints minWidth="200" maxWidth="200" percentWidth="25"/>
+                        <ColumnConstraints minWidth="200" maxWidth="200" percentWidth="25"/>
                     </columnConstraints>
 
                     <!-- 卡片项 1 -->
-                    <VBox spacing="5"
-                          alignment="TOP_CENTER"
-                          style="-fx-background-color: white;
-                 -fx-border-color: #e5e7eb;
-                 -fx-border-radius: 10;
-                 -fx-background-radius: 10;
-                 -fx-padding: 15;"
-                          GridPane.columnIndex="0" GridPane.rowIndex="0"
-                          fx:id="vbox1"
-                          onMouseClicked="#handleClick">
+                    <VBox spacing="5" alignment="TOP_CENTER" style="-fx-background-color: white; -fx-border-color: #e5e7eb; -fx-border-radius: 10; -fx-background-radius: 10; -fx-padding: 15;" GridPane.columnIndex="0" GridPane.rowIndex="0" fx:id="vbox1" onMouseClicked="#handleClick" prefWidth="200">
                         <StackPane prefHeight="50.0" prefWidth="50.0" alignment="CENTER">
-                            <Circle fill="#f3f4f6" radius="24.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+                            <Circle fill="#f3f4f6" radius="24.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0"/>
                             <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                                <Image url="@../assets/FoodDining1.png" />
+                                <Image url="@../assets/FoodDining1.png"/>
                             </ImageView>
                         </StackPane>
-                        <Label text="Food &amp; Dining" alignment="CENTER" wrapText="true"
-                               style="-fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #6b7280;"/>
+                        <Label text="Food &amp; Dining" alignment="CENTER" wrapText="true" style="-fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #6b7280;"/>
                     </VBox>
 
                     <!-- 卡片项 2 -->
-                    <VBox spacing="5"
-                          alignment="TOP_CENTER"
-                          style="-fx-background-color: white;
-                 -fx-border-color: #e5e7eb;
-                 -fx-border-radius: 10;
-                 -fx-background-radius: 10;
-                 -fx-padding: 15;"
-                          GridPane.columnIndex="1" GridPane.rowIndex="0" fx:id="vbox2" onMouseClicked="#handleClick">
+                    <VBox spacing="5" alignment="TOP_CENTER" style="-fx-background-color: white; -fx-border-color: #e5e7eb; -fx-border-radius: 10; -fx-background-radius: 10; -fx-padding: 15;" GridPane.columnIndex="1" GridPane.rowIndex="0" fx:id="vbox2" onMouseClicked="#handleClick" prefWidth="200">
                         <StackPane prefHeight="50.0" prefWidth="50.0" alignment="CENTER">
-                            <Circle fill="#f3f4f6" radius="24.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+                            <Circle fill="#f3f4f6" radius="24.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0"/>
                             <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                                <Image url="@../assets/Transportation1.png" />
+                                <Image url="@../assets/Transportation1.png"/>
                             </ImageView>
                         </StackPane>
-                        <Label text="Transportation" alignment="CENTER" wrapText="true"
-                               style="-fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #6b7280;"/>
+                        <Label text="Transportation" alignment="CENTER" wrapText="true" style="-fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #6b7280;"/>
                     </VBox>
 
                     <!-- 卡片项 3 -->
-                    <VBox spacing="5"
-                          alignment="TOP_CENTER"
-                          style="-fx-background-color: white;
-                 -fx-border-color: #e5e7eb;
-                 -fx-border-radius: 10;
-                 -fx-background-radius: 10;
-                 -fx-padding: 15;"
-                          GridPane.columnIndex="2" GridPane.rowIndex="0" fx:id="vbox3" onMouseClicked="#handleClick">
+                    <VBox spacing="5" alignment="TOP_CENTER" style="-fx-background-color: white; -fx-border-color: #e5e7eb; -fx-border-radius: 10; -fx-background-radius: 10; -fx-padding: 15;" GridPane.columnIndex="2" GridPane.rowIndex="0" fx:id="vbox3" onMouseClicked="#handleClick" prefWidth="200">
                         <StackPane prefHeight="50.0" prefWidth="50.0" alignment="CENTER">
-                            <Circle fill="#f3f4f6" radius="24.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+                            <Circle fill="#f3f4f6" radius="24.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0"/>
                             <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                                <Image url="@../assets/Shopping1.png" />
+                                <Image url="@../assets/Shopping1.png"/>
                             </ImageView>
                         </StackPane>
-                        <Label text="Shopping" alignment="CENTER" wrapText="true"
-                               style="-fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #6b7280;"/>
+                        <Label text="Shopping" alignment="CENTER" wrapText="true" style="-fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #6b7280;"/>
                     </VBox>
 
                     <!-- 卡片项 4 -->
-                    <VBox spacing="5"
-                          alignment="TOP_CENTER"
-                          style="-fx-background-color: white;
-                 -fx-border-color: #e5e7eb;
-                 -fx-border-radius: 10;
-                 -fx-background-radius: 10;
-                 -fx-padding: 15;"
-                          GridPane.columnIndex="0" GridPane.rowIndex="1" fx:id="vbox4" onMouseClicked="#handleClick">
+                    <VBox spacing="5" alignment="TOP_CENTER" style="-fx-background-color: white; -fx-border-color: #e5e7eb; -fx-border-radius: 10; -fx-background-radius: 10; -fx-padding: 15;" GridPane.columnIndex="3" GridPane.rowIndex="0" fx:id="vbox4" onMouseClicked="#handleClick" prefWidth="200">
                         <StackPane prefHeight="50.0" prefWidth="50.0" alignment="CENTER">
-                            <Circle fill="#f3f4f6" radius="24.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+                            <Circle fill="#f3f4f6" radius="24.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0"/>
                             <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                                <Image url="@../assets/House1.png" />
+                                <Image url="@../assets/House1.png"/>
                             </ImageView>
                         </StackPane>
-                        <Label text="Housing" alignment="CENTER" wrapText="true"
-                               style="-fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #6b7280;"/>
+                        <Label text="Housing" alignment="CENTER" wrapText="true" style="-fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #6b7280;"/>
                     </VBox>
 
                     <!-- 卡片项 5 -->
-                    <VBox spacing="5"
-                          alignment="TOP_CENTER"
-                          style="-fx-background-color: white;
-                 -fx-border-color: #e5e7eb;
-                 -fx-border-radius: 10;
-                 -fx-background-radius: 10;
-                 -fx-padding: 15;"
-                          GridPane.columnIndex="1" GridPane.rowIndex="1" fx:id="vbox5" onMouseClicked="#handleClick">
+                    <VBox spacing="5" alignment="TOP_CENTER" style="-fx-background-color: white; -fx-border-color: #e5e7eb; -fx-border-radius: 10; -fx-background-radius: 10; -fx-padding: 15;" GridPane.columnIndex="0" GridPane.rowIndex="1" fx:id="vbox5" onMouseClicked="#handleClick" prefWidth="200">
                         <StackPane prefHeight="50.0" prefWidth="50.0" alignment="CENTER">
-                            <Circle fill="#f3f4f6" radius="24.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+                            <Circle fill="#f3f4f6" radius="24.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0"/>
                             <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                                <Image url="@../assets/Education1.png" />
+                                <Image url="@../assets/Education1.png"/>
                             </ImageView>
                         </StackPane>
-                        <Label text="Education" alignment="CENTER" wrapText="true"
-                               style="-fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #6b7280;"/>
+                        <Label text="Education" alignment="CENTER" wrapText="true" style="-fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #6b7280;"/>
                     </VBox>
 
                     <!-- 卡片项 6 -->
-                    <VBox spacing="5"
-                          alignment="TOP_CENTER"
-                          style="-fx-background-color: white;
-                 -fx-border-color: #e5e7eb;
-                 -fx-border-radius: 10;
-                 -fx-background-radius: 10;
-                 -fx-padding: 15;"
-                          GridPane.columnIndex="2" GridPane.rowIndex="1" fx:id="vbox6" onMouseClicked="#handleClick">
+                    <VBox spacing="5" alignment="TOP_CENTER" style="-fx-background-color: white; -fx-border-color: #e5e7eb; -fx-border-radius: 10; -fx-background-radius: 10; -fx-padding: 15;" GridPane.columnIndex="1" GridPane.rowIndex="1" fx:id="vbox6" onMouseClicked="#handleClick" prefWidth="200">
                         <StackPane prefHeight="50.0" prefWidth="50.0" alignment="CENTER">
-                            <Circle fill="#f3f4f6" radius="24.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+                            <Circle fill="#f3f4f6" radius="24.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0"/>
                             <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                                <Image url="@../assets/Travel1.png" />
+                                <Image url="@../assets/Travel1.png"/>
                             </ImageView>
                         </StackPane>
-                        <Label text="Travel" alignment="CENTER" wrapText="true"
-                               style="-fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #6b7280;"/>
+                        <Label text="Travel" alignment="CENTER" wrapText="true" style="-fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #6b7280;"/>
                     </VBox>
 
                     <!-- 卡片项 7 -->
-                    <VBox spacing="5"
-                          alignment="TOP_CENTER"
-                          style="-fx-background-color: white;
-                 -fx-border-color: #e5e7eb;
-                 -fx-border-radius: 10;
-                 -fx-background-radius: 10;
-                 -fx-padding: 15;"
-                          GridPane.columnIndex="0" GridPane.rowIndex="2" fx:id="vbox7" onMouseClicked="#handleClick">
+                    <VBox spacing="5" alignment="TOP_CENTER" style="-fx-background-color: white; -fx-border-color: #e5e7eb; -fx-border-radius: 10; -fx-background-radius: 10; -fx-padding: 15;" GridPane.columnIndex="2" GridPane.rowIndex="1" fx:id="vbox7" onMouseClicked="#handleClick" prefWidth="200">
                         <StackPane prefHeight="50.0" prefWidth="50.0" alignment="CENTER">
-                            <Circle fill="#f3f4f6" radius="24.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+                            <Circle fill="#f3f4f6" radius="24.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0"/>
                             <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                                <Image url="@../assets/Gift1.png" />
+                                <Image url="@../assets/Gift1.png"/>
                             </ImageView>
                         </StackPane>
-                        <Label text="Gifts" alignment="CENTER" wrapText="true"
-                               style="-fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #6b7280;"/>
+                        <Label text="Gifts" alignment="CENTER" wrapText="true" style="-fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #6b7280;"/>
                     </VBox>
 
                     <!-- 卡片项 8 -->
-                    <VBox spacing="5"
-                          alignment="TOP_CENTER"
-                          style="-fx-background-color: white;
-                 -fx-border-color: #e5e7eb;
-                 -fx-border-radius: 10;
-                 -fx-background-radius: 10;
-                 -fx-padding: 15;"
-                          GridPane.columnIndex="1" GridPane.rowIndex="2" fx:id="vbox8" onMouseClicked="#handleClick">
+                    <VBox spacing="5" alignment="TOP_CENTER" style="-fx-background-color: white; -fx-border-color: #e5e7eb; -fx-border-radius: 10; -fx-background-radius: 10; -fx-padding: 15;" GridPane.columnIndex="3" GridPane.rowIndex="1" fx:id="vbox8" onMouseClicked="#handleClick" prefWidth="200">
                         <StackPane prefHeight="50.0" prefWidth="50.0" alignment="CENTER">
-                            <Circle fill="#f3f4f6" radius="24.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+                            <Circle fill="#f3f4f6" radius="24.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0"/>
                             <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                                <Image url="@../assets/Custom1.png" />
+                                <Image url="@../assets/Custom1.png"/>
                             </ImageView>
                         </StackPane>
-                        <Label text="Custom" alignment="CENTER" wrapText="true"
-                               style="-fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #6b7280;"/>
+                        <Label text="Custom" alignment="CENTER" wrapText="true" style="-fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #6b7280;"/>
                     </VBox>
                 </GridPane>
-
             </VBox>
         </VBox>
 
-
-        <VBox HBox.hgrow="ALWAYS"
-              style="-fx-background-color: white; -fx-padding: 6;">
-            <HBox alignment="CENTER_LEFT">
-                <Label text="Budget Amount" styleClass="pb-4" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #333333;"/>
-                <Region HBox.hgrow="ALWAYS"/>
+        <VBox HBox.hgrow="ALWAYS" style="-fx-background-color: white; -fx-padding: 6;">
+            <HBox alignment="CENTER_LEFT" spacing="8">
+                <Label text="Budget Amount:  " style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #333333;"/>
+                <TextField fx:id="budgetAmountInput" promptText="\$ 0.00" HBox.hgrow="ALWAYS"
+                           style="-fx-font-size: 14px; -fx-background-color: #f9f9f9; -fx-border-color: #dcdcdc; -fx-border-radius: 5; -fx-background-radius: 5;"/>
             </HBox>
-            <TextField fx:id="budgetAmountInput" promptText="\$ 0.00" VBox.vgrow="NEVER"
-                       style="-fx-font-size: 14px; -fx-background-color: #f9f9f9; -fx-border-color: #dcdcdc; -fx-border-radius: 5; -fx-background-radius: 5;"/>
         </VBox>
-
 
 
         <!-- 时间段容器 -->
@@ -281,12 +211,6 @@
                     <Label text="Yearly" style="-fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #6b7280;"/>
                 </VBox>
 
-
-
-
-
-
-
             </GridPane>
         </VBox>
 
@@ -295,12 +219,12 @@
         <!-- alert容器 -->
         <VBox HBox.hgrow="ALWAYS" style="-fx-background-color: white; -fx-padding: 6;">
             <HBox alignment="CENTER_LEFT">
-                <Label text="Alert Settings (Select budget consumption alert ratio.)" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #333333; pb-6"/>
+                <Label text="Alert Settings (Select budget consumption alert ratio.):" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #333333; pb-6"/>
                 <Region HBox.hgrow="ALWAYS"/>
-            </HBox>
+
 
             <!-- 选项容器，确保选项1、选项2、选项3在同一行且平均分配空间 -->
-            <HBox HBox.hgrow="ALWAYS" spacing="10">
+<!--            <HBox HBox.hgrow="ALWAYS" spacing="10">-->
                 <!-- 选项 1 -->
                 <HBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
                     <RadioButton text="60%" fx:id="option1RadioButton" style="-fx-font-size: 14px; -fx-text-fill: #333333;"/>
@@ -317,13 +241,9 @@
                 </HBox>
             </HBox>
         </VBox>
-
-
-        <VBox HBox.hgrow="NEVER"
-              style="-fx-background-color: white; -fx-padding: 8;">
+        <VBox HBox.hgrow="ALWAYS" style="-fx-background-color: white; -fx-padding: 6;" spacing="20">
             <HBox alignment="CENTER_LEFT">
-                <Label text="Notes (Optional)" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #333333;pb-8"/>
-                <Region HBox.hgrow="ALWAYS"/>
+                <Label text="Notes (Optional)" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #333333;"/>
             </HBox>
 
             <!-- 文字输入框 -->
@@ -331,11 +251,12 @@
                        style="-fx-font-size: 14px; -fx-background-color: #f9f9f9; -fx-border-color: #dcdcdc; -fx-border-radius: 5; -fx-background-radius: 5;"
                        prefHeight="60" maxWidth="Infinity" VBox.vgrow="NEVER"/>
 
-
-            <Button fx:id="saveButton" mnemonicParsing="false" onAction="#onSave" prefHeight="44.0" prefWidth="634.0" style="-fx-background-color: #2563eb; -fx-background-radius: 12px;" text="Save" textFill="WHITE" VBox.vgrow="ALWAYS">
-            </Button>
-        </VBox>
-    </VBox>
+            <!-- 按钮放置在最右边 -->
+            <HBox alignment="CENTER_RIGHT">
+                <Button fx:id="saveButton" mnemonicParsing="false" onAction="#onSave" prefHeight="44.0" style="-fx-background-color: #2563eb; -fx-background-radius: 12px;" text="Save" textFill="WHITE" VBox.vgrow="ALWAYS">
+                </Button>
+            </HBox>
+        </VBox>    </VBox>
 
     </children>
 </AnchorPane>
