@@ -331,27 +331,9 @@
                        style="-fx-font-size: 14px; -fx-background-color: #f9f9f9; -fx-border-color: #dcdcdc; -fx-border-radius: 5; -fx-background-radius: 5;"
                        prefHeight="60" maxWidth="Infinity" VBox.vgrow="NEVER"/>
 
-<!--            &lt;!&ndash; 按钮间隔 &ndash;&gt;-->
-<!--            <Region VBox.vgrow="NEVER" prefHeight="10"/>-->
 
-<!--            &lt;!&ndash; 按钮区域 &ndash;&gt;-->
-<!--            <GridPane alignment="CENTER_LEFT" hgap="10" VBox.vgrow="NEVER">-->
-<!--                <columnConstraints>-->
-<!--                    <ColumnConstraints percentWidth="50"/>-->
-<!--                    <ColumnConstraints percentWidth="50"/>-->
-<!--                </columnConstraints>-->
-<!--                <Button text="Save" fx:id="saveButton" style="-fx-background-color: #007bff; -fx-text-fill: white; -fx-font-size: 14px;" GridPane.columnIndex="0" GridPane.rowIndex="0"/>-->
-<!--                <Button text="Cancel" fx:id="cancelButton" style="-fx-background-color: #f9f9f9; -fx-border-color: #dcdcdc; -fx-text-fill: #333333; -fx-font-size: 14px; " GridPane.columnIndex="1" GridPane.rowIndex="0"/>-->
-<!--            </GridPane>-->
-
-        <GridPane alignment="CENTER_LEFT" hgap="10" VBox.vgrow="NEVER">
-            <columnConstraints>
-                <ColumnConstraints percentWidth="50"/>
-                <ColumnConstraints percentWidth="50"/>
-            </columnConstraints>
-            <Button text="Save" fx:id="saveButton" style="-fx-background-color: #007bff; -fx-text-fill: white; -fx-font-size: 14px;" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-            <Button text="Cancel" fx:id="cancelButton" style="-fx-background-color: #f9f9f9; -fx-border-color: #dcdcdc; -fx-text-fill: #333333; -fx-font-size: 14px; " GridPane.columnIndex="1" GridPane.rowIndex="0"/>
-        </GridPane>
+            <Button fx:id="saveButton" mnemonicParsing="false" onAction="#onSave" prefHeight="44.0" prefWidth="634.0" style="-fx-background-color: #2563eb; -fx-background-radius: 12px;" text="Save" textFill="WHITE" VBox.vgrow="ALWAYS">
+            </Button>
         </VBox>
     </VBox>
 
