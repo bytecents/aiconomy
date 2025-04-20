@@ -1,25 +1,19 @@
 package com.se.aiconomy.client.controller;
 
-//import com.alibaba.fastjson2.internal.asm.Label;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.Parent;
+import javafx.scene.control.Label;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Region;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.input.MouseEvent;
-import javafx.event.ActionEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import lombok.Setter;
-import javafx.scene.control.Label;
 
-
-import java.io.IOException;
 import java.util.List;
 
 @Setter
@@ -48,11 +42,6 @@ public class AddBudgetController extends BaseController {
     private VBox vbox8;
     @FXML
     private VBox vboxMonthly, vboxWeekly, vboxYearly;
-
-    public interface OnOpenListener {
-        void onOpenAddBudgetPanel();
-    }
-
     private AddBudgetController.OnOpenListener openListener;
 
     @FXML
@@ -114,7 +103,7 @@ public class AddBudgetController extends BaseController {
 
     private void resetAllBoxes() {
         List<VBox> allBoxes = List.of(
-                vbox1, vbox2, vbox3, vbox4, vbox5, vbox6, vbox7, vbox8
+            vbox1, vbox2, vbox3, vbox4, vbox5, vbox6, vbox7, vbox8
         );
 
         // Reset all boxes to the default style
@@ -147,16 +136,19 @@ public class AddBudgetController extends BaseController {
         }
     }
 
-
     private void closeDialog(ActionEvent event) {
         if (rootPane != null) {
             rootPane.getChildren().removeIf(node ->
-                    node != rootPane.getChildren().get(0) // 保留主页面，移除弹窗和遮罩
+                node != rootPane.getChildren().get(0) // 保留主页面，移除弹窗和遮罩
             );
         }
     }
 
     public ToggleGroup getToggleGroup() {
         return toggleGroup;
+    }
+
+    public interface OnOpenListener {
+        void onOpenAddBudgetPanel();
     }
 }
