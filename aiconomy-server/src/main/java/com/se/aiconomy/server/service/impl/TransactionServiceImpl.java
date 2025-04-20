@@ -8,6 +8,7 @@ import com.se.aiconomy.server.langchain.common.model.BillType;
 import com.se.aiconomy.server.langchain.common.model.Transaction;
 import com.se.aiconomy.server.langchain.service.classification.TransactionClassificationService;
 import com.se.aiconomy.server.model.dto.TransactionDto;
+import com.se.aiconomy.server.service.AccountService;
 import com.se.aiconomy.server.service.TransactionService;
 import lombok.*;
 import org.slf4j.Logger;
@@ -47,6 +48,7 @@ public class TransactionServiceImpl implements TransactionService {
                 transactionDto.getPaymentMethod(),
                 transactionDto.getStatus(),
                 transactionDto.getProduct(),
+                transactionDto.getAccountId(),
                 transactionDto.getRemark()
             ))
             .toList();
@@ -113,9 +115,10 @@ public class TransactionServiceImpl implements TransactionService {
                     .paymentMethod(transaction.getPaymentMethod())
                     .status(transaction.getStatus())
                     .merchantOrderId(transaction.getMerchantOrderId())
-                    .remark(transaction.getRemark())
+                    .accountId(transaction.getAccountId())
                     .billType(billType)
                     .userId(userId)
+                    .accountId(transaction.getAccountId())
                     .build();
 
                 transactionDtos.add(transactionDto);
@@ -147,6 +150,7 @@ public class TransactionServiceImpl implements TransactionService {
                 transactionDto.getPaymentMethod(),
                 transactionDto.getStatus(),
                 transactionDto.getProduct(),
+                transactionDto.getAccountId(),
                 transactionDto.getRemark()
             ))
             .collect(Collectors.toList());
@@ -395,5 +399,28 @@ public class TransactionServiceImpl implements TransactionService {
                 (startTime == null || !transaction.getTime().isBefore(startTime)) &&
                 (endTime == null || !transaction.getTime().isAfter(endTime));
         }
+    }
+
+    /**
+     * 根据 accountId 获取所有的交易记录
+     *
+     * @param accountId 账户 ID
+     * @return 返回与 accountId 关联的所有交易记录的 TransactionDto 列表
+     * @throws ServiceException 如果未找到相关交易记录
+     */
+    public List<TransactionDto> getTransactionsByAccountId(String accountId) throws ServiceException {
+        // 获取所有交易记录
+        List<TransactionDto> allTransactions = transactionDao.findAll();
+
+        // 过滤出 accountId 符合条件的交易记录
+        List<TransactionDto> filteredTransactions = allTransactions.stream()
+                .filter(transaction -> accountId.equals(transaction.getAccountId())) // 根据 accountId 过滤
+                .collect(Collectors.toList());
+
+        if (filteredTransactions.isEmpty()) {
+            throw new ServiceException("No transactions found for accountId: " + accountId, null);
+        }
+
+        return filteredTransactions;
     }
 }

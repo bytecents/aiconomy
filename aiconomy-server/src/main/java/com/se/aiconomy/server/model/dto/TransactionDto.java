@@ -54,7 +54,9 @@ public class TransactionDto implements Identifiable {
     private String merchantOrderId;  // 商户单号
 
     @CsvBindByPosition(position = 10)
-    private String remark;  // 备注
+    private String accountId; // 账户ID
+
+    private String remark; // 备注
 
     private BillType billType;
 

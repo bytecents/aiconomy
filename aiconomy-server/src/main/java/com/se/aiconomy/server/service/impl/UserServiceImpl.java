@@ -1,5 +1,6 @@
 package com.se.aiconomy.server.service.impl;
 
+import com.se.aiconomy.server.langchain.common.model.BillType;
 import com.se.aiconomy.server.model.entity.User;
 import com.se.aiconomy.server.service.UserService;
 import com.se.aiconomy.server.storage.service.JSONStorageService;
