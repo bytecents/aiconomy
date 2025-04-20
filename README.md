@@ -207,3 +207,47 @@ We welcome contributions to any of the modules:
 ### 9. Logging
 
 All modules use Log4j2 for logging. Configuration files are located in each module's resources directory.
+
+### 10. Contributors
+
+#### Team Leadership
+- **Keyi Shi** - Project management and promoting
+
+#### Technical selection
+- **Zheyun Zhao** - Backend AI
+- **Chengcheng Hu** - Frontend
+
+#### Frontend Development
+- **Chengcheng Hu**
+  - Analytics module with AI interaction interface
+  - Transaction page
+  - Dashboard co-development with Zhong
+
+- **Yujie Yang**
+  - Budget development
+  - Budget page
+
+- **Youhao Zhong**
+  - Login system
+  - Dashboard co-development with Hu
+
+#### Backend Development
+- **Shiyu Li**
+  - Budget implementation
+  - Account co-development with Shi
+  - Login system
+
+- **Keyi Shi**
+  - Transaction processing system
+  - Account co-development with Li
+
+- **Zheyun Zhao**
+    - AI-powered transaction processing
+    - Transaction classification
+
+#### Key Collaborations
+- **Dashboard Integration**: Hu & Zhong (Frontend) ↔ Shi (Backend)
+- **AI Pipeline**: Hu (Frontend) ↔ Zhao (Backend AI)
+- **Transaction System**: Hu (Frontend) ↔ Shi & Zhao (Backend)
+- **Budget System**: Yang & Zhong (Frontend) ↔ Li (Backend)
+- **Login System**: Zhong (Frontend) ↔ Li (Backend)
