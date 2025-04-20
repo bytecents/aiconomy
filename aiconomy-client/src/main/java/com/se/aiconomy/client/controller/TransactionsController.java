@@ -3,7 +3,7 @@ package com.se.aiconomy.client.controller;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 
-public class AccountsController extends BaseController {
+public class TransactionsController extends BaseController {
     @FXML
     public void initialize() {
         if (userInfo == null) {

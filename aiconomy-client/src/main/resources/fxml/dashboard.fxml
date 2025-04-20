@@ -22,7 +22,8 @@
       stylesheets="/css/styles.css">
     <HBox alignment="CENTER" styleClass="pb-8 gap-5">
         <VBox styleClass="gap-1">
-            <Label text="Welcome back, Alex!" styleClass="text-2xl font-semibold text-gray-900 pb-1"/>
+            <Label fx:id="welcomeTextField" text="Welcome back, Alex!"
+                   styleClass="text-2xl font-semibold text-gray-900 pb-1"/>
             <Label text="Thursday, March 13, 2025" styleClass="text-gray-500 font-roboto"/>
         </VBox>
         <Region HBox.hgrow="ALWAYS"/>

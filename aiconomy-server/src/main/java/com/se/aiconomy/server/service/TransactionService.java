@@ -24,5 +24,5 @@ public interface TransactionService {
 
     List<TransactionDto> getTransactionsByUserId(String userId) throws ServiceException;
 
-    List<TransactionDto> getTransactionsByAccountId(String accountId) throws ServiceException;
+    List<TransactionDto> getTransactionsByAccountId(String accountId, String userId) throws ServiceException;
 }

@@ -1,6 +1,9 @@
 package com.se.aiconomy.client.controller;
 
 //import com.alibaba.fastjson2.internal.asm.Label;
+
+import com.se.aiconomy.server.model.dto.user.response.UserInfo;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -23,7 +26,7 @@ import java.io.IOException;
 import java.util.List;
 
 @Setter
-public class AddBudgetController extends BaseController {
+public class BudgetController extends BaseController {
     @FXML
     private ToggleGroup toggleGroup;
 
@@ -58,6 +61,24 @@ public class AddBudgetController extends BaseController {
     @FXML
     public void setOnOpenListener(AddBudgetController.OnOpenListener listener) {
         this.openListener = listener;
+    }
+
+    @FXML
+    public void initialize() {
+        if (userInfo == null) {
+            Platform.runLater(() -> {
+                // 延迟到事件调度线程中处理
+                if (userInfo != null) {
+                    init();
+                }
+            });
+        } else {
+            init();
+        }
+    }
+
+    private void init() {
+
     }
 
     @FXML
