@@ -12,8 +12,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-import static org.reflections.util.ConfigurationBuilder.build;
-
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class StorageTest {
     private static final Logger log = LoggerFactory.getLogger(StorageTest.class);
@@ -141,20 +139,20 @@ public class StorageTest {
     private TransactionDto createSampleTransaction() {
         // 使用 builder 模式创建 TransactionDto 对象
         TransactionDto transaction = TransactionDto.builder()
-                .time(TEST_TRANSACTION_TIME)  // 设置交易时间
-                .type("购物")  // 设置交易类型
-                .counterparty("Apple Store")  // 设置交易对方
-                .product("iPhone 15")  // 设置商品名称
-                .incomeOrExpense("支出")  // 设置收入或支出
-                .amount("3999.99")  // 设置金额
-                .paymentMethod("信用卡")  // 设置支付方式
-                .status("待支付")  // 设置交易状态
-                .merchantOrderId(TEST_MERCHANT_ORDER_ID)  // 设置商户订单号
-                .accountId("userAcc001")  // 设置账户ID
-                .billType(BillType.DINING)  // 设置账单类型
-                .userId("1")  // 设置用户ID
-                .accountId("userAcc002")  // 设置账户ID
-                .build();  // 使用 build() 方法创建对象
+            .time(TEST_TRANSACTION_TIME)  // 设置交易时间
+            .type("购物")  // 设置交易类型
+            .counterparty("Apple Store")  // 设置交易对方
+            .product("iPhone 15")  // 设置商品名称
+            .incomeOrExpense("支出")  // 设置收入或支出
+            .amount("3999.99")  // 设置金额
+            .paymentMethod("信用卡")  // 设置支付方式
+            .status("待支付")  // 设置交易状态
+            .merchantOrderId(TEST_MERCHANT_ORDER_ID)  // 设置商户订单号
+            .accountId("userAcc001")  // 设置账户ID
+            .billType(BillType.DINING)  // 设置账单类型
+            .userId("1")  // 设置用户ID
+            .accountId("userAcc002")  // 设置账户ID
+            .build();  // 使用 build() 方法创建对象
 
         transaction.setId(TEST_TRANSACTION_ID);
         return transaction;

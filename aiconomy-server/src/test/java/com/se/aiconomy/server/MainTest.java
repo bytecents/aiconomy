@@ -108,7 +108,7 @@ class MainTest {
         // First classify transactions
         TransactionClassificationRequest classificationRequest = new TransactionClassificationRequest();
         classificationRequest.setUserId(userInfo.getId());
-        classificationRequest.setFilePath("/Users/charles/GitHub/Bytecents/aiconomy/aiconomy-server/src/test/resources/transactions.csv");
+        classificationRequest.setFilePath(Objects.requireNonNull(getClass().getClassLoader().getResource("transactions.csv")).getPath());
         List<Map<Transaction, BillType>> classifiedTransactions =
             transactionRequestHandler.handleTransactionClassificationRequest(classificationRequest);
 
