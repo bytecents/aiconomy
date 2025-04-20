@@ -61,6 +61,14 @@ public class AiController implements Initializable {
         void onCloseAiPanel();
     }
 
+    private OnCloseListener closeListener;
+
+    @FXML
+    public void setOnCloseListener(OnCloseListener listener) {
+        this.closeListener = listener;
+    }
+
+
     ChatService chatService = new ChatService();
 
     public static class Message {
@@ -74,8 +82,6 @@ public class AiController implements Initializable {
     }
 
     public ArrayList<Message> messageList = new ArrayList<>();
-
-    private OnCloseListener closeListener;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -189,11 +195,6 @@ public class AiController implements Initializable {
         String question = questionBtn.getText().trim();
         sendMessage(question);
         // Add any additional logic for handling the question button click
-    }
-
-    @FXML
-    public void setOnCloseListener(OnCloseListener listener) {
-        this.closeListener = listener;
     }
 
     @FXML

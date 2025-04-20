@@ -23,9 +23,6 @@ public class AIconomyApplication extends Application {
     public void start(Stage stage) throws IOException {
         Application.setUserAgentStylesheet(new PrimerLight().getUserAgentStylesheet());
 //        Application.setUserAgentStylesheet(new PrimerDark().getUserAgentStylesheet()); // TODO: dark mode
-//        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/main.fxml"));
-//        Parent root = loader.load();
-//        StyleClassFixer.fixStyleClasses(root);
         Parent root = new MyFXMLLoader("/fxml/main.fxml").load();
 
         Scene scene = new Scene(root, 1200, 820);

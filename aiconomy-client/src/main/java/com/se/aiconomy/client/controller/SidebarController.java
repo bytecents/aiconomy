@@ -1,6 +1,7 @@
 package com.se.aiconomy.client.controller;
 
 import com.se.aiconomy.client.Application.StyleClassFixer;
+import com.se.aiconomy.client.common.MyFXMLLoader;
 import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -8,23 +9,25 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class SidebarController implements Initializable {
 
+    @FXML private StackPane root;
     @FXML private ScrollPane contentArea;
 
     // Navigation buttons
@@ -137,25 +140,50 @@ public class SidebarController implements Initializable {
         activePanel = buttonKey;
     }
 
+    private void openAddBudgetPanel() {
+        try {
+            // 加载 add_budget.fxml
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/add_budget.fxml"));
+            Parent dialogContent = loader.load();
+            AddBudgetController controller = loader.getController();
+            controller.setRootPane(root);
+
+            dialogContent.setStyle("-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 20;");
+
+            Region overlay = new Region();
+            overlay.setStyle("-fx-background-color: rgba(0,0,0,0.5);");
+            overlay.setPrefSize(root.getWidth(), root.getHeight());
+
+            StackPane dialogWrapper = new StackPane(dialogContent);
+            dialogWrapper.setMaxWidth(500);
+            dialogWrapper.setMaxHeight(600);
+
+            overlay.setOnMouseClicked((MouseEvent e) -> {
+                root.getChildren().removeAll(overlay, dialogWrapper);
+            });
+
+            root.getChildren().addAll(overlay, dialogWrapper);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void loadView(String fxmlPath) {
         FadeTransition fadeOut = new FadeTransition(Duration.millis(100), contentArea);
         fadeOut.setFromValue(1.0);
         fadeOut.setToValue(0.0);
         fadeOut.setOnFinished(event -> {
-            try {
-                Node view = FXMLLoader.load(Objects.requireNonNull(getClass().getResource(fxmlPath)));
-                StyleClassFixer.fixStyleClasses(view);
-
-                contentArea.setContent(view);
-
-                FadeTransition fadeIn = new FadeTransition(Duration.millis(100), contentArea);
-                fadeIn.setFromValue(0.0);
-                fadeIn.setToValue(1.0);
-                fadeIn.play();
-
-            } catch (IOException e) {
-                e.printStackTrace();
+            MyFXMLLoader loader = new MyFXMLLoader(fxmlPath);
+            contentArea.setContent(loader.load());
+            if (fxmlPath.contains("budgets")) {
+                AddBudgetController budgetController = loader.getController();
+                budgetController.setOnOpenListener(this::openAddBudgetPanel);
             }
+
+            FadeTransition fadeIn = new FadeTransition(Duration.millis(100), contentArea);
+            fadeIn.setFromValue(0.0);
+            fadeIn.setToValue(1.0);
+            fadeIn.play();
         });
         fadeOut.play();
     }
