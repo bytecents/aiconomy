@@ -116,8 +116,7 @@ public class AddBudgetController {
 
     private void resetAllBoxes() {
         List<VBox> allBoxes = List.of(
-                vbox1, vbox2, vbox3, vbox4, vbox5, vbox6, vbox7, vbox8,
-                vboxMonthly, vboxWeekly, vboxYearly
+                vbox1, vbox2, vbox3, vbox4, vbox5, vbox6, vbox7, vbox8
         );
 
         // Reset all boxes to the default style
