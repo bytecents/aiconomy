@@ -3,6 +3,7 @@ package com.se.aiconomy.client.Application;
 //import atlantafx.base.theme.PrimerDark;
 
 import atlantafx.base.theme.PrimerLight;
+import com.se.aiconomy.client.common.MyFXMLLoader;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -22,9 +23,10 @@ public class AIconomyApplication extends Application {
     public void start(Stage stage) throws IOException {
         Application.setUserAgentStylesheet(new PrimerLight().getUserAgentStylesheet());
 //        Application.setUserAgentStylesheet(new PrimerDark().getUserAgentStylesheet()); // TODO: dark mode
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/login.fxml"));
-        Parent root = loader.load();
-        StyleClassFixer.fixStyleClasses(root);
+//        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/main.fxml"));
+//        Parent root = loader.load();
+//        StyleClassFixer.fixStyleClasses(root);
+        Parent root = new MyFXMLLoader("/fxml/main.fxml").load();
 
         Scene scene = new Scene(root, 1200, 820);
         stage.setTitle("AIconomy");
