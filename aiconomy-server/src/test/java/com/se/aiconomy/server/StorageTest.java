@@ -1,6 +1,6 @@
 package com.se.aiconomy.server;
 
-import com.se.aiconomy.langchain.common.model.Transaction;
+import com.se.aiconomy.server.langchain.common.model.BillType;
 import com.se.aiconomy.server.model.dto.TransactionDto;
 import com.se.aiconomy.server.storage.service.JSONStorageService;
 import com.se.aiconomy.server.storage.service.impl.JSONStorageServiceImpl;
@@ -15,11 +15,10 @@ import java.util.Optional;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class StorageTest {
     private static final Logger log = LoggerFactory.getLogger(StorageTest.class);
-    private static JSONStorageService jsonStorageService;
-
     private static final String TEST_TRANSACTION_ID = "T2025041001";
     private static final String TEST_MERCHANT_ORDER_ID = "M2025041001";
     private static final LocalDateTime TEST_TRANSACTION_TIME = LocalDateTime.of(2025, 4, 10, 9, 23, 11);
+    private static JSONStorageService jsonStorageService;
 
     @BeforeAll
     static void setup() {
@@ -149,7 +148,9 @@ public class StorageTest {
             "信用卡",
             "待支付",
             TEST_MERCHANT_ORDER_ID,
-            "首次购买iPhone"
+            "首次购买iPhone",
+            BillType.DINING,
+            "1"
         );
         transaction.setId(TEST_TRANSACTION_ID); // 设置Identifiable接口要求的Id
         return transaction;

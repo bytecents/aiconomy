@@ -3,6 +3,8 @@ package com.se.aiconomy.langchain.service.chat;
 import com.se.aiconomy.langchain.common.config.Configs;
 import com.se.aiconomy.langchain.common.config.Locale;
 import com.se.aiconomy.langchain.common.prompt.I18nPrompt;
+import dev.langchain4j.memory.ChatMemory;
+import dev.langchain4j.memory.chat.MessageWindowChatMemory;
 import dev.langchain4j.model.chat.ChatLanguageModel;
 import dev.langchain4j.model.chat.StreamingChatLanguageModel;
 import dev.langchain4j.model.chat.response.ChatResponse;
@@ -27,6 +29,8 @@ public class ChatService {
         .modelName(String.valueOf(Configs.MODEL))
         .build();
 
+    private final ChatMemory chatMemory = MessageWindowChatMemory.withMaxMessages(20);
+
     private final I18nPrompt prompt = new I18nPrompt(new Prompt());
 
     public String chat(String prompt, Locale locale) {
@@ -48,6 +52,7 @@ public class ChatService {
         return AiServices.builder(Assistant.class)
             .chatLanguageModel(model)
             .systemMessageProvider(obj -> getSystemMessageBasedOnLocale(locale))
+            .chatMemory(chatMemory)
             .tools(new Tools())
             .build();
     }
@@ -56,8 +61,13 @@ public class ChatService {
         return AiServices.builder(Assistant.class)
             .streamingChatLanguageModel(streamingModel)
             .systemMessageProvider(obj -> getSystemMessageBasedOnLocale(locale))
+            .chatMemory(chatMemory)
             .tools(new Tools())
             .build();
+    }
+
+    public void clearChatMemory() {
+        chatMemory.clear();
     }
 
     private String getSystemMessageBasedOnLocale(Locale locale) {

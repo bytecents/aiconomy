@@ -1,8 +1,7 @@
 package com.se.aiconomy.langchain.service.chat;
 
 import com.se.aiconomy.langchain.common.config.Locale;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,17 +13,19 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class ChatAssistantTest {
 
     private static final Logger log = LoggerFactory.getLogger(ChatAssistantTest.class);
-    private ChatService chatService;
+    private static ChatService chatService;
 
-    @BeforeEach
-    void setUp() {
+    @BeforeAll
+    static void setUp() {
         chatService = new ChatService();
     }
 
     @Test
+    @Order(1)
     void testChat() {
         String response = chatService.chat("用户 1 的账单信息如何？", Locale.EN);
         log.info("Response: {}", response);
@@ -32,6 +33,7 @@ public class ChatAssistantTest {
     }
 
     @Test
+    @Order(2)
     void testStream() {
         AtomicBoolean onPartialResponseCalled = new AtomicBoolean(false);
         AtomicBoolean onCompleteResponseCalled = new AtomicBoolean(false);
@@ -69,5 +71,20 @@ public class ChatAssistantTest {
         } catch (ExecutionException e) {
             fail("Stream operation failed: " + e.getCause().getMessage());
         }
+    }
+
+    @Test
+    @Order(3)
+    void testContinuousChat() {
+        String response = chatService.chat("What did I said to you?", Locale.EN);
+        log.info("Response: {}", response);
+    }
+
+    @Test
+    @Order(4)
+    void testClearChatMemory() {
+        chatService.clearChatMemory();
+        String response = chatService.chat("What did I said to you?", Locale.EN);
+        log.info("Response: {}", response);
     }
 }

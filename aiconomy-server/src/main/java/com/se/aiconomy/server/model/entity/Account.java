@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,25 +18,28 @@ import java.util.Map;
 public class Account implements Identifiable {
     @Id
     private String id; // 账户ID
+    private String userId; // 用户ID
     private String bankName; // 银行名称
     private String accountType; //账户类型
     private String accountName; // 账户名称
-    private double expense; // 支出
-    private double income; // 收入
-    private String balance; // 余额
+    private double balance; // 余额
+    // 信用卡专有属性（我懒得再写一个实体类了）
+    private double creditLimit; // 信用卡的额度
+    private double currentDebt; // 当前欠款
+    private LocalDateTime paymentDueDate; // 还款期限
+    private double minimumPayment; // 最低还款额度
 
     private Map<String, Object> extraFields = new HashMap<>();
 
     public Account() {
     }
 
-    public Account(String id, String bankName, String accountType, String accountName, double expense, double income, String balance) {
+    public Account(String id, String userId, String bankName, String accountType, String accountName, double balance) {
         this.id = id;
+        this.userId = userId;
         this.bankName = bankName;
         this.accountType = accountType;
         this.accountName = accountName;
-        this.expense = expense;
-        this.income = income;
         this.balance = balance;
     }
 

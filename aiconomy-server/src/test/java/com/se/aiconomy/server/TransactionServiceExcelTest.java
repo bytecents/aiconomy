@@ -2,8 +2,8 @@ package com.se.aiconomy.server;
 
 import com.se.aiconomy.server.dao.TransactionDao;
 import com.se.aiconomy.server.model.dto.TransactionDto;
-import com.se.aiconomy.server.service.TransactionService;
-import com.se.aiconomy.server.service.TransactionService.TransactionSearchCriteria;
+import com.se.aiconomy.server.service.impl.TransactionServiceImpl;
+import com.se.aiconomy.server.service.impl.TransactionServiceImpl.TransactionSearchCriteria;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -24,12 +24,11 @@ import static org.junit.jupiter.api.Assertions.*;
 public class TransactionServiceExcelTest {
 
     private static final Logger log = LoggerFactory.getLogger(TransactionServiceExcelTest.class);
-    private static TransactionService transactionService;
-    private static TransactionDao transactionDao;
-    private static String testExcelPath;
-
     // 测试用时间
     private static final LocalDateTime TEST_TIME = LocalDateTime.parse("2025-04-18T10:11:09");
+    private static TransactionServiceImpl transactionService;
+    private static TransactionDao transactionDao;
+    private static String testExcelPath;
 
     /**
      * 创建 Excel 文件用于测试
@@ -41,8 +40,8 @@ public class TransactionServiceExcelTest {
 
         // 创建表头
         String[] headers = {
-                "id", "time", "type", "counterparty", "product", "incomeOrExpense", "amount",
-                "paymentMethod", "status", "merchantOrderId", "remark"
+            "id", "time", "type", "counterparty", "product", "incomeOrExpense", "amount",
+            "paymentMethod", "status", "merchantOrderId", "remark"
         };
         Row headerRow = sheet.createRow(0);
         for (int i = 0; i < headers.length; i++) {
@@ -83,7 +82,7 @@ public class TransactionServiceExcelTest {
 
     @BeforeAll
     static void setup() throws IOException {
-        transactionService = new TransactionService();
+        transactionService = new TransactionServiceImpl();
         transactionDao = TransactionDao.getInstance();
 
         // 创建 Excel 文件
@@ -117,16 +116,16 @@ public class TransactionServiceExcelTest {
         createTestTransactions();
 
         Map<String, String> statistics = transactionService.getIncomeAndExpenseStatistics(
-                TEST_TIME.minusDays(1),
-                TEST_TIME.plusDays(1)
+            TEST_TIME.minusDays(1),
+            TEST_TIME.plusDays(1)
         );
 
         assertNotNull(statistics);
         assertTrue(Double.parseDouble(statistics.get("totalIncome")) > 0);
         assertTrue(Double.parseDouble(statistics.get("totalExpense")) > 0);
         assertEquals(
-                Double.parseDouble(statistics.get("totalIncome")) - Double.parseDouble(statistics.get("totalExpense")),
-                Double.parseDouble(statistics.get("netAmount"))
+            Double.parseDouble(statistics.get("totalIncome")) - Double.parseDouble(statistics.get("totalExpense")),
+            Double.parseDouble(statistics.get("netAmount"))
         );
     }
 
@@ -179,11 +178,12 @@ public class TransactionServiceExcelTest {
         // 准备测试数据
         createTestTransactions();
 
-        TransactionSearchCriteria criteria = new TransactionSearchCriteria.Builder()
-                .withPaymentMethod("支付宝")
-                .withIncomeOrExpense("支出")
-                .withDateRange(TEST_TIME.minusDays(1), TEST_TIME.plusDays(1))
-                .build();
+        TransactionSearchCriteria criteria = TransactionSearchCriteria.builder()
+            .paymentMethod("支付宝")
+            .incomeOrExpense("支出")
+            .startTime(TEST_TIME.minusDays(1))
+            .endTime(TEST_TIME.plusDays(1))
+            .build();
 
         List<TransactionDto> results = transactionService.searchTransactions(criteria);
 
@@ -217,7 +217,7 @@ public class TransactionServiceExcelTest {
         String nonExistentId = UUID.randomUUID().toString();
 
         assertThrows(Exception.class, () ->
-                transactionService.updateTransactionStatus(nonExistentId, "已完成"));
+            transactionService.updateTransactionStatus(nonExistentId, "已完成"));
     }
 
     // 辅助方法：创建测试交易记录
