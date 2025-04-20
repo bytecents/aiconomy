@@ -30,7 +30,6 @@
 <?import javafx.scene.chart.LineChart?>
 <?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.NumberAxis?>
-<?import javafx.scene.chart.BarChart?>
 <?import javafx.scene.chart.PieChart?>
 <GridPane id="Content" xmlns="http://javafx.com/javafx/23.0.1"
           fx:controller="com.se.aiconomy.client.controller.AnalyticsController" xmlns:fx="http://javafx.com/fxml/1" stylesheets="/css/styles.css">

@@ -1,10 +1,10 @@
 package com.se.aiconomy.server.langchain.chat;
 
-import com.se.aiconomy.langchain.common.chain.ChainFactory;
-import com.se.aiconomy.langchain.common.config.Configs;
-import com.se.aiconomy.langchain.common.config.Locale;
-import com.se.aiconomy.langchain.common.config.ModelConfig;
-import com.se.aiconomy.langchain.service.chat.Chain;
+import com.se.aiconomy.server.langchain.common.chain.ChainFactory;
+import com.se.aiconomy.server.langchain.common.config.Configs;
+import com.se.aiconomy.server.langchain.common.config.Locale;
+import com.se.aiconomy.server.langchain.common.config.ModelConfig;
+import com.se.aiconomy.server.langchain.service.chat.Chain;
 import dev.langchain4j.model.chat.response.ChatResponse;
 import dev.langchain4j.model.chat.response.StreamingChatResponseHandler;
 import org.junit.jupiter.api.BeforeEach;

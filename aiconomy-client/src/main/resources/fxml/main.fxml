@@ -12,119 +12,125 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<HBox stylesheets="/css/styles.css" minHeight="820" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.se.aiconomy.client.controller.SidebarController">
-    <BorderPane maxWidth="250.0" minWidth="250.0" prefWidth="250.0" styleClass="bg-secondary border-r border-gray-200">
-        <top>
-            <HBox alignment="CENTER_LEFT" spacing="16.0" BorderPane.alignment="CENTER_LEFT">
-                <padding>
-                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                </padding>
-                <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
-                    <Image url="@../assets/logo.png" />
-                </ImageView>
-                <Label alignment="CENTER" minWidth="60.0" style="&#10;" text="AIconomy" textAlignment="CENTER" textFill="#111827">
-                    <styleClass>
-                        <String fx:value="font-bold" />
-                        <String fx:value="text-2xl" />
-                    </styleClass>
-               <font>
-                  <Font name="System Bold" size="16.0" />
-               </font>
-                </Label>
-            </HBox>
-        </top>
-        <center>
-            <VBox spacing="20.0" styleClass="gap-2_5 border-b" BorderPane.alignment="CENTER">
-                <BorderPane.margin>
-                    <Insets top="20.0" />
-                </BorderPane.margin>
-                <HBox fx:id="dashboardBtn" alignment="CENTER_LEFT" onMouseClicked="#switchToDashboard" spacing="8.0" style="-fx-background-color: #F9FAFB;" styleClass="cursor-pointer gap-3 rounded-lg">
+<?import javafx.scene.layout.StackPane?>
+<StackPane
+        fx:id="root"
+        xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
+        stylesheets="/css/styles.css" minHeight="820" fx:controller="com.se.aiconomy.client.controller.SidebarController">
+    <HBox>
+        <BorderPane maxWidth="250.0" minWidth="250.0" prefWidth="250.0" styleClass="bg-secondary border-r border-gray-200">
+            <top>
+                <HBox alignment="CENTER_LEFT" spacing="16.0" BorderPane.alignment="CENTER_LEFT">
+                    <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                    </padding>
+                    <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                        <Image url="@../assets/logo.png" />
+                    </ImageView>
+                    <Label alignment="CENTER" minWidth="60.0" style="&#10;" text="AIconomy" textAlignment="CENTER" textFill="#111827">
+                        <styleClass>
+                            <String fx:value="font-bold" />
+                            <String fx:value="text-2xl" />
+                        </styleClass>
+                        <font>
+                            <Font name="System Bold" size="16.0" />
+                        </font>
+                    </Label>
+                </HBox>
+            </top>
+            <center>
+                <VBox spacing="20.0" styleClass="gap-2_5 border-b" BorderPane.alignment="CENTER">
+                    <BorderPane.margin>
+                        <Insets top="20.0" />
+                    </BorderPane.margin>
+                    <HBox fx:id="dashboardBtn" alignment="CENTER_LEFT" onMouseClicked="#switchToDashboard" spacing="8.0" style="-fx-background-color: #F9FAFB;" styleClass="cursor-pointer gap-3 rounded-lg">
+                        <padding>
+                            <Insets bottom="12.0" left="16.0" right="16.0" top="12.0" />
+                        </padding>
+                        <ImageView fx:id="dashboardIcon" fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                            <Image url="@../assets/dashboard.png" />
+                        </ImageView>
+                        <Label fx:id="dashboardLabel" styleClass="font-roboto text-base" text="Dashboard" />
+                        <cursor>
+                            <Cursor fx:constant="HAND" />
+                        </cursor>
+                    </HBox>
+                    <HBox fx:id="transactionsBtn" alignment="CENTER_LEFT" onMouseClicked="#switchToTransactions" spacing="8.0" style="-fx-background-color: #F9FAFB;" styleClass="cursor-pointer gap-3 rounded-lg">
+                        <padding>
+                            <Insets bottom="12.0" left="16.0" right="16.0" top="12.0" />
+                        </padding>
+                        <ImageView fx:id="transactionsIcon" fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                            <Image url="@../assets/transactions.png" />
+                        </ImageView>
+                        <Label fx:id="transactionsLabel" styleClass="font-roboto text-base" text="Transactions" />
+                        <cursor>
+                            <Cursor fx:constant="HAND" />
+                        </cursor>
+                    </HBox>
+                    <HBox fx:id="analyticsBtn" alignment="CENTER_LEFT" onMouseClicked="#switchToAnalytics" spacing="8.0" style="-fx-background-color: #F9FAFB;" styleClass="cursor-pointer gap-3 rounded-lg">
+                        <padding>
+                            <Insets bottom="12.0" left="16.0" right="16.0" top="12.0" />
+                        </padding>
+                        <ImageView fx:id="analyticsIcon" fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                            <Image url="@../assets/analytics.png" />
+                        </ImageView>
+                        <Label fx:id="analyticsLabel" styleClass="font-roboto text-base" text="Analytics" />
+                        <cursor>
+                            <Cursor fx:constant="HAND" />
+                        </cursor>
+                    </HBox>
+                    <HBox fx:id="budgetsBtn" alignment="CENTER_LEFT" onMouseClicked="#switchToBudgets" spacing="8.0" style="-fx-background-color: #F9FAFB;" styleClass="cursor-pointer gap-3 rounded-lg">
+                        <padding>
+                            <Insets bottom="12.0" left="16.0" right="16.0" top="12.0" />
+                        </padding>
+                        <ImageView fx:id="budgetsIcon" fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                            <Image url="@../assets/budgets.png" />
+                        </ImageView>
+                        <Label fx:id="budgetsLabel" styleClass="font-roboto text-base" text="Budgets" />
+                        <cursor>
+                            <Cursor fx:constant="HAND" />
+                        </cursor>
+                    </HBox>
+                    <HBox fx:id="accountsBtn" alignment="CENTER_LEFT" onMouseClicked="#switchToAccounts" spacing="8.0" style="-fx-background-color: #F9FAFB;" styleClass="cursor-pointer gap-3 rounded-lg">
+                        <padding>
+                            <Insets bottom="12.0" left="16.0" right="16.0" top="12.0" />
+                        </padding>
+                        <ImageView fx:id="accountsIcon" fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                            <Image url="@../assets/accounts.png" />
+                        </ImageView>
+                        <Label fx:id="accountsLabel" styleClass="font-roboto text-base" text="Accounts" />
+                        <cursor>
+                            <Cursor fx:constant="HAND" />
+                        </cursor>
+                    </HBox>
+                </VBox>
+            </center>
+            <padding>
+                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+            </padding>
+            <bottom>
+                <HBox fx:id="settingsBtn" alignment="CENTER_LEFT" onMouseClicked="#switchToSettings" spacing="8.0" style="-fx-background-color: #F9FAFB;" styleClass="cursor-pointer gap-3 rounded-lg">
                     <padding>
                         <Insets bottom="12.0" left="16.0" right="16.0" top="12.0" />
                     </padding>
-                    <ImageView fx:id="dashboardIcon" fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                        <Image url="@../assets/dashboard.png" />
+                    <BorderPane.margin>
+                        <Insets top="20.0" />
+                    </BorderPane.margin>
+                    <ImageView fx:id="settingsIcon" fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                        <Image url="@../assets/settings.png" />
                     </ImageView>
-                    <Label fx:id="dashboardLabel" styleClass="font-roboto text-base" text="Dashboard" />
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
+                    <Label fx:id="settingsLabel" text="Settings">
+                        <styleClass>
+                            <String fx:value="font-roboto" />
+                            <String fx:value="text-base" />
+                        </styleClass>
+                    </Label>
+                    <cursor>
+                        <Cursor fx:constant="HAND" />
+                    </cursor>
                 </HBox>
-                <HBox fx:id="transactionsBtn" alignment="CENTER_LEFT" onMouseClicked="#switchToTransactions" spacing="8.0" style="-fx-background-color: #F9FAFB;" styleClass="cursor-pointer gap-3 rounded-lg">
-                    <padding>
-                        <Insets bottom="12.0" left="16.0" right="16.0" top="12.0" />
-                    </padding>
-                    <ImageView fx:id="transactionsIcon" fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                        <Image url="@../assets/transactions.png" />
-                    </ImageView>
-                    <Label fx:id="transactionsLabel" styleClass="font-roboto text-base" text="Transactions" />
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-                </HBox>
-                <HBox fx:id="analyticsBtn" alignment="CENTER_LEFT" onMouseClicked="#switchToAnalytics" spacing="8.0" style="-fx-background-color: #F9FAFB;" styleClass="cursor-pointer gap-3 rounded-lg">
-                    <padding>
-                        <Insets bottom="12.0" left="16.0" right="16.0" top="12.0" />
-                    </padding>
-                    <ImageView fx:id="analyticsIcon" fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                        <Image url="@../assets/analytics.png" />
-                    </ImageView>
-                    <Label fx:id="analyticsLabel" styleClass="font-roboto text-base" text="Analytics" />
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-                </HBox>
-                <HBox fx:id="budgetsBtn" alignment="CENTER_LEFT" onMouseClicked="#switchToBudgets" spacing="8.0" style="-fx-background-color: #F9FAFB;" styleClass="cursor-pointer gap-3 rounded-lg">
-                    <padding>
-                        <Insets bottom="12.0" left="16.0" right="16.0" top="12.0" />
-                    </padding>
-                    <ImageView fx:id="budgetsIcon" fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                        <Image url="@../assets/budgets.png" />
-                    </ImageView>
-                    <Label fx:id="budgetsLabel" styleClass="font-roboto text-base" text="Budgets" />
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-                </HBox>
-                <HBox fx:id="accountsBtn" alignment="CENTER_LEFT" onMouseClicked="#switchToAccounts" spacing="8.0" style="-fx-background-color: #F9FAFB;" styleClass="cursor-pointer gap-3 rounded-lg">
-                    <padding>
-                        <Insets bottom="12.0" left="16.0" right="16.0" top="12.0" />
-                    </padding>
-                    <ImageView fx:id="accountsIcon" fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                        <Image url="@../assets/accounts.png" />
-                    </ImageView>
-                    <Label fx:id="accountsLabel" styleClass="font-roboto text-base" text="Accounts" />
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-                </HBox>
-            </VBox>
-        </center>
-        <padding>
-          <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-        </padding>
-        <bottom>
-            <HBox fx:id="settingsBtn" alignment="CENTER_LEFT" onMouseClicked="#switchToSettings" spacing="8.0" style="-fx-background-color: #F9FAFB;" styleClass="cursor-pointer gap-3 rounded-lg">
-                <padding>
-                    <Insets bottom="12.0" left="16.0" right="16.0" top="12.0" />
-                </padding>
-                <BorderPane.margin>
-                    <Insets top="20.0" />
-                </BorderPane.margin>
-                <ImageView fx:id="settingsIcon" fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                    <Image url="@../assets/settings.png" />
-                </ImageView>
-                <Label fx:id="settingsLabel" text="Settings">
-                    <styleClass>
-                        <String fx:value="font-roboto" />
-                        <String fx:value="text-base" />
-                    </styleClass>
-                </Label>
-            <cursor>
-               <Cursor fx:constant="HAND" />
-            </cursor>
-            </HBox>
-        </bottom>
-    </BorderPane>
-    <ScrollPane fx:id="contentArea" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" HBox.hgrow="ALWAYS" />
-</HBox>
+            </bottom>
+        </BorderPane>
+        <ScrollPane fx:id="contentArea" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" HBox.hgrow="ALWAYS" />
+    </HBox>
+</StackPane>
