@@ -49,6 +49,8 @@ public class Transaction {
     @Description("The merchant's order ID, used for reference within the merchant's system.")
     private String merchantOrderId;
 
+    private String accountId; // Account ID
+
     @Description("Additional remarks or notes related to the transaction.")
     private String remark;
 }

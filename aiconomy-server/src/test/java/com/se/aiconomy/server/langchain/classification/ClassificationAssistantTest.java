@@ -26,7 +26,7 @@ public class ClassificationAssistantTest {
         Transaction transaction = new Transaction(
             "1", LocalDateTime.now(), "Expense", "Starbucks", "Cappuccino",
             "Expense", "35.5", "CNY", "Credit Card", "Success",
-            "TXN123456", "Breakfast"
+            "TXN123456", "userAcc001", "Coffee"
         );
 
         BillType billType = service.classifyTransaction(transaction);
@@ -50,13 +50,13 @@ public class ClassificationAssistantTest {
 
         return new ArrayList<>(List.of(
             new Transaction("1", LocalDateTime.now(), "Expense", "KFC", "Burger Combo",
-                "Expense", "45.0", "CNY", "Alipay", "Success", "TXN001", "Lunch"),
+                "Expense", "45.0", "CNY", "Alipay", "Success", "TXN001", "userAcc002","Lunch"),
             new Transaction("2", LocalDateTime.now(), "Expense", "DiDi", "Ride",
-                "Expense", "32.5", "CNY", "WeChat Pay", "Success", "TXN002", "Ride home"),
+                "Expense", "32.5", "CNY", "WeChat Pay", "Success", "TXN002", "userAcc002","Ride home"),
             new Transaction("3", LocalDateTime.now(), "Expense", "JD", "Electronics",
-                "Expense", "999.9", "CNY", "Credit Card", "Success", "TXN003", "Buy headphones"),
+                "Expense", "999.9", "CNY", "Credit Card", "Success", "TXN003", "userAcc002","Buy headphones"),
             new Transaction("4", LocalDateTime.now(), "Salary", "XX Company", "Monthly Salary",
-                "Income", "15000.0", "CNY", "Bank Transfer", "Success", "TXN004", "March Salary")
+                "Income", "15000.0", "CNY", "Bank Transfer", "Success", "TXN004", "userAcc002","March Salary")
         ));
     }
 
