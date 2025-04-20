@@ -154,7 +154,7 @@ public class SidebarController implements Initializable {
         activePanel = buttonKey;
     }
 
-    private void loadView(String fxmlPath) {
+    protected void loadView(String fxmlPath) {
         FadeTransition fadeOut = new FadeTransition(Duration.millis(100), contentArea);
         fadeOut.setFromValue(1.0);
         fadeOut.setToValue(0.0);
@@ -166,7 +166,7 @@ public class SidebarController implements Initializable {
 
                 BaseController controller = loader.getController();
                 controller.setUserInfo(userInfo);
-
+                controller.setMainController(this);
                 contentArea.setContent(view);
 
                 FadeTransition fadeIn = new FadeTransition(Duration.millis(100), contentArea);
@@ -182,37 +182,37 @@ public class SidebarController implements Initializable {
     }
 
     @FXML
-    public void switchToDashboard() {
+    protected void switchToDashboard() {
         setActiveButton("dashboard");
         loadView("/fxml/dashboard.fxml");
     }
 
     @FXML
-    public void switchToTransactions() {
+    protected void switchToTransactions() {
         setActiveButton("transactions");
         loadView("/fxml/transactions.fxml");
     }
 
     @FXML
-    public void switchToAnalytics() {
+    protected void switchToAnalytics() {
         setActiveButton("analytics");
         loadView("/fxml/analytics.fxml");
     }
 
     @FXML
-    public void switchToBudgets() {
+    protected void switchToBudgets() {
         setActiveButton("budgets");
         loadView("/fxml/budgets.fxml");
     }
 
     @FXML
-    public void switchToAccounts() {
+    protected void switchToAccounts() {
         setActiveButton("accounts");
         loadView("/fxml/accounts.fxml");
     }
 
     @FXML
-    public void switchToSettings() {
+    protected void switchToSettings() {
         setActiveButton("settings");
         loadView("/fxml/settings.fxml");
     }

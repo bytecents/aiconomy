@@ -2,7 +2,10 @@ package com.se.aiconomy.client.controller;
 
 //import com.alibaba.fastjson2.internal.asm.Label;
 
+import com.se.aiconomy.server.handler.BudgetRequestHandler;
 import com.se.aiconomy.server.model.dto.user.response.UserInfo;
+import com.se.aiconomy.server.service.impl.BudgetServiceImpl;
+import com.se.aiconomy.server.storage.service.impl.JSONStorageServiceImpl;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -27,12 +30,11 @@ import java.util.List;
 
 @Setter
 public class BudgetController extends BaseController {
+    private final BudgetRequestHandler budgetRequestHandler = new BudgetRequestHandler(new BudgetServiceImpl(JSONStorageServiceImpl.getInstance()));
     @FXML
     private ToggleGroup toggleGroup;
-
     @FXML
     private StackPane rootPane; // 这个是 main.fxml 的最外层 StackPane
-
     @FXML
     private VBox vbox1;
     @FXML
@@ -67,7 +69,7 @@ public class BudgetController extends BaseController {
     }
 
     private void init() {
-
+        System.out.println("hello world");
     }
 
     @FXML
