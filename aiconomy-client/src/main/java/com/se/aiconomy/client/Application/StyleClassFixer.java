@@ -15,9 +15,9 @@ public class StyleClassFixer {
                 String[] parts = original.trim().split("\\s+");
                 styleClasses.addAll(i, java.util.List.of(parts));
                 i += parts.length - 1;
-                System.out.printf("[StyleClassFixer] Fixed node: %s\n", root.getClass().getSimpleName());
-                System.out.printf("  Original: \"%s\"\n", original);
-                System.out.printf("  Fixed   : %s\n", styleClasses);
+//                System.out.printf("[StyleClassFixer] Fixed node: %s\n", root.getClass().getSimpleName());
+//                System.out.printf("  Original: \"%s\"\n", original);
+//                System.out.printf("  Fixed   : %s\n", styleClasses);
             }
         }
 

@@ -15,17 +15,19 @@
 <?import java.lang.String?>
 
 <?import javafx.scene.control.ProgressBar?>
-<VBox id="Content"
+<VBox xmlns:fx="http://javafx.com/fxml/1"
+      id="Content"
       xmlns="http://javafx.com/javafx/23.0.1"
-      styleClass="p-8"
-      fx:controller="com.se.aiconomy.client.controller.DashboardController" xmlns:fx="http://javafx.com/fxml/1" stylesheets="/css/styles.css">
+      styleClass="p-8" fx:controller="com.se.aiconomy.client.controller.DashboardController"
+      stylesheets="/css/styles.css">
     <HBox alignment="CENTER" styleClass="pb-8 gap-5">
         <VBox styleClass="gap-1">
             <Label text="Welcome back, Alex!" styleClass="text-2xl font-semibold text-gray-900 pb-1"/>
             <Label text="Thursday, March 13, 2025" styleClass="text-gray-500 font-roboto"/>
         </VBox>
         <Region HBox.hgrow="ALWAYS"/>
-        <Button text="Quick Add" styleClass="hover-bg-blue-700 p-4-2 bg-blue-600 text-white font-roboto cursor-pointer"/>
+        <Button fx:id="quickAddButton" onAction="#quickAdd" text="Quick Add"
+                styleClass="hover-bg-blue-700 p-4-2 bg-blue-600 text-white font-roboto cursor-pointer"/>
     </HBox>
 
     <GridPane hgap="24" vgap="24" styleClass="pb-8">
@@ -37,15 +39,15 @@
         </columnConstraints>
 
         <VBox styleClass="card p-6" GridPane.columnIndex="0">
-            <Label text="Net Worth" styleClass="text-sm text-gray-500 pb-2 font-roboto" />
+            <Label text="Net Worth" styleClass="text-sm text-gray-500 pb-2 font-roboto"/>
             <Label text="\$125,380.50" styleClass="text-2xl font-bold text-gray-900 pb-2"/>
             <Label text="↑2.5% this month" styleClass="text-sm text-green-500 font-roboto"/>
         </VBox>
 
         <!-- Card 2 -->
         <VBox styleClass="card p-6" GridPane.columnIndex="1">
-            <Label text="Monthly Spending" styleClass="text-sm text-gray-500 pb-2 font-roboto" />
-            <Label text="\$3,240.50" styleClass="text-2xl font-bold text-gray-900 pb-2" />
+            <Label text="Monthly Spending" styleClass="text-sm text-gray-500 pb-2 font-roboto"/>
+            <Label text="\$3,240.50" styleClass="text-2xl font-bold text-gray-900 pb-2"/>
             <Label text="Budget left $1,759.50" styleClass="text-sm text-gray-500 font-roboto"/>
         </VBox>
 
@@ -170,7 +172,8 @@
                         <Region HBox.hgrow="ALWAYS"/>
                         <Label text="85%" styleClass="text-red-500"/>
                     </HBox>
-                    <ProgressBar progress="0.85" maxWidth="Infinity" styleClass="min-h-2 bg-gray-100 rounded-full red-bar"/>
+                    <ProgressBar progress="0.85" maxWidth="Infinity"
+                                 styleClass="min-h-2 bg-gray-100 rounded-full red-bar"/>
                 </VBox>
 
                 <!-- Shopping -->
@@ -180,7 +183,8 @@
                         <Region HBox.hgrow="ALWAYS"/>
                         <Label text="45%" styleClass="text-green-500"/>
                     </HBox>
-                    <ProgressBar progress="0.45" maxWidth="Infinity" styleClass="min-h-2 bg-gray-100 rounded-full green-bar"/>
+                    <ProgressBar progress="0.45" maxWidth="Infinity"
+                                 styleClass="min-h-2 bg-gray-100 rounded-full green-bar"/>
                 </VBox>
 
                 <!-- Transportation -->
@@ -190,7 +194,8 @@
                         <Region HBox.hgrow="ALWAYS"/>
                         <Label text="60%" styleClass="text-blue-500"/>
                     </HBox>
-                    <ProgressBar progress="0.6" maxWidth="Infinity" styleClass="min-h-2 bg-gray-100 rounded-full blue-bar"/>
+                    <ProgressBar progress="0.6" maxWidth="Infinity"
+                                 styleClass="min-h-2 bg-gray-100 rounded-full blue-bar"/>
                 </VBox>
             </VBox>
         </VBox>
