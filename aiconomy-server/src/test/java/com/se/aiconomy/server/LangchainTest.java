@@ -4,6 +4,7 @@ import com.se.aiconomy.server.common.exception.ServiceException;
 import com.se.aiconomy.server.dao.TransactionDao;
 import com.se.aiconomy.server.handler.TransactionRequestHandler;
 import com.se.aiconomy.server.langchain.common.model.BillType;
+import com.se.aiconomy.server.langchain.common.model.DynamicBillType;
 import com.se.aiconomy.server.langchain.common.model.Transaction;
 import com.se.aiconomy.server.model.dto.transaction.request.TransactionClassificationRequest;
 import com.se.aiconomy.server.model.dto.transaction.request.TransactionImportRequest;
@@ -20,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class LangchainTest {
     public static final String csvFilePath = Objects.requireNonNull(org.apache.poi.ss.formula.functions.T.class.getClassLoader().getResource("transactions.csv")).getPath();
     public static final String excelFilePath = Objects.requireNonNull(org.apache.poi.ss.formula.functions.T.class.getClassLoader().getResource("transactions.xlsx")).getPath();
-    private static List<Map<Transaction, BillType>> classifiedTransactions;
+    private static List<Map<Transaction, DynamicBillType>> classifiedTransactions;
     private static TransactionDao transactionDao;
 
     @BeforeAll
@@ -54,7 +55,7 @@ public class LangchainTest {
     void handleTransactionImportRequestTest() throws ServiceException {
         TransactionRequestHandler transactionRequestHandler = new TransactionRequestHandler();
         TransactionImportRequest request = new TransactionImportRequest("1", classifiedTransactions);
-        List<Map<Transaction, BillType>> map = transactionRequestHandler.handleTransactionImportRequest(request);
+        List<Map<Transaction, DynamicBillType>> map = transactionRequestHandler.handleTransactionImportRequest(request);
         assertEquals(4, map.size(), "The number of imported transactions is not matching");
     }
 }

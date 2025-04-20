@@ -5,6 +5,7 @@ import com.se.aiconomy.client.common.CustomDialog;
 import com.se.aiconomy.server.handler.UserRequestHandler;
 import com.se.aiconomy.server.model.dto.user.request.UserLoginRequest;
 import com.se.aiconomy.server.model.dto.user.request.UserRegisterRequest;
+import com.se.aiconomy.server.model.dto.user.response.UserInfo;
 import com.se.aiconomy.server.model.entity.User;
 import com.se.aiconomy.server.service.UserService;
 import com.se.aiconomy.server.service.impl.UserServiceImpl;
@@ -13,29 +14,60 @@ import javafx.animation.FadeTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.Objects;
+import java.util.ResourceBundle;
 import java.util.function.UnaryOperator;
 
-public class LoginController {
-    @FXML public Button loginButton;
-    @FXML public Hyperlink signUpEntry;
-    @FXML public TextField emailField;
-    @FXML public PasswordField passwordField;
-    @FXML public TextField passwordTextField;
-    private UserRequestHandler userRequestHandler;
+public class LoginController extends BaseController {
+    private final UserRequestHandler userRequestHandler = new UserRequestHandler(new UserServiceImpl(JSONStorageServiceImpl.getInstance()));
+    @FXML
+    public Button loginButton;
+    @FXML
+    public Hyperlink signUpEntry;
+    @FXML
+    public TextField emailField;
+    @FXML
+    public PasswordField passwordField;
+    @FXML
+    public TextField passwordTextField;
+    @Setter
+    @FXML
+    private UserInfo userInfo;
 
     private boolean showPassword = false;
 
-    @FXML public void initialize() {
+    private static @NotNull FadeTransition getFadeTransition(Stage stage, Scene scene) {
+        FadeTransition fadeOut = new FadeTransition(Duration.seconds(0.2), stage.getScene().getRoot());
+        fadeOut.setFromValue(1.0); // opacity = 1
+        fadeOut.setToValue(0.0);   // opacity = 0
+        fadeOut.setOnFinished(event1 -> {
+            // after fade-out
+            stage.setScene(scene);
+            stage.show();
+
+            // create fade-in animation
+            FadeTransition fadeIn = new FadeTransition(Duration.seconds(1), scene.getRoot());
+            fadeIn.setFromValue(0.0);  // opacity = 0
+            fadeIn.setToValue(1.0);    // opacity = 1
+            fadeIn.play();             // play the fade-in animation
+        });
+        return fadeOut;
+    }
+
+    @FXML
+    public void initialize() {
         passwordTextField.setVisible(false);
         UnaryOperator<TextFormatter.Change> filter = change -> {
             // not allow " "
@@ -70,14 +102,12 @@ public class LoginController {
             userInputPassword = passwordField.getText();
 
         try {
-            this.userRequestHandler = new UserRequestHandler(new UserServiceImpl(JSONStorageServiceImpl.getInstance()));
             UserLoginRequest userLoginRequest = new UserLoginRequest();
             userLoginRequest.setEmail(userInputEmail);
             userLoginRequest.setPassword(userInputPassword);
-            userRequestHandler.handleLoginRequest(userLoginRequest);
-
-            switchToMain(event);
-//            CustomDialog.show("Success", "Login successfully", "success", "OK");
+            setUserInfo(userRequestHandler.handleLoginRequest(userLoginRequest));
+            switchToMain(event, userInfo);
+            CustomDialog.show("Success", "Login successfully", "success", "OK");
 
         } catch (RuntimeException rte) {
             System.out.println(rte.getMessage());
@@ -100,10 +130,17 @@ public class LoginController {
     }
 
     @FXML
-    public void switchToMain(ActionEvent event) throws IOException {
+    public void switchToMain(ActionEvent event, UserInfo userInfo) throws IOException {
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/main.fxml"));
+
         Parent root = loader.load();
+
+        SidebarController sidebarController = loader.getController();
+        sidebarController.setUserInfo(userInfo);
+
+        System.out.println("Test: " + sidebarController.userInfo);
+
         StyleClassFixer.fixStyleClasses(root);
 
         // Get the current window, and load main page
@@ -117,27 +154,9 @@ public class LoginController {
         Scene scene = new Scene(root, currentWidth, currentHeight);
         stage.setScene(scene);
         stage.show();
-//        FadeTransition fadeOut = getFadeTransition(stage, scene);
-//        fadeOut.play();
+        FadeTransition fadeOut = getFadeTransition(stage, scene);
+        fadeOut.play();
 
-    }
-
-    private static @NotNull FadeTransition getFadeTransition(Stage stage, Scene scene) {
-        FadeTransition fadeOut = new FadeTransition(Duration.seconds(0.2), stage.getScene().getRoot());
-        fadeOut.setFromValue(1.0); // opacity = 1
-        fadeOut.setToValue(0.0);   // opacity = 0
-        fadeOut.setOnFinished(event1 -> {
-            // after fade-out
-            stage.setScene(scene);
-            stage.show();
-
-            // create fade-in animation
-            FadeTransition fadeIn = new FadeTransition(Duration.seconds(1), scene.getRoot());
-            fadeIn.setFromValue(0.0);  // opacity = 0
-            fadeIn.setToValue(1.0);    // opacity = 1
-            fadeIn.play();             // play the fade-in animation
-        });
-        return fadeOut;
     }
 
     public void handlePasswordVisibility(MouseEvent mouseEvent) {

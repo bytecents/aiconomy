@@ -22,49 +22,45 @@ public class CustomDialog {
         dialog.setTitle(summary);
         dialog.setContentText(detail);
 
-        // 创建自定义对话框的内容
         HBox contentBox = new HBox();
 
-        // 根据type设置图标和背景颜色
-        Text icon = new Text();  // 用于显示图标
-        Text content = new Text(detail); // 显示对话框的详细信息
+        Text icon = new Text(); // to show the icon
+        Text content = new Text(detail); // show the detail of dialog
 
         Color fontColor;
 
-        // 根据 type 设置不同的图标和背景颜色
+        // define different types
         switch (type) {
             case "success":
-                icon.setText("✔");  // 勾选符号表示成功
+                icon.setText("✔");
                 icon.setFill(Color.GREEN);
                 dialog.getDialogPane().setStyle("-fx-background-color: #dcfce7; -fx-border-radius: 15px; -fx-padding: 20px;"); // 成功的绿色背景
                 fontColor = Color.web("#16a34a");
                 break;
             case "error":
-                icon.setText("✘");  // 错误符号表示失败
+                icon.setText("✘");
                 icon.setFill(Color.RED);
                 dialog.getDialogPane().setStyle("-fx-background-color: #fee2e2; -fx-border-radius: 15px; -fx-padding: 20px;"); // 错误的红色背景
                 fontColor = Color.web("#dc2626");
                 break;
             case "info":
-                icon.setText("ℹ️");  // 信息符号
+                icon.setText("ℹ️");
                 icon.setFill(Color.BLUE);
                 dialog.getDialogPane().setStyle("-fx-background-color: #dbeafe; -fx-border-radius: 15px; -fx-padding: 20px;"); // 信息的蓝色背景
                 fontColor = Color.web("#2563eb");
                 break;
             default:
-                icon.setText("ℹ️");  // 默认图标
+                icon.setText("ℹ️");
                 icon.setFill(Color.GRAY);
                 dialog.getDialogPane().setStyle("-fx-background-color: #ffffff; -fx-border-radius: 15px; -fx-padding: 20px;"); // 默认白色背景
                 fontColor = Color.web("#ffffff");
                 break;
         }
 
-        // 设置文本字体
         content.setFont(Font.font("System", FontWeight.BOLD, 16));
         content.setFill(fontColor);
 
 
-        // 将图标和文本添加到对话框内容区域
         contentBox.getChildren().addAll(icon, content);
         contentBox.setSpacing(10);
 
@@ -72,9 +68,8 @@ public class CustomDialog {
         dialog.setHeight(200);
         dialog.setResizable(true);
 
-        // 获取 Stage 并设置样式，隐藏标题栏
         Stage stage = (Stage) dialog.getDialogPane().getScene().getWindow();
-        stage.initStyle(StageStyle.DECORATED); // 使用没有标题栏的样式
+        stage.initStyle(StageStyle.DECORATED);
 
 
         dialog.getDialogPane().setContent(contentBox);
@@ -82,7 +77,6 @@ public class CustomDialog {
         Button okButton = (Button) dialog.getDialogPane().lookupButton(ButtonType.OK);
         okButton.setText(buttonText);
 
-        // 显示对话框并等待用户响应
         dialog.showAndWait();
     }
 }

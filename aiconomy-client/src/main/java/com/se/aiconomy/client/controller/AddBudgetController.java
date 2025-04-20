@@ -1,7 +1,6 @@
 package com.se.aiconomy.client.controller;
 
 //import com.alibaba.fastjson2.internal.asm.Label;
-import com.se.aiconomy.client.controller.ai.AiController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -24,7 +23,7 @@ import java.io.IOException;
 import java.util.List;
 
 @Setter
-public class AddBudgetController {
+public class AddBudgetController extends BaseController {
     @FXML
     private ToggleGroup toggleGroup;
 
@@ -47,6 +46,8 @@ public class AddBudgetController {
     private VBox vbox7;
     @FXML
     private VBox vbox8;
+    @FXML
+    private VBox vboxMonthly, vboxWeekly, vboxYearly;
 
     public interface OnOpenListener {
         void onOpenAddBudgetPanel();
@@ -111,9 +112,6 @@ public class AddBudgetController {
         }
     }
 
-    @FXML
-    private VBox vboxMonthly, vboxWeekly, vboxYearly;
-
     private void resetAllBoxes() {
         List<VBox> allBoxes = List.of(
                 vbox1, vbox2, vbox3, vbox4, vbox5, vbox6, vbox7, vbox8
@@ -148,7 +146,6 @@ public class AddBudgetController {
             }
         }
     }
-
 
 
     private void closeDialog(ActionEvent event) {

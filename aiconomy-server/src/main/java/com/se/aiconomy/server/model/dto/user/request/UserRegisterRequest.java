@@ -1,8 +1,6 @@
 package com.se.aiconomy.server.model.dto.user.request;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -10,6 +8,9 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class UserRegisterRequest {
     private String email;
     private String password;

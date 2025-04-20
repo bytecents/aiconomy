@@ -2,6 +2,8 @@ package com.se.aiconomy.client.controller;
 
 import com.se.aiconomy.client.Application.StyleClassFixer;
 import com.se.aiconomy.client.common.MyFXMLLoader;
+import com.se.aiconomy.server.model.dto.user.response.UserInfo;
+import com.se.aiconomy.server.model.dto.user.response.UserInfo;
 import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -20,6 +22,7 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
+import lombok.Setter;
 
 import java.io.IOException;
 import java.net.URL;
@@ -53,6 +56,8 @@ public class SidebarController implements Initializable {
     @FXML private Label budgetsLabel;
     @FXML private Label accountsLabel;
     @FXML private Label settingsLabel;
+
+    @Setter @FXML UserInfo userInfo;
 
     private final Map<String, HBox> navButtons = new HashMap<>();
     private final Map<String, ImageView> navIcons = new HashMap<>();

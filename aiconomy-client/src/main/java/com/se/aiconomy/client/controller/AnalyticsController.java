@@ -18,15 +18,22 @@ import javafx.util.StringConverter;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class AnalyticsController implements Initializable {
-//    @FXML private Hyperlink aiInsightBtn;
-    @FXML private ScrollPane aiPanel;
-    @FXML private GridPane analyticsGrid;
-    @FXML private ColumnConstraints mainCol;
-    @FXML private ColumnConstraints aiCol;
-    @FXML private LineChart<String, Number> spendingTrends;
-    @FXML private PieChart categoryDistribution;
-    @FXML private NumberAxis yAxis;
+public class AnalyticsController extends BaseController implements Initializable {
+    //    @FXML private Hyperlink aiInsightBtn;
+    @FXML
+    private ScrollPane aiPanel;
+    @FXML
+    private GridPane analyticsGrid;
+    @FXML
+    private ColumnConstraints mainCol;
+    @FXML
+    private ColumnConstraints aiCol;
+    @FXML
+    private LineChart<String, Number> spendingTrends;
+    @FXML
+    private PieChart categoryDistribution;
+    @FXML
+    private NumberAxis yAxis;
 
 //    private boolean isOpenAiPanel = false;
 
@@ -53,6 +60,7 @@ public class AnalyticsController implements Initializable {
             public String toString(Number object) {
                 return "$" + object.intValue();
             }
+
             @Override
             public Number fromString(String string) {
                 return Integer.parseInt(string.replace("$", ""));
@@ -72,11 +80,11 @@ public class AnalyticsController implements Initializable {
         spendingTrends.getData().add(series);
 
         categoryDistribution.getData().addAll(
-                new PieChart.Data("Food & Dining",    35),
-                new PieChart.Data("Shopping",         25),
-                new PieChart.Data("Transportation",   20),
-                new PieChart.Data("Entertainment",    15),
-                new PieChart.Data("Others",            5)
+                new PieChart.Data("Food & Dining", 35),
+                new PieChart.Data("Shopping", 25),
+                new PieChart.Data("Transportation", 20),
+                new PieChart.Data("Entertainment", 15),
+                new PieChart.Data("Others", 5)
         );
     }
 
@@ -139,8 +147,7 @@ public class AnalyticsController implements Initializable {
             });
             activetimeline.play();
 //            setColumnCount(analyticsGrid, 1);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

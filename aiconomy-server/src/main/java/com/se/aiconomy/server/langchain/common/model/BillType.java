@@ -4,15 +4,18 @@ import lombok.Getter;
 
 @Getter
 public enum BillType {
-    GROCERIES("groceries"),
-    RENT("rent"),
-    ENTERTAINMENT("entertainment"),
-    UTILITIES("utilities"),
-    TRANSPORT("transport"),
-    HEALTHCARE("healthcare"),
-    EDUCATION("education"),
-    DINING("dining"),
-    SHOPPING("shopping"),
+    FOOD_DINING("Food & Dining"),
+    TRANSPORTATION("Transportation"),
+    SHOPPING("Shopping"),
+    HOUSING("Housing"),
+    EDUCATION("Education"),
+    TRAVEL("Travel"),
+    GIFTS("Gifts"),
+    GROCERIES("Groceries"),
+    RENT("Rent"),
+    ENTERTAINMENT("Entertainment"),
+    UTILITIES("Utilities"),
+    HEALTHCARE("Healthcare"),
     OTHER("other");
 
     private final String type;
@@ -20,5 +23,4 @@ public enum BillType {
     BillType(String type) {
         this.type = type;
     }
-
 }

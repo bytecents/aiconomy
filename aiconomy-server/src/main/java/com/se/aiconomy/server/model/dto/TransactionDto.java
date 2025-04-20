@@ -3,6 +3,7 @@ package com.se.aiconomy.server.model.dto;
 import com.opencsv.bean.CsvBindByPosition;
 import com.opencsv.bean.CsvDate;
 import com.se.aiconomy.server.langchain.common.model.BillType;
+import com.se.aiconomy.server.langchain.common.model.DynamicBillType;
 import com.se.aiconomy.server.storage.common.Identifiable;
 import io.jsondb.annotation.Document;
 import io.jsondb.annotation.Id;
@@ -54,9 +55,11 @@ public class TransactionDto implements Identifiable {
     private String merchantOrderId;  // 商户单号
 
     @CsvBindByPosition(position = 10)
-    private String remark;  // 备注
+    private String accountId; // 账户ID
 
-    private BillType billType;
+    private String remark; // 备注
+
+    private DynamicBillType billType;
 
     private String userId;
 }
