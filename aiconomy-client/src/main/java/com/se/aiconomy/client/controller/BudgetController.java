@@ -2,6 +2,7 @@ package com.se.aiconomy.client.controller;
 
 //import com.alibaba.fastjson2.internal.asm.Label;
 
+import com.se.aiconomy.server.model.dto.user.response.UserInfo;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -24,7 +25,7 @@ import java.io.IOException;
 import java.util.List;
 
 @Setter
-public class AddBudgetController extends BaseController {
+public class BudgetController extends BaseController {
     @FXML
     private ToggleGroup toggleGroup;
 
@@ -57,7 +58,7 @@ public class AddBudgetController extends BaseController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/add_budget.fxml"));
             Parent dialogContent = loader.load();
             // 获取 controller 并传入 rootPane
-            AddBudgetController controller = loader.getController();
+            BudgetController controller = loader.getController();
             controller.setRootPane(rootPane); // ⚠️这里的 rootPane 是你的页面最外层 StackPane
 
             // 设置弹窗样式（你可以在 FXML 里设也行）
