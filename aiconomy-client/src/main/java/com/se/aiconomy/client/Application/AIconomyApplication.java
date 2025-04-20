@@ -26,7 +26,7 @@ public class AIconomyApplication extends Application {
 //        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/main.fxml"));
 //        Parent root = loader.load();
 //        StyleClassFixer.fixStyleClasses(root);
-        Parent root = new MyFXMLLoader("/fxml/main.fxml").load();
+        Parent root = new MyFXMLLoader("/fxml/login.fxml").load();
 
         Scene scene = new Scene(root, 1200, 820);
         stage.setTitle("AIconomy");

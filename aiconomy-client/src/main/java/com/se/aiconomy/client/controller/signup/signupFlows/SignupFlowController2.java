@@ -1,6 +1,7 @@
 package com.se.aiconomy.client.controller.signup.signupFlows;
 
 import com.se.aiconomy.client.common.CustomDialog;
+import com.se.aiconomy.client.controller.BaseController;
 import com.se.aiconomy.client.controller.signup.SignupController;
 import com.se.aiconomy.server.model.entity.User;
 import javafx.event.ActionEvent;
@@ -16,7 +17,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Objects;
 
-public class SignupFlowController2 {
+public class SignupFlowController2 extends BaseController {
     @FXML
     public Button continueButton;
 
@@ -79,7 +80,7 @@ public class SignupFlowController2 {
     }
 
     @FXML
-    public void goBackToSignupFlow1(){
+    public void goBackToSignupFlow1() {
 
         saveData();
 
@@ -92,9 +93,9 @@ public class SignupFlowController2 {
     }
 
     @FXML
-    public void switchToNextStep(){
+    public void switchToNextStep() {
         if (parentController != null) {
-            if (!checkInput(firstNameField.getText(), lastNameField.getText())){
+            if (!checkInput(firstNameField.getText(), lastNameField.getText())) {
                 return;
             }
             saveData();
@@ -105,7 +106,7 @@ public class SignupFlowController2 {
         }
     }
 
-    private void saveData(){
+    private void saveData() {
         if (firstNameField.getText() != null) userData.setFirstName(firstNameField.getText().trim());
         if (lastNameField.getText() != null) userData.setLastName(lastNameField.getText().trim());
         if (phoneNumberField.getText() != null) userData.setPhone(phoneNumberField.getText().trim());
