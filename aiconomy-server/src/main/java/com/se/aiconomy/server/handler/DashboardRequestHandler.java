@@ -15,9 +15,9 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class DashboardRequestHandler {
-    private final AccountService accountService;
-    private final TransactionService transactionService;
-    private final BudgetService budgetService;
+    private  AccountService accountService;
+    private  TransactionService transactionService;
+    private  BudgetService budgetService;
 
     public DashboardRequestHandler(AccountService accountService, TransactionService transactionService, BudgetService budgetService) {
         this.accountService = accountService;
@@ -25,6 +25,10 @@ public class DashboardRequestHandler {
         this.budgetService = budgetService;
     }
 
+    private DashboardRequestHandler()
+    {
+
+    }
     /**
      * 获取用户的 Net Worth，Monthly Spending，Monthly Income 和 Credit Card Due
      *
