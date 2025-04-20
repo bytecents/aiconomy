@@ -126,13 +126,18 @@
                                                 <Image url="@../../../assets/lock.png" />
                                              </image>
                                           </ImageView>
-                                          <ImageView onMouseClicked="#handlePasswordVisibility" fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="9.0">
+                                          <ImageView fitHeight="20.0" fitWidth="20.0" onMouseClicked="#handlePasswordVisibility" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="9.0">
                                              <image>
                                                 <Image url="@../../../assets/eye.png" />
                                              </image>
                                           </ImageView>
                                        </children>
                                     </AnchorPane>
+                                    <Label text="Allow numbers, letters and special characters: @#$%&amp;-_.!~">
+                                       <font>
+                                          <Font name="Roboto" size="12.0" />
+                                       </font>
+                                    </Label>
                                  </children>
                               </VBox>
                            </children>
