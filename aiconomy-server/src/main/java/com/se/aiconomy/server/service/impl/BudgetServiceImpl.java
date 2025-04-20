@@ -7,6 +7,7 @@ import com.se.aiconomy.server.service.BudgetService;
 import com.se.aiconomy.server.storage.service.JSONStorageService;
 
 import java.time.LocalDateTime;
+import java.time.Month;
 import java.util.List;
 import java.util.Optional;
 
@@ -86,6 +87,19 @@ public class BudgetServiceImpl implements BudgetService {
                 if (transaction.getType().equals(budgetCategory) && transaction.getIncomeOrExpense().equals("Expense")) {
                     totalSpent += Double.parseDouble(transaction.getAmount());
                 }
+            }
+        }
+        return totalSpent;
+    }
+
+    @Override
+    public double getMonthlySpent(String userId) throws ServiceException {
+        List<TransactionDto> transactions = getTransactionsByUserId(userId);
+        Month currentMonth = LocalDateTime.now().getMonth();
+        double totalSpent = 0;
+        for (TransactionDto transaction : transactions) {
+            if (transaction.getIncomeOrExpense().equals("Expense") && transaction.getTime().getMonth().equals(currentMonth)) {
+                totalSpent += Double.parseDouble(transaction.getAmount());
             }
         }
         return totalSpent;

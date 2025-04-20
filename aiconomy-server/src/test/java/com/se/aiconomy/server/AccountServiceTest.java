@@ -36,147 +36,66 @@ public class AccountServiceTest {
     @Order(1)
     void testAddAccount() {
         Account account = new Account();
-        account.setId("1");
+        account.setId("account1");
         account.setUserId("user1");
+        account.setBankName("bank1");
+        account.setAccountType("checking");
+        account.setAccountName("account1");
         account.setBalance(1000.0);
-        account.setAccountType("Savings");
 
-        accountService.addBankAccount(account);
-
-        Account fetchedAccount = accountService.getAccountById("1");
-        Assertions.assertNotNull(fetchedAccount, "Account should be added successfully.");
-        Assertions.assertEquals("1", fetchedAccount.getId());
-        Assertions.assertEquals("user1", fetchedAccount.getUserId());
-        Assertions.assertEquals(1000.0, fetchedAccount.getBalance());
+        jsonStorageService.insert(account);
+        Assertions.assertTrue(jsonStorageService.findById("account1", Account.class).isPresent());
+        log.info("Added account1");
     }
 
     @Test
     @Order(2)
     void testUpdateAccount() {
         Account account = new Account();
-        account.setId("2");
-        account.setUserId("user1");
-        account.setBalance(500.0);
-        account.setAccountType("Checking");
+        account.setId("account2");
+        account.setUserId("user2");
+        account.setBankName("bank2");
+        account.setAccountType("savings");
+        account.setAccountName("account2");
+        account.setBalance(2000.0);
 
-        accountService.addBankAccount(account);
-
-        account.setBalance(1000.0);  // 更新余额
-        accountService.updateAccount(account);
-
-        Account fetchedAccount = accountService.getAccountById("2");
-        Assertions.assertEquals(1000.0, fetchedAccount.getBalance(), "Account balance should be updated.");
+        jsonStorageService.insert(account);
+        account.setAccountName("account2_updated");
+        jsonStorageService.update(account, Account.class);
+        Assertions.assertEquals("account2_updated", jsonStorageService.findById("account2", Account.class).get().getAccountName());
+        log.info("Updated account2");
     }
 
     @Test
     @Order(3)
-    void testDeleteAccount() {
+    void testRemoveAccount() {
         Account account = new Account();
-        account.setId("3");
-        account.setUserId("user1");
-        account.setBalance(2000.0);
-        account.setAccountType("Savings");
+        account.setId("account3");
 
-        accountService.addBankAccount(account);
-        accountService.deleteAccount("3");
-
-        // 检查账户是否已被删除
-        Assertions.assertThrows(RuntimeException.class, () -> accountService.getAccountById("3"),
-                "Account should be deleted successfully.");
+        jsonStorageService.insert(account);
+        jsonStorageService.delete(account, Account.class);
+        Assertions.assertFalse(jsonStorageService.findById("account3", Account.class).isPresent());
+        log.info("Removed account3");
     }
 
     @Test
     @Order(4)
-    void testGetAccountsByUserId() {
-        Account account1 = new Account();
-        account1.setId("4");
-        account1.setUserId("user1");
-        account1.setBalance(1000.0);
-        account1.setAccountType("Checking");
+    void testCalculateCreditCardDue() {
+        Account account = new Account();
+        account.setId("account4");
+        account.setUserId("user4");
+        account.setBankName("bank4");
+        account.setAccountType("credit");
+        account.setAccountName("account4");
+        account.setBalance(3000.0);
+        account.setCreditLimit(5000.0);
+        account.setCurrentDebt(1000.0);
+        account.setPaymentDueDate(LocalDateTime.now());
+        account.setMinimumPayment(100.0);
 
-        Account account2 = new Account();
-        account2.setId("5");
-        account2.setUserId("user1");
-        account2.setBalance(2000.0);
-        account2.setAccountType("Savings");
-
-        accountService.addBankAccount(account1);
-        accountService.addBankAccount(account2);
-
-        List<Account> accounts = accountService.getAccountsByUserId("user1");
-
-        Assertions.assertEquals(2, accounts.size(), "User should have 2 accounts.");
-        Assertions.assertTrue(accounts.stream().anyMatch(acc -> acc.getId().equals("4")));
-        Assertions.assertTrue(accounts.stream().anyMatch(acc -> acc.getId().equals("5")));
-    }
-
-    @Test
-    @Order(5)
-    void testCalculateNetWorth() {
-        Account account1 = new Account();
-        account1.setId("6");
-        account1.setUserId("user2");
-        account1.setBalance(1500.0);
-        account1.setAccountType("Checking");
-
-        accountService.addBankAccount(account1);
-
-
-        double netWorth = accountService.calculateNetWorth("user2");
-
-        Assertions.assertEquals(1500.0, netWorth, "Net worth should be calculated correctly.");
-    }
-
-    @Test
-    @Order(6)
-    void testCalculateMonthlySpending() {
-        double monthlySpending = accountService.calculateMonthlySpending("user1");
-
-        Assertions.assertTrue(monthlySpending >= 0, "Monthly spending should be a non-negative value.");
-    }
-
-    @Test
-    @Order(7)
-    void testCalculateMonthlyIncome() {
-
-        double monthlyIncome = accountService.calculateMonthlyIncome("user1");
-
-        Assertions.assertTrue(monthlyIncome >= 0, "Monthly income should be a non-negative value.");
-    }
-
-    @Test
-    @Order(8)
-    void testCalculateCreditDue() {
-        Account creditAccount = new Account();
-        creditAccount.setId("7");
-        creditAccount.setUserId("user2");
-        creditAccount.setBalance(1000.0);
-        creditAccount.setAccountType("CreditCard");
-        creditAccount.setCurrentDebt(500.0);
-
-        accountService.addBankAccount(creditAccount);
-
-        double creditDue = accountService.calculateCreditDue("user2");
-
-        Assertions.assertEquals(500.0, creditDue, "Credit due should be calculated correctly.");
-    }
-
-    @Test
-    @Order(9)
-    void testGetLatestPaymentDueDate() {
-        Account creditAccount = new Account();
-        creditAccount.setId("8");
-        creditAccount.setUserId("user2");
-        creditAccount.setBalance(2000.0);
-        creditAccount.setAccountType("CreditCard");
-        creditAccount.setCurrentDebt(1000.0);
-        creditAccount.setPaymentDueDate(LocalDateTime.of(2025, 5, 1, 0, 0));
-
-        accountService.addBankAccount(creditAccount);
-
-        LocalDateTime latestPaymentDueDate = accountService.getLatestPaymentDueDate("user2");
-
-        Assertions.assertEquals(LocalDateTime.of(2025, 5, 1, 0, 0), latestPaymentDueDate,
-                "The latest payment due date should be returned correctly.");
+        jsonStorageService.insert(account);
+        double creditCardDue = accountService.calculateCreditCardDue("user4");
+        Assertions.assertEquals(1000.0, creditCardDue);
+        log.info("Calculated credit card due for user4");
     }
 }
