@@ -1,5 +1,8 @@
 package com.se.aiconomy.server.handler;
 
+import com.se.aiconomy.server.langchain.common.model.BillType;
+import com.se.aiconomy.server.langchain.common.model.BillTypeRegistry;
+import com.se.aiconomy.server.langchain.common.model.DynamicBillType;
 import com.se.aiconomy.server.model.dto.user.request.*;
 import com.se.aiconomy.server.model.dto.user.response.UserInfo;
 import com.se.aiconomy.server.model.entity.User;
@@ -7,12 +10,16 @@ import com.se.aiconomy.server.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.List;
+import java.util.Set;
+
 /**
  * 用户请求处理器
  * 负责处理所有与用户相关的请求
  */
 public class UserRequestHandler {
     private static final Logger logger = LoggerFactory.getLogger(UserRequestHandler.class);
+    private static final Set<DynamicBillType> BILL_TYPES = BillTypeRegistry.getInstance().getAllTypes();
     private final UserService userService;
 
     public UserRequestHandler(UserService userService) {
@@ -37,6 +44,7 @@ public class UserRequestHandler {
         newUser.setFinancialGoal(request.getFinancialGoal());
         newUser.setMonthlyIncome(request.getMonthlyIncome());
         newUser.setMainExpenseType(request.getMainExpenseType());
+        newUser.setBillTypes(BILL_TYPES);
 
         // 注册用户
         try {
@@ -132,6 +140,26 @@ public class UserRequestHandler {
         }
     }
 
+    public Set<DynamicBillType> getBillTypes(String userId) {
+        logger.info("Getting bill types for userId: {}", userId);
+        try {
+            return userService.getBillTypes(userId);
+        } catch (Exception e) {
+            logger.error("Failed to get bill types: {}", e.getMessage());
+            throw new RuntimeException("Failed to get bill types: " + e.getMessage());
+        }
+    }
+
+    public Set<DynamicBillType> addBillType(String userId, DynamicBillType billType) {
+        logger.info("Adding bill type for userId: {}", userId);
+        try {
+            return userService.addBillType(userId, billType);
+        } catch (Exception e) {
+            logger.error("Failed to add bill type: {}", e.getMessage());
+            throw new RuntimeException("Failed to add bill type: " + e.getMessage());
+        }
+    }
+
     /**
      * 将User实体转换为UserInfo DTO
      */
@@ -147,7 +175,8 @@ public class UserRequestHandler {
             user.getCurrency(),
             user.getFinancialGoal(),
             user.getMonthlyIncome(),
-            user.getMainExpenseType()
+            user.getMainExpenseType(),
+            user.getBillTypes()
         );
     }
 }

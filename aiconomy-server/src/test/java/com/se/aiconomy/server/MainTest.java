@@ -5,6 +5,7 @@ import com.se.aiconomy.server.handler.AccountRequestHandler;
 import com.se.aiconomy.server.handler.TransactionRequestHandler;
 import com.se.aiconomy.server.handler.UserRequestHandler;
 import com.se.aiconomy.server.langchain.common.model.BillType;
+import com.se.aiconomy.server.langchain.common.model.DynamicBillType;
 import com.se.aiconomy.server.langchain.common.model.Transaction;
 import com.se.aiconomy.server.model.dto.TransactionDto;
 import com.se.aiconomy.server.model.dto.account.request.AddAccountsRequest;
@@ -95,7 +96,7 @@ class MainTest {
         request.setUserId(userInfo.getId());
         request.setFilePath(Objects.requireNonNull(getClass().getClassLoader().getResource("transactions.csv")).getPath());
 
-        List<Map<Transaction, BillType>> classifiedTransactions =
+        List<Map<Transaction, DynamicBillType>> classifiedTransactions =
             transactionRequestHandler.handleTransactionClassificationRequest(request);
 
         assertNotNull(classifiedTransactions);
@@ -109,7 +110,7 @@ class MainTest {
         TransactionClassificationRequest classificationRequest = new TransactionClassificationRequest();
         classificationRequest.setUserId(userInfo.getId());
         classificationRequest.setFilePath(Objects.requireNonNull(getClass().getClassLoader().getResource("transactions.csv")).getPath());
-        List<Map<Transaction, BillType>> classifiedTransactions =
+        List<Map<Transaction, DynamicBillType>> classifiedTransactions =
             transactionRequestHandler.handleTransactionClassificationRequest(classificationRequest);
 
         // Then import them
@@ -118,7 +119,7 @@ class MainTest {
         importRequest.setAccountId("1");
         importRequest.setTransactions(classifiedTransactions);
 
-        List<Map<Transaction, BillType>> importedTransactions =
+        List<Map<Transaction, DynamicBillType>> importedTransactions =
             transactionRequestHandler.handleTransactionImportRequest(importRequest);
 
         assertNotNull(importedTransactions);

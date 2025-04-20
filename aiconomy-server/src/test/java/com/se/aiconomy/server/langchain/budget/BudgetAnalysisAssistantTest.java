@@ -26,7 +26,6 @@ public class BudgetAnalysisAssistantTest {
         budget.setAlerts(2);
         budget.setCategoryBudgets(new ArrayList<>(
             List.of(
-                new Budget.CategoryBudget(BillType.DINING, 1500, 1650),
                 new Budget.CategoryBudget(BillType.EDUCATION, 1000, 800),
                 new Budget.CategoryBudget(BillType.ENTERTAINMENT, 500, 300)
             )

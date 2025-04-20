@@ -1,4 +1,1 @@
 {"schemaVersion":"1.0"}
-{"id":"1","userId":"fa3abadc-5bc4-4ee5-9670-2729a1e4791e","bankName":"Bank of America","accountType":"Saving","accountName":"John's Savings Account","balance":5000.0,"creditLimit":2000.0,"currentDebt":300.0,"paymentDueDate":[2025,5,15,23,59],"minimumPayment":50.0,"extraFields":null}
-{"id":"2","userId":"fa3abadc-5bc4-4ee5-9670-2729a1e4791e","bankName":"Chase","accountType":"Checking","accountName":"Alice's Checking Account","balance":1000.0,"creditLimit":5000.0,"currentDebt":1200.0,"paymentDueDate":[2025,6,1,23,59],"minimumPayment":100.0,"extraFields":null}
-{"id":"3","userId":"fa3abadc-5bc4-4ee5-9670-2729a1e4791e","bankName":"Wells Fargo","accountType":"Credit","accountName":"Bob's Credit Account","balance":0.0,"creditLimit":15000.0,"currentDebt":5000.0,"paymentDueDate":[2025,4,30,23,59],"minimumPayment":250.0,"extraFields":null}

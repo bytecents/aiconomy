@@ -1,6 +1,7 @@
 package com.se.aiconomy.server;
 
 import com.se.aiconomy.server.langchain.common.model.BillType;
+import com.se.aiconomy.server.langchain.common.model.DynamicBillType;
 import com.se.aiconomy.server.model.dto.TransactionDto;
 import com.se.aiconomy.server.storage.service.JSONStorageService;
 import com.se.aiconomy.server.storage.service.impl.JSONStorageServiceImpl;
@@ -149,7 +150,7 @@ public class StorageTest {
             .status("待支付")  // 设置交易状态
             .merchantOrderId(TEST_MERCHANT_ORDER_ID)  // 设置商户订单号
             .accountId("userAcc001")  // 设置账户ID
-            .billType(BillType.DINING)  // 设置账单类型
+            .billType(DynamicBillType.fromBillType(BillType.EDUCATION))  // 设置账单类型
             .userId("1")  // 设置用户ID
             .accountId("userAcc002")  // 设置账户ID
             .build();  // 使用 build() 方法创建对象

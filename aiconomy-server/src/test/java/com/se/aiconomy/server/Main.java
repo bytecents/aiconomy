@@ -5,6 +5,7 @@ import com.se.aiconomy.server.handler.AccountRequestHandler;
 import com.se.aiconomy.server.handler.TransactionRequestHandler;
 import com.se.aiconomy.server.handler.UserRequestHandler;
 import com.se.aiconomy.server.langchain.common.model.BillType;
+import com.se.aiconomy.server.langchain.common.model.DynamicBillType;
 import com.se.aiconomy.server.langchain.common.model.Transaction;
 import com.se.aiconomy.server.model.dto.TransactionDto;
 import com.se.aiconomy.server.model.dto.account.request.AddAccountsRequest;
@@ -13,6 +14,7 @@ import com.se.aiconomy.server.model.dto.account.request.GetAccountsByUserIdReque
 import com.se.aiconomy.server.model.dto.transaction.request.GetTransactionByUserIdRequest;
 import com.se.aiconomy.server.model.dto.transaction.request.TransactionClassificationRequest;
 import com.se.aiconomy.server.model.dto.transaction.request.TransactionImportRequest;
+import com.se.aiconomy.server.model.dto.user.request.UserInfoRequest;
 import com.se.aiconomy.server.model.dto.user.request.UserLoginRequest;
 import com.se.aiconomy.server.model.dto.user.request.UserRegisterRequest;
 import com.se.aiconomy.server.model.dto.user.response.UserInfo;
@@ -27,6 +29,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 
 public class Main {
     static JSONStorageService jsonStorageService = JSONStorageServiceImpl.getInstance();
@@ -52,7 +55,7 @@ public class Main {
         System.out.println(userRequestHandler.handleRegisterRequest(userRegisterRequest));
 
         UserInfoRequest userInfoRequest = new UserInfoRequest();
-        userInfoRequest.setUserId("6199fb65-6dbd-443b-98c2-909fcf1c92d4");
+        userInfoRequest.setUserId("e2bd8d75-29a0-4cc0-9763-e806a52ea6e4");
 
         UserInfo userinfo = userRequestHandler.handleGetUserInfoRequest(userInfoRequest);
         System.out.println(userinfo);*/
@@ -160,5 +163,17 @@ public class Main {
         }
 
         System.out.println(accountRequestHandler.handleGetAccountsByUserIdRequest(new GetAccountsByUserIdRequest(userInfo.getId())));*/
+
+        // 获取账单类别测试
+        /*Set<DynamicBillType> billTypes = userRequestHandler.getBillTypes(userInfo.getId());
+        for (DynamicBillType billType : billTypes) {
+            System.out.println(billType);
+        }*/
+
+        // 添加账单类别测试
+        /*Set<DynamicBillType> billTypes = userRequestHandler.addBillType(userInfo.getId(), DynamicBillType.createCustom("CustomBillType", "Custom Bill Type"));
+        for (DynamicBillType billType : billTypes) {
+            System.out.println(billType);
+        }*/
     }
 }

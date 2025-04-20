@@ -3,6 +3,7 @@ package com.se.aiconomy.server.handler;
 import com.se.aiconomy.server.common.exception.ServiceException;
 import com.se.aiconomy.server.common.utils.FileUtils;
 import com.se.aiconomy.server.langchain.common.model.BillType;
+import com.se.aiconomy.server.langchain.common.model.DynamicBillType;
 import com.se.aiconomy.server.langchain.common.model.Transaction;
 import com.se.aiconomy.server.model.dto.TransactionDto;
 import com.se.aiconomy.server.model.dto.transaction.request.GetTransactionByUserIdRequest;
@@ -26,7 +27,7 @@ public class TransactionRequestHandler {
         this.transactionService = transactionService;
     }
 
-    public List<Map<Transaction, BillType>> handleTransactionClassificationRequest(TransactionClassificationRequest request) throws ServiceException {
+    public List<Map<Transaction, DynamicBillType>> handleTransactionClassificationRequest(TransactionClassificationRequest request) throws ServiceException {
         // 1. 从request中获取用户ID和交易记录
         String userId = request.getUserId();
         String filePath = request.getFilePath();
@@ -44,11 +45,11 @@ public class TransactionRequestHandler {
         };
     }
 
-    public List<Map<Transaction, BillType>> handleTransactionImportRequest(TransactionImportRequest request) throws ServiceException {
+    public List<Map<Transaction, DynamicBillType>> handleTransactionImportRequest(TransactionImportRequest request) throws ServiceException {
         // 1. 从请求参数中获取用户ID和分类后的交易记录
         String userId = request.getUserId();
         String accountId = request.getAccountId();
-        List<Map<Transaction, BillType>> transactions = request.getTransactions();
+        List<Map<Transaction, DynamicBillType>> transactions = request.getTransactions();
 
         // 2. 将分类后的交易记录存储到数据库
         if (accountId == null || accountId.isEmpty()) {
