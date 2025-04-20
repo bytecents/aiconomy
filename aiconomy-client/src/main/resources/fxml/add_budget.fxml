@@ -30,13 +30,14 @@
                        style="-fx-text-fill: #6B7280; -fx-font-size: 12px;" /> <!-- gray-500 -->
             </VBox>
 
+
             <Region HBox.hgrow="ALWAYS" /> <!-- 占位推送 × 到右边 -->
 
             <Button text="×"
                     onAction="#onCancel"
                     style="-fx-font-size: 18px; -fx-background-color: transparent; -fx-text-fill: black; -fx-cursor: hand;"
                     focusTraversable="false"/>
-
+        </HBox>
         <!-- 主体内容 -->
         <!-- 主体内容 -->
         <VBox spacing="8" alignment="TOP_LEFT">
