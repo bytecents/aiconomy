@@ -22,6 +22,8 @@ public interface BudgetService {
 
         double getTotalSpent(String userId) throws ServiceException; // 获取用户的总支出
 
+        double getMonthlySpent(String userId) throws ServiceException; // 获取用户的月度支出
+
         int getTotalAlertCount(String userId) throws ServiceException; // 获取用户超支的预算数量
 
         double getDailyAvailableBudget(String userId) throws ServiceException; // 获取用户的每日可用预算
