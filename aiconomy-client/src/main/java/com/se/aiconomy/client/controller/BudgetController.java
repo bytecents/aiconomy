@@ -31,7 +31,7 @@ public class BudgetController extends BaseController {
     private ToggleGroup toggleGroup;
 
     @FXML
-    private StackPane rootPane; // 这个是 main.fxml 的最外层 StackPane
+    private StackPane rootPane;
 
     @FXML
     private VBox vbox1;
@@ -56,10 +56,10 @@ public class BudgetController extends BaseController {
         void onOpenAddBudgetPanel();
     }
 
-    private AddBudgetController.OnOpenListener openListener;
+    private BudgetController.OnOpenListener openListener;
 
     @FXML
-    public void setOnOpenListener(AddBudgetController.OnOpenListener listener) {
+    public void setOnOpenListener(BudgetController.OnOpenListener listener) {
         this.openListener = listener;
     }
 

@@ -20,7 +20,7 @@
       xmlns="http://javafx.com/javafx/23.0.1"
       styleClass="p-8" fx:controller="com.se.aiconomy.client.controller.DashboardController"
       stylesheets="/css/styles.css">
-    <HBox alignment="CENTER" styleClass="pb-8 gap-5">
+    <HBox styleClass="pb-8 gap-5">
         <VBox styleClass="gap-1">
             <Label fx:id="welcomeTextField" text="Welcome back, Alex!"
                    styleClass="text-2xl font-semibold text-gray-900 pb-1"/>
@@ -28,7 +28,7 @@
         </VBox>
         <Region HBox.hgrow="ALWAYS"/>
         <Button fx:id="quickAddButton" onAction="#quickAdd" text="Quick Add"
-                styleClass="hover-bg-blue-700 p-4-2 bg-blue-600 text-white font-roboto cursor-pointer"/>
+                styleClass="hover-bg-blue-700 rounded-lg p-4-2 bg-blue-600 text-white font-roboto cursor-pointer"/>
     </HBox>
 
     <GridPane hgap="24" vgap="24" styleClass="pb-8">

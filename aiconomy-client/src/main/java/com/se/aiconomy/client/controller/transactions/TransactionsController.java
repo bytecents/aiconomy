@@ -2,24 +2,58 @@ package com.se.aiconomy.client.controller.transactions;
 
 import com.se.aiconomy.client.common.MyFXMLLoader;
 import com.se.aiconomy.client.controller.BaseController;
+import com.se.aiconomy.client.controller.BudgetController;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Rectangle;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class TransactionsController extends BaseController implements Initializable {
+    @FXML private VBox transactionItems;
+
+    public interface OnOpenListener {
+        void onOpenAddTransactionPanel();
+    }
+
+    private TransactionsController.OnOpenListener openListener;
+
     @FXML
-    private VBox transactionItems;
+    public void setOnOpenListener(TransactionsController.OnOpenListener listener) {
+        this.openListener = listener;
+    }
+
+    @FXML
+    public void handleAddTransaction() {
+        if (openListener != null) {
+            openListener.onOpenAddTransactionPanel();
+        }
+    }
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        // Initialize the transaction items list
+        if (userInfo == null) {
+            Platform.runLater(() -> {
+                if (userInfo != null) {
+                    init();
+                } else {
+                    System.out.println("User info is not available yet.");
+                }
+            });
+        } else {
+            init();
+        }
+    }
+
+    @FXML
+    private void init() {
         transactionItems.getChildren().clear();
 
-        // Example: Add a few transaction rows (this should be replaced with actual data)
         for (int i = 0; i < 10; i++) {
 //            TransactionRowController transactionRow = new TransactionRowController();
 //            transactionRow.setTransactionId("Transaction " + (i + 1));

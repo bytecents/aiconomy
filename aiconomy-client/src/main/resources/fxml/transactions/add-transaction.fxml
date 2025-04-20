@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            stylesheets="/css/styles.css"
+      styleClass="bg-white rounded-2xl shadow-xl"
+            fx:controller="com.se.aiconomy.client.controller.transactions.AddTransactionController">
+<!--    <div class="w-[600px] bg-white rounded-2xl shadow-xl overflow-hidden">-->
+<!--        &lt;!&ndash; Modal Header &ndash;&gt;-->
+<!--        <div-->
+<!--                class="flex items-center justify-between p-6 border-b border-gray-100">-->
+<!--            <h3 class="text-xl font-semibold text-gray-900">Add Transaction</h3>-->
+<!--            <button class="p-2 hover:bg-gray-100 rounded-lg">-->
+<!--                <img-->
+<!--                        src="https://unpkg.com/lucide-static@latest/icons/x.svg"-->
+<!--                        class="w-5 h-5" />-->
+<!--            </button>-->
+<!--        </div>-->
+
+<!--        &lt;!&ndash; Modal Content &ndash;&gt;-->
+<!--        <div class="p-6">-->
+<!--            <form class="space-y-6">-->
+<!--                &lt;!&ndash; Transaction Type &ndash;&gt;-->
+<!--                <div class="flex gap-4 mb-6">-->
+<!--                    <button-->
+<!--                            type="button"-->
+<!--                            class="flex-1 py-3 px-4 bg-red-50 border border-red-600 rounded-lg text-red-600 font-medium">-->
+<!--                        Expense-->
+<!--                    </button>-->
+<!--                    <button-->
+<!--                            type="button"-->
+<!--                            class="flex-1 py-3 px-4 bg-gray-50 border border-gray-200 rounded-lg text-gray-600 font-medium hover:bg-gray-100">-->
+<!--                        Income-->
+<!--                    </button>-->
+<!--                    &lt;!&ndash; <button-->
+<!--                      type="button"-->
+<!--                      class="flex-1 py-3 px-4 bg-gray-50 border-2 border-gray-200 rounded-lg text-gray-600 font-medium hover:bg-gray-100">-->
+<!--                      Transfer-->
+<!--                    </button> &ndash;&gt;-->
+<!--                </div>-->
+
+<!--                &lt;!&ndash; Date & Time &ndash;&gt;-->
+<!--                <div class="grid gap-4">-->
+<!--                    <div>-->
+<!--                        <label class="block text-sm font-medium text-gray-700 mb-2"-->
+<!--                        >Date</label-->
+<!--                        >-->
+<!--                        <div class="relative">-->
+<!--                            <img-->
+<!--                                    src="https://unpkg.com/lucide-static@latest/icons/calendar.svg"-->
+<!--                                    class="absolute left-4 top-3 w-5 h-5 text-gray-400" />-->
+<!--                            <input-->
+<!--                                    type="date"-->
+<!--                                    class="w-full pl-12 pr-4 py-2.5 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500" />-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    &lt;!&ndash; <div>-->
+<!--                      <label class="block text-sm font-medium text-gray-700 mb-2"-->
+<!--                        >Time</label-->
+<!--                      >-->
+<!--                      <div class="relative">-->
+<!--                        <img-->
+<!--                          src="https://unpkg.com/lucide-static@latest/icons/clock.svg"-->
+<!--                          class="absolute left-4 top-3 w-5 h-5 text-gray-400" />-->
+<!--                        <input-->
+<!--                          type="time"-->
+<!--                          class="w-full pl-12 pr-4 py-2.5 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500" />-->
+<!--                      </div>-->
+<!--                    </div> &ndash;&gt;-->
+<!--                </div>-->
+
+<!--                &lt;!&ndash; Description with AI Suggestions &ndash;&gt;-->
+<!--                <div>-->
+<!--                    <label class="block text-sm font-medium text-gray-700 mb-2"-->
+<!--                    >Description</label-->
+<!--                    >-->
+<!--                    <input-->
+<!--                            type="text"-->
+<!--                            class="w-full px-4 py-2.5 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"-->
+<!--                            placeholder="Enter description" />-->
+<!--                </div>-->
+
+<!--                &lt;!&ndash; Amount &ndash;&gt;-->
+<!--                <div>-->
+<!--                    <label class="block text-sm font-medium text-gray-700 mb-2"-->
+<!--                    >Amount</label-->
+<!--                    >-->
+<!--                    <div class="relative">-->
+<!--                        <span class="absolute left-4 top-3 text-gray-500">$</span>-->
+<!--                        <input-->
+<!--                                type="text"-->
+<!--                                class="w-full pl-8 pr-4 py-2.5 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"-->
+<!--                                placeholder="0.00" />-->
+<!--                    </div>-->
+<!--                </div>-->
+
+<!--                &lt;!&ndash; Category with Smart Suggestions &ndash;&gt;-->
+<!--                <div>-->
+<!--                    <label class="block text-sm font-medium text-gray-700 mb-2"-->
+<!--                    >Category</label-->
+<!--                    >-->
+<!--                    <div>-->
+<!--                        <div class="grid grid-cols-4 gap-3">-->
+<!--                            <button-->
+<!--                                    type="button"-->
+<!--                                    class="p-3 bg-purple-50 text-purple-600 rounded-lg text-center border border-purple-600">-->
+<!--                                <svg-->
+<!--                                        xmlns="http://www.w3.org/2000/svg"-->
+<!--                                        width="24"-->
+<!--                                        height="24"-->
+<!--                                        viewBox="0 0 24 24"-->
+<!--                                        fill="none"-->
+<!--                                        stroke="currentColor"-->
+<!--                                        stroke-width="2"-->
+<!--                                        stroke-linecap="round"-->
+<!--                                        stroke-linejoin="round"-->
+<!--                                        class="lucide lucide-sparkles w-6 h-6 mx-auto mb-1">-->
+<!--                                    <path-->
+<!--                                            d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z" />-->
+<!--                                    <path d="M20 3v4" />-->
+<!--                                    <path d="M22 5h-4" />-->
+<!--                                    <path d="M4 17v2" />-->
+<!--                                    <path d="M5 18H3" />-->
+<!--                                </svg>-->
+<!--                                <span class="text-sm"> Auto Category </span>-->
+<!--                            </button>-->
+<!--                            <button-->
+<!--                                    type="button"-->
+<!--                                    class="p-3 bg-gray-50 border rounded-lg text-center">-->
+<!--                                <img-->
+<!--                                        src="https://unpkg.com/lucide-static@latest/icons/utensils.svg"-->
+<!--                                        class="w-6 h-6 mx-auto mb-1" />-->
+<!--                                <span class="text-sm"> Food & Dining </span>-->
+<!--                            </button>-->
+<!--                            <button-->
+<!--                                    type="button"-->
+<!--                                    class="p-3 bg-gray-50 border rounded-lg text-center">-->
+<!--                                <img-->
+<!--                                        src="https://unpkg.com/lucide-static@latest/icons/bus.svg"-->
+<!--                                        class="w-6 h-6 mx-auto mb-1" />-->
+<!--                                <span class="text-sm"> Transportation </span>-->
+<!--                            </button>-->
+<!--                            <button-->
+<!--                                    type="button"-->
+<!--                                    class="p-3 bg-gray-50 border rounded-lg text-center">-->
+<!--                                <img-->
+<!--                                        src="https://unpkg.com/lucide-static@latest/icons/shopping-bag.svg"-->
+<!--                                        class="w-6 h-6 mx-auto mb-1" />-->
+<!--                                <span class="text-sm"> Shopping </span>-->
+<!--                            </button>-->
+<!--                            <button-->
+<!--                                    type="button"-->
+<!--                                    class="p-3 bg-gray-50 border rounded-lg text-center">-->
+<!--                                <img-->
+<!--                                        src="https://unpkg.com/lucide-static@latest/icons/heart.svg"-->
+<!--                                        class="w-6 h-6 mx-auto mb-1" />-->
+<!--                                <span class="text-sm"> Health & Fitness </span>-->
+<!--                            </button>-->
+<!--                            <button-->
+<!--                                    type="button"-->
+<!--                                    class="p-3 bg-gray-50 border rounded-lg text-center">-->
+<!--                                <img-->
+<!--                                        src="https://unpkg.com/lucide-static@latest/icons/house.svg"-->
+<!--                                        class="w-6 h-6 mx-auto mb-1" />-->
+<!--                                <span class="text-sm"> Home </span>-->
+<!--                            </button>-->
+<!--                            <button-->
+<!--                                    type="button"-->
+<!--                                    class="p-3 bg-gray-50 border rounded-lg text-center">-->
+<!--                                <img-->
+<!--                                        src="https://unpkg.com/lucide-static@latest/icons/plane.svg"-->
+<!--                                        class="w-6 h-6 mx-auto mb-1" />-->
+<!--                                <span class="text-sm"> Travel </span>-->
+<!--                            </button>-->
+<!--                            <button-->
+<!--                                    type="button"-->
+<!--                                    class="p-3 bg-gray-50 border rounded-lg text-center">-->
+<!--                                <img-->
+<!--                                        src="https://unpkg.com/lucide-static@latest/icons/plus.svg"-->
+<!--                                        class="w-6 h-6 mx-auto mb-1" />-->
+<!--                                <span class="text-sm"> Add </span>-->
+<!--                            </button>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+
+<!--                &lt;!&ndash; Account &ndash;&gt;-->
+<!--                <div>-->
+<!--                    <label class="block text-sm font-medium text-gray-700 mb-2"-->
+<!--                    >Account</label-->
+<!--                    >-->
+<!--                    <div class="relative">-->
+<!--                        <select-->
+<!--                                class="w-full px-4 py-2.5 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500">-->
+<!--                            <option>Chase Bank</option>-->
+<!--                            <option>Wells Fargo</option>-->
+<!--                            <option>Cash</option>-->
+<!--                        </select>-->
+<!--                    </div>-->
+<!--                </div>-->
+
+<!--                &lt;!&ndash; Additional Details &ndash;&gt;-->
+<!--                <div class="space-y-4">-->
+<!--                    &lt;!&ndash; Notes &ndash;&gt;-->
+<!--                    <div>-->
+<!--                        <label class="block text-sm font-medium text-gray-700 mb-2"-->
+<!--                        >Notes (Optional)</label-->
+<!--                        >-->
+<!--                        <textarea-->
+<!--                                class="w-full px-4 py-2.5 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"-->
+<!--                                rows="2"-->
+<!--                                placeholder="Add any additional notes..."></textarea>-->
+<!--                    </div>-->
+
+<!--                    &lt;!&ndash; Receipt Upload &ndash;&gt;-->
+<!--                    <div>-->
+<!--                        <label class="block text-sm font-medium text-gray-700 mb-2"-->
+<!--                        >Attach Receipt</label-->
+<!--                        >-->
+<!--                        <button-->
+<!--                                type="button"-->
+<!--                                class="w-full px-4 py-4 border-2 border-dashed border-gray-300 rounded-lg text-center hover:bg-gray-50">-->
+<!--                            <div class="flex items-center justify-center gap-2">-->
+<!--                                <img-->
+<!--                                        src="https://unpkg.com/lucide-static@latest/icons/upload.svg"-->
+<!--                                        class="w-5 h-5 text-gray-400" />-->
+<!--                                <span class="text-gray-600"-->
+<!--                                >Drop files or click to upload</span-->
+<!--                                >-->
+<!--                            </div>-->
+<!--                            <div class="text-sm text-gray-500 mt-1">-->
+<!--                                Supports: JPG, PNG, PDF-->
+<!--                            </div>-->
+<!--                        </button>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </form>-->
+<!--        </div>-->
+
+<!--        &lt;!&ndash; Modal Footer &ndash;&gt;-->
+<!--        <div-->
+<!--                class="flex items-center justify-end gap-3 p-6 border-t border-gray-100 bg-gray-50">-->
+<!--            <button-->
+<!--                    class="px-4 py-2 border border-gray-200 rounded-lg hover:bg-gray-100">-->
+<!--                Cancel-->
+<!--            </button>-->
+<!--            <button-->
+<!--                    class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">-->
+<!--                Save Transaction-->
+<!--            </button>-->
+<!--        </div>-->
+<!--    </div>-->
+</VBox>

@@ -30,7 +30,7 @@
             <Label styleClass="text-sm text-gray-500">Online Shopping</Label>
         </VBox>
     </HBox>
-    <Label GridPane.columnIndex="1" styleClass="text-base font-roboto text-gray-600">Feb 15, 2024</Label>
+    <Label GridPane.columnIndex="1" styleClass="text-sm font-roboto text-gray-600">Feb 15, 2024</Label>
     <VBox GridPane.columnIndex="2" alignment="CENTER_LEFT">
         <ComboBox fx:id="categoryComboBox" styleClass="text-sm font-roboto cursor-pointer rounded-lg">
             <items>
@@ -42,7 +42,7 @@
             </items>
         </ComboBox>
     </VBox>
-    <Label GridPane.columnIndex="3" styleClass="text-base font-roboto text-gray-600">Chase Bank</Label>
+    <Label GridPane.columnIndex="3" styleClass="text-sm font-roboto text-gray-600">Chase Bank</Label>
     <HBox alignment="CENTER_RIGHT" GridPane.columnIndex="4">
         <Label styleClass="text-sm font-medium text-red-500">-$129.99</Label>
     </HBox>

@@ -1,9 +1,12 @@
 package com.se.aiconomy.client.controller;
 
 import com.se.aiconomy.client.common.MyFXMLLoader;
+import com.se.aiconomy.client.controller.transactions.AddTransactionController;
+import com.se.aiconomy.client.controller.transactions.TransactionsController;
 import com.se.aiconomy.server.model.dto.user.response.UserInfo;
 import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
+import javafx.animation.ParallelTransition;
 import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -142,32 +145,71 @@ public class SidebarController implements Initializable {
         activePanel = buttonKey;
     }
 
+    private void openAddTransactionPanel() {
+        MyFXMLLoader loader = new MyFXMLLoader("/fxml/transactions/add-transaction.fxml");
+        Parent dialogContent = loader.load();
+        AddTransactionController controller = loader.getController();
+        controller.setRootPane(root);
+
+//        dialogContent.setStyle("-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 20;");
+
+        Region overlay = new Region();
+        overlay.setStyle("-fx-background-color: rgba(0,0,0,0.5);");
+        overlay.setPrefSize(root.getWidth(), root.getHeight());
+
+        StackPane dialogWrapper = new StackPane(dialogContent);
+        dialogWrapper.setMaxWidth(500);
+        dialogWrapper.setMaxHeight(600);
+
+        overlay.setOnMouseClicked((MouseEvent e) -> {
+            FadeTransition fadeOut1 = new FadeTransition(Duration.millis(100), dialogWrapper);
+            fadeOut1.setFromValue(1.0);
+            fadeOut1.setToValue(0.0);
+
+            FadeTransition fadeOut2 = new FadeTransition(Duration.millis(100), overlay);
+            fadeOut1.setFromValue(1.0);
+            fadeOut1.setToValue(0.0);
+
+            ParallelTransition parallel = new ParallelTransition(fadeOut1, fadeOut2);
+            parallel.setOnFinished(event -> root.getChildren().removeAll(overlay, dialogWrapper));
+            parallel.play();
+        });
+
+        root.getChildren().addAll(overlay, dialogWrapper);
+
+        FadeTransition fadeIn1 = new FadeTransition(Duration.millis(100), overlay);
+        fadeIn1.setFromValue(0.0);
+        fadeIn1.setToValue(1.0);
+
+        FadeTransition fadeIn2 = new FadeTransition(Duration.millis(100), dialogWrapper);
+        fadeIn2.setFromValue(0.0);
+        fadeIn2.setToValue(1.0);
+
+        ParallelTransition parallel = new ParallelTransition(fadeIn1, fadeIn2);
+        parallel.play();
+    }
+
     private void openAddBudgetPanel() {
-        try {
-            // 加载 add_budget.fxml
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/add_budget.fxml"));
-            Parent dialogContent = loader.load();
-            AddBudgetController controller = loader.getController();
-            controller.setRootPane(root);
+        MyFXMLLoader loader = new MyFXMLLoader("/fxml/add_budget.fxml");
+        Parent dialogContent = loader.load();
+        BudgetController controller = loader.getController();
+        controller.setRootPane(root);
 
-            dialogContent.setStyle("-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 20;");
+//        dialogContent.setStyle("-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 20;");
 
-            Region overlay = new Region();
-            overlay.setStyle("-fx-background-color: rgba(0,0,0,0.5);");
-            overlay.setPrefSize(root.getWidth(), root.getHeight());
+        Region overlay = new Region();
+        overlay.setStyle("-fx-background-color: rgba(0,0,0,0.5);");
+        overlay.setPrefSize(root.getWidth(), root.getHeight());
 
-            StackPane dialogWrapper = new StackPane(dialogContent);
-            dialogWrapper.setMaxWidth(500);
-            dialogWrapper.setMaxHeight(600);
+        StackPane dialogWrapper = new StackPane(dialogContent);
+        dialogWrapper.setMaxWidth(500);
+        dialogWrapper.setMaxHeight(600);
 
-            overlay.setOnMouseClicked((MouseEvent e) -> {
-                root.getChildren().removeAll(overlay, dialogWrapper);
-            });
+        overlay.setOnMouseClicked((MouseEvent e) -> {
+            root.getChildren().removeAll(overlay, dialogWrapper);
+        });
 
-            root.getChildren().addAll(overlay, dialogWrapper);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        root.getChildren().addAll(overlay, dialogWrapper);
     }
 
     private void loadView(String fxmlPath) {
@@ -176,12 +218,21 @@ public class SidebarController implements Initializable {
         fadeOut.setToValue(0.0);
         fadeOut.setOnFinished(event -> {
             MyFXMLLoader loader = new MyFXMLLoader(fxmlPath);
-            contentArea.setContent(loader.load());
+            Parent dialogContent = loader.load();
+
+            BaseController controller = loader.getController();
+            controller.setUserInfo(userInfo);
+
             if (fxmlPath.contains("budgets")) {
-                AddBudgetController budgetController = loader.getController();
+                BudgetController budgetController = loader.getController();
                 budgetController.setOnOpenListener(this::openAddBudgetPanel);
             }
+            else if (fxmlPath.contains("transactions")) {
+                TransactionsController transactionsController = loader.getController();
+                transactionsController.setOnOpenListener(this::openAddTransactionPanel);
+            }
 
+            contentArea.setContent(dialogContent);
             FadeTransition fadeIn = new FadeTransition(Duration.millis(100), contentArea);
             fadeIn.setFromValue(0.0);
             fadeIn.setToValue(1.0);

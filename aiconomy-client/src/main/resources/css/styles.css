@@ -747,6 +747,15 @@
     -fx-wrap-text: false;
 }
 
+.rounded-2xl {
+    -fx-background-radius: 16;
+    -fx-border-radius: 16;
+}
+
+.shadow-xl {
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 16, 0, 0, 1);
+}
+
 .break-words {
     -fx-wrap-text: true;
 }
