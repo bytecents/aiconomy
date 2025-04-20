@@ -56,9 +56,11 @@ public class BudgetServiceTest {
         budget.setId("budget1");
         budget.setUserId("user1");
         budget.setBudgetCategory("Shopping");
-        budget.setBudgetAmount(1500.0);
+        budget.setBudgetAmount(1000.0);
         budget.setAlertSettings(0.8);
         budget.setNotes("");
+        jsonStorageService.insert(budget);
+        budget.setBudgetAmount(1500.0);
         budgetService.updateBudget(budget);
         Assertions.assertTrue(jsonStorageService.findAll(Budget.class)
                 .stream()
