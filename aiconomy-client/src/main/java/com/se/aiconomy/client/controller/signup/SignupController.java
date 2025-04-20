@@ -1,6 +1,7 @@
 package com.se.aiconomy.client.controller.signup;
 
 import com.se.aiconomy.client.Application.StyleClassFixer;
+import com.se.aiconomy.client.controller.BaseController;
 import com.se.aiconomy.client.controller.signup.signupFlows.SignupFlowController1;
 import com.se.aiconomy.client.controller.signup.signupFlows.SignupFlowController2;
 import com.se.aiconomy.client.controller.signup.signupFlows.SignupFlowController3;
@@ -19,15 +20,13 @@ import javafx.util.Duration;
 import java.io.IOException;
 import java.util.Objects;
 
-public class SignupController {
+public class SignupController extends BaseController {
 
+    private final User userData = new User();
     @FXML
     private HBox flowHBox;  // to load signupFlow*.fxml
-
     @FXML
     private HBox tipHBox;   // to load signupTip*.fxml
-
-    private User userData = new User();
 
     public void initialize() {
         loadSignupFlow("signupFlow1.fxml");
@@ -39,7 +38,7 @@ public class SignupController {
         FadeTransition fadeOut = new FadeTransition(Duration.millis(100), flowHBox);  // Change from tipHBox to flowHBox
         fadeOut.setFromValue(1.0);
         fadeOut.setToValue(0.0);
-        fadeOut.setOnFinished(event ->{
+        fadeOut.setOnFinished(event -> {
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/signup/signupFlows/" + fxmlFileName));
                 // Using controller factory to inject parent controller

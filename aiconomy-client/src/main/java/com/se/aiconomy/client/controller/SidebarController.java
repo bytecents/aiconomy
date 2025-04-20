@@ -1,6 +1,7 @@
 package com.se.aiconomy.client.controller;
 
 import com.se.aiconomy.client.Application.StyleClassFixer;
+import com.se.aiconomy.server.model.dto.user.response.UserInfo;
 import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -15,6 +16,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
+import lombok.Setter;
 
 import java.io.IOException;
 import java.net.URL;
@@ -25,46 +27,68 @@ import java.util.ResourceBundle;
 
 public class SidebarController implements Initializable {
 
-    @FXML private ScrollPane contentArea;
-
-    // Navigation buttons
-    @FXML private HBox dashboardBtn;
-    @FXML private HBox transactionsBtn;
-    @FXML private HBox analyticsBtn;
-    @FXML private HBox budgetsBtn;
-    @FXML private HBox accountsBtn;
-    @FXML private HBox settingsBtn;
-
-    // Icons
-    @FXML private ImageView dashboardIcon;
-    @FXML private ImageView transactionsIcon;
-    @FXML private ImageView analyticsIcon;
-    @FXML private ImageView budgetsIcon;
-    @FXML private ImageView accountsIcon;
-    @FXML private ImageView settingsIcon;
-
-    // Labels
-    @FXML private Label dashboardLabel;
-    @FXML private Label transactionsLabel;
-    @FXML private Label analyticsLabel;
-    @FXML private Label budgetsLabel;
-    @FXML private Label accountsLabel;
-    @FXML private Label settingsLabel;
-
+    //    private static final String ACTIVE_STYLE = "-fx-background-color: #EFF6FF; -fx-background-radius: 8;";
+    private static final String INACTIVE_STYLE = "-fx-background-radius: 8;";
+    private static final String ACTIVE_TEXT_COLOR = "-fx-text-fill: #2563EB;";
     private final Map<String, HBox> navButtons = new HashMap<>();
     private final Map<String, ImageView> navIcons = new HashMap<>();
     private final Map<String, Label> navLabels = new HashMap<>();
-
-//    private static final String ACTIVE_STYLE = "-fx-background-color: #EFF6FF; -fx-background-radius: 8;";
-    private static final String INACTIVE_STYLE = "-fx-background-radius: 8;";
-    private static final String ACTIVE_TEXT_COLOR = "-fx-text-fill: #2563EB;";
-//    private static final String INACTIVE_TEXT_COLOR = "";
-
+    @Setter
+    @FXML
+    UserInfo userInfo;
+    @FXML
+    private ScrollPane contentArea;
+    // Navigation buttons
+    @FXML
+    private HBox dashboardBtn;
+    @FXML
+    private HBox transactionsBtn;
+    @FXML
+    private HBox analyticsBtn;
+    @FXML
+    private HBox budgetsBtn;
+    @FXML
+    private HBox accountsBtn;
+    @FXML
+    private HBox settingsBtn;
+    // Icons
+    @FXML
+    private ImageView dashboardIcon;
+    @FXML
+    private ImageView transactionsIcon;
+    @FXML
+    private ImageView analyticsIcon;
+    @FXML
+    private ImageView budgetsIcon;
+    @FXML
+    private ImageView accountsIcon;
+    @FXML
+    private ImageView settingsIcon;
+    // Labels
+    @FXML
+    private Label dashboardLabel;
+    @FXML
+    private Label transactionsLabel;
+    @FXML
+    private Label analyticsLabel;
+    @FXML
+    private Label budgetsLabel;
+    @FXML
+    private Label accountsLabel;
+    @FXML
+    private Label settingsLabel;
+    //    private static final String INACTIVE_TEXT_COLOR = "";
     private String activePanel;
+
+    private static String toHex(Color color) {
+        return String.format("#%02X%02X%02X",
+                (int) (color.getRed() * 255),
+                (int) (color.getGreen() * 255),
+                (int) (color.getBlue() * 255));
+    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        // Initialize maps for easy access to UI components
         navButtons.put("dashboard", dashboardBtn);
         navButtons.put("transactions", transactionsBtn);
         navButtons.put("analytics", analyticsBtn);
@@ -88,13 +112,6 @@ public class SidebarController implements Initializable {
 
         // Load default view
         switchToDashboard();
-    }
-
-    private static String toHex(Color color) {
-        return String.format("#%02X%02X%02X",
-                (int) (color.getRed() * 255),
-                (int) (color.getGreen() * 255),
-                (int) (color.getBlue() * 255));
     }
 
     private void setActiveButton(String buttonKey) {
@@ -143,8 +160,12 @@ public class SidebarController implements Initializable {
         fadeOut.setToValue(0.0);
         fadeOut.setOnFinished(event -> {
             try {
-                Node view = FXMLLoader.load(Objects.requireNonNull(getClass().getResource(fxmlPath)));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
+                Node view = loader.load();
                 StyleClassFixer.fixStyleClasses(view);
+
+                BaseController controller = loader.getController();
+                controller.setUserInfo(userInfo);
 
                 contentArea.setContent(view);
 
