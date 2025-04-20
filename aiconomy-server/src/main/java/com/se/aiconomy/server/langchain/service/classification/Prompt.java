@@ -1,12 +1,12 @@
 package com.se.aiconomy.server.langchain.service.classification;
 
 
+import com.se.aiconomy.server.langchain.common.model.BillTypeRegistry;
 import com.se.aiconomy.server.langchain.common.prompt.BasePromptTemplate;
 
 public class Prompt extends BasePromptTemplate {
-
     private static final String PROMPT_TEMPLATE_EN = """
-        Classify the following transaction into one of the categories: ["groceries", "rent", "entertainment", "utilities", "transport", "healthcare", "education", "dining", "shopping", "other"].
+        Classify the following transaction into one of the categories: %s.
         ### Transaction Details:
         - **Transaction ID:** {{ id }}
         - **Date:** {{ time }}
@@ -19,10 +19,9 @@ public class Prompt extends BasePromptTemplate {
         - **Status:** {{ status }}
         - **Merchant Order ID:** {{ merchant_order_id }}
         - **Remark:** {{ remark }}
-        """;
-
+        """.formatted(BillTypeRegistry.getInstance().getAllTypeNames());
     private static final String PROMPT_TEMPLATE_CN = """
-        将以下交易分类为以下类别之一：["日常消费", "房租", "娱乐", "水电费", "交通", "医疗", "教育", "餐饮", "购物", "其他"]。
+        将以下交易分类为以下类别之一：%s。
         ### 交易详情：
         - **交易 ID：** {{ id }}
         - **交易时间：** {{ time }}
@@ -35,10 +34,9 @@ public class Prompt extends BasePromptTemplate {
         - **状态：** {{ status }}
         - **商户订单 ID：** {{ merchant_order_id }}
         - **备注：** {{ remark }}
-        """;
-
+        """.formatted(BillTypeRegistry.getInstance().getAllTypeNames());
     private static final String PROMPT_TEMPLATE_JP = """
-        次の取引を以下のカテゴリのいずれかに分類してください：["日常消費", "家賃", "エンターテイメント", "公共料金", "交通", "医療", "教育", "飲食", "ショッピング", "その他"]。
+        次の取引を以下のカテゴリのいずれかに分類してください：%s。
         ### 取引の詳細：
         - **取引 ID：** {{ id }}
         - **取引時間：** {{ time }}
@@ -51,9 +49,13 @@ public class Prompt extends BasePromptTemplate {
         - **ステータス：** {{ status }}
         - **商人注文 ID：** {{ merchant_order_id }}
         - **備考：** {{ remark }}
-        """;
+        """.formatted(BillTypeRegistry.getInstance().getAllTypeNames());
 
     public Prompt() {
         super(PROMPT_TEMPLATE_CN, PROMPT_TEMPLATE_EN, PROMPT_TEMPLATE_JP);
+    }
+
+    private String buildCategoriesString() {
+        return BillTypeRegistry.getInstance().getAllTypeNames().toString();
     }
 }

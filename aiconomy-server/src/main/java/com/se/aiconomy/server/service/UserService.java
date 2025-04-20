@@ -1,8 +1,11 @@
 package com.se.aiconomy.server.service;
 
+import com.se.aiconomy.server.langchain.common.model.BillType;
+import com.se.aiconomy.server.langchain.common.model.DynamicBillType;
 import com.se.aiconomy.server.model.entity.User;
 
 import java.util.List;
+import java.util.Set;
 
 public interface UserService {
     void register(User user); // 注册用户
@@ -18,4 +21,8 @@ public interface UserService {
     void updateUser(User user); // 更新用户信息
 
     void deleteUserById(String id); // 根据ID删除用户
+
+    Set<DynamicBillType> addBillType(String id, DynamicBillType billType); // 添加账单类型
+
+    Set<DynamicBillType> getBillTypes(String id); // 获取账单类型列表
 }

@@ -2,6 +2,7 @@ package com.se.aiconomy.server.langchain.service.chat;
 
 import com.se.aiconomy.server.common.exception.ServiceException;
 import com.se.aiconomy.server.langchain.common.model.Transaction;
+import com.se.aiconomy.server.model.dto.TransactionDto;
 import com.se.aiconomy.server.model.entity.Budget;
 import com.se.aiconomy.server.service.BudgetService;
 import com.se.aiconomy.server.service.TransactionService;
@@ -21,11 +22,11 @@ public class Tools {
     private static final Logger log = LoggerFactory.getLogger(Tools.class);
 
     @Tool("Get transactions by userId")
-    public List<Transaction> getUserTransactions(@P("userId") String userId) {
+    public List<TransactionDto> getUserTransactions(@P("userId") String userId) {
         log.info("Tool Executed: Fetching transactions for userId: {}", userId);
 
         TransactionService transactionService = new TransactionServiceImpl();
-        List<Transaction> transactions;
+        List<TransactionDto> transactions;
         try {
             transactions = transactionService.getTransactionsByUserId(userId);
         } catch (ServiceException e) {

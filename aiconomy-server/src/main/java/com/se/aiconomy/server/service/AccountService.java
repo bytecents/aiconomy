@@ -1,30 +1,35 @@
 package com.se.aiconomy.server.service;
 
+import com.se.aiconomy.server.common.exception.ServiceException;
 import com.se.aiconomy.server.model.entity.Account;
 
 import java.time.LocalDateTime;
+import java.time.Month;
 import java.util.List;
 
 public interface AccountService {
-    void addBankAccount(Account account);
+    void addAccount(Account account);
+
     void updateAccount(Account account);
 
-    void deleteAccount(String accountId);
-
-    Account getAccountById(String accountId);
+    void removeAccount(String accountId);
 
     List<Account> getAccountsByUserId(String userId);
 
+    // Dashboard related methods
+    double calculateNetWorth(String userId);
 
-    double getNumberOfAccounts(String userId); // Account界面上面的ActiveAccounts
+    double calculateMonthlySpending(String userId, Month month) throws ServiceException;
 
-    double calculateNetWorth(String userId); // Dashboard界面上面的NetWorth
+    double calculateMonthlyIncome(String userId, Month month) throws ServiceException;
 
-    double calculateMonthlySpending(String userId); // Dashboard界面上面的MonthlySpending
+    double calculateCreditCardDue(String userId);
 
-    double calculateMonthlyIncome(String userId); // Dashboard界面上面的MonthlyIncome
+    LocalDateTime calculateNextDueDate(String userId);
 
-    double calculateCreditDue(String userId); // Dashboard界面上面的CreditCardDue
+    // Account related methods
+    // TODO: add methods for account related operations
 
-    LocalDateTime getLatestPaymentDueDate(String userId); // Dashboard界面上面的CreditCardDue的日期
+
+    // List<BillType> getBillTypeByAccountId(String accountId, String userId); // 获取账单类型
 }

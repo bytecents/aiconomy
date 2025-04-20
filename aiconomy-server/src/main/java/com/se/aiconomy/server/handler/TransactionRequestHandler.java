@@ -3,7 +3,10 @@ package com.se.aiconomy.server.handler;
 import com.se.aiconomy.server.common.exception.ServiceException;
 import com.se.aiconomy.server.common.utils.FileUtils;
 import com.se.aiconomy.server.langchain.common.model.BillType;
+import com.se.aiconomy.server.langchain.common.model.DynamicBillType;
 import com.se.aiconomy.server.langchain.common.model.Transaction;
+import com.se.aiconomy.server.model.dto.TransactionDto;
+import com.se.aiconomy.server.model.dto.transaction.request.GetTransactionByUserIdRequest;
 import com.se.aiconomy.server.model.dto.transaction.request.TransactionClassificationRequest;
 import com.se.aiconomy.server.model.dto.transaction.request.TransactionImportRequest;
 import com.se.aiconomy.server.service.TransactionService;
@@ -24,7 +27,7 @@ public class TransactionRequestHandler {
         this.transactionService = transactionService;
     }
 
-    public List<Map<Transaction, BillType>> handleTransactionClassificationRequest(TransactionClassificationRequest request) throws ServiceException {
+    public List<Map<Transaction, DynamicBillType>> handleTransactionClassificationRequest(TransactionClassificationRequest request) throws ServiceException {
         // 1. 从request中获取用户ID和交易记录
         String userId = request.getUserId();
         String filePath = request.getFilePath();
@@ -42,12 +45,31 @@ public class TransactionRequestHandler {
         };
     }
 
-    public List<Map<Transaction, BillType>> handleTransactionImportRequest(TransactionImportRequest request) throws ServiceException {
+    public List<Map<Transaction, DynamicBillType>> handleTransactionImportRequest(TransactionImportRequest request) throws ServiceException {
         // 1. 从请求参数中获取用户ID和分类后的交易记录
         String userId = request.getUserId();
-        List<Map<Transaction, BillType>> transactions = request.getTransactions();
+        String accountId = request.getAccountId();
+        List<Map<Transaction, DynamicBillType>> transactions = request.getTransactions();
 
         // 2. 将分类后的交易记录存储到数据库
-        return transactionService.saveTransaction(userId, transactions);
+        if (accountId == null || accountId.isEmpty()) {
+            return transactionService.saveTransaction(userId, transactions);
+        } else {
+            return transactionService.saveTransaction(userId, accountId, transactions);
+        }
+    }
+
+    public List<TransactionDto> handleGetTransactionsByUserId(GetTransactionByUserIdRequest request) throws ServiceException {
+        String userId = request.getUserId();
+        if (userId == null || userId.isEmpty()) {
+            throw new ServiceException("User ID cannot be null or empty", null);
+        }
+        List<TransactionDto> transactions;
+        try {
+            transactions = transactionService.getTransactionsByUserId(userId);
+        } catch (ServiceException e) {
+            transactions = List.of();
+        }
+        return transactions;
     }
 }
