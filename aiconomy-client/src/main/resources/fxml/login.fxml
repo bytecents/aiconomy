@@ -63,7 +63,7 @@
                 </Label>
                 <HBox VBox.vgrow="ALWAYS">
                     <AnchorPane prefWidth="500.0" HBox.hgrow="ALWAYS">
-                        <TextField promptText="Enter your email" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                        <TextField fx:id="emailField" promptText="Enter your email" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                             <padding>
                                 <Insets bottom="10.0" left="48.0" right="48.0" top="10.0" />
                             </padding>
@@ -81,15 +81,20 @@
                 </Label>
                 <HBox VBox.vgrow="ALWAYS">
                     <AnchorPane prefWidth="500.0" HBox.hgrow="ALWAYS">
-                        <PasswordField layoutX="3.0" promptText="Enter your password" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                        <PasswordField fx:id="passwordField" layoutX="3.0" promptText="Enter your password" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                             <padding>
                                 <Insets bottom="10.0" left="48.0" right="48.0" top="10.0" />
                             </padding>
                         </PasswordField>
+                        <TextField fx:id="passwordTextField" layoutX="3.0" promptText="Enter your password" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                            <padding>
+                                <Insets bottom="10.0" left="48.0" right="48.0" top="10.0" />
+                            </padding>
+                        </TextField>
                         <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="9.0">
                             <Image url="@../assets/lock.png" />
                         </ImageView>
-                        <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="9.0">
+                        <ImageView onMouseClicked="#handlePasswordVisibility" fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="9.0">
                             <Image url="@../assets/eye.png" />
                         </ImageView>
                     </AnchorPane>

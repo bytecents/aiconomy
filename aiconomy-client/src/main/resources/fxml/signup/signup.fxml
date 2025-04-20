@@ -10,7 +10,7 @@
 <?import javafx.scene.text.Font?>
 
 <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.se.aiconomy.client.controller.signup.SignupController">
-    <VBox maxWidth="700.0" prefHeight="720.0" prefWidth="520.0" spacing="10.0" style="-fx-background-color: white;" HBox.hgrow="ALWAYS">
+    <VBox maxWidth="700.0" prefHeight="720.0" prefWidth="580.0" spacing="10.0" style="-fx-background-color: white;" HBox.hgrow="ALWAYS">
         <HBox.margin>
             <Insets />
         </HBox.margin>
@@ -36,9 +36,9 @@
                 </Label>
             </HBox>
         </VBox>
-        <HBox fx:id="flowHBox" prefHeight="100.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+        <HBox fx:id="flowHBox" prefHeight="100.0" prefWidth="374.0" VBox.vgrow="ALWAYS" />
     </VBox>
-    <HBox alignment="CENTER" prefHeight="100.0" prefWidth="600.0" style="-fx-background-color: #F9FAFB;" HBox.hgrow="ALWAYS">
+    <HBox alignment="CENTER" prefHeight="720.0" prefWidth="548.0" style="-fx-background-color: #F9FAFB;" HBox.hgrow="ALWAYS">
         <padding>
             <Insets bottom="48.0" left="48.0" right="48.0" top="48.0" />
         </padding>
