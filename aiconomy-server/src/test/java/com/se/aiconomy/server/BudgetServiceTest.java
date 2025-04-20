@@ -48,4 +48,31 @@ public class BudgetServiceTest {
                 .anyMatch(b -> b.getId().equals(budget.getId())));
         log.info("Successfully added budget");
     }
+
+    @Test
+    @Order(2)
+    void testUpdateBudget() {
+        Budget budget = new Budget();
+        budget.setId("budget1");
+        budget.setUserId("user1");
+        budget.setBudgetCategory("Shopping");
+        budget.setBudgetAmount(1500.0);
+        budget.setAlertSettings(0.8);
+        budget.setNotes("");
+        budgetService.updateBudget(budget);
+        Assertions.assertTrue(jsonStorageService.findAll(Budget.class)
+                .stream()
+                .anyMatch(b -> b.getId().equals(budget.getId()) && b.getBudgetAmount() == 1500.0));
+        log.info("Successfully updated budget");
+    }
+
+    @Test
+    @Order(3)
+    void testRemoveBudget() {
+        budgetService.removeBudget("budget1");
+        Assertions.assertFalse(jsonStorageService.findAll(Budget.class)
+                .stream()
+                .anyMatch(b -> b.getId().equals("budget1")));
+        log.info("Successfully removed budget");
+    }
 }
