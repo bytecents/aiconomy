@@ -42,8 +42,7 @@ public class Tools {
         log.info("Tool Executed: Fetching budget for userId: {}", userId);
 
         JSONStorageService jsonStorageService = JSONStorageServiceImpl.getInstance();
-        TransactionService transactionService = new TransactionServiceImpl();
-        BudgetService budgetService = new BudgetServiceImpl(jsonStorageService, transactionService);
+        BudgetService budgetService = new BudgetServiceImpl(jsonStorageService);
 
         return budgetService.getBudgetsByUserId(userId);
     }

@@ -1,10 +1,9 @@
 package com.se.aiconomy.server.service.impl;
 
 import com.se.aiconomy.server.common.exception.ServiceException;
-import com.se.aiconomy.server.langchain.common.model.Transaction;
+import com.se.aiconomy.server.model.dto.TransactionDto;
 import com.se.aiconomy.server.model.entity.Budget;
 import com.se.aiconomy.server.service.BudgetService;
-import com.se.aiconomy.server.service.TransactionService;
 import com.se.aiconomy.server.storage.service.JSONStorageService;
 
 import java.time.LocalDateTime;
@@ -14,11 +13,9 @@ import java.util.Optional;
 
 public class BudgetServiceImpl implements BudgetService {
     private final JSONStorageService jsonStorageService;
-    private final TransactionService transactionService;
 
-    public BudgetServiceImpl(JSONStorageService jsonStorageService, TransactionService transactionService) {
+    public BudgetServiceImpl(JSONStorageService jsonStorageService) {
         this.jsonStorageService = jsonStorageService;
-        this.transactionService = transactionService;
         initializeBudgetCollection();
     }
 
@@ -84,8 +81,8 @@ public class BudgetServiceImpl implements BudgetService {
         double totalSpent = 0;
         for (Budget budget : budgets) {
             String budgetCategory = budget.getBudgetCategory();
-            List<Transaction> transactions = transactionService.getTransactionsByUserId(userId);
-            for (Transaction transaction : transactions) {
+            List<TransactionDto> transactions = getTransactionsByUserId(userId);
+            for (TransactionDto transaction : transactions) {
                 if (transaction.getType().equals(budgetCategory) && transaction.getIncomeOrExpense().equals("Expense")) {
                     totalSpent += Double.parseDouble(transaction.getAmount());
                 }
@@ -112,9 +109,9 @@ public class BudgetServiceImpl implements BudgetService {
         double totalSpent = getTotalSpent(userId);
         double dailyAvailable = (totalBudget - totalSpent) / 30;
         double dailySpent = 0;
-        List<Transaction> transactions = transactionService.getTransactionsByUserId(userId);
+        List<TransactionDto> transactions = getTransactionsByUserId(userId);
         LocalDateTime today = LocalDateTime.now();
-        for (Transaction transaction : transactions) {
+        for (TransactionDto transaction : transactions) {
             if (transaction.getTime().equals(today) && transaction.getIncomeOrExpense().equals("Expense")) {
                 dailySpent += Double.parseDouble(transaction.getAmount());
             }
@@ -136,13 +133,18 @@ public class BudgetServiceImpl implements BudgetService {
 
     @Override
     public double getTotalSpentByCategory(String userId, String category) throws ServiceException {
-        List<Transaction> transactions = transactionService.getTransactionsByUserId(userId);
+        List<TransactionDto> transactions = getTransactionsByUserId(userId);
         double totalSpentByCategory = 0;
-        for (Transaction transaction : transactions) {
+        for (TransactionDto transaction : transactions) {
             if (transaction.getType().equals(category) && transaction.getIncomeOrExpense().equals("Expense")) {
                 totalSpentByCategory += Double.parseDouble(transaction.getAmount());
             }
         }
         return totalSpentByCategory;
+    }
+
+    List<TransactionDto> getTransactionsByUserId(String userId) throws ServiceException {
+        List<TransactionDto> transactions = jsonStorageService.findAll(TransactionDto.class);
+        return transactions.stream().filter(transaction -> transaction.getUserId().equals(userId)).toList();
     }
 }

@@ -2,9 +2,7 @@ package com.se.aiconomy.server;
 
 import com.se.aiconomy.server.model.entity.Budget;
 import com.se.aiconomy.server.service.BudgetService;
-import com.se.aiconomy.server.service.TransactionService;
 import com.se.aiconomy.server.service.impl.BudgetServiceImpl;
-import com.se.aiconomy.server.service.impl.TransactionServiceImpl;
 import com.se.aiconomy.server.storage.service.JSONStorageService;
 import com.se.aiconomy.server.storage.service.impl.JSONStorageServiceImpl;
 import org.junit.jupiter.api.*;
@@ -21,8 +19,7 @@ public class BudgetServiceTest {
     @BeforeAll
     static void setup() {
         jsonStorageService = JSONStorageServiceImpl.getInstance();
-        TransactionService transactionService = new TransactionServiceImpl();
-        budgetService = new BudgetServiceImpl(jsonStorageService, transactionService);
+        budgetService = new BudgetServiceImpl(jsonStorageService);
     }
 
     @BeforeEach
