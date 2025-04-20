@@ -35,8 +35,7 @@
             <Button text="×"
                     onAction="#onCancel"
                     style="-fx-font-size: 18px; -fx-background-color: transparent; -fx-text-fill: black; -fx-cursor: hand;"
-                    focusTraversable="false"/><!-- 占位推送 × 到右边 -->
-        </HBox>
+                    focusTraversable="false"/>
 
         <!-- 主体内容 -->
         <!-- 主体内容 -->
