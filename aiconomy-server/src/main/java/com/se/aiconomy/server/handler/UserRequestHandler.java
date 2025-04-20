@@ -31,16 +31,22 @@ public class UserRequestHandler {
         newUser.setPassword(request.getPassword());
         newUser.setFirstName(request.getFirstName());
         newUser.setLastName(request.getLastName());
+        newUser.setPhone(request.getPhoneNumber());
+        newUser.setBirthDate(request.getBirthDate());
+        newUser.setCurrency(request.getCurrency());
+        newUser.setFinancialGoal(request.getFinancialGoal());
+        newUser.setMonthlyIncome(request.getMonthlyIncome());
+        newUser.setMainExpenseType(request.getMainExpenseType());
 
         // 注册用户
         try {
             userService.register(newUser);
             logger.info("Successfully registered user with email: {}", request.getEmail());
-            return convertToUserInfo(newUser);
         } catch (Exception e) {
             logger.error("Failed to register user: {}", e.getMessage());
             throw new RuntimeException("Registration failed: " + e.getMessage());
         }
+        return convertToUserInfo(newUser);
     }
 
     /**
@@ -49,14 +55,17 @@ public class UserRequestHandler {
     public UserInfo handleLoginRequest(UserLoginRequest request) {
         logger.info("Processing login request for email: {}", request.getEmail());
 
+        User user;
         try {
-            User user = userService.login(request.getEmail(), request.getPassword());
+            System.out.println(request.getEmail());
+            System.out.println(request.getPassword());
+            user = userService.login(request.getEmail(), request.getPassword());
             logger.info("User successfully logged in: {}", request.getEmail());
-            return convertToUserInfo(user);
         } catch (Exception e) {
             logger.error("Login failed: {}", e.getMessage());
             throw new RuntimeException("Login failed: " + e.getMessage());
         }
+        return convertToUserInfo(user);
     }
 
     /**

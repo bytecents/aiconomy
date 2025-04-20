@@ -131,29 +131,48 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public List<Transaction> getTransactionsByUserId(String userId) throws ServiceException {
+    public List<Map<Transaction, BillType>> saveTransaction(String userId, String accountId, List<Map<Transaction, BillType>> classifiedTransactions) throws ServiceException {
+        List<TransactionDto> transactionDtos = new ArrayList<>();
+
+        for (Map<Transaction, BillType> transactionBillTypeMap : classifiedTransactions) {
+            for (Map.Entry<Transaction, BillType> entry : transactionBillTypeMap.entrySet()) {
+                Transaction transaction = entry.getKey();
+                BillType billType = entry.getValue();
+
+                TransactionDto transactionDto = TransactionDto.builder()
+                    .id(transaction.getId())
+                    .time(transaction.getTime())
+                    .type(transaction.getType())
+                    .counterparty(transaction.getCounterparty())
+                    .product(transaction.getProduct())
+                    .incomeOrExpense(transaction.getIncomeOrExpense())
+                    .amount(transaction.getAmount())
+                    .paymentMethod(transaction.getPaymentMethod())
+                    .status(transaction.getStatus())
+                    .merchantOrderId(transaction.getMerchantOrderId())
+                    .accountId(transaction.getAccountId())
+                    .billType(billType)
+                    .userId(userId)
+                    .accountId(accountId)
+                    .build();
+
+                transactionDtos.add(transactionDto);
+            }
+        }
+
+        processImportedTransactions(transactionDtos);
+
+        return classifiedTransactions;
+    }
+
+    @Override
+    public List<TransactionDto> getTransactionsByUserId(String userId) throws ServiceException {
         List<TransactionDto> transactionDtos = transactionDao.findByUserId(userId);
         if (transactionDtos == null || transactionDtos.isEmpty()) {
             throw new ServiceException("No transactions found for user ID: " + userId, null);
         }
 
-        return transactionDtos.stream()
-            .map(transactionDto -> new Transaction(
-                transactionDto.getId(),
-                transactionDto.getTime(),
-                transactionDto.getType(),
-                transactionDto.getCounterparty(),
-                transactionDto.getProduct(),
-                transactionDto.getIncomeOrExpense(),
-                transactionDto.getAmount(),
-                "CNY",
-                transactionDto.getPaymentMethod(),
-                transactionDto.getStatus(),
-                transactionDto.getProduct(),
-                transactionDto.getAccountId(),
-                transactionDto.getRemark()
-            ))
-            .collect(Collectors.toList());
+        return transactionDtos;
     }
 
     /**
@@ -372,6 +391,29 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     /**
+     * 根据 accountId 获取所有的交易记录
+     *
+     * @param accountId 账户 ID
+     * @return 返回与 accountId 关联的所有交易记录的 TransactionDto 列表
+     * @throws ServiceException 如果未找到相关交易记录
+     */
+    public List<TransactionDto> getTransactionsByAccountId(String accountId) throws ServiceException {
+        // 获取所有交易记录
+        List<TransactionDto> allTransactions = transactionDao.findAll();
+
+        // 过滤出 accountId 符合条件的交易记录
+        List<TransactionDto> filteredTransactions = allTransactions.stream()
+            .filter(transaction -> accountId.equals(transaction.getAccountId())) // 根据 accountId 过滤
+            .collect(Collectors.toList());
+
+        if (filteredTransactions.isEmpty()) {
+            throw new ServiceException("No transactions found for accountId: " + accountId, null);
+        }
+
+        return filteredTransactions;
+    }
+
+    /**
      * 内部类：交易搜索条件
      */
     @Getter
@@ -399,28 +441,5 @@ public class TransactionServiceImpl implements TransactionService {
                 (startTime == null || !transaction.getTime().isBefore(startTime)) &&
                 (endTime == null || !transaction.getTime().isAfter(endTime));
         }
-    }
-
-    /**
-     * 根据 accountId 获取所有的交易记录
-     *
-     * @param accountId 账户 ID
-     * @return 返回与 accountId 关联的所有交易记录的 TransactionDto 列表
-     * @throws ServiceException 如果未找到相关交易记录
-     */
-    public List<TransactionDto> getTransactionsByAccountId(String accountId) throws ServiceException {
-        // 获取所有交易记录
-        List<TransactionDto> allTransactions = transactionDao.findAll();
-
-        // 过滤出 accountId 符合条件的交易记录
-        List<TransactionDto> filteredTransactions = allTransactions.stream()
-                .filter(transaction -> accountId.equals(transaction.getAccountId())) // 根据 accountId 过滤
-                .collect(Collectors.toList());
-
-        if (filteredTransactions.isEmpty()) {
-            throw new ServiceException("No transactions found for accountId: " + accountId, null);
-        }
-
-        return filteredTransactions;
     }
 }

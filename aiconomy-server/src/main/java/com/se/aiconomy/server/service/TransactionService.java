@@ -19,7 +19,9 @@ public interface TransactionService {
 
     List<Map<Transaction, BillType>> saveTransaction(String userId, List<Map<Transaction, BillType>> classifiedTransactions) throws ServiceException;
 
-    List<Transaction> getTransactionsByUserId(String userId) throws ServiceException;
+    List<Map<Transaction, BillType>> saveTransaction(String userId, String accountId, List<Map<Transaction, BillType>> classifiedTransactions) throws ServiceException;
+
+    List<TransactionDto> getTransactionsByUserId(String userId) throws ServiceException;
 
     List<TransactionDto> getTransactionsByAccountId(String accountId) throws ServiceException;
 }
