@@ -226,6 +226,7 @@
                                        <String fx:value="USD - US Dollar" />
                                        <String fx:value="EUR - Euro" />
                                        <String fx:value="GBP - British Pound" />
+                                       <String fx:value="CNY - Chinese Yuan" />
                                        <String fx:value="JPY - Japanese Yen" />
                                     </FXCollections>
                                  </items>
