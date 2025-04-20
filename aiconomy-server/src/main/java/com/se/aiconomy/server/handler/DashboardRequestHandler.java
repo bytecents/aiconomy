@@ -7,6 +7,11 @@ import com.se.aiconomy.server.model.entity.Budget;
 import com.se.aiconomy.server.service.AccountService;
 import com.se.aiconomy.server.service.BudgetService;
 import com.se.aiconomy.server.service.TransactionService;
+import com.se.aiconomy.server.service.impl.AccountServiceImpl;
+import com.se.aiconomy.server.service.impl.BudgetServiceImpl;
+import com.se.aiconomy.server.service.impl.TransactionServiceImpl;
+import com.se.aiconomy.server.storage.service.JSONStorageService;
+import com.se.aiconomy.server.storage.service.impl.JSONStorageServiceImpl;
 
 import java.time.Month;
 import java.util.HashMap;
@@ -15,9 +20,9 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class DashboardRequestHandler {
-    private  AccountService accountService;
-    private  TransactionService transactionService;
-    private  BudgetService budgetService;
+    private  final AccountService accountService;
+    private final TransactionService transactionService;
+    private final BudgetService budgetService;
 
     public DashboardRequestHandler(AccountService accountService, TransactionService transactionService, BudgetService budgetService) {
         this.accountService = accountService;
@@ -27,7 +32,10 @@ public class DashboardRequestHandler {
 
     private DashboardRequestHandler()
     {
-
+        JSONStorageService jsonStorageService = JSONStorageServiceImpl.getInstance();
+        this.accountService = new AccountServiceImpl(jsonStorageService);
+        this.transactionService = new TransactionServiceImpl();
+        this.budgetService = new BudgetServiceImpl(jsonStorageService);
     }
     /**
      * 获取用户的 Net Worth，Monthly Spending，Monthly Income 和 Credit Card Due

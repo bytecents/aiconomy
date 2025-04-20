@@ -246,7 +246,7 @@ All modules use Log4j2 for logging. Configuration files are located in each modu
     - Transaction classification
 
 #### Key Collaborations
-- **Dashboard Integration**: Hu & Zhong (Frontend) ↔ Shi (Backend)
+- **Dashboard Integration**: Hu & Zhong & Yang (Frontend) ↔ Shi (Backend)
 - **AI Pipeline**: Hu (Frontend) ↔ Zhao (Backend AI)
 - **Transaction System**: Hu (Frontend) ↔ Shi & Zhao (Backend)
 - **Budget System**: Yang & Zhong (Frontend) ↔ Li (Backend)

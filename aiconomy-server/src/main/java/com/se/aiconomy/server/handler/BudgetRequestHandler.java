@@ -6,6 +6,9 @@ import com.se.aiconomy.server.model.dto.budget.response.BudgetInfo;
 import com.se.aiconomy.server.model.dto.budget.response.TotalBudgetInfo;
 import com.se.aiconomy.server.model.entity.Budget;
 import com.se.aiconomy.server.service.BudgetService;
+import com.se.aiconomy.server.service.impl.BudgetServiceImpl;
+import com.se.aiconomy.server.storage.service.JSONStorageService;
+import com.se.aiconomy.server.storage.service.impl.JSONStorageServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,6 +23,11 @@ public class BudgetRequestHandler {
 
     public BudgetRequestHandler(BudgetService budgetService) {
         this.budgetService = budgetService;
+    }
+
+    public BudgetRequestHandler(){
+        JSONStorageService jsonStorageService = JSONStorageServiceImpl.getInstance();
+        this.budgetService = new BudgetServiceImpl(jsonStorageService);
     }
 
     /**
