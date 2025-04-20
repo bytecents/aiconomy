@@ -5,7 +5,6 @@ package com.se.aiconomy.client.Application;
 import atlantafx.base.theme.PrimerLight;
 import com.se.aiconomy.client.common.MyFXMLLoader;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -13,6 +12,10 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class AIconomyApplication extends Application {
+    public static void main(String[] args) {
+        launch();
+    }
+
     /**
      * Entry point for the JavaFX application
      *
@@ -29,10 +32,6 @@ public class AIconomyApplication extends Application {
         stage.setTitle("AIconomy");
         stage.setScene(scene);
         stage.show();
-    }
-
-    public static void main(String[] args) {
-        launch();
     }
 }
 

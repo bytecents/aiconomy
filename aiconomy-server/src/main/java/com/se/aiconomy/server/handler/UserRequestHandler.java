@@ -1,6 +1,5 @@
 package com.se.aiconomy.server.handler;
 
-import com.se.aiconomy.server.langchain.common.model.BillType;
 import com.se.aiconomy.server.langchain.common.model.BillTypeRegistry;
 import com.se.aiconomy.server.langchain.common.model.DynamicBillType;
 import com.se.aiconomy.server.model.dto.user.request.*;
@@ -10,7 +9,6 @@ import com.se.aiconomy.server.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.List;
 import java.util.Set;
 
 /**
