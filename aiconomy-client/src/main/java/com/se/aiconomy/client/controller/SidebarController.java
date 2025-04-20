@@ -145,13 +145,11 @@ public class SidebarController implements Initializable {
         activePanel = buttonKey;
     }
 
-    private void openAddTransactionPanel() {
-        MyFXMLLoader loader = new MyFXMLLoader("/fxml/transactions/add-transaction.fxml");
+    private void openPanel(String fxmlPath) {
+        MyFXMLLoader loader = new MyFXMLLoader(fxmlPath);
         Parent dialogContent = loader.load();
-        AddTransactionController controller = loader.getController();
-        controller.setRootPane(root);
-
-//        dialogContent.setStyle("-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 20;");
+        BaseController controller = loader.getController();
+        controller.setUserInfo(userInfo);
 
         Region overlay = new Region();
         overlay.setStyle("-fx-background-color: rgba(0,0,0,0.5);");
@@ -189,27 +187,12 @@ public class SidebarController implements Initializable {
         parallel.play();
     }
 
+    private void openAddTransactionPanel() {
+        openPanel("/fxml/transactions/add-transaction.fxml");
+    }
+
     private void openAddBudgetPanel() {
-        MyFXMLLoader loader = new MyFXMLLoader("/fxml/add_budget.fxml");
-        Parent dialogContent = loader.load();
-        BudgetController controller = loader.getController();
-        controller.setRootPane(root);
-
-//        dialogContent.setStyle("-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 20;");
-
-        Region overlay = new Region();
-        overlay.setStyle("-fx-background-color: rgba(0,0,0,0.5);");
-        overlay.setPrefSize(root.getWidth(), root.getHeight());
-
-        StackPane dialogWrapper = new StackPane(dialogContent);
-        dialogWrapper.setMaxWidth(500);
-        dialogWrapper.setMaxHeight(600);
-
-        overlay.setOnMouseClicked((MouseEvent e) -> {
-            root.getChildren().removeAll(overlay, dialogWrapper);
-        });
-
-        root.getChildren().addAll(overlay, dialogWrapper);
+        openPanel("/fxml/add_budget.fxml");
     }
 
     private void loadView(String fxmlPath) {
