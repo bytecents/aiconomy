@@ -4,6 +4,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
@@ -49,6 +50,31 @@ public class AddBudgetController extends BaseController {
     private VBox vboxMonthly, vboxWeekly, vboxYearly;
     @FXML
     private TextField budgetAmountInput;
+    @FXML
+    private TextField additionalNotesInput;
+    @FXML
+    private Label FoodAndDining;
+    @FXML
+    private Label Transportation;
+    @FXML
+    private Label Shopping;
+    @FXML
+    private Label Housing;
+    @FXML
+    private Label Education;
+    @FXML
+    private Label Travel;
+    @FXML
+    private Label Gifts;
+    @FXML
+    private Label Custom;
+    @FXML
+    private RadioButton six;
+    @FXML
+    private RadioButton eight;
+    @FXML
+    private RadioButton ten;
+    private Label selectedLabel = null;
     private AddBudgetController.OnOpenListener openListener;
 
     @FXML
@@ -71,9 +97,23 @@ public class AddBudgetController extends BaseController {
     @FXML
     private void onSave(ActionEvent event) {
         // TODO: 保存逻辑
+        String budgetCategory = selectedLabel.getText();
+        String notes = additionalNotesInput.getText();
         double budgetAmount = Double.parseDouble(budgetAmountInput.getText());
+        double alertSettings = 1;
+        if (six.isSelected()) {
+            alertSettings = 0.6;
+        } else if (eight.isSelected()) {
+            alertSettings = 0.8;
+        } else if (ten.isSelected()) {
+            alertSettings = 1;
+        } 
         BudgetAddRequest request = new BudgetAddRequest();
+        request.setUserId(userInfo.getId());
         request.setBudgetAmount(budgetAmount);
+        request.setBudgetCategory(budgetCategory);
+        request.setAlertSettings(alertSettings);
+        request.setNotes(notes);
         BudgetRequestHandler handler = new BudgetRequestHandler();
         try {
             BudgetInfo info = handler.handleBudgetAddRequest(request);
@@ -118,6 +158,16 @@ public class AddBudgetController extends BaseController {
                 label.setStyle("-fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #2563eb;"); // Set bold and
                                                                                                        // blue for
                                                                                                        // selected box
+            }
+        }
+
+        // Update Label's style for clicked box
+        for (Node node : clickedVBox.getChildren()) {
+            if (node instanceof Label label) {
+                label.setStyle("-fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #2563eb;");
+
+                // Save the selected label
+                selectedLabel = label;
             }
         }
     }

@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 public class BudgetRequestHandler {
     private static final Logger logger = LoggerFactory.getLogger(BudgetRequestHandler.class);
@@ -43,6 +44,9 @@ public class BudgetRequestHandler {
                 request.getAlertSettings(),
                 request.getNotes()
         );
+        if (budget.getId() == null) {
+            budget.setId(UUID.randomUUID().toString()); // 生成唯一 ID
+        }
         try {
             budgetService.addBudget(budget);
             logger.info("Added budget for category: {}", request.getBudgetCategory());
