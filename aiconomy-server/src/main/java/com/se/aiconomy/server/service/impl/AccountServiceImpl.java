@@ -1,5 +1,7 @@
 package com.se.aiconomy.server.service.impl;
 
+import com.se.aiconomy.server.common.exception.ServiceException;
+import com.se.aiconomy.server.langchain.common.model.BillType;
 import com.se.aiconomy.server.model.dto.TransactionDto;
 import com.se.aiconomy.server.model.entity.Account;
 import com.se.aiconomy.server.service.AccountService;
@@ -142,4 +144,43 @@ public class AccountServiceImpl implements AccountService {
         }
         return latestPaymentDueDate;
     }
+
+    /**
+     * 根据交易记录的 accountId 获取相关的账户信息
+     *
+     * @param transactionId 交易记录的 ID
+     * @return 关联账户的 Account 对象
+     * @throws ServiceException 如果找不到交易记录或账户
+     */
+    public Account getAccountByTransactionId(String transactionId) throws ServiceException {
+        // 获取交易记录
+        Optional<TransactionDto> transactionDtoOptional = jsonStorageService.findById(transactionId, TransactionDto.class);
+        if (!transactionDtoOptional.isPresent()) {
+            throw new ServiceException("Transaction not found with ID: " + transactionId, null);
+        }
+
+        // 获取 transactionDto
+        TransactionDto transactionDto = transactionDtoOptional.get();
+
+        // 获取 accountId
+        String accountId = transactionDto.getAccountId();  // 假设 TransactionDto 中有 accountId 字段
+
+        // 根据 accountId 获取 Account
+        Account account = getAccountById(accountId); // 调用现有方法通过 accountId 获取账户
+        if (account == null) {
+            throw new ServiceException("Account not found for accountId: " + accountId, null);
+        }
+
+        return account;
+    }
+
+//    @Override
+//    public List<BillType>getBillTypeByAccountId(String accountId, String userId) {
+//        List<TransactionDto> allTransactions = getTransactionsByUserId(userId);
+//        return allTransactions.stream()
+//                .filter(tx -> tx.getAccountId().equals(accountId))
+//                .map(TransactionDto::getBillType)
+//                .distinct()
+//                .toList();
+//    }
 }
