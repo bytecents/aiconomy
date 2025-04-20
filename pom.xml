@@ -10,9 +10,9 @@
     <packaging>pom</packaging>
     <name>aiconomy</name>
     <modules>
-        <module>aiconomy-client</module>
         <module>aiconomy-langchain</module>
         <module>aiconomy-server</module>
+        <module>aiconomy-client</module>
     </modules>
 
     <properties>
@@ -125,7 +125,7 @@
                         <!-- Default configuration for running with: mvn clean javafx:run -->
                         <id>default-cli</id>
                         <configuration>
-                            <mainClass>com.se.aiconomy.client.Application.AIconomyApplication_old</mainClass>
+                            <mainClass>com.se.aiconomy.client.Application.AIconomyApplication</mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>
                             <jlinkImageName>app</jlinkImageName>

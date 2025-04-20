@@ -1,5 +1,7 @@
 package com.se.aiconomy.server.model.entity;
 
+import com.se.aiconomy.server.langchain.common.model.BillTypeRegistry;
+import com.se.aiconomy.server.langchain.common.model.DynamicBillType;
 import com.se.aiconomy.server.storage.common.Identifiable;
 import io.jsondb.annotation.Document;
 import io.jsondb.annotation.Id;
@@ -7,7 +9,10 @@ import io.jsondb.annotation.Secret;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -30,4 +35,14 @@ public class User implements Identifiable {
     private List<String> financialGoal; // 理财目标：储蓄、投资、买房……
     private Double monthlyIncome; // 月收入
     private List<String> mainExpenseType; // 主要开销：房租、教育、交通等
+    private Set<DynamicBillType> billTypes; // 改用 DynamicBillType
+
+    public void addBillType(String type, String displayName) {
+        if (billTypes == null) {
+            billTypes = new HashSet<>();
+        }
+        DynamicBillType newType = BillTypeRegistry.getInstance()
+            .registerCustomType(type, displayName);
+        billTypes.add(newType);
+    }
 }

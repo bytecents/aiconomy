@@ -1,5 +1,8 @@
 package com.se.aiconomy.server.handler;
 
+import com.se.aiconomy.server.langchain.common.model.BillType;
+import com.se.aiconomy.server.langchain.common.model.BillTypeRegistry;
+import com.se.aiconomy.server.langchain.common.model.DynamicBillType;
 import com.se.aiconomy.server.model.dto.user.request.*;
 import com.se.aiconomy.server.model.dto.user.response.UserInfo;
 import com.se.aiconomy.server.model.entity.User;
@@ -7,12 +10,16 @@ import com.se.aiconomy.server.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.List;
+import java.util.Set;
+
 /**
  * 用户请求处理器
  * 负责处理所有与用户相关的请求
  */
 public class UserRequestHandler {
     private static final Logger logger = LoggerFactory.getLogger(UserRequestHandler.class);
+    private static final Set<DynamicBillType> BILL_TYPES = BillTypeRegistry.getInstance().getAllTypes();
     private final UserService userService;
 
     public UserRequestHandler(UserService userService) {
@@ -31,16 +38,23 @@ public class UserRequestHandler {
         newUser.setPassword(request.getPassword());
         newUser.setFirstName(request.getFirstName());
         newUser.setLastName(request.getLastName());
+        newUser.setPhone(request.getPhoneNumber());
+        newUser.setBirthDate(request.getBirthDate());
+        newUser.setCurrency(request.getCurrency());
+        newUser.setFinancialGoal(request.getFinancialGoal());
+        newUser.setMonthlyIncome(request.getMonthlyIncome());
+        newUser.setMainExpenseType(request.getMainExpenseType());
+        newUser.setBillTypes(BILL_TYPES);
 
         // 注册用户
         try {
             userService.register(newUser);
             logger.info("Successfully registered user with email: {}", request.getEmail());
-            return convertToUserInfo(newUser);
         } catch (Exception e) {
             logger.error("Failed to register user: {}", e.getMessage());
             throw new RuntimeException("Registration failed: " + e.getMessage());
         }
+        return convertToUserInfo(newUser);
     }
 
     /**
@@ -49,14 +63,17 @@ public class UserRequestHandler {
     public UserInfo handleLoginRequest(UserLoginRequest request) {
         logger.info("Processing login request for email: {}", request.getEmail());
 
+        User user;
         try {
-            User user = userService.login(request.getEmail(), request.getPassword());
+            System.out.println(request.getEmail());
+            System.out.println(request.getPassword());
+            user = userService.login(request.getEmail(), request.getPassword());
             logger.info("User successfully logged in: {}", request.getEmail());
-            return convertToUserInfo(user);
         } catch (Exception e) {
             logger.error("Login failed: {}", e.getMessage());
             throw new RuntimeException("Login failed: " + e.getMessage());
         }
+        return convertToUserInfo(user);
     }
 
     /**
@@ -123,6 +140,26 @@ public class UserRequestHandler {
         }
     }
 
+    public Set<DynamicBillType> getBillTypes(String userId) {
+        logger.info("Getting bill types for userId: {}", userId);
+        try {
+            return userService.getBillTypes(userId);
+        } catch (Exception e) {
+            logger.error("Failed to get bill types: {}", e.getMessage());
+            throw new RuntimeException("Failed to get bill types: " + e.getMessage());
+        }
+    }
+
+    public Set<DynamicBillType> addBillType(String userId, DynamicBillType billType) {
+        logger.info("Adding bill type for userId: {}", userId);
+        try {
+            return userService.addBillType(userId, billType);
+        } catch (Exception e) {
+            logger.error("Failed to add bill type: {}", e.getMessage());
+            throw new RuntimeException("Failed to add bill type: " + e.getMessage());
+        }
+    }
+
     /**
      * 将User实体转换为UserInfo DTO
      */
@@ -138,7 +175,8 @@ public class UserRequestHandler {
             user.getCurrency(),
             user.getFinancialGoal(),
             user.getMonthlyIncome(),
-            user.getMainExpenseType()
+            user.getMainExpenseType(),
+            user.getBillTypes()
         );
     }
 }

@@ -1,6 +1,7 @@
 package com.se.aiconomy.server;
 
 import com.se.aiconomy.server.langchain.common.model.BillType;
+import com.se.aiconomy.server.langchain.common.model.DynamicBillType;
 import com.se.aiconomy.server.model.dto.TransactionDto;
 import com.se.aiconomy.server.storage.service.JSONStorageService;
 import com.se.aiconomy.server.storage.service.impl.JSONStorageServiceImpl;
@@ -137,22 +138,25 @@ public class StorageTest {
     }
 
     private TransactionDto createSampleTransaction() {
-        TransactionDto transaction = new TransactionDto(
-            TEST_TRANSACTION_ID,
-            TEST_TRANSACTION_TIME,
-            "购物",
-            "Apple Store",
-            "iPhone 15",
-            "支出",
-            "3999.99",
-            "信用卡",
-            "待支付",
-            TEST_MERCHANT_ORDER_ID,
-            "首次购买iPhone",
-            BillType.DINING,
-            "1"
-        );
-        transaction.setId(TEST_TRANSACTION_ID); // 设置Identifiable接口要求的Id
+        // 使用 builder 模式创建 TransactionDto 对象
+        TransactionDto transaction = TransactionDto.builder()
+            .time(TEST_TRANSACTION_TIME)  // 设置交易时间
+            .type("购物")  // 设置交易类型
+            .counterparty("Apple Store")  // 设置交易对方
+            .product("iPhone 15")  // 设置商品名称
+            .incomeOrExpense("支出")  // 设置收入或支出
+            .amount("3999.99")  // 设置金额
+            .paymentMethod("信用卡")  // 设置支付方式
+            .status("待支付")  // 设置交易状态
+            .merchantOrderId(TEST_MERCHANT_ORDER_ID)  // 设置商户订单号
+            .accountId("userAcc001")  // 设置账户ID
+            .billType(DynamicBillType.fromBillType(BillType.EDUCATION))  // 设置账单类型
+            .userId("1")  // 设置用户ID
+            .accountId("userAcc002")  // 设置账户ID
+            .build();  // 使用 build() 方法创建对象
+
+        transaction.setId(TEST_TRANSACTION_ID);
         return transaction;
     }
+
 }

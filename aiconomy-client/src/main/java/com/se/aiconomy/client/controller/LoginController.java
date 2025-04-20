@@ -77,7 +77,7 @@ public class LoginController {
             userRequestHandler.handleLoginRequest(userLoginRequest);
 
             switchToMain(event);
-            CustomDialog.show("Success", "Login successfully", "success", "OK");
+//            CustomDialog.show("Success", "Login successfully", "success", "OK");
 
         } catch (RuntimeException rte) {
             System.out.println(rte.getMessage());

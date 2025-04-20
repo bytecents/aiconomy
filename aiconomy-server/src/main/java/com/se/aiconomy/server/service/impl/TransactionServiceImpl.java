@@ -5,9 +5,11 @@ import com.se.aiconomy.server.common.utils.CSVUtils;
 import com.se.aiconomy.server.common.utils.ExcelUtils;
 import com.se.aiconomy.server.dao.TransactionDao;
 import com.se.aiconomy.server.langchain.common.model.BillType;
+import com.se.aiconomy.server.langchain.common.model.DynamicBillType;
 import com.se.aiconomy.server.langchain.common.model.Transaction;
 import com.se.aiconomy.server.langchain.service.classification.TransactionClassificationService;
 import com.se.aiconomy.server.model.dto.TransactionDto;
+import com.se.aiconomy.server.service.AccountService;
 import com.se.aiconomy.server.service.TransactionService;
 import lombok.*;
 import org.slf4j.Logger;
@@ -33,7 +35,7 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public List<Map<Transaction, BillType>> classifyTransactions(List<TransactionDto> transactions) {
+    public List<Map<Transaction, DynamicBillType>> classifyTransactions(List<TransactionDto> transactions) {
         List<Transaction> transactionList = transactions.stream()
             .map(transactionDto -> new Transaction(
                 transactionDto.getId(),
@@ -47,15 +49,16 @@ public class TransactionServiceImpl implements TransactionService {
                 transactionDto.getPaymentMethod(),
                 transactionDto.getStatus(),
                 transactionDto.getProduct(),
+                transactionDto.getAccountId(),
                 transactionDto.getRemark()
             ))
             .toList();
 
-        List<Map<Transaction, BillType>> classifiedTransactions = new ArrayList<>();
-        List<BillType> billTypes = new TransactionClassificationService().classifyTransactions(transactionList);
+        List<Map<Transaction, DynamicBillType>> classifiedTransactions = new ArrayList<>();
+        List<DynamicBillType> billTypes = new TransactionClassificationService().classifyTransactions(transactionList);
         System.out.println(billTypes);
         for (int i = 0; i < transactionList.size(); i++) {
-            Map<Transaction, BillType> classifiedTransaction = new HashMap<>();
+            Map<Transaction, DynamicBillType> classifiedTransaction = new HashMap<>();
             classifiedTransaction.put(transactionList.get(i), billTypes.get(i));
             classifiedTransactions.add(classifiedTransaction);
         }
@@ -64,7 +67,7 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public List<Map<Transaction, BillType>> extractTransactionFromCSV(String filePath) throws ServiceException {
+    public List<Map<Transaction, DynamicBillType>> extractTransactionFromCSV(String filePath) throws ServiceException {
         List<TransactionDto> transactions;
         try {
             transactions = CSVUtils.readCsv(filePath, TransactionDto.class);
@@ -76,7 +79,7 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public List<Map<Transaction, BillType>> extractTransactionFromExcel(String filePath) throws ServiceException {
+    public List<Map<Transaction, DynamicBillType>> extractTransactionFromExcel(String filePath) throws ServiceException {
         List<TransactionDto> transactions;
         try {
             transactions = ExcelUtils.readExcel(filePath, TransactionDto.class);
@@ -89,18 +92,18 @@ public class TransactionServiceImpl implements TransactionService {
 
     // TODO: 实现从 JSON 字符串中提取交易记录的方法
     @Override
-    public List<Map<Transaction, BillType>> extractTransactionFromJson(String jsonString) throws ServiceException {
+    public List<Map<Transaction, DynamicBillType>> extractTransactionFromJson(String jsonString) throws ServiceException {
         return null;
     }
 
     @Override
-    public List<Map<Transaction, BillType>> saveTransaction(String userId, List<Map<Transaction, BillType>> classifiedTransactions) throws ServiceException {
+    public List<Map<Transaction, DynamicBillType>> saveTransaction(String userId, List<Map<Transaction, DynamicBillType>> classifiedTransactions) throws ServiceException {
         List<TransactionDto> transactionDtos = new ArrayList<>();
 
-        for (Map<Transaction, BillType> transactionBillTypeMap : classifiedTransactions) {
-            for (Map.Entry<Transaction, BillType> entry : transactionBillTypeMap.entrySet()) {
+        for (Map<Transaction, DynamicBillType> transactionBillTypeMap : classifiedTransactions) {
+            for (Map.Entry<Transaction, DynamicBillType> entry : transactionBillTypeMap.entrySet()) {
                 Transaction transaction = entry.getKey();
-                BillType billType = entry.getValue();
+                DynamicBillType billType = entry.getValue();
 
                 TransactionDto transactionDto = TransactionDto.builder()
                     .id(transaction.getId())
@@ -113,9 +116,10 @@ public class TransactionServiceImpl implements TransactionService {
                     .paymentMethod(transaction.getPaymentMethod())
                     .status(transaction.getStatus())
                     .merchantOrderId(transaction.getMerchantOrderId())
-                    .remark(transaction.getRemark())
+                    .accountId(transaction.getAccountId())
                     .billType(billType)
                     .userId(userId)
+                    .accountId(transaction.getAccountId())
                     .build();
 
                 transactionDtos.add(transactionDto);
@@ -128,28 +132,48 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public List<Transaction> getTransactionsByUserId(String userId) throws ServiceException {
+    public List<Map<Transaction, DynamicBillType>> saveTransaction(String userId, String accountId, List<Map<Transaction, DynamicBillType>> classifiedTransactions) throws ServiceException {
+        List<TransactionDto> transactionDtos = new ArrayList<>();
+
+        for (Map<Transaction, DynamicBillType> transactionBillTypeMap : classifiedTransactions) {
+            for (Map.Entry<Transaction, DynamicBillType> entry : transactionBillTypeMap.entrySet()) {
+                Transaction transaction = entry.getKey();
+                DynamicBillType billType = entry.getValue();
+
+                TransactionDto transactionDto = TransactionDto.builder()
+                    .id(transaction.getId())
+                    .time(transaction.getTime())
+                    .type(transaction.getType())
+                    .counterparty(transaction.getCounterparty())
+                    .product(transaction.getProduct())
+                    .incomeOrExpense(transaction.getIncomeOrExpense())
+                    .amount(transaction.getAmount())
+                    .paymentMethod(transaction.getPaymentMethod())
+                    .status(transaction.getStatus())
+                    .merchantOrderId(transaction.getMerchantOrderId())
+                    .accountId(transaction.getAccountId())
+                    .billType(billType)
+                    .userId(userId)
+                    .accountId(accountId)
+                    .build();
+
+                transactionDtos.add(transactionDto);
+            }
+        }
+
+        processImportedTransactions(transactionDtos);
+
+        return classifiedTransactions;
+    }
+
+    @Override
+    public List<TransactionDto> getTransactionsByUserId(String userId) throws ServiceException {
         List<TransactionDto> transactionDtos = transactionDao.findByUserId(userId);
         if (transactionDtos == null || transactionDtos.isEmpty()) {
             throw new ServiceException("No transactions found for user ID: " + userId, null);
         }
 
-        return transactionDtos.stream()
-            .map(transactionDto -> new Transaction(
-                transactionDto.getId(),
-                transactionDto.getTime(),
-                transactionDto.getType(),
-                transactionDto.getCounterparty(),
-                transactionDto.getProduct(),
-                transactionDto.getIncomeOrExpense(),
-                transactionDto.getAmount(),
-                "CNY",
-                transactionDto.getPaymentMethod(),
-                transactionDto.getStatus(),
-                transactionDto.getProduct(),
-                transactionDto.getRemark()
-            ))
-            .collect(Collectors.toList());
+        return transactionDtos;
     }
 
     /**
@@ -365,6 +389,29 @@ public class TransactionServiceImpl implements TransactionService {
         } else {
             throw new ServiceException("Transaction not found with ID: " + transactionId, null);
         }
+    }
+
+    /**
+     * 根据 accountId 获取所有的交易记录
+     *
+     * @param accountId 账户 ID
+     * @return 返回与 accountId 关联的所有交易记录的 TransactionDto 列表
+     * @throws ServiceException 如果未找到相关交易记录
+     */
+    public List<TransactionDto> getTransactionsByAccountId(String accountId) throws ServiceException {
+        // 获取所有交易记录
+        List<TransactionDto> allTransactions = transactionDao.findAll();
+
+        // 过滤出 accountId 符合条件的交易记录
+        List<TransactionDto> filteredTransactions = allTransactions.stream()
+            .filter(transaction -> accountId.equals(transaction.getAccountId())) // 根据 accountId 过滤
+            .collect(Collectors.toList());
+
+        if (filteredTransactions.isEmpty()) {
+            throw new ServiceException("No transactions found for accountId: " + accountId, null);
+        }
+
+        return filteredTransactions;
     }
 
     /**
