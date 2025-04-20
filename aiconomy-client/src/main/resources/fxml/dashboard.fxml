@@ -15,6 +15,9 @@
 <?import java.lang.String?>
 
 <?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
 <VBox xmlns:fx="http://javafx.com/fxml/1"
       id="Content"
       xmlns="http://javafx.com/javafx/23.0.1"
@@ -93,9 +96,15 @@
                     <!-- Left side -->
                     <HBox alignment="CENTER_LEFT" styleClass="gap-3">
                         <!-- Icon -->
-                        <Region styleClass="w-10 h-10 rounded-lg bg-red-100"/>
+                        <StackPane prefHeight="50.0" prefWidth="50.0">
+                            <Circle fill="#fee2e2" radius="24.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+                            <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                <Image url="@../assets/out_FoodDining.png" />
+                            </ImageView>
+                        </StackPane>
                         <!-- Text -->
                         <VBox styleClass="gap-0_5">
+
                             <Label text="Starbucks" styleClass="font-medium text-base"/>
                             <Label text="Food &amp; Dining" styleClass="text-sm text-gray-500 font-roboto"/>
                         </VBox>
@@ -115,7 +124,12 @@
                     <!-- Left side -->
                     <HBox alignment="CENTER_LEFT" styleClass="gap-3">
                         <!-- Icon -->
-                        <Region styleClass="w-10 h-10 rounded-lg bg-green-100"/>
+                        <StackPane prefHeight="50.0" prefWidth="50.0">
+                            <Circle fill="#dcfce7" radius="24.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+                            <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                <Image url="@../assets/income.png" />
+                            </ImageView>
+                        </StackPane>
                         <!-- Text -->
                         <VBox styleClass="gap-0_5">
                             <Label text="Salary Deposit" styleClass="font-medium text-base"/>
@@ -171,9 +185,9 @@
                     <HBox alignment="CENTER_LEFT" styleClass="gap-3 text-sm font-roboto pb-2">
                         <Label text="Food &amp; Dining"/>
                         <Region HBox.hgrow="ALWAYS"/>
-                        <Label text="85%" styleClass="text-red-500"/>
+                        <Label text="110%" styleClass="text-red-500"/>
                     </HBox>
-                    <ProgressBar progress="0.85" maxWidth="Infinity"
+                    <ProgressBar progress="1.0" maxWidth="Infinity"
                                  styleClass="min-h-2 bg-gray-100 rounded-full red-bar"/>
                 </VBox>
 
@@ -182,10 +196,10 @@
                     <HBox alignment="CENTER_LEFT" styleClass="gap-3 text-sm font-roboto pb-2">
                         <Label text="Shopping"/>
                         <Region HBox.hgrow="ALWAYS"/>
-                        <Label text="45%" styleClass="text-green-500"/>
+                        <Label text="120%" styleClass="text-red-500"/>
                     </HBox>
-                    <ProgressBar progress="0.45" maxWidth="Infinity"
-                                 styleClass="min-h-2 bg-gray-100 rounded-full green-bar"/>
+                    <ProgressBar progress="1.0" maxWidth="Infinity"
+                                 styleClass="min-h-2 bg-gray-100 rounded-full red-bar"/>
                 </VBox>
 
                 <!-- Transportation -->
@@ -193,10 +207,10 @@
                     <HBox alignment="CENTER_LEFT" styleClass="gap-3 text-sm font-roboto pb-2">
                         <Label text="Transportation"/>
                         <Region HBox.hgrow="ALWAYS"/>
-                        <Label text="60%" styleClass="text-blue-500"/>
+                        <Label text="45%" styleClass="text-green-500"/>
                     </HBox>
-                    <ProgressBar progress="0.6" maxWidth="Infinity"
-                                 styleClass="min-h-2 bg-gray-100 rounded-full blue-bar"/>
+                    <ProgressBar progress="0.45" maxWidth="Infinity"
+                                 styleClass="min-h-2 bg-gray-100 rounded-full green-bar"/>
                 </VBox>
             </VBox>
         </VBox>
@@ -215,7 +229,12 @@
                 <HBox alignment="CENTER_LEFT" styleClass="p-3 gap-3 hover-bg-gray-50 rounded-lg cursor-pointer">
                     <!-- Left side -->
                     <HBox alignment="CENTER_LEFT" styleClass="gap-3">
-                        <Region styleClass="w-10 h-10 bg-blue-100 rounded-lg"/>
+                        <StackPane prefHeight="50.0" prefWidth="50.0">
+                            <Circle fill="#dbeafe" radius="24.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+                            <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                <Image url="@../assets/dash_bank.png" />
+                            </ImageView>
+                        </StackPane>
                         <VBox styleClass="gap-0_5">
                             <Label text="Chase Bank" styleClass="text-base font-medium"/>
                             <Label text="Checking" styleClass="font-roboto text-sm text-gray-500"/>
@@ -232,7 +251,13 @@
                 <HBox alignment="CENTER_LEFT" styleClass="p-3 gap-3 hover-bg-gray-50 rounded-lg cursor-pointer">
                     <!-- Left side -->
                     <HBox alignment="CENTER_LEFT" styleClass="gap-3">
-                        <Region styleClass="w-10 h-10 bg-green-100 rounded-lg"/>
+                        <StackPane prefHeight="50.0" prefWidth="50.0">
+                            <Circle fill="#dcfce7" radius="24.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+                            <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                <Image url="@../assets/well_fargo.png" />
+                            </ImageView>
+                        </StackPane>
+
                         <VBox styleClass="gap-0_5">
                             <Label text="Wells Fargo" styleClass="text-base font-medium"/>
                             <Label text="Savings" styleClass="font-roboto text-sm text-gray-500"/>
