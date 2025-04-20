@@ -3,6 +3,7 @@ package com.se.aiconomy.client.controller;
 //import com.alibaba.fastjson2.internal.asm.Label;
 
 import com.se.aiconomy.server.model.dto.user.response.UserInfo;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -50,6 +51,24 @@ public class BudgetController extends BaseController {
     private VBox vbox8;
     @FXML
     private VBox vboxMonthly, vboxWeekly, vboxYearly;
+
+    @FXML
+    public void initialize() {
+        if (userInfo == null) {
+            Platform.runLater(() -> {
+                // 延迟到事件调度线程中处理
+                if (userInfo != null) {
+                    init();
+                }
+            });
+        } else {
+            init();
+        }
+    }
+
+    private void init() {
+
+    }
 
     @FXML
     public void onAddBudgetClick(ActionEvent event) {
