@@ -8,7 +8,7 @@
 
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.shape.Circle?>
-<StackPane fx:id="rootPane" xmlns:fx="http://javafx.com/fxml" fx:controller="com.se.aiconomy.client.controller.AddBudgetController">
+<StackPane fx:id="rootPane" xmlns:fx="http://javafx.com/fxml" fx:controller="com.se.aiconomy.client.controller.BudgetController">
     <VBox fx:id="mainVBox" styleClass="p-8">
         <padding>
             <Insets top="20" right="20" bottom="20" left="20"/>
@@ -37,6 +37,7 @@
                 <VBox styleClass="card p-6" GridPane.columnIndex="0">
                     <Label text="Total Budget" styleClass="text-sm text-gray-500 pb-2 font-roboto" />
                     <Label text="\$5,000.00" styleClass="text-2xl font-bold text-gray-900 pb-2"/>
+                    <Label fx:id="budgetAmountLabel" text="\$0.00"/>
                     <Label text="Used 64.8%" styleClass="text-sm text-gray-500 font-roboto"/>
                 </VBox>
 
