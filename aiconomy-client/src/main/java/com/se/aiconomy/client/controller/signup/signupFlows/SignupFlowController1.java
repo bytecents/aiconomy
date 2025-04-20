@@ -53,7 +53,7 @@ public class SignupFlowController1 {
             String passwordRegex = "[A-Za-z0-9@#\\$%&\\-_.!]*";
             // limitations
             if (change.getText().matches(passwordRegex)) {
-                return change;  // 允许符合条件的输入
+                return change;
             }
             return null;
         };

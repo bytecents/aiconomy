@@ -27,7 +27,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public void addAccount(Account account) {
-        jsonStorageService.insert(account);
+        jsonStorageService.upsert(account);
     }
 
     @Override

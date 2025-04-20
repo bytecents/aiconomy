@@ -15,6 +15,7 @@ import java.util.Map;
 @Document(collection = "BankAccounts", schemaVersion = "1.0")
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Account implements Identifiable {
     @Id
     private String id; // 账户ID

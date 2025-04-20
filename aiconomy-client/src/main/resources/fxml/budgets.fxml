@@ -9,299 +9,293 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.shape.Circle?>
 <StackPane fx:id="rootPane" xmlns:fx="http://javafx.com/fxml" fx:controller="com.se.aiconomy.client.controller.AddBudgetController">
+    <VBox fx:id="mainVBox" styleClass="p-8">
+        <padding>
+            <Insets top="20" right="20" bottom="20" left="20"/>
+        </padding>
+        <children>
+            <!-- Top Section -->
+            <HBox alignment="CENTER" styleClass="pb-4 gap-5">
+                <VBox styleClass="gap-1">
+                    <Label text="Budgets" styleClass="text-2xl font-bold text-gray-900 pb-1"/>
+                </VBox>
+                <Region HBox.hgrow="ALWAYS"/>
+                <Button text="Add Budgets"
+                        onAction="#onAddBudgetClick"
+                        fx:id="addBudgetBtn"
+                        styleClass="hover-bg-blue-700 p-4-2 bg-blue-600 text-white font-roboto cursor-pointer"/>
+            </HBox>
+            <!-- Overview Cards -->
+            <GridPane hgap="24" vgap="24" styleClass="pb-4">
+                <columnConstraints>
+                    <ColumnConstraints percentWidth="25"/>
+                    <ColumnConstraints percentWidth="25"/>
+                    <ColumnConstraints percentWidth="25"/>
+                    <ColumnConstraints percentWidth="25"/>
+                </columnConstraints>
+                <!-- Card 1 Total Budget-->
+                <VBox styleClass="card p-6" GridPane.columnIndex="0">
+                    <Label text="Total Budget" styleClass="text-sm text-gray-500 pb-2 font-roboto" />
+                    <Label text="\$5,000.00" styleClass="text-2xl font-bold text-gray-900 pb-2"/>
+                    <Label text="Used 64.8%" styleClass="text-sm text-gray-500 font-roboto"/>
+                </VBox>
 
-        <VBox fx:id="mainVBox" spacing="20">
-            <padding>
-                <Insets top="20" right="20" bottom="20" left="20"/>
-            </padding>
-            <children>
-                <!-- Top Section -->
-                <HBox alignment="CENTER" styleClass="pb-4 gap-5">
-                    <VBox styleClass="gap-1">
-                        <Label text="Budgets" styleClass="text-2xl font-bold text-gray-900 pb-1"/>
-                    </VBox>
-                    <Region HBox.hgrow="ALWAYS"/>
-                    <Button text="Add Budgets"
-                            onAction="#onAddBudgetClick"
-                            fx:id="addBudgetBtn"
-                            styleClass="hover-bg-blue-700 p-4-2 bg-blue-600 text-white font-roboto cursor-pointer"/>
-                </HBox>
-                <!-- Overview Cards -->
-                <GridPane hgap="24" vgap="24" styleClass="pb-4">
-                    <columnConstraints>
-                        <ColumnConstraints percentWidth="25"/>
-                        <ColumnConstraints percentWidth="25"/>
-                        <ColumnConstraints percentWidth="25"/>
-                        <ColumnConstraints percentWidth="25"/>
-                    </columnConstraints>
-                    <!-- Card 1 Total Budget-->
-                    <VBox styleClass="card p-6" GridPane.columnIndex="0">
-                        <Label text="Total Budget" styleClass="text-sm text-gray-500 pb-2 font-roboto" />
-                        <Label text="\$5,000.00" styleClass="text-2xl font-bold text-gray-900 pb-2"/>
-                        <Label text="Used 64.8%" styleClass="text-sm text-gray-500 font-roboto"/>
-                    </VBox>
+                <!-- Card 2 Spent-->
+                <VBox styleClass="card p-6" GridPane.columnIndex="1">
+                    <Label text="Spent" styleClass="text-sm text-gray-500 pb-2 font-roboto" />
+                    <Label text="\$3,240.50" styleClass="text-2xl font-bold text-gray-900 pb-2" />
+                    <Label text="Left $1,759.50" styleClass="text-sm text-gray-500 font-roboto"/>
+                </VBox>
 
-                    <!-- Card 2 Spent-->
-                    <VBox styleClass="card p-6" GridPane.columnIndex="1">
-                        <Label text="Spent" styleClass="text-sm text-gray-500 pb-2 font-roboto" />
-                        <Label text="\$3,240.50" styleClass="text-2xl font-bold text-gray-900 pb-2" />
-                        <Label text="Left $1,759.50" styleClass="text-sm text-gray-500 font-roboto"/>
-                    </VBox>
+                <!-- Card 3 Alerts-->
+                <VBox styleClass="card p-6" GridPane.columnIndex="2">
+                    <Label text="Alerts" styleClass="text-sm text-gray-500 pb-2 font-roboto"/>
+                    <Label text="2" styleClass="text-2xl font-bold text-red-500 pb-2"/>
+                    <Label text="Over Budget" styleClass="text-sm text-gray-500 font-roboto"/>
+                </VBox>
 
-                    <!-- Card 3 Alerts-->
-                    <VBox styleClass="card p-6" GridPane.columnIndex="2">
-                        <Label text="Alerts" styleClass="text-sm text-gray-500 pb-2 font-roboto"/>
-                        <Label text="2" styleClass="text-2xl font-bold text-red-500 pb-2"/>
-                        <Label text="Over Budget" styleClass="text-sm text-gray-500 font-roboto"/>
-                    </VBox>
+                <!-- Card 4 Daily Available-->
+                <VBox styleClass="card p-6" GridPane.columnIndex="3">
+                    <Label text="Daily Available" styleClass="text-sm text-gray-500 pb-2 font-roboto"/>
+                    <Label text="\$58.65" styleClass="text-2xl font-bold text-gray-900 pb-2"/>
+                    <Label text="30 days left" styleClass="text-sm text-gray-500 font-roboto"/>
+                </VBox>
+            </GridPane>
+            <!-- Budget Management -->
+            <HBox styleClass="gap-5">
+                <VBox spacing="10" styleClass="p-6" GridPane.columnIndex="0" style="-fx-background-color: white; -fx-padding: 5;" HBox.hgrow="ALWAYS">
+                    <!-- 顶部标题 + 按钮 -->
+                    <HBox alignment="CENTER_LEFT" spacing="10" >
+                        <Label text="Category Budgets" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #333333;" />
+                        <Region HBox.hgrow="ALWAYS"/>
+                        <Button text="✨ AI Optimize"
+                                style="-fx-background-color: #e0bbff; -fx-text-fill: #4b0082; -fx-font-family: 'Roboto'; -fx-cursor: hand;" />
+                    </HBox>
 
-                    <!-- Card 4 Daily Available-->
-                    <VBox styleClass="card p-6" GridPane.columnIndex="3">
-                        <Label text="Daily Available" styleClass="text-sm text-gray-500 pb-2 font-roboto"/>
-                        <Label text="\$58.65" styleClass="text-2xl font-bold text-gray-900 pb-2"/>
-                        <Label text="30 days left" styleClass="text-sm text-gray-500 font-roboto"/>
-                    </VBox>
-                </GridPane>
+                    <!-- 卡片区域：两列，每列三个 -->
+                    <GridPane hgap="20" vgap="20" style="-fx-padding: 10;">
+                        <columnConstraints>
+                            <ColumnConstraints percentWidth="50"/>
+                            <ColumnConstraints percentWidth="50"/>
+                        </columnConstraints>
 
+                        <!-- Row 0 -->
+                        <!-- Col 00 -->
+                        <VBox styleClass="card p-6" spacing="5"
+                              style="-fx-background-color: white; -fx-padding: 15; -fx-background-radius: 10;"
+                              GridPane.columnIndex="0" GridPane.rowIndex="0">
 
-                <!-- Budget Management -->
-                <HBox  spacing="20" styleClass="pb-0">
-                    <VBox spacing="10" styleClass=" p-6" GridPane.columnIndex="0" style="-fx-background-color: white; -fx-border-color; -fx-padding: 5;" HBox.hgrow="ALWAYS">
-                        <!-- 顶部标题 + 按钮 -->
-                        <HBox alignment="CENTER_LEFT" spacing="10" >
-                            <Label text="Category Budgets" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #333333;" />
-                            <Region HBox.hgrow="ALWAYS"/>
-                            <Button text="✨ AI Optimize"
-                                    style="-fx-background-color: #e0bbff; -fx-text-fill: #4b0082; -fx-font-family: 'Roboto'; -fx-cursor: hand;" />
-                        </HBox>
+                            <HBox alignment="CENTER_LEFT" styleClass="p-3 gap-3 hover-bg-gray-50 rounded-lg cursor-pointer">
+                                <HBox alignment="CENTER_LEFT" styleClass="gap-3">
 
-                        <!-- 卡片区域：两列，每列三个 -->
-                        <GridPane hgap="20" vgap="20" style="-fx-padding: 10;">
-                            <columnConstraints>
-                                <ColumnConstraints percentWidth="50"/>
-                                <ColumnConstraints percentWidth="50"/>
-                            </columnConstraints>
+                <StackPane prefHeight="50.0" prefWidth="50.0">
+                                    <Circle fill="#e0f2fe" radius="24.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+                                    <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                        <Image url="@../assets/FoodDining.png" />
+                                    </ImageView>
+                </StackPane>
+                                    <VBox styleClass="gap-0_5" HBox.hgrow="NEVER">
+                                        <Label text="Food &amp; Dining" styleClass="font-medium text-base"/>
+                                        <Label text="\$1,500.00 / month" styleClass="text-sm text-gray-500 font-roboto"/>
+                                    </VBox>
 
-                            <!-- Row 0 -->
-                            <!-- Col 00 -->
-                            <VBox styleClass="card p-6" spacing="5"
-                                  style="-fx-background-color: white; -fx-border-color; -fx-padding: 15; -fx-background-radius: 10;"
-                                  GridPane.columnIndex="0" GridPane.rowIndex="0">
+                                </HBox>
+                                <Region HBox.hgrow="ALWAYS"/>
+                                <StackPane styleClass="clickable-icon" style="-fx-cursor: hand; -fx-padding: 0;">
+                                    <Label text="⋯" style="-fx-font-size: 30px; -fx-font-weight: bold; -fx-text-fill: black;"/>
+                                </StackPane>
+                            </HBox>
 
-                                <HBox alignment="CENTER_LEFT" styleClass="p-3 gap-3 hover-bg-gray-50 rounded-lg cursor-pointer">
-                                    <HBox alignment="CENTER_LEFT" styleClass="gap-3">
+                            <ProgressBar progress="1.0" maxWidth="Infinity"
+                                         styleClass="red-bar"
+                                         VBox.vgrow="NEVER"/>
 
-                    <StackPane prefHeight="50.0" prefWidth="50.0">
-                                        <Circle fill="#e0f2fe" radius="24.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+                            <HBox alignment="CENTER_LEFT" VBox.vgrow="NEVER">
+                                <Label text="110% used" styleClass="text-red-500"/>
+                                <Region HBox.hgrow="ALWAYS"/>
+                                <Label text="\$150.00 over budget" styleClass="text-sm text-gray-500"/>
+                            </HBox>
+                        </VBox>
+                        <!-- Col 01 -->
+                        <VBox styleClass="card p-6" spacing="5"
+                              style="-fx-background-color: white; -fx-padding: 15; -fx-background-radius: 10;"
+                              GridPane.columnIndex="1" GridPane.rowIndex="0">
+
+                            <HBox alignment="CENTER_LEFT" styleClass="p-3 gap-3 hover-bg-gray-50 rounded-lg cursor-pointer">
+                                <HBox alignment="CENTER_LEFT" styleClass="gap-3">
+                                    <StackPane prefHeight="50.0" prefWidth="50.0">
+                                        <Circle fill="#dcfce7" radius="24.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
                                         <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                                            <Image url="@../assets/FoodDining.png" />
+                                            <Image url="@../assets/Transportation.png" />
                                         </ImageView>
-                    </StackPane>
-                                        <VBox styleClass="gap-0_5" HBox.hgrow="NEVER">
-                                            <Label text="Food &amp; Dining" styleClass="font-medium text-base"/>
-                                            <Label text="\$1,500.00 / month" styleClass="text-sm text-gray-500 font-roboto"/>
-                                        </VBox>
-
-                                    </HBox>
-                                    <Region HBox.hgrow="ALWAYS"/>
-                                    <StackPane styleClass="clickable-icon" style="-fx-cursor: hand; -fx-padding: 0;">
-                                        <Label text="⋯" style="-fx-font-size: 30px; -fx-font-weight: bold; -fx-text-fill: black;"/>
                                     </StackPane>
+                                    <VBox styleClass="gap-0_5" HBox.hgrow="NEVER">
+                                        <Label text="Transportation" styleClass="font-medium text-base"/>
+                                        <Label text="\$800.00 / month" styleClass="text-sm text-gray-500 font-roboto"/>
+                                    </VBox>
                                 </HBox>
+                                <Region HBox.hgrow="ALWAYS"/>
+                                <StackPane styleClass="clickable-icon" style="-fx-cursor: hand; -fx-padding: 0;">
+                                    <Label text="⋯" style="-fx-font-size: 30px; -fx-font-weight: bold; -fx-text-fill: black;"/>
+                                </StackPane>
+                            </HBox>
 
-                                <ProgressBar progress="1.0" maxWidth="Infinity"
-                                             styleClass="red-bar"
-                                             VBox.vgrow="NEVER"/>
+                            <ProgressBar progress="0.45" maxWidth="Infinity"
+                                         styleClass="green-bar"
+                                         VBox.vgrow="NEVER"/>
 
-                                <HBox alignment="CENTER_LEFT" VBox.vgrow="NEVER">
-                                    <Label text="110% used" styleClass="text-red-500"/>
-                                    <Region HBox.hgrow="ALWAYS"/>
-                                    <Label text="\$150.00 over budget" styleClass="text-sm text-gray-500"/>
-                                </HBox>
-                            </VBox>
-                            <!-- Col 01 -->
-                            <VBox styleClass="card p-6" spacing="5"
-                                  style="-fx-background-color: white; -fx-border-color; -fx-padding: 15; -fx-background-radius: 10;"
-                                  GridPane.columnIndex="1" GridPane.rowIndex="0">
+                            <HBox alignment="CENTER_LEFT" VBox.vgrow="NEVER">
+                                <Label text="45% used" styleClass="text-green-500"/>
+                                <Region HBox.hgrow="ALWAYS"/>
+                                <Label text="\$440.00 left" styleClass="text-sm text-gray-500"/>
+                            </HBox>
+                        </VBox>
 
-                                <HBox alignment="CENTER_LEFT" styleClass="p-3 gap-3 hover-bg-gray-50 rounded-lg cursor-pointer">
-                                    <HBox alignment="CENTER_LEFT" styleClass="gap-3">
-                                        <StackPane prefHeight="50.0" prefWidth="50.0">
-                                            <Circle fill="#dcfce7" radius="24.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
-                                            <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                                                <Image url="@../assets/Transportation.png" />
-                                            </ImageView>
-                                        </StackPane>
-                                        <VBox styleClass="gap-0_5" HBox.hgrow="NEVER">
-                                            <Label text="Transportation" styleClass="font-medium text-base"/>
-                                            <Label text="\$800.00 / month" styleClass="text-sm text-gray-500 font-roboto"/>
-                                        </VBox>
-                                    </HBox>
-                                    <Region HBox.hgrow="ALWAYS"/>
-                                    <StackPane styleClass="clickable-icon" style="-fx-cursor: hand; -fx-padding: 0;">
-                                        <Label text="⋯" style="-fx-font-size: 30px; -fx-font-weight: bold; -fx-text-fill: black;"/>
+                        <!-- Row 1 -->
+                        <!-- col 10 -->
+                        <VBox styleClass="card p-6" spacing="5"
+                              style="-fx-background-color: white; -fx-padding: 15; -fx-background-radius: 10;"
+                              GridPane.columnIndex="0" GridPane.rowIndex="1">
+                            <!-- Same content as Card 1 -->
+                            <HBox alignment="CENTER_LEFT" styleClass="p-3 gap-3 hover-bg-gray-50 rounded-lg cursor-pointer">
+                                <HBox alignment="CENTER_LEFT" styleClass="gap-3">
+                                    <StackPane prefHeight="50.0" prefWidth="50.0">
+                                        <Circle fill="#e0bbff" radius="24.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+                                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                            <Image url="@../assets/Shopping.png" />
+                                        </ImageView>
                                     </StackPane>
+                                    <VBox styleClass="gap-0_5" HBox.hgrow="NEVER">
+                                        <Label text="Shopping" styleClass="font-medium text-base"/>
+                                        <Label text="\$1,000.00 / month" styleClass="text-sm text-gray-500 font-roboto"/>
+                                    </VBox>
                                 </HBox>
+                                <Region HBox.hgrow="ALWAYS"/>
+                                <StackPane styleClass="clickable-icon" style="-fx-cursor: hand; -fx-padding: 0;">
+                                    <Label text="⋯" style="-fx-font-size: 30px; -fx-font-weight: bold; -fx-text-fill: black;"/>
+                                </StackPane>
+                            </HBox>
 
-                                <ProgressBar progress="0.45" maxWidth="Infinity"
-                                             styleClass="green-bar"
-                                             VBox.vgrow="NEVER"/>
-
-                                <HBox alignment="CENTER_LEFT" VBox.vgrow="NEVER">
-                                    <Label text="45% used" styleClass="text-green-500"/>
-                                    <Region HBox.hgrow="ALWAYS"/>
-                                    <Label text="\$440.00 left" styleClass="text-sm text-gray-500"/>
-                                </HBox>
-                            </VBox>
-
-                            <!-- Row 1 -->
-                            <!-- col 10 -->
-                            <VBox styleClass="card p-6" spacing="5"
-                                  style="-fx-background-color: white; -fx-border-color; -fx-padding: 15; -fx-background-radius: 10;"
-                                  GridPane.columnIndex="0" GridPane.rowIndex="1">
-                                <!-- Same content as Card 1 -->
-                                <HBox alignment="CENTER_LEFT" styleClass="p-3 gap-3 hover-bg-gray-50 rounded-lg cursor-pointer">
-                                    <HBox alignment="CENTER_LEFT" styleClass="gap-3">
-                                        <StackPane prefHeight="50.0" prefWidth="50.0">
-                                            <Circle fill="#e0bbff" radius="24.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
-                                            <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                                                <Image url="@../assets/Shopping.png" />
-                                            </ImageView>
-                                        </StackPane>
-                                        <VBox styleClass="gap-0_5" HBox.hgrow="NEVER">
-                                            <Label text="Shopping" styleClass="font-medium text-base"/>
-                                            <Label text="\$1,000.00 / month" styleClass="text-sm text-gray-500 font-roboto"/>
-                                        </VBox>
-                                    </HBox>
-                                    <Region HBox.hgrow="ALWAYS"/>
-                                    <StackPane styleClass="clickable-icon" style="-fx-cursor: hand; -fx-padding: 0;">
-                                        <Label text="⋯" style="-fx-font-size: 30px; -fx-font-weight: bold; -fx-text-fill: black;"/>
+                            <ProgressBar progress="1.0" maxWidth="Infinity"
+                                         styleClass="red-bar"
+                                         VBox.vgrow="NEVER"/>
+                            <HBox alignment="CENTER_LEFT" VBox.vgrow="NEVER">
+                                <Label text="120% used" styleClass="text-red-500"/>
+                                <Region HBox.hgrow="ALWAYS"/>
+                                <Label text="\$200.00 over budget" styleClass="text-sm text-gray-500"/>
+                            </HBox>
+                        </VBox>
+                        <!-- col 11 -->
+                        <VBox styleClass="card p-6" spacing="5"
+                              style="-fx-background-color: white; -fx-padding: 15; -fx-background-radius: 10;"
+                              GridPane.columnIndex="1" GridPane.rowIndex="1">
+                            <HBox alignment="CENTER_LEFT" styleClass="p-3 gap-3 hover-bg-gray-50 rounded-lg cursor-pointer">
+                                <HBox alignment="CENTER_LEFT" styleClass="gap-3">
+                                    <StackPane prefHeight="50.0" prefWidth="50.0">
+                                        <Circle fill="#fef9c3" radius="24.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+                                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                            <Image url="@../assets/Entertainment.png" />
+                                        </ImageView>
                                     </StackPane>
-                                </HBox>
 
-                                <ProgressBar progress="1.0" maxWidth="Infinity"
-                                             styleClass="red-bar"
-                                             VBox.vgrow="NEVER"/>
-                                <HBox alignment="CENTER_LEFT" VBox.vgrow="NEVER">
-                                    <Label text="120% used" styleClass="text-red-500"/>
-                                    <Region HBox.hgrow="ALWAYS"/>
-                                    <Label text="\$200.00 over budget" styleClass="text-sm text-gray-500"/>
+                                    <VBox styleClass="gap-0_5" HBox.hgrow="NEVER">
+                                        <Label text="Entertainment" styleClass="font-medium text-base"/>
+                                        <Label text="\$600.00 / month" styleClass="text-sm text-gray-500 font-roboto"/>
+                                    </VBox>
                                 </HBox>
-                            </VBox>
-                            <!-- col 11 -->
-                            <VBox styleClass="card p-6" spacing="5"
-                                  style="-fx-background-color: white; -fx-border-color; -fx-padding: 15; -fx-background-radius: 10;"
-                                  GridPane.columnIndex="1" GridPane.rowIndex="1">
-                                <HBox alignment="CENTER_LEFT" styleClass="p-3 gap-3 hover-bg-gray-50 rounded-lg cursor-pointer">
-                                    <HBox alignment="CENTER_LEFT" styleClass="gap-3">
-                                        <StackPane prefHeight="50.0" prefWidth="50.0">
-                                            <Circle fill="#fef9c3" radius="24.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
-                                            <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                                                <Image url="@../assets/Entertainment.png" />
-                                            </ImageView>
-                                        </StackPane>
+                                <Region HBox.hgrow="ALWAYS"/>
+                                <StackPane styleClass="clickable-icon" style="-fx-cursor: hand; -fx-padding: 0;">
+                                    <Label text="⋯" style="-fx-font-size: 30px; -fx-font-weight: bold; -fx-text-fill: black;"/>
+                                </StackPane>
+                            </HBox>
 
-                                        <VBox styleClass="gap-0_5" HBox.hgrow="NEVER">
-                                            <Label text="Entertainment" styleClass="font-medium text-base"/>
-                                            <Label text="\$600.00 / month" styleClass="text-sm text-gray-500 font-roboto"/>
-                                        </VBox>
-                                    </HBox>
-                                    <Region HBox.hgrow="ALWAYS"/>
-                                    <StackPane styleClass="clickable-icon" style="-fx-cursor: hand; -fx-padding: 0;">
-                                        <Label text="⋯" style="-fx-font-size: 30px; -fx-font-weight: bold; -fx-text-fill: black;"/>
+                            <ProgressBar progress="0.5" maxWidth="Infinity"
+                                         styleClass="yellow-bar"
+                                         VBox.vgrow="NEVER"/>
+
+                            <HBox alignment="CENTER_LEFT" VBox.vgrow="NEVER">
+                                <Label text="50% used" styleClass="text-yellow-500"/>
+                                <Region HBox.hgrow="ALWAYS"/>
+                                <Label text="\$300.00 left" styleClass="text-sm text-gray-500"/>
+                            </HBox>
+                        </VBox>
+
+                        <!-- Row 2 -->
+                        <!-- col 20 -->
+                        <VBox styleClass="card p-6" spacing="5"
+                              style="-fx-background-color: white; -fx-padding: 15; -fx-background-radius: 10;"
+                              GridPane.columnIndex="0" GridPane.rowIndex="2">
+                            <!-- Same content as Card 1 -->
+                            <HBox alignment="CENTER_LEFT" styleClass="p-3 gap-3 hover-bg-gray-50 rounded-lg cursor-pointer">
+                                <HBox alignment="CENTER_LEFT" styleClass="gap-3">
+                                    <StackPane prefHeight="50.0" prefWidth="50.0">
+                                        <Circle fill="#ffedd5" radius="24.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+                                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                            <Image url="@../assets/Utilities.png" />
+                                        </ImageView>
                                     </StackPane>
+
+                                    <VBox styleClass="gap-0_5" HBox.hgrow="NEVER">
+                                        <Label text="Utilities" styleClass="font-medium text-base"/>
+                                        <Label text="\$400.00 / month" styleClass="text-sm text-gray-500 font-roboto"/>
+                                    </VBox>
                                 </HBox>
+                                <Region HBox.hgrow="ALWAYS"/>
+                                <StackPane styleClass="clickable-icon" style="-fx-cursor: hand; -fx-padding: 0;">
+                                    <Label text="⋯" style="-fx-font-size: 30px; -fx-font-weight: bold; -fx-text-fill: black;"/>
+                                </StackPane>
+                            </HBox>
 
-                                <ProgressBar progress="0.5" maxWidth="Infinity"
-                                             styleClass="yellow-bar"
-                                             VBox.vgrow="NEVER"/>
+                            <ProgressBar progress="0.7" maxWidth="Infinity"
+                                         styleClass="orange-bar"
+                                         VBox.vgrow="NEVER"/>
 
-                                <HBox alignment="CENTER_LEFT" VBox.vgrow="NEVER">
-                                    <Label text="50% used" styleClass="text-yellow-500"/>
-                                    <Region HBox.hgrow="ALWAYS"/>
-                                    <Label text="\$300.00 left" styleClass="text-sm text-gray-500"/>
-                                </HBox>
-                            </VBox>
-
-                            <!-- Row 2 -->
-                            <!-- col 20 -->
-                            <VBox styleClass="card p-6" spacing="5"
-                                  style="-fx-background-color: white; -fx-border-color; -fx-padding: 15; -fx-background-radius: 10;"
-                                  GridPane.columnIndex="0" GridPane.rowIndex="2">
-                                <!-- Same content as Card 1 -->
-                                <HBox alignment="CENTER_LEFT" styleClass="p-3 gap-3 hover-bg-gray-50 rounded-lg cursor-pointer">
-                                    <HBox alignment="CENTER_LEFT" styleClass="gap-3">
-                                        <StackPane prefHeight="50.0" prefWidth="50.0">
-                                            <Circle fill="#ffedd5" radius="24.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
-                                            <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                                                <Image url="@../assets/Utilities.png" />
-                                            </ImageView>
-                                        </StackPane>
-
-                                        <VBox styleClass="gap-0_5" HBox.hgrow="NEVER">
-                                            <Label text="Utilities" styleClass="font-medium text-base"/>
-                                            <Label text="\$400.00 / month" styleClass="text-sm text-gray-500 font-roboto"/>
-                                        </VBox>
-                                    </HBox>
-                                    <Region HBox.hgrow="ALWAYS"/>
-                                    <StackPane styleClass="clickable-icon" style="-fx-cursor: hand; -fx-padding: 0;">
-                                        <Label text="⋯" style="-fx-font-size: 30px; -fx-font-weight: bold; -fx-text-fill: black;"/>
+                            <HBox alignment="CENTER_LEFT" VBox.vgrow="NEVER">
+                                <Label text="70% used" styleClass="text-orange-500"/>
+                                <Region HBox.hgrow="ALWAYS"/>
+                                <Label text="\$120.00 left" styleClass="text-sm text-gray-500"/>
+                            </HBox>
+                        </VBox>
+                        <!-- col 21 -->
+                        <VBox styleClass="card p-6" spacing="5"
+                              style="-fx-background-color: white; -fx-padding: 15; -fx-background-radius: 10;"
+                              GridPane.columnIndex="1" GridPane.rowIndex="2">
+                            <!-- Same content as Card 1 -->
+                            <HBox alignment="CENTER_LEFT" styleClass="p-3 gap-3 hover-bg-gray-50 rounded-lg cursor-pointer">
+                                <HBox alignment="CENTER_LEFT" styleClass="gap-3">
+                                    <StackPane prefHeight="50.0" prefWidth="50.0">
+                                        <Circle fill="#f3f4f6" radius="24.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+                                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                            <Image url="@../assets/Other.png" />
+                                        </ImageView>
                                     </StackPane>
+
+                                    <VBox styleClass="gap-0_5" HBox.hgrow="NEVER">
+                                        <Label text="Other Categories" styleClass="font-medium text-base"/>
+                                        <Label text="\$300.00 / month" styleClass="text-sm text-gray-500 font-roboto"/>
+                                    </VBox>
                                 </HBox>
+                                <Region HBox.hgrow="ALWAYS"/>
+                                <StackPane styleClass="clickable-icon" style="-fx-cursor: hand; -fx-padding: 0;">
+                                    <Label text="⋯" style="-fx-font-size: 30px; -fx-font-weight: bold; -fx-text-fill: black;"/>
+                                </StackPane>
+                            </HBox>
 
-                                <ProgressBar progress="0.7" maxWidth="Infinity"
-                                             styleClass="orange-bar"
-                                             VBox.vgrow="NEVER"/>
+                            <ProgressBar progress="0.4" maxWidth="Infinity"
+                                         styleClass="gray-bar"
+                                         VBox.vgrow="NEVER"/>
+                            <HBox alignment="CENTER_LEFT" VBox.vgrow="NEVER">
+                                <Label text="40% used" styleClass="text-gray-500"/>
+                                <Region HBox.hgrow="ALWAYS"/>
+                                <Label text="\$180.00 left" styleClass="text-sm text-gray-500"/>
+                            </HBox>
+                        </VBox>
+                    </GridPane>
+                </VBox>
+            </HBox>
 
-                                <HBox alignment="CENTER_LEFT" VBox.vgrow="NEVER">
-                                    <Label text="70% used" styleClass="text-orange-500"/>
-                                    <Region HBox.hgrow="ALWAYS"/>
-                                    <Label text="\$120.00 left" styleClass="text-sm text-gray-500"/>
-                                </HBox>
-                            </VBox>
-                            <!-- col 21 -->
-                            <VBox styleClass="card p-6" spacing="5"
-                                  style="-fx-background-color: white; -fx-border-color; -fx-padding: 15; -fx-background-radius: 10;"
-                                  GridPane.columnIndex="1" GridPane.rowIndex="2">
-                                <!-- Same content as Card 1 -->
-                                <HBox alignment="CENTER_LEFT" styleClass="p-3 gap-3 hover-bg-gray-50 rounded-lg cursor-pointer">
-                                    <HBox alignment="CENTER_LEFT" styleClass="gap-3">
-                                        <StackPane prefHeight="50.0" prefWidth="50.0">
-                                            <Circle fill="#f3f4f6" radius="24.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
-                                            <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                                                <Image url="@../assets/Other.png" />
-                                            </ImageView>
-                                        </StackPane>
-
-                                        <VBox styleClass="gap-0_5" HBox.hgrow="NEVER">
-                                            <Label text="Other Categories" styleClass="font-medium text-base"/>
-                                            <Label text="\$300.00 / month" styleClass="text-sm text-gray-500 font-roboto"/>
-                                        </VBox>
-                                    </HBox>
-                                    <Region HBox.hgrow="ALWAYS"/>
-                                    <StackPane styleClass="clickable-icon" style="-fx-cursor: hand; -fx-padding: 0;">
-                                        <Label text="⋯" style="-fx-font-size: 30px; -fx-font-weight: bold; -fx-text-fill: black;"/>
-                                    </StackPane>
-                                </HBox>
-
-                                <ProgressBar progress="0.4" maxWidth="Infinity"
-                                             styleClass="gray-bar"
-                                             VBox.vgrow="NEVER"/>
-                                <HBox alignment="CENTER_LEFT" VBox.vgrow="NEVER">
-                                    <Label text="40% used" styleClass="text-gray-500"/>
-                                    <Region HBox.hgrow="ALWAYS"/>
-                                    <Label text="\$180.00 left" styleClass="text-sm text-gray-500"/>
-                                </HBox>
-                            </VBox>
-                        </GridPane>
-
-
-                    </VBox>
-                </HBox>
-
-            </children>
-        </VBox>
-
-        </StackPane>
+        </children>
+    </VBox>
+</StackPane>
 
 

@@ -1,12 +1,14 @@
 package com.se.aiconomy.server.service.impl;
 
 import com.se.aiconomy.server.langchain.common.model.BillType;
+import com.se.aiconomy.server.langchain.common.model.DynamicBillType;
 import com.se.aiconomy.server.model.entity.User;
 import com.se.aiconomy.server.service.UserService;
 import com.se.aiconomy.server.storage.service.JSONStorageService;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 public class UserServiceImpl implements UserService {
     private final JSONStorageService jsonStorageService;
@@ -68,5 +70,27 @@ public class UserServiceImpl implements UserService {
     public void deleteUserById(String id) {
         User user = getUserById(id);
         jsonStorageService.delete(user, User.class);
+    }
+
+    @Override
+    public Set<DynamicBillType> addBillType(String id, DynamicBillType billType) {
+        Optional<User> user = jsonStorageService.findById(id, User.class);
+        if (user.isPresent()) {
+            user.get().getBillTypes().add(billType);
+            jsonStorageService.update(user.get(), User.class);
+            return user.get().getBillTypes();
+        } else {
+            throw new RuntimeException("User not found with id: " + id);
+        }
+    }
+
+    @Override
+    public Set<DynamicBillType> getBillTypes(String id) {
+        Optional<User> user = jsonStorageService.findById(id, User.class);
+        if (user.isPresent()) {
+            return user.get().getBillTypes();
+        } else {
+            throw new RuntimeException("User not found with id: " + id);
+        }
     }
 }

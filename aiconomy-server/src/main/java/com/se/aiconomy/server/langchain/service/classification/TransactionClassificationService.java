@@ -3,6 +3,7 @@ package com.se.aiconomy.server.langchain.service.classification;
 import com.se.aiconomy.server.langchain.common.config.Configs;
 import com.se.aiconomy.server.langchain.common.config.Locale;
 import com.se.aiconomy.server.langchain.common.model.BillType;
+import com.se.aiconomy.server.langchain.common.model.DynamicBillType;
 import com.se.aiconomy.server.langchain.common.model.Transaction;
 import com.se.aiconomy.server.langchain.common.prompt.I18nPrompt;
 import dev.langchain4j.model.chat.ChatLanguageModel;
@@ -30,22 +31,22 @@ public class TransactionClassificationService {
         this.assistant = AiServices.create(Assistant.class, model);
     }
 
-    public BillType classifyTransaction(Transaction transaction, Locale locale) {
+    public DynamicBillType classifyTransaction(Transaction transaction, Locale locale) {
         Map<String, Object> context = buildContext(transaction);
         String prompt = new I18nPrompt(new Prompt()).render(locale, context);
         log.info("Classification Prompt: {}", prompt);
         return assistant.classifyTransactionFrom(prompt);
     }
 
-    public BillType classifyTransaction(Transaction transaction) {
+    public DynamicBillType classifyTransaction(Transaction transaction) {
         return classifyTransaction(transaction, Locale.EN);
     }
 
-    public List<BillType> classifyTransactions(List<Transaction> transactions) {
+    public List<DynamicBillType> classifyTransactions(List<Transaction> transactions) {
         return classifyTransactions(transactions, Locale.EN);
     }
 
-    public List<BillType> classifyTransactions(List<Transaction> transactions, Locale locale) {
+    public List<DynamicBillType> classifyTransactions(List<Transaction> transactions, Locale locale) {
         return new ArrayList<>(transactions.parallelStream()
             .map(transaction -> classifyTransaction(transaction, locale != null ? locale : Locale.EN))
             .toList());

@@ -1,6 +1,7 @@
 package com.se.aiconomy.client.controller;
 
 import com.se.aiconomy.client.Application.StyleClassFixer;
+import com.se.aiconomy.client.controller.ai.AiController;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.fxml.FXML;
@@ -8,27 +9,31 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.chart.*;
-import javafx.scene.control.Hyperlink;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
-import javafx.scene.paint.Color;
 import javafx.util.Duration;
 import javafx.util.StringConverter;
 
 import java.net.URL;
-import java.util.Objects;
 import java.util.ResourceBundle;
 
-public class AnalyticsController implements Initializable {
-//    @FXML private Hyperlink aiInsightBtn;
-    @FXML private ScrollPane aiPanel;
-    @FXML private GridPane analyticsGrid;
-    @FXML private ColumnConstraints mainCol;
-    @FXML private ColumnConstraints aiCol;
-    @FXML private LineChart<String, Number> spendingTrends;
-    @FXML private PieChart categoryDistribution;
-    @FXML private NumberAxis yAxis;
+public class AnalyticsController extends BaseController implements Initializable {
+    //    @FXML private Hyperlink aiInsightBtn;
+    @FXML
+    private ScrollPane aiPanel;
+    @FXML
+    private GridPane analyticsGrid;
+    @FXML
+    private ColumnConstraints mainCol;
+    @FXML
+    private ColumnConstraints aiCol;
+    @FXML
+    private LineChart<String, Number> spendingTrends;
+    @FXML
+    private PieChart categoryDistribution;
+    @FXML
+    private NumberAxis yAxis;
 
 //    private boolean isOpenAiPanel = false;
 
@@ -55,6 +60,7 @@ public class AnalyticsController implements Initializable {
             public String toString(Number object) {
                 return "$" + object.intValue();
             }
+
             @Override
             public Number fromString(String string) {
                 return Integer.parseInt(string.replace("$", ""));
@@ -74,11 +80,11 @@ public class AnalyticsController implements Initializable {
         spendingTrends.getData().add(series);
 
         categoryDistribution.getData().addAll(
-                new PieChart.Data("Food & Dining",    35),
-                new PieChart.Data("Shopping",         25),
-                new PieChart.Data("Transportation",   20),
-                new PieChart.Data("Entertainment",    15),
-                new PieChart.Data("Others",            5)
+                new PieChart.Data("Food & Dining", 35),
+                new PieChart.Data("Shopping", 25),
+                new PieChart.Data("Transportation", 20),
+                new PieChart.Data("Entertainment", 15),
+                new PieChart.Data("Others", 5)
         );
     }
 
@@ -116,7 +122,7 @@ public class AnalyticsController implements Initializable {
             return;
         }
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/ai.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/ai/ai.fxml"));
             Node view = loader.load();  // 加载 FXML 成为 Node
             AiController controller = loader.getController();
             StyleClassFixer.fixStyleClasses(view);
@@ -144,8 +150,7 @@ public class AnalyticsController implements Initializable {
             });
             activetimeline.play();
 //            setColumnCount(analyticsGrid, 1);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

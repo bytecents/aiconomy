@@ -1,17 +1,18 @@
 package com.se.aiconomy.server.model.dto.user.response;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import com.se.aiconomy.server.langchain.common.model.BillType;
+import com.se.aiconomy.server.langchain.common.model.DynamicBillType;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @Builder
+@ToString
 public class UserInfo {
     private String id; // 唯一标识符
     private String email; // 邮箱
@@ -24,4 +25,5 @@ public class UserInfo {
     private List<String> financialGoal; // 理财目标：储蓄、投资、买房……
     private Double monthlyIncome; // 月收入
     private List<String> mainExpenseType; // 主要开销：房租、教育、交通等
+    private Set<DynamicBillType> billTypes; // 账单类型
 }
