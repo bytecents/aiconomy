@@ -121,7 +121,8 @@ public class BudgetServiceImpl implements BudgetService {
     public double getDailyAvailableBudget(String userId) throws ServiceException {
         double totalBudget = getTotalBudget(userId);
         double totalSpent = getTotalSpent(userId);
-        double dailyAvailable = (totalBudget - totalSpent) / 30;
+        int leftDays = 30 - LocalDateTime.now().getDayOfMonth();
+        double dailyAvailable = (totalBudget - totalSpent) / leftDays;
         double dailySpent = 0;
         List<TransactionDto> transactions = getTransactionsByUserId(userId);
         LocalDateTime today = LocalDateTime.now();

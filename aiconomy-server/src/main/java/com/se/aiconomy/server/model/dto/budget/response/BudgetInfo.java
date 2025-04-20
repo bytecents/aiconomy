@@ -10,11 +10,10 @@ import lombok.Setter;
 @AllArgsConstructor
 @Builder
 public class BudgetInfo {
-    private String Id; // 预算ID
+    private String id; // 预算ID
     private String userId; // 用户ID
-    private String budgetCategory; // 预算类别 (如 "餐饮", "交通")
+    private String budgetCategory; // 预算类别 (如 "餐饮", "交通")，可自定义，与Transaction中的类别对应
     private double budgetAmount; // 预算金额（元）
-    private String budgetPeriod; // 预算周期 (如 "月", "季度")
-    private String alertSettings; // 预算预警设置 (如 "超过80%时提醒")
+    private double alertSettings; // 预算预警设置 (如 "超过80%时提醒")
     private String notes; // 备注
 }
