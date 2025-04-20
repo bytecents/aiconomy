@@ -394,21 +394,22 @@ public class TransactionServiceImpl implements TransactionService {
     /**
      * 根据 accountId 获取所有的交易记录
      *
-     * @param accountId 账户 ID
+     * @param accountId 账户 ID, userId 用户Id
      * @return 返回与 accountId 关联的所有交易记录的 TransactionDto 列表
      * @throws ServiceException 如果未找到相关交易记录
      */
-    public List<TransactionDto> getTransactionsByAccountId(String accountId) throws ServiceException {
+    public List<TransactionDto> getTransactionsByAccountId(String accountId, String userId) throws ServiceException {
+
         // 获取所有交易记录
         List<TransactionDto> allTransactions = transactionDao.findAll();
 
         // 过滤出 accountId 符合条件的交易记录
         List<TransactionDto> filteredTransactions = allTransactions.stream()
-            .filter(transaction -> accountId.equals(transaction.getAccountId())) // 根据 accountId 过滤
-            .collect(Collectors.toList());
+                .filter(transaction -> accountId.equals(transaction.getAccountId()) && userId.equals(transaction.getUserId())) // 根据 accountId 和 userId 过滤
+                .collect(Collectors.toList());
 
         if (filteredTransactions.isEmpty()) {
-            throw new ServiceException("No transactions found for accountId: " + accountId, null);
+            throw new ServiceException("No transactions found for accountId: " + accountId + " and userId: " + userId, null);
         }
 
         return filteredTransactions;
