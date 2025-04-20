@@ -5,6 +5,7 @@ package com.se.aiconomy.client.Application;
 import atlantafx.base.theme.PrimerLight;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
@@ -21,8 +22,11 @@ public class AIconomyApplication extends Application {
     public void start(Stage stage) throws IOException {
         Application.setUserAgentStylesheet(new PrimerLight().getUserAgentStylesheet());
 //        Application.setUserAgentStylesheet(new PrimerDark().getUserAgentStylesheet()); // TODO: dark mode
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/main.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 1080, 720);
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/login.fxml"));
+        Parent root = loader.load();
+        StyleClassFixer.fixStyleClasses(root);
+
+        Scene scene = new Scene(root, 1200, 820);
         stage.setTitle("AIconomy");
         stage.setScene(scene);
         stage.show();

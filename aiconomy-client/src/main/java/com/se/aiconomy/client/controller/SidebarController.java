@@ -1,5 +1,9 @@
 package com.se.aiconomy.client.controller;
 
+import com.se.aiconomy.client.Application.StyleClassFixer;
+import javafx.animation.FadeTransition;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -9,6 +13,8 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
+import javafx.util.Duration;
 
 import java.io.IOException;
 import java.net.URL;
@@ -49,10 +55,12 @@ public class SidebarController implements Initializable {
     private final Map<String, ImageView> navIcons = new HashMap<>();
     private final Map<String, Label> navLabels = new HashMap<>();
 
-    private static final String ACTIVE_STYLE = "-fx-background-color: #EFF6FF; -fx-background-radius: 8;";
+//    private static final String ACTIVE_STYLE = "-fx-background-color: #EFF6FF; -fx-background-radius: 8;";
     private static final String INACTIVE_STYLE = "-fx-background-radius: 8;";
     private static final String ACTIVE_TEXT_COLOR = "-fx-text-fill: #2563EB;";
-    private static final String INACTIVE_TEXT_COLOR = "";
+//    private static final String INACTIVE_TEXT_COLOR = "";
+
+    private String activePanel;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -82,33 +90,74 @@ public class SidebarController implements Initializable {
         switchToDashboard();
     }
 
+    private static String toHex(Color color) {
+        return String.format("#%02X%02X%02X",
+                (int) (color.getRed() * 255),
+                (int) (color.getGreen() * 255),
+                (int) (color.getBlue() * 255));
+    }
+
     private void setActiveButton(String buttonKey) {
-        // Reset all buttons to inactive state
-        navButtons.forEach((key, button) -> {
-            button.setStyle(INACTIVE_STYLE);
-            navLabels.get(key).setStyle(INACTIVE_TEXT_COLOR);
+        if (buttonKey.equals(activePanel)) {
+            return;
+        }
 
-            // Reset icons to inactive
-            String iconPath = String.format("/assets/%s.png", key);
-            navIcons.get(key).setImage(new Image(Objects.requireNonNull(getClass().getResource(iconPath)).toExternalForm()));
+        Color inactiveBg = Color.web("#F9FAFB");
+        Color activeBg = Color.web("#EFF6FF");
+        Duration duration = Duration.millis(200);
+
+        if (activePanel != null) {
+            HBox inactiveButton = navButtons.get(activePanel);
+            Timeline inactiveTimeline = new Timeline(new KeyFrame(duration));
+            inactiveTimeline.currentTimeProperty().addListener((obs, oldTime, newTime) -> {
+                double frac = newTime.toMillis() / duration.toMillis();
+                Color currentBg = activeBg.interpolate(inactiveBg, frac);
+                inactiveButton.setStyle("-fx-background-color: " + toHex(currentBg) + "; -fx-background-radius: 8;");
+            });
+            inactiveTimeline.play();
+
+            String inactiveIconPath = String.format("/assets/%s.png", activePanel);
+            navIcons.get(activePanel).setImage(new Image(Objects.requireNonNull(getClass().getResource(inactiveIconPath)).toExternalForm()));
+            navButtons.get(activePanel).setStyle(INACTIVE_STYLE);
+            navLabels.get(activePanel).setStyle(INACTIVE_STYLE);
+        }
+
+        HBox activeButton = navButtons.get(buttonKey);
+        Timeline activetimeline = new Timeline(new KeyFrame(duration));
+        activetimeline.currentTimeProperty().addListener((obs, oldTime, newTime) -> {
+            double frac = newTime.toMillis() / duration.toMillis();
+            Color currentBg = inactiveBg.interpolate(activeBg, frac);
+            activeButton.setStyle("-fx-background-color: " + toHex(currentBg) + "; -fx-background-radius: 8;");
         });
+        activetimeline.play();
 
-        // Set active state for selected button
-        navButtons.get(buttonKey).setStyle(ACTIVE_STYLE);
-        navLabels.get(buttonKey).setStyle(ACTIVE_TEXT_COLOR);
-
-        // Set active icon
         String activeIconPath = String.format("/assets/%s-active.png", buttonKey);
         navIcons.get(buttonKey).setImage(new Image(Objects.requireNonNull(getClass().getResource(activeIconPath)).toExternalForm()));
+        navLabels.get(buttonKey).setStyle(ACTIVE_TEXT_COLOR);
+        activePanel = buttonKey;
     }
 
     private void loadView(String fxmlPath) {
-        try {
-            Node view = FXMLLoader.load(Objects.requireNonNull(getClass().getResource(fxmlPath)));
-            contentArea.setContent(view);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        FadeTransition fadeOut = new FadeTransition(Duration.millis(100), contentArea);
+        fadeOut.setFromValue(1.0);
+        fadeOut.setToValue(0.0);
+        fadeOut.setOnFinished(event -> {
+            try {
+                Node view = FXMLLoader.load(Objects.requireNonNull(getClass().getResource(fxmlPath)));
+                StyleClassFixer.fixStyleClasses(view);
+
+                contentArea.setContent(view);
+
+                FadeTransition fadeIn = new FadeTransition(Duration.millis(100), contentArea);
+                fadeIn.setFromValue(0.0);
+                fadeIn.setToValue(1.0);
+                fadeIn.play();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+        fadeOut.play();
     }
 
     @FXML
