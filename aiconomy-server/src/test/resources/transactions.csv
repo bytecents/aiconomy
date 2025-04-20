@@ -1,0 +1,5 @@
+id,time,type,counterparty,product,incomeOrExpense,amount,paymentMethod,status,merchantOrderId,accountId
+12345,2025-04-16T10:30:00,消费,Walmart,iPhone 15,支出,5999.99,微信支付,成功,7890,useracc001
+12346,2025-04-17T12:45:00,转账,支付宝,MacBook Pro,收入,12999.00,信用卡,成功,7891,useracc001
+12347,2025-04-18T09:00:00,消费,京东,耳机,支出,299.99,支付宝,待支付,7892,useracc002
+12348,2025-04-19T15:00:00,转账,支付宝,电视,收入,4999.00,现金,成功,7893,useracc002

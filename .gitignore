@@ -40,3 +40,11 @@ build/
 mvnw
 mvnw.cmd
 .mvn/*
+
+GitCommitMessageStorage.xml
+material_theme_project_new.xml
+.gitignore
+logs/
+
+.idea
+data
