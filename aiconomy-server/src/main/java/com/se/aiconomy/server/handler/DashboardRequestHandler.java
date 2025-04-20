@@ -27,7 +27,7 @@ public class DashboardRequestHandler {
 
     private DashboardRequestHandler()
     {
-
+        // Default constructor for JSON serialization/deserialization
     }
     /**
      * 获取用户的 Net Worth，Monthly Spending，Monthly Income 和 Credit Card Due
