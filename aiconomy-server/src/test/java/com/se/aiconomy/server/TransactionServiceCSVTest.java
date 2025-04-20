@@ -175,6 +175,7 @@ public class TransactionServiceCSVTest {
         transaction.setStatus("待支付");
         transaction.setMerchantOrderId("JD" + UUID.randomUUID().toString().substring(0, 8));
         transaction.setAccountId("userAcc001");
+        transaction.setUserId("Aurelia");
         transaction.setRemark("测试交易");
 
         return transactionDao.create(transaction);
@@ -198,6 +199,7 @@ public class TransactionServiceCSVTest {
         incomeTransaction.setMerchantOrderId("SAL" + UUID.randomUUID().toString().substring(0, 8));
         incomeTransaction.setAccountId("userAcc002");
         incomeTransaction.setRemark("月度工资");
+        incomeTransaction.setUserId("Aurelia");
 
         transactionDao.create(incomeTransaction);
     }
@@ -211,7 +213,7 @@ public class TransactionServiceCSVTest {
 
         // 查找特定的 accountId (例如 "userAcc002")
         String accountId = "userAcc002";
-        List<TransactionDto> transactions = transactionService.getTransactionsByAccountId(accountId);
+        List<TransactionDto> transactions = transactionService.getTransactionsByAccountId(accountId, createTestTransaction().getUserId());
 
         // 断言返回的交易记录不为空
         assertNotNull(transactions, "交易记录为空");
