@@ -6,13 +6,13 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.image.Image?>
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.se.aiconomy.client.controller.AddBudgetController"
+<AnchorPane xmlns:fx="http://javafx.com/fxml"
+            xmlns="http://javafx.com/javafx"
+            fx:controller="com.se.aiconomy.client.controller.BudgetController"
             style="-fx-background-color: #f0f0f0;">
     <VBox spacing="16" AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0"
-      AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0"
-      style="-fx-padding:12;">
+          AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0"
+          style="-fx-padding:12;">
         <HBox spacing="8">
             <VBox spacing="4">
                 <Label text="Add Budget"
