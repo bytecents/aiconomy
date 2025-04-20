@@ -1,0 +1,524 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.collections.FXCollections?>
+<?import javafx.scene.control.ComboBox?>
+<?import java.lang.String?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.control.ScrollPane?>
+<VBox styleClass="p-8 gap-6" xmlns="http://javafx.com/javafx/23.0.1" stylesheets="/css/styles.css"
+      fx:controller="com.se.aiconomy.client.controller.transactions.TransactionsController" xmlns:fx="http://javafx.com/fxml/1">
+    <HBox styleClass="">
+        <Label styleClass="text-2xl font-semibold text-gray-900">Transactions</Label>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Button text="Add Transactions" styleClass="hover-bg-blue-700 p-4-2 bg-blue-600 text-white font-roboto cursor-pointer"/>
+    </HBox>
+    <HBox styleClass="p-4 bg-gray-50 rounded-xl border border-gray-200 gap-6">
+        <!-- Manual Import -->
+        <VBox styleClass="p-4 bg-white rounded-lg border border-gray-200" HBox.hgrow="ALWAYS" >
+            <HBox alignment="CENTER_LEFT" styleClass="gap-2 pb-3">
+                <Region styleClass="w-5 h-5 bg-gray-600" />
+                <Label styleClass="font-medium text-base">Import File</Label>
+            </HBox>
+            <Label styleClass="text-sm text-gray-600 pb-3 font-roboto">
+                Upload your transaction data file
+            </Label>
+            <VBox styleClass="gap-2">
+                <Button styleClass="w-full p-2-4-2-4 cursor-pointer bg-white border border-gray-200 rounded-lg hover-bg-gray-50 text-sm">
+                    Choose File
+                </Button>
+                <HBox alignment="CENTER_LEFT" styleClass="gap-2 pt-1">
+                    <Label styleClass="text-gray-500 text-sm font-roboto">Supported formats:</Label>
+                    <Label styleClass="p-0_5-2-0_5-2 bg-blue-50 text-blue-600 text-sm font-roboto rounded">CSV</Label>
+                    <Label styleClass="p-0_5-2-0_5-2 bg-green-50 text-green-600 text-sm font-roboto rounded">EXCEL</Label>
+                    <Label styleClass="p-0_5-2-0_5-2 bg-yellow-50 text-yellow-600 text-sm font-roboto rounded">JSON</Label>
+                </HBox>
+            </VBox>
+        </VBox>
+
+        <!-- Templates -->
+        <VBox styleClass="p-4 bg-white rounded-lg border border-gray-200" HBox.hgrow="ALWAYS">
+                <HBox alignment="CENTER_LEFT" styleClass="gap-2 pb-3">
+                    <Region styleClass="w-5 h-5 bg-gray-600" />
+                    <Label styleClass="text-base font-medium">Templates</Label>
+                </HBox>
+                <Label styleClass="text-sm font-roboto text-gray-600 pb-3">
+                    Download import templates
+                </Label>
+                <HBox styleClass="gap-2 py-1" VBox.vgrow="ALWAYS">
+                    <VBox alignment="CENTER" HBox.hgrow="ALWAYS" styleClass="h-full cursor-pointer p-2-4-2-4 border border-blue-200 bg-blue-50 rounded-lg hover-bg-blue-100 gap-1">
+                        <Region styleClass="w-4 h-4 bg-blue-600" />
+                        <Label styleClass="text-blue-600 text-sm font-roboto">CSV</Label>
+                    </VBox>
+                    <VBox alignment="CENTER" HBox.hgrow="ALWAYS" styleClass="h-full cursor-pointer p-2-4-2-4 border border-green-200 bg-green-50 rounded-lg hover-bg-green-100 gap-1">
+                        <Region styleClass="w-4 h-4 bg-green-600" />
+                        <Label styleClass="text-green-600 text-sm font-roboto">Excel</Label>
+                    </VBox>
+                    <VBox alignment="CENTER" HBox.hgrow="ALWAYS" styleClass="h-full cursor-pointer p-2-4-2-4 border border-yellow-200 bg-yellow-50 rounded-lg hover-bg-yellow-100 gap-1">
+                        <Region styleClass="w-4 h-4 bg-yellow-600" />
+                        <Label styleClass="text-yellow-600 text-sm font-roboto">Json</Label>
+                    </VBox>
+<!--                    <button-->
+<!--                            class="px-4 py-2 border border-green-200 bg-green-50 text-green-600 rounded-lg hover:bg-green-100 text-sm flex flex-col items-center justify-center gap-1">-->
+<!--                        <svg-->
+<!--                                xmlns="http://www.w3.org/2000/svg"-->
+<!--                                width="24"-->
+<!--                                height="24"-->
+<!--                                viewBox="0 0 24 24"-->
+<!--                                fill="none"-->
+<!--                                stroke="currentColor"-->
+<!--                                stroke-width="2"-->
+<!--                                stroke-linecap="round"-->
+<!--                                stroke-linejoin="round"-->
+<!--                                class="lucide lucide-file-spreadsheet w-4 h-4">-->
+<!--                            <path-->
+<!--                                    d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" />-->
+<!--                            <path d="M14 2v4a2 2 0 0 0 2 2h4" />-->
+<!--                            <path d="M8 13h2" />-->
+<!--                            <path d="M14 13h2" />-->
+<!--                            <path d="M8 17h2" />-->
+<!--                            <path d="M14 17h2" />-->
+<!--                        </svg>-->
+<!--                        Excel-->
+<!--                    </button>-->
+<!--                    <button-->
+<!--                            class="px-4 py-2 border border-yellow-200 bg-yellow-50 text-yellow-600 rounded-lg hover:bg-yellow-100 text-sm flex flex-col items-center justify-center gap-2">-->
+<!--                        <svg-->
+<!--                                xmlns="http://www.w3.org/2000/svg"-->
+<!--                                width="24"-->
+<!--                                height="24"-->
+<!--                                viewBox="0 0 24 24"-->
+<!--                                fill="none"-->
+<!--                                stroke="currentColor"-->
+<!--                                stroke-width="2"-->
+<!--                                stroke-linecap="round"-->
+<!--                                stroke-linejoin="round"-->
+<!--                                class="lucide lucide-file-json w-4 h-4">-->
+<!--                            <path-->
+<!--                                    d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" />-->
+<!--                            <path d="M14 2v4a2 2 0 0 0 2 2h4" />-->
+<!--                            <path-->
+<!--                                    d="M10 12a1 1 0 0 0-1 1v1a1 1 0 0 1-1 1 1 1 0 0 1 1 1v1a1 1 0 0 0 1 1" />-->
+<!--                            <path-->
+<!--                                    d="M14 18a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1 1 1 0 0 1-1-1v-1a1 1 0 0 0-1-1" />-->
+<!--                        </svg>-->
+<!--                        JSON-->
+<!--                    </button>-->
+                </HBox>
+            </VBox>
+    </HBox>
+    <HBox alignment="CENTER_LEFT">
+        <HBox styleClass="gap-3">
+            <AnchorPane>
+                <Region styleClass="w-5 h-5 bg-gray-400" AnchorPane.topAnchor="10" AnchorPane.leftAnchor="12" />
+                <TextField promptText="Search transactions..." AnchorPane.topAnchor="0" AnchorPane.leftAnchor="0" styleClass="w-64 text-base rounded-lg font-roboto p-2-4-2-10" />
+            </AnchorPane>
+            <ComboBox styleClass="text-base font-roboto cursor-pointer rounded-lg" value="All Transactions">
+                <items>
+                    <FXCollections fx:factory="observableArrayList">
+                        <String fx:value="All Categories"/>
+                        <String fx:value="Food &amp; Dining"/>
+                        <String fx:value="Shopping"/>
+                        <String fx:value="Transportation"/>
+                    </FXCollections>
+                </items>
+            </ComboBox>
+            <ComboBox styleClass="text-base font-roboto cursor-pointer rounded-lg" value="All Transactions">
+                <items>
+                    <FXCollections fx:factory="observableArrayList">
+                        <String fx:value="All Accounts"/>
+                        <String fx:value="Chase Bank"/>
+                        <String fx:value="Wells Fargo"/>
+                    </FXCollections>
+                </items>
+            </ComboBox>
+        </HBox>
+        <Region HBox.hgrow="ALWAYS" />
+<!--        <div class="flex items-center gap-2">-->
+<!--            <button-->
+<!--                    class="px-3 py-2 text-purple-600 hover:bg-purple-50 rounded-lg flex items-center gap-2">-->
+<!--                <svg-->
+<!--                        xmlns="http://www.w3.org/2000/svg"-->
+<!--                        width="24"-->
+<!--                        height="24"-->
+<!--                        viewBox="0 0 24 24"-->
+<!--                        fill="none"-->
+<!--                        stroke="currentColor"-->
+<!--                        stroke-width="2"-->
+<!--                        stroke-linecap="round"-->
+<!--                        stroke-linejoin="round"-->
+<!--                        class="lucide lucide-wand-sparkles size-4">-->
+<!--                    <path-->
+<!--                            d="m21.64 3.64-1.28-1.28a1.21 1.21 0 0 0-1.72 0L2.36 18.64a1.21 1.21 0 0 0 0 1.72l1.28 1.28a1.2 1.2 0 0 0 1.72 0L21.64 5.36a1.2 1.2 0 0 0 0-1.72" />-->
+<!--                    <path d="m14 7 3 3" />-->
+<!--                    <path d="M5 6v4" />-->
+<!--                    <path d="M19 14v4" />-->
+<!--                    <path d="M10 2v2" />-->
+<!--                    <path d="M7 8H3" />-->
+<!--                    <path d="M21 16h-4" />-->
+<!--                    <path d="M11 3H9" />-->
+<!--                </svg>-->
+<!--                Auto-categorize-->
+<!--            </button>-->
+<!--        </div>-->
+    </HBox>
+    <VBox styleClass="bg-white rounded-xl border border-gray-200" VBox.vgrow="ALWAYS">
+        <!-- Table Header -->
+        <GridPane styleClass="gap-4 p-3-4-3-4 border-b rounded-t-xl border-gray-200 bg-gray-50 ">
+            <columnConstraints>
+                <ColumnConstraints percentWidth="30" />
+                <ColumnConstraints percentWidth="20" />
+                <ColumnConstraints percentWidth="15" />
+                <ColumnConstraints percentWidth="15" />
+                <ColumnConstraints percentWidth="10" />
+                <ColumnConstraints percentWidth="10" />
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints percentHeight="100" />
+            </rowConstraints>
+            <Label GridPane.columnIndex="0" styleClass="text-sm font-medium text-gray-600">Description</Label>
+            <Label GridPane.columnIndex="1" styleClass="text-sm font-medium text-gray-600">Date</Label>
+            <Label GridPane.columnIndex="2" styleClass="text-sm font-medium text-gray-600">Category</Label>
+            <Label GridPane.columnIndex="3" styleClass="text-sm font-medium text-gray-600">Account</Label>
+            <HBox alignment="CENTER_RIGHT" GridPane.columnIndex="4">
+                <Label styleClass="text-sm font-medium text-gray-600">Amount</Label>
+            </HBox>
+            <HBox alignment="CENTER_RIGHT" GridPane.columnIndex="5">
+                <Label styleClass="text-sm font-medium text-gray-600">Actions</Label>
+            </HBox>
+        </GridPane>
+
+        <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" VBox.vgrow="ALWAYS">
+            <VBox fx:id="transactionItems"></VBox>
+        </ScrollPane>
+
+        <!-- Transaction Items -->
+        <!--        <div class="divide-y divide-gray-200">-->
+        <!--            &lt;!&ndash; Transaction Item &ndash;&gt;-->
+        <!--            <div-->
+        <!--                    class="grid grid-cols-7 gap-4 px-4 py-3 items-center hover:bg-gray-50">-->
+        <!--                <div class="col-span-2 flex items-center gap-3">-->
+        <!--                    <div-->
+        <!--                            class="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center">-->
+        <!--                        <svg-->
+        <!--                                xmlns="http://www.w3.org/2000/svg"-->
+        <!--                                width="24"-->
+        <!--                                height="24"-->
+        <!--                                viewBox="0 0 24 24"-->
+        <!--                                fill="none"-->
+        <!--                                stroke="currentColor"-->
+        <!--                                stroke-width="2"-->
+        <!--                                stroke-linecap="round"-->
+        <!--                                stroke-linejoin="round"-->
+        <!--                                class="lucide lucide-shopping-bag size-5 text-blue-600">-->
+        <!--                            <path-->
+        <!--                                    d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" />-->
+        <!--                            <path d="M3 6h18" />-->
+        <!--                            <path d="M16 10a4 4 0 0 1-8 0" />-->
+        <!--                        </svg>-->
+        <!--                    </div>-->
+        <!--                    <div>-->
+        <!--                        <div class="font-medium">Amazon.com</div>-->
+        <!--                        <div class="text-sm text-gray-500">Online Shopping</div>-->
+        <!--                    </div>-->
+        <!--                </div>-->
+        <!--                <div class="text-gray-600">Feb 15, 2024</div>-->
+        <!--                <div>-->
+        <!--                    <select-->
+        <!--                            class="w-full px-3 py-1.5 border border-gray-200 rounded-lg text-sm">-->
+        <!--                        <option>Shopping</option>-->
+        <!--                        <option>Electronics</option>-->
+        <!--                        <option>Home</option>-->
+        <!--                    </select>-->
+        <!--                </div>-->
+        <!--                <div class="text-gray-600">Chase Bank</div>-->
+        <!--                <div class="text-right font-medium text-red-500">-$129.99</div>-->
+        <!--                <div class="text-right">-->
+        <!--                    <button class="p-2 hover:bg-gray-100 rounded-lg">-->
+        <!--                        <svg-->
+        <!--                                xmlns="http://www.w3.org/2000/svg"-->
+        <!--                                width="24"-->
+        <!--                                height="24"-->
+        <!--                                viewBox="0 0 24 24"-->
+        <!--                                fill="none"-->
+        <!--                                stroke="currentColor"-->
+        <!--                                stroke-width="2"-->
+        <!--                                stroke-linecap="round"-->
+        <!--                                stroke-linejoin="round"-->
+        <!--                                class="lucide lucide-ellipsis size-4">-->
+        <!--                            <circle cx="12" cy="12" r="1" />-->
+        <!--                            <circle cx="19" cy="12" r="1" />-->
+        <!--                            <circle cx="5" cy="12" r="1" />-->
+        <!--                        </svg>-->
+        <!--                    </button>-->
+        <!--                </div>-->
+        <!--            </div>-->
+
+        <!--            &lt;!&ndash; AI Categorized Transaction &ndash;&gt;-->
+        <!--            <div-->
+        <!--                    class="grid grid-cols-7 gap-4 px-4 py-3 items-center hover:bg-gray-50">-->
+        <!--                <div class="col-span-2 flex items-center gap-3">-->
+        <!--                    <div-->
+        <!--                            class="w-10 h-10 rounded-lg bg-purple-100 flex items-center justify-center">-->
+        <!--                        <svg-->
+        <!--                                xmlns="http://www.w3.org/2000/svg"-->
+        <!--                                width="24"-->
+        <!--                                height="24"-->
+        <!--                                viewBox="0 0 24 24"-->
+        <!--                                fill="none"-->
+        <!--                                stroke="currentColor"-->
+        <!--                                stroke-width="2"-->
+        <!--                                stroke-linecap="round"-->
+        <!--                                stroke-linejoin="round"-->
+        <!--                                class="lucide lucide-utensils w-5 h-5 text-purple-600">-->
+        <!--                            <path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2" />-->
+        <!--                            <path d="M7 2v20" />-->
+        <!--                            <path-->
+        <!--                                    d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7" />-->
+        <!--                        </svg>-->
+        <!--                    </div>-->
+        <!--                    <div>-->
+        <!--                        <div class="font-medium">Whole Foods Market</div>-->
+        <!--                        <div class="text-sm text-gray-500">Groceries</div>-->
+        <!--                    </div>-->
+        <!--                </div>-->
+        <!--                <div class="text-gray-600">Feb 14, 2024</div>-->
+        <!--                <div class="relative">-->
+        <!--                    <select-->
+        <!--                            class="w-full px-3 py-1.5 border border-purple-200 rounded-lg text-sm bg-purple-50">-->
+        <!--                        <option>Groceries</option>-->
+        <!--                        <option>Food & Dining</option>-->
+        <!--                    </select>-->
+        <!--                    <div-->
+        <!--                            class="absolute -top-2 -right-2 w-5 h-5 bg-purple-100 rounded-full flex items-center justify-center">-->
+        <!--                        <svg-->
+        <!--                                xmlns="http://www.w3.org/2000/svg"-->
+        <!--                                width="24"-->
+        <!--                                height="24"-->
+        <!--                                viewBox="0 0 24 24"-->
+        <!--                                fill="none"-->
+        <!--                                stroke="currentColor"-->
+        <!--                                stroke-width="2"-->
+        <!--                                stroke-linecap="round"-->
+        <!--                                stroke-linejoin="round"-->
+        <!--                                class="lucide lucide-wand-sparkles w-3 h-3 text-purple-600">-->
+        <!--                            <path-->
+        <!--                                    d="m21.64 3.64-1.28-1.28a1.21 1.21 0 0 0-1.72 0L2.36 18.64a1.21 1.21 0 0 0 0 1.72l1.28 1.28a1.2 1.2 0 0 0 1.72 0L21.64 5.36a1.2 1.2 0 0 0 0-1.72" />-->
+        <!--                            <path d="m14 7 3 3" />-->
+        <!--                            <path d="M5 6v4" />-->
+        <!--                            <path d="M19 14v4" />-->
+        <!--                            <path d="M10 2v2" />-->
+        <!--                            <path d="M7 8H3" />-->
+        <!--                            <path d="M21 16h-4" />-->
+        <!--                            <path d="M11 3H9" />-->
+        <!--                        </svg>-->
+        <!--                    </div>-->
+        <!--                </div>-->
+        <!--                <div class="text-gray-600">Wells Fargo</div>-->
+        <!--                <div class="text-right font-medium text-red-500">-$85.50</div>-->
+        <!--                <div class="text-right">-->
+        <!--                    <button class="p-2 hover:bg-gray-100 rounded-lg">-->
+        <!--                        <svg-->
+        <!--                                xmlns="http://www.w3.org/2000/svg"-->
+        <!--                                width="24"-->
+        <!--                                height="24"-->
+        <!--                                viewBox="0 0 24 24"-->
+        <!--                                fill="none"-->
+        <!--                                stroke="currentColor"-->
+        <!--                                stroke-width="2"-->
+        <!--                                stroke-linecap="round"-->
+        <!--                                stroke-linejoin="round"-->
+        <!--                                class="lucide lucide-ellipsis size-4">-->
+        <!--                            <circle cx="12" cy="12" r="1" />-->
+        <!--                            <circle cx="19" cy="12" r="1" />-->
+        <!--                            <circle cx="5" cy="12" r="1" />-->
+        <!--                        </svg>-->
+        <!--                    </button>-->
+        <!--                </div>-->
+        <!--            </div>-->
+
+        <!--            <div-->
+        <!--                    class="grid grid-cols-7 gap-4 px-4 py-3 items-center hover:bg-gray-50">-->
+        <!--                <div class="col-span-2 flex items-center gap-3">-->
+        <!--                    <div-->
+        <!--                            class="w-10 h-10 rounded-lg bg-yellow-100 flex items-center justify-center">-->
+        <!--                        <svg-->
+        <!--                                xmlns="http://www.w3.org/2000/svg"-->
+        <!--                                width="24"-->
+        <!--                                height="24"-->
+        <!--                                viewBox="0 0 24 24"-->
+        <!--                                fill="none"-->
+        <!--                                stroke="currentColor"-->
+        <!--                                stroke-width="2"-->
+        <!--                                stroke-linecap="round"-->
+        <!--                                stroke-linejoin="round"-->
+        <!--                                class="lucide lucide-airplane w-5 h-5 text-yellow-600">-->
+        <!--                            <path d="M21 10.5 3 21 3 12 21 2.5 21 10.5Z" />-->
+        <!--                            <path d="M3 21 21 10.5" />-->
+        <!--                            <path d="M3 12 21 2.5" />-->
+        <!--                            <path d="M3 12 21 21" />-->
+        <!--                        </svg>-->
+        <!--                    </div>-->
+        <!--                    <div>-->
+        <!--                        <div class="font-medium">Delta Airlines</div>-->
+        <!--                        <div class="text-sm text-gray-500">Flight Booking</div>-->
+        <!--                    </div>-->
+        <!--                </div>-->
+        <!--                <div class="text-gray-600">Feb 13, 2024</div>-->
+        <!--                <div>-->
+        <!--                    <select-->
+        <!--                            class="w-full px-3 py-1.5 border border-gray-200 rounded-lg text-sm">-->
+        <!--                        <option>Travel</option>-->
+        <!--                    </select>-->
+        <!--                </div>-->
+        <!--                <div class="text-gray-600">Chase Bank</div>-->
+        <!--                <div class="text-right font-medium text-red-500">-$450.00</div>-->
+        <!--                <div class="text-right">-->
+        <!--                    <button class="p-2 hover:bg-gray-100 rounded-lg">-->
+        <!--                        <svg-->
+        <!--                                xmlns="http://www.w3.org/2000/svg"-->
+        <!--                                width="24"-->
+        <!--                                height="24"-->
+        <!--                                viewBox="0 0 24 24"-->
+        <!--                                fill="none"-->
+        <!--                                stroke="currentColor"-->
+        <!--                                stroke-width="2"-->
+        <!--                                stroke-linecap="round"-->
+        <!--                                stroke-linejoin="round"-->
+        <!--                                class="lucide lucide-ellipsis size-4">-->
+        <!--                            <circle cx="12" cy="12" r="1" />-->
+        <!--                            <circle cx="19" cy="12" r="1" />-->
+        <!--                            <circle cx="5" cy="12" r="1" />-->
+        <!--                        </svg>-->
+        <!--                    </button>-->
+        <!--                </div>-->
+        <!--            </div>-->
+
+        <!--            <div-->
+        <!--                    class="grid grid-cols-7 gap-4 px-4 py-3 items-center hover:bg-gray-50">-->
+        <!--                <div class="col-span-2 flex items-center gap-3">-->
+        <!--                    <div-->
+        <!--                            class="w-10 h-10 rounded-lg bg-green-100 flex items-center justify-center">-->
+        <!--                        <svg-->
+        <!--                                xmlns="http://www.w3.org/2000/svg"-->
+        <!--                                width="24"-->
+        <!--                                height="24"-->
+        <!--                                viewBox="0 0 24 24"-->
+        <!--                                fill="none"-->
+        <!--                                stroke="currentColor"-->
+        <!--                                stroke-width="2"-->
+        <!--                                stroke-linecap="round"-->
+        <!--                                stroke-linejoin="round"-->
+        <!--                                class="lucide lucide-utensils w-5 h-5 text-green-600">-->
+        <!--                            <path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2" />-->
+        <!--                            <path d="M7 2v20" />-->
+        <!--                            <path-->
+        <!--                                    d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7" />-->
+        <!--                        </svg>-->
+        <!--                    </div>-->
+        <!--                    <div>-->
+        <!--                        <div class="font-medium">Chipotle Mexican Grill</div>-->
+        <!--                        <div class="text-sm text-gray-500">Fast Food</div>-->
+        <!--                    </div>-->
+        <!--                </div>-->
+        <!--                <div class="text-gray-600">Feb 12, 2024</div>-->
+        <!--                <div>-->
+        <!--                    <select-->
+        <!--                            class="w-full px-3 py-1.5 border border-gray-200 rounded-lg text-sm">-->
+        <!--                        <option>Food & Dining</option>-->
+        <!--                    </select>-->
+        <!--                </div>-->
+        <!--                <div class="text-gray-600">Chase Bank</div>-->
+        <!--                <div class="text-right font-medium text-red-500">-$12.50</div>-->
+        <!--                <div class="text-right">-->
+        <!--                    <button class="p-2 hover:bg-gray-100 rounded-lg">-->
+        <!--                        <svg-->
+        <!--                                xmlns="http://www.w3.org/2000/svg"-->
+        <!--                                width="24"-->
+        <!--                                height="24"-->
+        <!--                                viewBox="0 0 24 24"-->
+        <!--                                fill="none"-->
+        <!--                                stroke="currentColor"-->
+        <!--                                stroke-width="2"-->
+        <!--                                stroke-linecap="round"-->
+        <!--                                stroke-linejoin="round"-->
+        <!--                                class="lucide lucide-ellipsis size-4">-->
+        <!--                            <circle cx="12" cy="12" r="1" />-->
+        <!--                            <circle cx="19" cy="12" r="1" />-->
+        <!--                            <circle cx="5" cy="12" r="1" />-->
+        <!--                        </svg>-->
+        <!--                    </button>-->
+        <!--                </div>-->
+        <!--            </div>-->
+
+        <!--            <div-->
+        <!--                    class="grid grid-cols-7 gap-4 px-4 py-3 items-center hover:bg-gray-50">-->
+        <!--                <div class="col-span-2 flex items-center gap-3">-->
+        <!--                    <div-->
+        <!--                            class="w-10 h-10 rounded-lg bg-red-100 flex items-center justify-center">-->
+        <!--                        <svg-->
+        <!--                                xmlns="http://www.w3.org/2000/svg"-->
+        <!--                                width="24"-->
+        <!--                                height="24"-->
+        <!--                                viewBox="0 0 24 24"-->
+        <!--                                fill="none"-->
+        <!--                                stroke="currentColor"-->
+        <!--                                stroke-width="2"-->
+        <!--                                stroke-linecap="round"-->
+        <!--                                stroke-linejoin="round"-->
+        <!--                                class="lucide lucide-shopping-bag w-5 h-5 text-red-600">-->
+        <!--                            <path-->
+        <!--                                    d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" />-->
+        <!--                            <path d="M3 6h18" />-->
+        <!--                            <path d="M16 10a4 4 0 0 1-8 0" />-->
+        <!--                        </svg>-->
+        <!--                    </div>-->
+        <!--                    <div>-->
+        <!--                        <div class="font-medium">Apple Store</div>-->
+        <!--                        <div class="text-sm text-gray-500">Electronics</div>-->
+        <!--                    </div>-->
+        <!--                </div>-->
+        <!--                <div class="text-gray-600">Feb 11, 2024</div>-->
+        <!--                <div>-->
+        <!--                    <select-->
+        <!--                            class="w-full px-3 py-1.5 border border-gray-200 rounded-lg text-sm">-->
+        <!--                        <option>Shopping</option>-->
+        <!--                    </select>-->
+        <!--                </div>-->
+        <!--                <div class="text-gray-600">Chase Bank</div>-->
+        <!--                <div class="text-right font-medium text-red-500">-->
+        <!--                    -$1,299.99-->
+        <!--                </div>-->
+        <!--                <div class="text-right">-->
+        <!--                    <button class="p-2 hover:bg-gray-100 rounded-lg">-->
+        <!--                        <svg-->
+        <!--                                xmlns="http://www.w3.org/2000/svg"-->
+        <!--                                width="24"-->
+        <!--                                height="24"-->
+        <!--                                viewBox="0 0 24 24"-->
+        <!--                                fill="none"-->
+        <!--                                stroke="currentColor"-->
+        <!--                                stroke-width="2"-->
+        <!--                                stroke-linecap="round"-->
+        <!--                                stroke-linejoin="round"-->
+        <!--                                class="lucide lucide-ellipsis size-4">-->
+        <!--                            <circle cx="12" cy="12" r="1" />-->
+        <!--                            <circle cx="19" cy="12" r="1" />-->
+        <!--                            <circle cx="5" cy="12" r="1" />-->
+        <!--                        </svg>-->
+        <!--                    </button>-->
+        <!--                </div>-->
+        <!--            </div>-->
+        <!--        </div>-->
+    </VBox>
+</VBox>

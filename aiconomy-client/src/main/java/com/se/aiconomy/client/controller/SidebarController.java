@@ -1,8 +1,6 @@
 package com.se.aiconomy.client.controller;
 
-import com.se.aiconomy.client.Application.StyleClassFixer;
 import com.se.aiconomy.client.common.MyFXMLLoader;
-import com.se.aiconomy.server.model.dto.user.response.UserInfo;
 import com.se.aiconomy.server.model.dto.user.response.UserInfo;
 import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
@@ -10,7 +8,6 @@ import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -202,7 +199,7 @@ public class SidebarController implements Initializable {
     @FXML
     public void switchToTransactions() {
         setActiveButton("transactions");
-        loadView("/fxml/transactions.fxml");
+        loadView("/fxml/transactions/transactions.fxml");
     }
 
     @FXML
