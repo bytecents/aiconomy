@@ -48,9 +48,9 @@ public class SignupFlowController1 {
     @Setter  // Lombok generates the setter method for parentController
     private SignupController parentController;  // Automatically generates a setter
 
-    public void initialize(){
+    public void initialize() {
         UnaryOperator<TextFormatter.Change> filter = change -> {
-            String passwordRegex = "[A-Za-z0-9@#\\$%&\\-_.!]*";
+            String passwordRegex = "[A-Za-z0-9@#\\$%&\\-_.!~]*";
             // limitations
             if (change.getText().matches(passwordRegex)) {
                 return change;
@@ -62,18 +62,17 @@ public class SignupFlowController1 {
         passwordField.setTextFormatter(new TextFormatter<>(filter));
         passwordTextField.setTextFormatter(new TextFormatter<>(filter));
         passwordTextField.setVisible(false);
-        if (userData.getEmail() != null){
+        if (userData.getEmail() != null) {
             emailField.setText(userData.getEmail());
         }
-        if (userData.getPassword() != null){
+        if (userData.getPassword() != null) {
             passwordField.setText(userData.getPassword());
             confirmedPasswordField.setText(userData.getPassword());
         }
-        if (!isAgreePolicy.isSelected()){
+        if (!isAgreePolicy.isSelected()) {
             isAgreePolicy.setSelected(true);
         }
     }
-
 
 
     @FXML
@@ -83,7 +82,7 @@ public class SignupFlowController1 {
             String userInputPassword = passwordField.getText();
             String userConfirmPassword = confirmedPasswordField.getText();
 
-            if (!checkInput(userInputEmail, userInputPassword, userConfirmPassword)){
+            if (!checkInput(userInputEmail, userInputPassword, userConfirmPassword)) {
                 return;
             }
             userData.setEmail(userInputEmail.trim());
@@ -96,7 +95,7 @@ public class SignupFlowController1 {
         }
     }
 
-    private boolean checkInput(String userInputEmail, String userInputPassword, String userConfirmPassword){
+    private boolean checkInput(String userInputEmail, String userInputPassword, String userConfirmPassword) {
         if (userInputEmail == null || userInputEmail.trim().isEmpty() || userInputPassword == null || userInputPassword.trim().isEmpty()) {
             CustomDialog.show("Invalid Field", "Email or password is empty", "error", "Fill them");
             return false;
@@ -113,12 +112,12 @@ public class SignupFlowController1 {
             return false;
         }
 
-        if (!userInputPassword.equals(userConfirmPassword)){
+        if (!userInputPassword.equals(userConfirmPassword)) {
             CustomDialog.show("Invalid Password", "Passwords are inconsistent", "error", "Try again");
 //                System.out.println("Passwords are inconsistent");
             return false;
         }
-        if (!isAgreePolicy.isSelected()){
+        if (!isAgreePolicy.isSelected()) {
             CustomDialog.show("Agreement", "You must agree our policies", "error", "Got it");
             return false;
         }
