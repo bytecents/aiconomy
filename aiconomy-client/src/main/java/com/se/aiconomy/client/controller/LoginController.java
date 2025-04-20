@@ -2,21 +2,17 @@ package com.se.aiconomy.client.controller;
 
 import com.se.aiconomy.client.Application.StyleClassFixer;
 import com.se.aiconomy.client.common.CustomDialog;
-import com.se.aiconomy.server.common.exception.ServiceException;
 import com.se.aiconomy.server.handler.UserRequestHandler;
 import com.se.aiconomy.server.model.dto.user.request.UserInfoRequest;
 import com.se.aiconomy.server.model.dto.user.request.UserLoginRequest;
 import com.se.aiconomy.server.model.dto.user.request.UserRegisterRequest;
 import com.se.aiconomy.server.model.dto.user.response.UserInfo;
-import com.se.aiconomy.server.model.entity.User;
-import com.se.aiconomy.server.service.UserService;
 import com.se.aiconomy.server.service.impl.UserServiceImpl;
 import com.se.aiconomy.server.storage.service.impl.JSONStorageServiceImpl;
 import javafx.animation.FadeTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -27,11 +23,9 @@ import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
-import java.net.URL;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
-import java.util.ResourceBundle;
 import java.util.function.UnaryOperator;
 
 public class LoginController extends BaseController {
@@ -186,17 +180,17 @@ public class LoginController extends BaseController {
             CustomDialog.show("Success", "Login successfully", "success", "OK");
         } catch (Exception e) {
             UserRegisterRequest userRegisterRequest = UserRegisterRequest.builder()
-                    .email("2022213670@bupt.cn")
-                    .password("123456")
-                    .firstName("John")
-                    .lastName("Doe")
-                    .phoneNumber("1234567890")
-                    .birthDate(LocalDate.of(1990, 1, 1))
-                    .currency("USD")
-                    .financialGoal(List.of("Save for retirement", "Buy a house"))
-                    .monthlyIncome(5000.0)
-                    .mainExpenseType(List.of("Rent", "Groceries"))
-                    .build();
+                .email("2022213670@bupt.cn")
+                .password("123456")
+                .firstName("John")
+                .lastName("Doe")
+                .phoneNumber("1234567890")
+                .birthDate(LocalDate.of(1990, 1, 1))
+                .currency("USD")
+                .financialGoal(List.of("Save for retirement", "Buy a house"))
+                .monthlyIncome(5000.0)
+                .mainExpenseType(List.of("Rent", "Groceries"))
+                .build();
             System.out.println(userRequestHandler.handleRegisterRequest(userRegisterRequest));
 
             UserInfoRequest userInfoRequest = new UserInfoRequest();

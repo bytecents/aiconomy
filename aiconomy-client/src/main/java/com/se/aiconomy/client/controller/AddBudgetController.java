@@ -1,32 +1,23 @@
 package com.se.aiconomy.client.controller;
 
-//import com.alibaba.fastjson2.internal.asm.Label;
-
-import com.se.aiconomy.server.model.dto.user.response.UserInfo;
-import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.Parent;
+import javafx.scene.control.Label;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Region;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.input.MouseEvent;
-import javafx.event.ActionEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import lombok.Setter;
-import javafx.scene.control.Label;
 
-
-import java.io.IOException;
 import java.util.List;
 
 @Setter
-public class BudgetController extends BaseController {
+public class AddBudgetController extends BaseController {
     @FXML
     private ToggleGroup toggleGroup;
 
@@ -51,58 +42,17 @@ public class BudgetController extends BaseController {
     private VBox vbox8;
     @FXML
     private VBox vboxMonthly, vboxWeekly, vboxYearly;
+    private AddBudgetController.OnOpenListener openListener;
 
     @FXML
-    public void initialize() {
-        if (userInfo == null) {
-            Platform.runLater(() -> {
-                // 延迟到事件调度线程中处理
-                if (userInfo != null) {
-                    init();
-                }
-            });
-        } else {
-            init();
-        }
-    }
-
-    private void init() {
-
+    public void setOnOpenListener(AddBudgetController.OnOpenListener listener) {
+        this.openListener = listener;
     }
 
     @FXML
     public void onAddBudgetClick(ActionEvent event) {
-        try {
-            // 加载 add_budget.fxml
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/add_budget.fxml"));
-            Parent dialogContent = loader.load();
-            // 获取 controller 并传入 rootPane
-            BudgetController controller = loader.getController();
-            controller.setRootPane(rootPane); // ⚠️这里的 rootPane 是你的页面最外层 StackPane
-
-            // 设置弹窗样式（你可以在 FXML 里设也行）
-            dialogContent.setStyle("-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 20;");
-
-            // 创建遮罩
-            Region overlay = new Region();
-            overlay.setStyle("-fx-background-color: rgba(0,0,0,0.5);");
-            overlay.setPrefSize(rootPane.getWidth(), rootPane.getHeight());
-
-            // 弹窗容器（居中）
-            StackPane dialogWrapper = new StackPane(dialogContent);
-            dialogWrapper.setMaxWidth(500);
-            dialogWrapper.setMaxHeight(600);
-
-            // 点击遮罩关闭弹窗
-            overlay.setOnMouseClicked((MouseEvent e) -> {
-                rootPane.getChildren().removeAll(overlay, dialogWrapper);
-            });
-
-            // 添加遮罩和弹窗到页面顶层
-            rootPane.getChildren().addAll(overlay, dialogWrapper);
-
-        } catch (IOException e) {
-            e.printStackTrace();
+        if (openListener != null) {
+            openListener.onOpenAddBudgetPanel();
         }
     }
 
@@ -153,8 +103,7 @@ public class BudgetController extends BaseController {
 
     private void resetAllBoxes() {
         List<VBox> allBoxes = List.of(
-                vbox1, vbox2, vbox3, vbox4, vbox5, vbox6, vbox7, vbox8,
-                vboxMonthly, vboxWeekly, vboxYearly
+            vbox1, vbox2, vbox3, vbox4, vbox5, vbox6, vbox7, vbox8
         );
 
         // Reset all boxes to the default style
@@ -187,16 +136,19 @@ public class BudgetController extends BaseController {
         }
     }
 
-
     private void closeDialog(ActionEvent event) {
         if (rootPane != null) {
             rootPane.getChildren().removeIf(node ->
-                    node != rootPane.getChildren().get(0) // 保留主页面，移除弹窗和遮罩
+                node != rootPane.getChildren().get(0) // 保留主页面，移除弹窗和遮罩
             );
         }
     }
 
     public ToggleGroup getToggleGroup() {
         return toggleGroup;
+    }
+
+    public interface OnOpenListener {
+        void onOpenAddBudgetPanel();
     }
 }

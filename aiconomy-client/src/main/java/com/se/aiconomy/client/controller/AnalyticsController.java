@@ -128,10 +128,7 @@ public class AnalyticsController extends BaseController implements Initializable
             StyleClassFixer.fixStyleClasses(view);
             aiPanel.setContent(view);
 
-            controller.setOnCloseListener(() -> {
-                System.out.println("收到 closeAiPanel 事件，关闭面板！");
-                closeAiPanel();
-            });
+            controller.setOnCloseListener(this::closeAiPanel);
 
             Duration duration = Duration.millis(300);
             Timeline activetimeline = new Timeline(new KeyFrame(duration));

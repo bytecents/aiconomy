@@ -1,0 +1,5 @@
+--name AIconomy
+--type app-image
+--input target
+--main-jar aiconomy-client-1.0.0-SNAPSHOT.jar
+--dest output
