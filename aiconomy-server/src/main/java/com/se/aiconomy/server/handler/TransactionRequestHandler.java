@@ -72,6 +72,4 @@ public class TransactionRequestHandler {
         }
         return transactions;
     }
-
-    public TransactionDto
 }
