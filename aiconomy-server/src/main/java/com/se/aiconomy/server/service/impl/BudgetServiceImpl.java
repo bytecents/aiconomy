@@ -135,6 +135,11 @@ public class BudgetServiceImpl implements BudgetService {
     }
 
     @Override
+    public int getLeftDays(String userId){
+        return 30 - LocalDateTime.now().getDayOfMonth();
+    }
+
+    @Override
     public double getTotalBudgetByCategory(String userId, String category) {
         List<Budget> budgets = getBudgetsByUserId(userId);
         double totalBudgetByCategory = 0;

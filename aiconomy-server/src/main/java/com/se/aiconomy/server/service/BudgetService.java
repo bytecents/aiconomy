@@ -28,6 +28,8 @@ public interface BudgetService {
 
         double getDailyAvailableBudget(String userId) throws ServiceException; // 获取用户的每日可用预算
 
+        int getLeftDays(String userId);
+
         double getTotalBudgetByCategory(String userId, String category); // 获取用户的某一类别的预算总额
 
         double getTotalSpentByCategory(String userId, String category) throws ServiceException; // 获取用户的某一类别的支出总额
