@@ -87,11 +87,13 @@ public class TransactionRequestHandler {
      * @throws ServiceException 如果保存交易记录时发生错误
      */
     public TransactionDto handleAddTransactionManually(String userId, String incomeOrExpense, String amount,
-                                                       LocalDateTime time, String remark, String type, String accountId)
+                                                       LocalDateTime time, String product, String type, String accountId)
             throws ServiceException {
         if (userId == null || userId.isEmpty()) {
             throw new ServiceException("User ID cannot be null or empty", null);
         }
-        return transactionService.addTransactionManually(userId, incomeOrExpense, amount, time, remark, type, accountId);
+        return transactionService.addTransactionManually(userId, incomeOrExpense, amount, time, product, type, accountId);
     }
+
+//    public TransactionDto updateTransaction
 }

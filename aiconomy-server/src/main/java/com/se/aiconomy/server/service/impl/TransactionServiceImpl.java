@@ -429,7 +429,7 @@ public class TransactionServiceImpl implements TransactionService {
      * @throws ServiceException 如果创建交易时发生错误
      */
     public TransactionDto addTransactionManually(String userId, String incomeOrExpense, String amount,
-                                                 LocalDateTime time, String remark, String type, String accountId)
+                                                 LocalDateTime time, String product, String type, String accountId)
             throws ServiceException {
 
         if (userId == null || incomeOrExpense == null || amount == null || type == null || accountId == null) {
@@ -441,7 +441,7 @@ public class TransactionServiceImpl implements TransactionService {
         transaction.setIncomeOrExpense(incomeOrExpense);
         transaction.setAmount(amount);
         transaction.setTime(time != null ? time : LocalDateTime.now());
-        transaction.setRemark(remark);
+        transaction.setProduct(product);
         transaction.setType(type);
         transaction.setAccountId(accountId);
 
