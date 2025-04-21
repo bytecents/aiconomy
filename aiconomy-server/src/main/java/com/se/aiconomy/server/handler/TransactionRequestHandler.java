@@ -80,7 +80,7 @@ public class TransactionRequestHandler {
      * @param incomeOrExpense 收入或支出
      * @param amount 金额
      * @param time 交易时间
-     * @param remark 备注
+     * @param  product 产品名称
      * @param type 交易类型
      * @param accountId 账户ID
      * @return 返回创建的 TransactionDto
