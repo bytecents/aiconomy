@@ -57,7 +57,7 @@
                                 <Image url="@../assets/FoodDining1.png"/>
                             </ImageView>
                         </StackPane>
-                        <Label text="Food &amp; Dining" alignment="CENTER" wrapText="true"
+                        <Label fx:id="FoodAndDining" text="Food &amp; Dining" alignment="CENTER" wrapText="true"
                                style="-fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #6b7280;"/>
                     </VBox>
 
@@ -72,7 +72,7 @@
                                 <Image url="@../assets/Transportation1.png"/>
                             </ImageView>
                         </StackPane>
-                        <Label text="Transportation" alignment="CENTER" wrapText="true"
+                        <Label fx:id="Transportation" text="Transportation" alignment="CENTER" wrapText="true"
                                style="-fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #6b7280;"/>
                     </VBox>
 
@@ -87,7 +87,7 @@
                                 <Image url="@../assets/Shopping1.png"/>
                             </ImageView>
                         </StackPane>
-                        <Label text="Shopping" alignment="CENTER" wrapText="true"
+                        <Label fx:id="Shopping" text="Shopping" alignment="CENTER" wrapText="true"
                                style="-fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #6b7280;"/>
                     </VBox>
 
@@ -102,7 +102,7 @@
                                 <Image url="@../assets/House1.png"/>
                             </ImageView>
                         </StackPane>
-                        <Label text="Housing" alignment="CENTER" wrapText="true"
+                        <Label fx:id="Housing" text="Housing" alignment="CENTER" wrapText="true"
                                style="-fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #6b7280;"/>
                     </VBox>
 
@@ -117,7 +117,7 @@
                                 <Image url="@../assets/Education1.png"/>
                             </ImageView>
                         </StackPane>
-                        <Label text="Education" alignment="CENTER" wrapText="true"
+                        <Label fx:id="Education" text="Education" alignment="CENTER" wrapText="true"
                                style="-fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #6b7280;"/>
                     </VBox>
 
@@ -132,7 +132,7 @@
                                 <Image url="@../assets/Travel1.png"/>
                             </ImageView>
                         </StackPane>
-                        <Label text="Travel" alignment="CENTER" wrapText="true"
+                        <Label fx:id="Travel" text="Travel" alignment="CENTER" wrapText="true"
                                style="-fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #6b7280;"/>
                     </VBox>
 
@@ -147,7 +147,7 @@
                                 <Image url="@../assets/Gift1.png"/>
                             </ImageView>
                         </StackPane>
-                        <Label text="Gifts" alignment="CENTER" wrapText="true"
+                        <Label fx:id="Gifts" text="Gifts" alignment="CENTER" wrapText="true"
                                style="-fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #6b7280;"/>
                     </VBox>
 
@@ -162,7 +162,7 @@
                                 <Image url="@../assets/Custom1.png"/>
                             </ImageView>
                         </StackPane>
-                        <Label text="Custom" alignment="CENTER" wrapText="true"
+                        <Label fx:id="Custom" text="Custom" alignment="CENTER" wrapText="true"
                                style="-fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #6b7280;"/>
                     </VBox>
                 </GridPane>
@@ -243,18 +243,15 @@
                 <Region HBox.hgrow="ALWAYS"/>
 
                 <HBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
-                    <RadioButton text="60%" fx:id="option1RadioButton"
-                                 style="-fx-font-size: 14px; -fx-text-fill: #333333;"/>
+                    <RadioButton fx:id="six" text="60%" style="-fx-font-size: 14px; -fx-text-fill: #333333;"/>
                 </HBox>
 
                 <HBox alignment="CENTER" HBox.hgrow="ALWAYS">
-                    <RadioButton text="80%" fx:id="option2RadioButton"
-                                 style="-fx-font-size: 14px; -fx-text-fill: #333333;"/>
+                    <RadioButton fx:id="eight" text="80%" style="-fx-font-size: 14px; -fx-text-fill: #333333;"/>
                 </HBox>
 
                 <HBox alignment="CENTER_RIGHT" HBox.hgrow="ALWAYS">
-                    <RadioButton text="100%" fx:id="option3RadioButton"
-                                 style="-fx-font-size: 14px; -fx-text-fill: #333333;"/>
+                    <RadioButton fx:id="ten" text="100%" style="-fx-font-size: 14px; -fx-text-fill: #333333;"/>
                 </HBox>
             </HBox>
         </VBox>
