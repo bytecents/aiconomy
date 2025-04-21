@@ -1,8 +1,10 @@
 package com.se.aiconomy.client.controller;
 
+import com.se.aiconomy.client.Application.StyleClassFixer;
 import com.se.aiconomy.client.common.MyFXMLLoader;
 import com.se.aiconomy.client.controller.transactions.AddTransactionController;
 import com.se.aiconomy.client.controller.transactions.TransactionsController;
+import com.se.aiconomy.client.common.MyFXMLLoader;
 import com.se.aiconomy.server.model.dto.user.response.UserInfo;
 import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
@@ -11,6 +13,7 @@ import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -217,62 +220,71 @@ public class SidebarController implements Initializable {
         fadeOut.setFromValue(1.0);
         fadeOut.setToValue(0.0);
         fadeOut.setOnFinished(event -> {
-            MyFXMLLoader loader = new MyFXMLLoader(fxmlPath);
-            Parent dialogContent = loader.load();
+            try {
+                MyFXMLLoader loader = new MyFXMLLoader(fxmlPath);
+                Parent dialogContent = loader.load();
+                StyleClassFixer.fixStyleClasses(dialogContent);
 
-            BaseController controller = loader.getController();
-            controller.setUserInfo(userInfo);
+                BaseController controller = loader.getController();
+                controller.setUserInfo(userInfo);
+                controller.setMainController(this);
 
-            if (fxmlPath.contains("budgets")) {
-                BudgetController budgetController = loader.getController();
-                budgetController.setOnOpenListener(this::openAddBudgetPanel);
+                if (fxmlPath.contains("budgets")) {
+                    BudgetController budgetController = loader.getController();
+                    budgetController.setOnOpenListener(this::openAddBudgetPanel);
+                }
+                else if (fxmlPath.contains("transactions")) {
+                    TransactionsController transactionsController = loader.getController();
+                    transactionsController.setOnOpenListener(this::openAddTransactionPanel);
+                }
+
+                contentArea.setContent(dialogContent);
+
+
+                FadeTransition fadeIn = new FadeTransition(Duration.millis(100), contentArea);
+                fadeIn.setFromValue(0.0);
+                fadeIn.setToValue(1.0);
+                fadeIn.play();
+
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-            else if (fxmlPath.contains("transactions")) {
-                TransactionsController transactionsController = loader.getController();
-                transactionsController.setOnOpenListener(this::openAddTransactionPanel);
-            }
-
-            contentArea.setContent(dialogContent);
-            FadeTransition fadeIn = new FadeTransition(Duration.millis(100), contentArea);
-            fadeIn.setFromValue(0.0);
-            fadeIn.setToValue(1.0);
-            fadeIn.play();
         });
         fadeOut.play();
     }
 
     @FXML
-    public void switchToDashboard() {
+    protected void switchToDashboard() {
         setActiveButton("dashboard");
         loadView("/fxml/dashboard.fxml");
     }
 
     @FXML
-    public void switchToTransactions() {
+    protected void switchToTransactions() {
         setActiveButton("transactions");
         loadView("/fxml/transactions/transactions.fxml");
     }
 
     @FXML
-    public void switchToAnalytics() {
+    protected void switchToAnalytics() {
         setActiveButton("analytics");
         loadView("/fxml/analytics.fxml");
     }
 
     @FXML
-    public void switchToBudgets() {
+    protected void switchToBudgets() {
         setActiveButton("budgets");
         loadView("/fxml/budgets.fxml");
     }
 
     @FXML
-    public void switchToAccounts() {
+    protected void switchToAccounts() {
         setActiveButton("accounts");
         loadView("/fxml/accounts.fxml");
     }
 
     @FXML
-    public void switchToSettings() {
+    protected void switchToSettings() {
         setActiveButton("settings");
         loadView("/fxml/settings.fxml");
     }

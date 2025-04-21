@@ -11,8 +11,9 @@ import lombok.ToString;
 @Setter
 @Getter
 public abstract class BaseController {
-    @FXML
     protected UserInfo userInfo;
+    @FXML
+    protected SidebarController mainController;
 
     public void setBudgetCategoryInfo(BudgetCategoryInfo info) {
     }
