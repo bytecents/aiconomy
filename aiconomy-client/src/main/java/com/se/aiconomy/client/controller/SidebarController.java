@@ -156,7 +156,7 @@ public class SidebarController implements Initializable {
         overlay.setPrefSize(root.getWidth(), root.getHeight());
 
         StackPane dialogWrapper = new StackPane(dialogContent);
-        dialogWrapper.setMaxWidth(500);
+        dialogWrapper.setMaxWidth(600);
         dialogWrapper.setMaxHeight(600);
 
         overlay.setOnMouseClicked((MouseEvent e) -> {

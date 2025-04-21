@@ -756,6 +756,39 @@
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 16, 0, 0, 1);
 }
 
+.border-red-600 {
+    -fx-border-color: #DC2626;
+}
+
+.bg-red-50 {
+    -fx-background-color: #FEF2F2;
+}
+
+.bg-gray-50 {
+    -fx-background-color: #F9FAFB;
+}
+
+.text-red-600 {
+    -fx-text-fill: #DC2626;
+}
+
+.pl-3 {
+    -fx-padding: 0 0 0 12;
+}
+
+.px-2 {
+    -fx-padding: 0 8 0 8;
+}
+
+.rounded-b-2xl {
+    -fx-background-radius: 0 0 16 16;
+    -fx-border-radius: 0 0 16 16;
+}
+
+.px-3 {
+    -fx-padding: 0 12 0 12;
+}
+
 .break-words {
     -fx-wrap-text: true;
 }
@@ -870,4 +903,16 @@
 
 .border-gray-200 {
     -fx-border-color: #E5E7EB;
+}
+
+.bg-purple-50 {
+    -fx-background-color: #F5F3FF;
+}
+
+.bg-purple-600 {
+    -fx-background-color: #4F46E5;
+}
+
+.text-purple-600 {
+    -fx-text-fill: #6D28D9;
 }
