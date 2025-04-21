@@ -1,5 +1,7 @@
 package com.se.aiconomy.server;
 
+import com.se.aiconomy.server.common.exception.ServiceException;
+import com.se.aiconomy.server.model.dto.TransactionDto;
 import com.se.aiconomy.server.model.entity.Account;
 import com.se.aiconomy.server.service.AccountService;
 import com.se.aiconomy.server.service.impl.AccountServiceImpl;
@@ -10,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.LocalDateTime;
+import java.time.Month;
 import java.util.List;
 
 public class AccountServiceTest {
@@ -94,11 +97,11 @@ public class AccountServiceTest {
         account1.setMinimumPayment(100.0);
 
         Account account2 = new Account();
-        account2.setId("account5");
+        account2.setId("account4_1");
         account2.setUserId("user4");
-        account2.setBankName("bank5");
+        account2.setBankName("bank4_1");
         account2.setAccountType("savings");
-        account2.setAccountName("account5");
+        account2.setAccountName("account4_1");
         account2.setBalance(4000.0);
 
         jsonStorageService.insert(account1);
@@ -110,7 +113,56 @@ public class AccountServiceTest {
 
     @Test
     @Order(5)
-    void testCalculateNetWorth() {
+    void testCalculateNetWorth() throws ServiceException {
+        Account account = new Account();
+        account.setId("account5");
+        account.setUserId("user5");
+        account.setBankName("bank5");
+        account.setAccountType("savings");
+        account.setBalance(4000.0);
+        jsonStorageService.insert(account);
+
+        TransactionDto transaction = new TransactionDto();
+        transaction.setAmount(String.valueOf(1000.0));
+        transaction.setIncomeOrExpense("Expense");
+        transaction.setPaymentMethod("Check");
+        transaction.setStatus("Paid");
+        transaction.setAccountId("account5");
+        transaction.setUserId("user5");
+        transaction.setTime(LocalDateTime.now());
+        transaction.setRemark("test");
+        jsonStorageService.insert(transaction);
+
+        double netWorth = accountService.calculateNetWorth("user5");
+        Assertions.assertEquals(5000.0, netWorth);
+        log.info("Calculated net worth for user5");
+    }
+
+    @Test
+    @Order(6)
+    void testCalculateMonthlySpending() throws ServiceException {
+        TransactionDto transaction = new TransactionDto();
+        transaction.setAmount(String.valueOf(1000.0));
+        transaction.setUserId("user6");
+        transaction.setTime(LocalDateTime.now());
+        transaction.setIncomeOrExpense("Expense");
+
+        jsonStorageService.insert(transaction);
+        double monthlySpending = accountService.calculateMonthlySpending("user6", Month.APRIL);
+
+    }
+
+    @Test
+    @Order(7)
+    void testCalculateMonthlyIncome() throws ServiceException {
+        TransactionDto transaction = new TransactionDto();
+        transaction.setAmount(String.valueOf(1000.0));
+        transaction.setUserId("user7");
+        transaction.setTime(LocalDateTime.now());
+        transaction.setIncomeOrExpense("Income");
+
+        jsonStorageService.insert(transaction);
+        double monthlySpending = accountService.calculateMonthlySpending("user7", LocalDateTime.now().getMonth());
 
     }
 
@@ -118,11 +170,11 @@ public class AccountServiceTest {
     @Order(8)
     void testCalculateCreditCardDue() {
         Account account = new Account();
-        account.setId("account4");
-        account.setUserId("user4");
-        account.setBankName("bank4");
+        account.setId("account8");
+        account.setUserId("user8");
+        account.setBankName("bank8");
         account.setAccountType("credit");
-        account.setAccountName("account4");
+        account.setAccountName("account8");
         account.setBalance(3000.0);
         account.setCreditLimit(5000.0);
         account.setCurrentDebt(1000.0);
@@ -130,7 +182,7 @@ public class AccountServiceTest {
         account.setMinimumPayment(100.0);
 
         jsonStorageService.insert(account);
-        double creditCardDue = accountService.calculateCreditCardDue("user4");
+        double creditCardDue = accountService.calculateCreditCardDue("user8");
         Assertions.assertEquals(1000.0, creditCardDue);
         log.info("Calculated credit card due for user4");
     }

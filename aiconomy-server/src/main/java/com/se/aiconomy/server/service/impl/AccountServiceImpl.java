@@ -56,9 +56,9 @@ public class AccountServiceImpl implements AccountService {
             netWorth += account.getBalance();
         }
         for (TransactionDto transaction : transactions) {
-            if (transaction.getIncomeOrExpense().equals("income")) {
+            if (transaction.getIncomeOrExpense().equals("Income")) {
                 netWorth += Double.parseDouble(transaction.getAmount());
-            } else if (transaction.getIncomeOrExpense().equals("expense")) {
+            } else if (transaction.getIncomeOrExpense().equals("Expense")) {
                 netWorth -= Double.parseDouble(transaction.getAmount());
             }
         }
@@ -70,7 +70,7 @@ public class AccountServiceImpl implements AccountService {
         List<TransactionDto> transactions = getTransactionsByUserId(userId);
         double totalSpending = 0;
         for (TransactionDto transaction : transactions) {
-            if (transaction.getTime().getMonth().equals(month) && transaction.getIncomeOrExpense().equals("expense")) {
+            if (transaction.getTime().getMonth().equals(month) && transaction.getIncomeOrExpense().equals("Expense")) {
                 totalSpending += Double.parseDouble(transaction.getAmount());
             }
         }
@@ -82,7 +82,7 @@ public class AccountServiceImpl implements AccountService {
         List<TransactionDto> transactions = getTransactionsByUserId(userId);
         double totalIncome = 0;
         for (TransactionDto transaction : transactions) {
-            if (transaction.getTime().getMonth().equals(month) && transaction.getIncomeOrExpense().equals("income")) {
+            if (transaction.getTime().getMonth().equals(month) && transaction.getIncomeOrExpense().equals("Income")) {
                 totalIncome += Double.parseDouble(transaction.getAmount());
             }
         }
