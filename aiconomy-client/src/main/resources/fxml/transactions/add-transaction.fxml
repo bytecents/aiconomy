@@ -16,16 +16,16 @@
     <HBox alignment="CENTER_LEFT" styleClass="p-6 border-b border-gray-100">
         <Label styleClass="text-xl font-semibold text-gray-900">Add Transaction</Label>
         <Region HBox.hgrow="ALWAYS" />
-        <Button text="×" styleClass="bg-transparent hover-bg-gray-200 border-none p-0 text-gray-900 text-base rounded-lg w-6 h-6 cursor-pointer"/>
+        <Button onMouseClicked="#closeAddTransaction" text="×" styleClass="bg-transparent hover-bg-gray-200 border-none p-0 text-gray-900 text-base rounded-lg w-6 h-6 cursor-pointer"/>
     </HBox>
 
     <!-- Modal Content -->
     <VBox styleClass="p-6 gap-6" VBox.vgrow="ALWAYS">
         <HBox styleClass="gap-4 w-full">
-            <Button fx:id="expenseBtn" HBox.hgrow="ALWAYS" styleClass="p-3-4-3-4 w-full bg-red-50 border border-red-600 rounded-lg text-red-600 font-medium">
+            <Button fx:id="expenseBtn" onMouseClicked="#switchToExpense" HBox.hgrow="ALWAYS" styleClass="p-3-4-3-4 w-full border rounded-lg font-medium expense cursor-pointer">
                 Expense
             </Button>
-            <Button fx:id="incomeBtn" HBox.hgrow="ALWAYS" styleClass="p-3-4-3-4 w-full bg-gray-50 border border-gray-200 rounded-lg text-gray-600 font-medium hover-bg-gray-100">
+            <Button fx:id="incomeBtn" onMouseClicked="#switchToIncome" HBox.hgrow="ALWAYS" styleClass="p-3-4-3-4 w-full border rounded-lg font-medium inactive cursor-pointer">
                 Income
             </Button>
         </HBox>
@@ -63,19 +63,19 @@
                     <ColumnConstraints percentWidth="25" />
                 </columnConstraints>
 
-                <VBox GridPane.columnIndex="0" alignment="CENTER" styleClass="cursor-pointer p-3 gap-1 bg-purple-50 rounded-lg border border-purple-600">
-                    <Region styleClass="w-6 h-6 bg-purple-600" />
-                    <Label styleClass="text-sm text-purple-600"> Food &amp; Dining </Label>
+                <VBox GridPane.columnIndex="0" fx:id="category1" onMouseClicked="#chooseCategory1" alignment="CENTER" styleClass="cursor-pointer p-3 gap-1 bg-gray-50 rounded-lg border">
+                    <Region styleClass="w-6 h-6 bg-gray-600" />
+                    <Label styleClass="text-sm text-gray-600"> Food &amp; Dining </Label>
                 </VBox>
-                <VBox GridPane.columnIndex="1" alignment="CENTER" styleClass="cursor-pointer p-3 gap-1 bg-gray-50 rounded-lg border">
+                <VBox GridPane.columnIndex="1" fx:id="category2" onMouseClicked="#chooseCategory2" alignment="CENTER" styleClass="cursor-pointer p-3 gap-1 bg-gray-50 rounded-lg border">
                     <Region styleClass="w-6 h-6 bg-gray-600" />
                     <Label styleClass="text-sm text-gray-600"> Transportation </Label>
                 </VBox>
-                <VBox GridPane.columnIndex="2" alignment="CENTER" styleClass="cursor-pointer p-3 gap-1 bg-gray-50 rounded-lg border">
+                <VBox GridPane.columnIndex="2" fx:id="category3" onMouseClicked="#chooseCategory3" alignment="CENTER" styleClass="cursor-pointer p-3 gap-1 bg-gray-50 rounded-lg border">
                     <Region styleClass="w-6 h-6 bg-gray-600" />
                     <Label styleClass="text-sm text-gray-600"> Shopping </Label>
                 </VBox>
-                <VBox GridPane.columnIndex="3" alignment="CENTER" styleClass="cursor-pointer p-3 gap-1 bg-gray-50 rounded-lg border">
+                <VBox GridPane.columnIndex="3" fx:id="category4" onMouseClicked="#chooseCategory4" alignment="CENTER" styleClass="cursor-pointer p-3 gap-1 bg-gray-50 rounded-lg border">
                     <Region styleClass="w-6 h-6 bg-gray-600" />
                     <Label styleClass="text-sm text-gray-600"> Entertainment </Label>
                 </VBox>
@@ -109,7 +109,7 @@
             <!-- Account -->
         <VBox styleClass="gap-2 w-full">
             <Label styleClass="text-sm font-medium text-gray-700">Account</Label>
-            <ComboBox fx:id="accountCombox" styleClass="w-full text-base font-roboto cursor-pointer rounded-lg" value="Chase Bank">
+            <ComboBox fx:id="accountComboBox" styleClass="w-full text-base font-roboto cursor-pointer rounded-lg" value="Chase Bank">
                 <items>
                     <FXCollections fx:factory="observableArrayList">
                         <String fx:value="Chase Bank" />
@@ -122,7 +122,7 @@
 
     <!-- Modal Footer -->
     <HBox alignment="CENTER_RIGHT" styleClass="gap-3 p-6 border-t border-gray-100 bg-gray-50 rounded-b-2xl">
-        <Button styleClass="p-2-4-2-4 border border-gray-200 rounded-lg hover-bg-gray-100 cursor-pointer">
+        <Button onMouseClicked="#closeAddTransaction" styleClass="p-2-4-2-4 border border-gray-200 rounded-lg hover-bg-gray-100 cursor-pointer">
             Cancel
         </Button>
         <Button onMouseClicked="#handleSaveTransaction" styleClass="p-2-4-2-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 cursor-pointer">
