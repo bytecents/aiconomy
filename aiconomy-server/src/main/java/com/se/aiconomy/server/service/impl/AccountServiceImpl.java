@@ -48,8 +48,21 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public double calculateNetWorth(String userId) {
-        return 0;
+    public double calculateNetWorth(String userId) throws ServiceException {
+        List<Account> accounts = getAccountsByUserId(userId);
+        List<TransactionDto> transactions = getTransactionsByUserId(userId);
+        double netWorth = 0;
+        for (Account account : accounts) {
+            netWorth += account.getBalance();
+        }
+        for (TransactionDto transaction : transactions) {
+            if (transaction.getIncomeOrExpense().equals("income")) {
+                netWorth += Double.parseDouble(transaction.getAmount());
+            } else if (transaction.getIncomeOrExpense().equals("expense")) {
+                netWorth -= Double.parseDouble(transaction.getAmount());
+            }
+        }
+        return netWorth;
     }
 
     @Override

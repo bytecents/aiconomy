@@ -17,7 +17,7 @@ public interface AccountService {
     List<Account> getAccountsByUserId(String userId);
 
     // Dashboard related methods
-    double calculateNetWorth(String userId);
+    double calculateNetWorth(String userId) throws ServiceException;
 
     double calculateMonthlySpending(String userId, Month month) throws ServiceException;
 
