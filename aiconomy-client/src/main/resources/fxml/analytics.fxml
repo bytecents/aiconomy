@@ -30,7 +30,6 @@
 <?import javafx.scene.chart.LineChart?>
 <?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.NumberAxis?>
-<?import javafx.scene.chart.BarChart?>
 <?import javafx.scene.chart.PieChart?>
 <GridPane id="Content" xmlns="http://javafx.com/javafx/23.0.1"
           fx:controller="com.se.aiconomy.client.controller.AnalyticsController" xmlns:fx="http://javafx.com/fxml/1" stylesheets="/css/styles.css">
@@ -59,7 +58,7 @@
                         </FXCollections>
                     </items>
                 </ComboBox>
-                <Button text="Export Report" styleClass="hover-bg-blue-700 p-4-2 bg-blue-600 text-white font-roboto cursor-pointer"/>
+                <Button text="Export Report" styleClass="hover-bg-blue-700 rounded-lg p-4-2 bg-blue-600 text-white font-roboto cursor-pointer"/>
             </HBox>
         </HBox>
         <GridPane hgap="24" vgap="24" VBox.vgrow="ALWAYS"

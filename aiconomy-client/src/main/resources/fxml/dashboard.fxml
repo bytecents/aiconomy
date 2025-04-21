@@ -15,12 +15,15 @@
 <?import java.lang.String?>
 
 <?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
 <VBox xmlns:fx="http://javafx.com/fxml/1"
       id="Content"
       xmlns="http://javafx.com/javafx/23.0.1"
       styleClass="p-8" fx:controller="com.se.aiconomy.client.controller.DashboardController"
       stylesheets="/css/styles.css">
-    <HBox alignment="CENTER" styleClass="pb-8 gap-5">
+    <HBox styleClass="pb-8 gap-5">
         <VBox styleClass="gap-1">
             <Label fx:id="welcomeTextField" text="Welcome back, Alex!"
                    styleClass="text-2xl font-semibold text-gray-900 pb-1"/>
@@ -28,7 +31,7 @@
         </VBox>
         <Region HBox.hgrow="ALWAYS"/>
         <Button fx:id="quickAddButton" onAction="#quickAdd" text="Quick Add"
-                styleClass="hover-bg-blue-700 p-4-2 bg-blue-600 text-white font-roboto cursor-pointer"/>
+                styleClass="hover-bg-blue-700 rounded-lg p-4-2 bg-blue-600 text-white font-roboto cursor-pointer"/>
     </HBox>
 
     <GridPane hgap="24" vgap="24" styleClass="pb-8">
@@ -93,7 +96,12 @@
                     <!-- Left side -->
                     <HBox alignment="CENTER_LEFT" styleClass="gap-3">
                         <!-- Icon -->
-                        <Region styleClass="w-10 h-10 rounded-lg bg-red-100"/>
+                        <StackPane prefHeight="50.0" prefWidth="50.0">
+                            <Circle fill="#fee2e2" radius="24.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+                            <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                <Image url="@../assets/out_FoodDining.png" />
+                            </ImageView>
+                        </StackPane>
                         <!-- Text -->
                         <VBox styleClass="gap-0_5">
                             <Label text="Starbucks" styleClass="font-medium text-base"/>
@@ -115,7 +123,12 @@
                     <!-- Left side -->
                     <HBox alignment="CENTER_LEFT" styleClass="gap-3">
                         <!-- Icon -->
-                        <Region styleClass="w-10 h-10 rounded-lg bg-green-100"/>
+                        <StackPane prefHeight="50.0" prefWidth="50.0">
+                            <Circle fill="#dcfce7" radius="24.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+                            <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                <Image url="@../assets/income.png" />
+                            </ImageView>
+                        </StackPane>
                         <!-- Text -->
                         <VBox styleClass="gap-0_5">
                             <Label text="Salary Deposit" styleClass="font-medium text-base"/>
@@ -216,7 +229,12 @@
                 <HBox alignment="CENTER_LEFT" styleClass="p-3 gap-3 hover-bg-gray-50 rounded-lg cursor-pointer">
                     <!-- Left side -->
                     <HBox alignment="CENTER_LEFT" styleClass="gap-3">
-                        <Region styleClass="w-10 h-10 bg-blue-100 rounded-lg"/>
+                        <StackPane prefHeight="50.0" prefWidth="50.0">
+                            <Circle fill="#dbeafe" radius="24.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+                            <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                <Image url="@../assets/dash_bank.png" />
+                            </ImageView>
+                        </StackPane>
                         <VBox styleClass="gap-0_5">
                             <Label text="Chase Bank" styleClass="text-base font-medium"/>
                             <Label text="Checking" styleClass="font-roboto text-sm text-gray-500"/>
@@ -233,7 +251,13 @@
                 <HBox alignment="CENTER_LEFT" styleClass="p-3 gap-3 hover-bg-gray-50 rounded-lg cursor-pointer">
                     <!-- Left side -->
                     <HBox alignment="CENTER_LEFT" styleClass="gap-3">
-                        <Region styleClass="w-10 h-10 bg-green-100 rounded-lg"/>
+                        <StackPane prefHeight="50.0" prefWidth="50.0">
+                            <Circle fill="#dcfce7" radius="24.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+                            <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                <Image url="@../assets/well_fargo.png" />
+                            </ImageView>
+                        </StackPane>
+
                         <VBox styleClass="gap-0_5">
                             <Label text="Wells Fargo" styleClass="text-base font-medium"/>
                             <Label text="Savings" styleClass="font-roboto text-sm text-gray-500"/>
@@ -245,7 +269,6 @@
                         <Label text="\$28,650.00" styleClass="text-base font-medium"/>
                     </VBox>
                 </HBox>
-
             </VBox>
         </VBox>
     </GridPane>

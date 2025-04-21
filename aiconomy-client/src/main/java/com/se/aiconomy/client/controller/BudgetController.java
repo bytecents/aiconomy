@@ -2,10 +2,7 @@ package com.se.aiconomy.client.controller;
 
 //import com.alibaba.fastjson2.internal.asm.Label;
 
-import com.se.aiconomy.server.handler.BudgetRequestHandler;
 import com.se.aiconomy.server.model.dto.user.response.UserInfo;
-import com.se.aiconomy.server.service.impl.BudgetServiceImpl;
-import com.se.aiconomy.server.storage.service.impl.JSONStorageServiceImpl;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -30,11 +27,12 @@ import java.util.List;
 
 @Setter
 public class BudgetController extends BaseController {
-    private final BudgetRequestHandler budgetRequestHandler = new BudgetRequestHandler(new BudgetServiceImpl(JSONStorageServiceImpl.getInstance()));
     @FXML
     private ToggleGroup toggleGroup;
+
     @FXML
-    private StackPane rootPane; // 这个是 main.fxml 的最外层 StackPane
+    private StackPane rootPane;
+
     @FXML
     private VBox vbox1;
     @FXML
@@ -54,6 +52,17 @@ public class BudgetController extends BaseController {
     @FXML
     private VBox vboxMonthly, vboxWeekly, vboxYearly;
 
+    public interface OnOpenListener {
+        void onOpenAddBudgetPanel();
+    }
+
+    private BudgetController.OnOpenListener openListener;
+
+    @FXML
+    public void setOnOpenListener(BudgetController.OnOpenListener listener) {
+        this.openListener = listener;
+    }
+
     @FXML
     public void initialize() {
         if (userInfo == null) {
@@ -69,42 +78,13 @@ public class BudgetController extends BaseController {
     }
 
     private void init() {
-        System.out.println("hello world");
+
     }
 
     @FXML
     public void onAddBudgetClick(ActionEvent event) {
-        try {
-            // 加载 add_budget.fxml
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/add_budget.fxml"));
-            Parent dialogContent = loader.load();
-            // 获取 controller 并传入 rootPane
-            BudgetController controller = loader.getController();
-            controller.setRootPane(rootPane); // ⚠️这里的 rootPane 是你的页面最外层 StackPane
-
-            // 设置弹窗样式（你可以在 FXML 里设也行）
-            dialogContent.setStyle("-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 20;");
-
-            // 创建遮罩
-            Region overlay = new Region();
-            overlay.setStyle("-fx-background-color: rgba(0,0,0,0.5);");
-            overlay.setPrefSize(rootPane.getWidth(), rootPane.getHeight());
-
-            // 弹窗容器（居中）
-            StackPane dialogWrapper = new StackPane(dialogContent);
-            dialogWrapper.setMaxWidth(500);
-            dialogWrapper.setMaxHeight(600);
-
-            // 点击遮罩关闭弹窗
-            overlay.setOnMouseClicked((MouseEvent e) -> {
-                rootPane.getChildren().removeAll(overlay, dialogWrapper);
-            });
-
-            // 添加遮罩和弹窗到页面顶层
-            rootPane.getChildren().addAll(overlay, dialogWrapper);
-
-        } catch (IOException e) {
-            e.printStackTrace();
+        if (openListener != null) {
+            openListener.onOpenAddBudgetPanel();
         }
     }
 
@@ -155,8 +135,7 @@ public class BudgetController extends BaseController {
 
     private void resetAllBoxes() {
         List<VBox> allBoxes = List.of(
-                vbox1, vbox2, vbox3, vbox4, vbox5, vbox6, vbox7, vbox8,
-                vboxMonthly, vboxWeekly, vboxYearly
+                vbox1, vbox2, vbox3, vbox4, vbox5, vbox6, vbox7, vbox8
         );
 
         // Reset all boxes to the default style
