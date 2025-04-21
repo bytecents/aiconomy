@@ -415,6 +415,55 @@ public class TransactionServiceImpl implements TransactionService {
         return filteredTransactions;
     }
 
+    @Override
+    /**
+     * 手动添加交易记录
+     *
+     * @param userId          用户 ID
+     * @param incomeOrExpense  收入或支出类型
+     * @param amount          金额
+     * @param time            交易时间
+     * @param remark          备注
+     * @param type            交易类型
+     * @param accountId       账户 ID
+     * @return 返回创建的 TransactionDto 对象
+     * @throws ServiceException 如果发生错误
+     */
+    public TransactionDto addTransactionManually(String userId, String incomeOrExpense, String amount, LocalDateTime time, String remark, String type, String accountId) throws ServiceException {
+        try {
+            if (incomeOrExpense == null || amount == null || time == null || type == null || accountId == null) {
+                throw new ServiceException("Missing required fields for transaction", new IllegalArgumentException("Required fields are missing"));
+            }
+
+            String transactionId = UUID.randomUUID().toString();
+
+            TransactionDto transaction = TransactionDto.builder()
+                    .id(transactionId)
+                    .time(time)
+                    .type(type)
+                    .counterparty("counterparty")
+                    .product("product")
+                    .incomeOrExpense(incomeOrExpense)
+                    .amount(amount)
+                    .paymentMethod("paymentMethod")
+                    .status("completed")
+                    .merchantOrderId("merchantOrderId")
+                    .accountId(accountId)
+                    .remark(remark)
+                    .userId(userId)
+                    .build();
+
+            transactionDao.create(transaction);
+
+            log.info("Transaction manually added: {}", transaction);
+
+            return transaction;
+        } catch (Exception e) {
+            log.error("Error adding manual transaction: {}", e.getMessage(), e);
+            throw new ServiceException("Error adding manual transaction", e);
+        }
+    }
+
     /**
      * 内部类：交易搜索条件
      */
