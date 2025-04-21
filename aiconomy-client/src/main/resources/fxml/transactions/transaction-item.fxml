@@ -30,7 +30,7 @@
 <!--            <Label fx:id="remarkLabel" styleClass="text-sm text-gray-500">Online Shopping</Label>-->
         </VBox>
     </HBox>
-    <Label fx:id="dateLabel" GridPane.columnIndex="1" styleClass="text-sm font-roboto text-gray-600">Feb 15, 2024</Label>
+    <Label fx:id="dateLabel" GridPane.columnIndex="1" styleClass="text-sm font-roboto text-gray-600" />
     <VBox GridPane.columnIndex="2" alignment="CENTER_LEFT">
         <ComboBox fx:id="categoryCombobox" styleClass="text-sm font-roboto cursor-pointer rounded-lg">
             <items>

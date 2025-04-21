@@ -14,22 +14,23 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.util.StringConverter;
 import lombok.Setter;
 
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.function.UnaryOperator;
 
 @Setter
 public class AddTransactionController extends BaseController implements Initializable {
@@ -88,6 +89,29 @@ public class AddTransactionController extends BaseController implements Initiali
 
     @FXML
     private void init() {
+        UnaryOperator<TextFormatter.Change> filter = change -> {
+            String newText = change.getControlNewText();
+            if (newText.matches("^\\d*(\\.\\d*)?$")) {
+                return change;
+            }
+            return null;
+        };
+        TextFormatter<String> amountFormatter = new TextFormatter<>(filter);
+        amountInput.setTextFormatter(amountFormatter);
+
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MMM d, uuuu", Locale.ENGLISH);
+        datePicker.setConverter(new StringConverter<>() {
+            @Override
+            public String toString(LocalDate date) {
+                return (date != null) ? dateFormatter.format(date) : "";
+            }
+
+            @Override
+            public LocalDate fromString(String string) {
+                return (string != null && !string.isEmpty()) ? LocalDate.parse(string, dateFormatter) : null;
+            }
+        });
+
         datePicker.setValue(LocalDate.now());
         categoryList.put("Food & Dining", category1);
         categoryList.put("Transportation", category2);
@@ -187,7 +211,9 @@ public class AddTransactionController extends BaseController implements Initiali
         } catch (ServiceException e) {
             e.printStackTrace();
         }
-
+//        if (mainController instanceof TransactionsController) {
+//            mainController.refreshTransactionList();
+//        }
         closeAddTransaction();
     }
 }
