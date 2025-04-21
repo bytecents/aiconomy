@@ -27,14 +27,20 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.List;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.ResourceBundle;
 
 @Setter
 public class AddTransactionController extends BaseController implements Initializable {
+    @FXML private VBox category1;
+    @FXML private VBox category2;
+    @FXML private VBox category3;
+    @FXML private VBox category4;
+    @FXML private Map<String, VBox> categoryList = new java.util.HashMap<>();
+
     @FXML private VBox categoryPanel;
-    @FXML private ComboBox accountCombox;
+    @FXML private ComboBox<String> accountComboBox;
     @FXML private TextField descriptionInput;
     @FXML private DatePicker datePicker;
     @FXML private TextField amountInput;
@@ -43,6 +49,7 @@ public class AddTransactionController extends BaseController implements Initiali
     @FXML private StackPane rootPane;
     private TransactionRequestHandler handler = new TransactionRequestHandler();
     private boolean isExpense = true;
+    private String chosenCategory;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -62,23 +69,99 @@ public class AddTransactionController extends BaseController implements Initiali
     @FXML
     public void switchToExpense() {
         isExpense = true;
+        expenseBtn.getStyleClass().remove("inactive");
+        incomeBtn.getStyleClass().remove("income");
+        incomeBtn.getStyleClass().add("inactive");
+        expenseBtn.getStyleClass().add("expense");
+        refreshDisableCategory();
     }
 
     @FXML
     public void switchToIncome() {
         isExpense = false;
+        incomeBtn.getStyleClass().remove("inactive");
+        expenseBtn.getStyleClass().remove("expense");
+        expenseBtn.getStyleClass().add("inactive");
+        incomeBtn.getStyleClass().add("income");
+        refreshDisableCategory();
     }
 
     @FXML
     private void init() {
-
+        datePicker.setValue(LocalDate.now());
+        categoryList.put("Food & Dining", category1);
+        categoryList.put("Transportation", category2);
+        categoryList.put("Shopping", category3);
+        categoryList.put("Entertainment", category4);
+        chooseCategory("Food & Dining");
     }
 
-    private void closeAddTransaction() {
-        if (rootPane != null) {
-            rootPane.getChildren().removeIf(node ->
-                    node != rootPane.getChildren().getFirst() // 保留主页面，移除弹窗和遮罩
-            );
+    @FXML
+    private void refreshDisableCategory() {
+        if (!isExpense) {
+            for (VBox categoryBtn : categoryList.values()) {
+                categoryBtn.getStyleClass().remove("category-chosen");
+                categoryBtn.getStyleClass().add("category-disable");
+            }
+        } else {
+            for (VBox categoryBtn : categoryList.values()) {
+                categoryBtn.getStyleClass().remove("category-disable");
+            }
+            if (chosenCategory != null) {
+                categoryList.get(chosenCategory).getStyleClass().add("category-chosen");
+            }
+        }
+    }
+
+    @FXML
+    private void chooseCategory(String category) {
+        if (category.equals(chosenCategory)) {
+            return;
+        }
+        if (!isExpense) {
+            return;
+        }
+        for (VBox categoryBtn : categoryList.values()) {
+            categoryBtn.getStyleClass().remove("category-chosen");
+        }
+        categoryList.get(category).getStyleClass().add("category-chosen");
+        chosenCategory = category;
+    }
+
+    @FXML
+    public void chooseCategory1(MouseEvent mouseEvent) {
+        chooseCategory("Food & Dining");
+    }
+
+    @FXML
+    public void chooseCategory2(MouseEvent mouseEvent) {
+        chooseCategory("Transportation");
+    }
+
+    @FXML
+    public void chooseCategory3(MouseEvent mouseEvent) {
+        chooseCategory("Shopping");
+    }
+
+    @FXML
+    public void chooseCategory4(MouseEvent mouseEvent) {
+        chooseCategory("Entertainment");
+    }
+
+    public interface OnCloseListener {
+        void onCloseAddTransactionPanel();
+    }
+
+    private AddTransactionController.OnCloseListener closeListener;
+
+    @FXML
+    public void setOnCloseListener(AddTransactionController.OnCloseListener listener) {
+        this.closeListener = listener;
+    }
+
+    public void closeAddTransaction() {
+        if (closeListener != null) {
+            closeListener.onCloseAddTransactionPanel();
         }
     }
 
@@ -87,16 +170,16 @@ public class AddTransactionController extends BaseController implements Initiali
         String description = descriptionInput.getText();
         String amount = amountInput.getText();
         LocalDateTime dateTime = LocalDateTime.of(datePicker.getValue(), LocalTime.of(0, 0));
-        String account = accountCombox.getSelectionModel().getSelectedItem().toString();
-
+        String account = accountComboBox.getSelectionModel().getSelectedItem();
+        System.out.println(description);
         try {
             handler.handleAddTransactionManually(
                     userInfo.getId(),
                     isExpense ? "expense" : "income",
                     amount,
                     dateTime,
-                    "Remark Test",
-                    "Food & Dining",
+                    description,
+                    isExpense ? chosenCategory : "None",
                     account
             );
             System.out.println("Transaction import successful.");

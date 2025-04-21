@@ -27,5 +27,5 @@ public interface TransactionService {
 
     List<TransactionDto> getTransactionsByAccountId(String accountId, String userId) throws ServiceException;
 
-    TransactionDto addTransactionManually(String userId, String incomeOrExpense, String amount, LocalDateTime time, String remark, String type, String accountId) throws ServiceException;
+    TransactionDto addTransactionManually(String userId, String incomeOrExpense, String amount, LocalDateTime time, String product, String type, String accountId) throws ServiceException;
 }

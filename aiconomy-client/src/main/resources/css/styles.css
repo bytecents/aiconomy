@@ -916,3 +916,52 @@
 .text-purple-600 {
     -fx-text-fill: #6D28D9;
 }
+
+.category-chosen {
+    -fx-background-color: #EDE9FE; /* Tailwind 的 bg-purple-100 */
+    -fx-border-color: #7C3AED;     /* Tailwind 的 purple-600 */
+}
+
+.category-chosen .label {
+    -fx-text-fill: #7C3AED;        /* 文字颜色变紫 */
+}
+
+.category-chosen .region {
+    -fx-background-color: #7C3AED; /* 图标变紫色 */
+}
+
+.expense {
+    -fx-background-color: #FEF2F2;    /* bg-red-50 */
+    -fx-border-color: #DC2626;        /* border-red-600 */
+    -fx-text-fill: #DC2626;           /* text-red-600 */
+}
+
+.income {
+    -fx-background-color: #ECFDF5;    /* bg-green-50 */
+    -fx-border-color: #16A34A;        /* border-green-600 */
+    -fx-text-fill: #16A34A;           /* text-green-600 */
+}
+
+.inactive {
+    -fx-background-color: #FAFAFA;    /* bg-gray-50 */
+    -fx-border-color: #E5E7EB;        /* border-gray-200 */
+    -fx-text-fill: #4B5563;           /* text-gray-600 */
+}
+
+.inactive:hover {
+    -fx-background-color: #F3F4F6;    /* hover:bg-gray-100 */
+}
+
+.category-disable {
+    -fx-background-color: #F3F4F6;    /* bg-gray-100 */
+    -fx-border-color: #E5E7EB;        /* border-gray-200 */
+    -fx-cursor: disappear;
+}
+
+.category-disable .label {
+    -fx-text-fill: #9CA3AF;
+}
+
+.category-disable .region {
+    -fx-background-color: #F3F4F6;
+}

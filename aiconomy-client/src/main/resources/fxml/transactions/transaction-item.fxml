@@ -45,7 +45,7 @@
     </VBox>
     <Label fx:id="accountLabel" GridPane.columnIndex="3" styleClass="text-sm font-roboto text-gray-600">Chase Bank</Label>
     <HBox alignment="CENTER_RIGHT" GridPane.columnIndex="4">
-        <Label fx:id="amountLabel" styleClass="text-sm font-medium text-red-500">-$129.99</Label>
+        <Label fx:id="amountLabel" styleClass="text-sm font-medium" />
     </HBox>
     <HBox alignment="CENTER_RIGHT" GridPane.columnIndex="5">
         <Button styleClass="w-6 h-6 bg-transparent border-none hover-bg-gray-100 cursor-pointer"> </Button>

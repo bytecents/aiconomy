@@ -63,7 +63,10 @@ public class TransactionsController extends BaseController implements Initializa
             List<TransactionDto> transactionsByUserId = handler.handleGetTransactionsByUserId(request);
             transactionItems.getChildren().clear();
             for (TransactionDto transactionDto : transactionsByUserId) {
-                if (transactionDto.getProduct().equals("食品杂货")) continue;
+                if (transactionDto.getProduct() == null || transactionDto.getProduct().equals("食品杂货")) {
+                    System.out.println("Skip problem transaction: " + transactionDto);
+                    continue;
+                }
                 MyFXMLLoader loader = new MyFXMLLoader("/fxml/transactions/transaction-item.fxml");
                 Parent transactionItem = loader.load();
                 TransactionItemController controller = loader.getController();
@@ -78,16 +81,5 @@ public class TransactionsController extends BaseController implements Initializa
     @FXML
     private void init() {
         refreshTransactionList();
-//        transactionItems.getChildren().clear();
-//
-//        for (int i = 0; i < 10; i++) {
-////            TransactionRowController transactionRow = new TransactionRowController();
-////            transactionRow.setTransactionId("Transaction " + (i + 1));
-////            transactionRow.setAmount(100 + i * 10);
-//            MyFXMLLoader loader = new MyFXMLLoader("/fxml/transactions/transaction-item.fxml");
-//            Parent transactionItem = loader.load();
-//            TransactionItemController controller = loader.getController();
-//            transactionItems.getChildren().add(transactionItem);
-//        }
     }
 }

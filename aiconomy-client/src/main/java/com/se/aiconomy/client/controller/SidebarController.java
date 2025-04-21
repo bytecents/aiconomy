@@ -171,9 +171,9 @@ public class SidebarController implements Initializable {
             fadeOut1.setFromValue(1.0);
             fadeOut1.setToValue(0.0);
 
-            ParallelTransition parallel = new ParallelTransition(fadeOut1, fadeOut2);
-            parallel.setOnFinished(event -> root.getChildren().removeAll(overlay, dialogWrapper));
-            parallel.play();
+            ParallelTransition parallelOut = new ParallelTransition(fadeOut1, fadeOut2);
+            parallelOut.setOnFinished(event -> root.getChildren().removeAll(overlay, dialogWrapper));
+            parallelOut.play();
         });
 
         root.getChildren().addAll(overlay, dialogWrapper);
@@ -186,8 +186,25 @@ public class SidebarController implements Initializable {
         fadeIn2.setFromValue(0.0);
         fadeIn2.setToValue(1.0);
 
-        ParallelTransition parallel = new ParallelTransition(fadeIn1, fadeIn2);
-        parallel.play();
+        ParallelTransition parallelIn = new ParallelTransition(fadeIn1, fadeIn2);
+        parallelIn.play();
+
+        if (fxmlPath.contains("add-transaction")) {
+            AddTransactionController addTransactionController = loader.getController();
+            addTransactionController.setOnCloseListener(() -> {
+                FadeTransition fadeOut1 = new FadeTransition(Duration.millis(100), dialogWrapper);
+                fadeOut1.setFromValue(1.0);
+                fadeOut1.setToValue(0.0);
+
+                FadeTransition fadeOut2 = new FadeTransition(Duration.millis(100), overlay);
+                fadeOut1.setFromValue(1.0);
+                fadeOut1.setToValue(0.0);
+
+                ParallelTransition parallelOut = new ParallelTransition(fadeOut1, fadeOut2);
+                parallelOut.setOnFinished(event -> root.getChildren().removeAll(overlay, dialogWrapper));
+                parallelOut.play();
+            });
+        }
     }
 
     private void openAddTransactionPanel() {

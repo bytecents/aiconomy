@@ -6,6 +6,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 
+import java.text.DecimalFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
@@ -21,12 +22,20 @@ public class TransactionItemController {
     public void setTransaction(TransactionDto transaction) {
         String account = transaction.getAccountId();
         boolean isExpense = transaction.getIncomeOrExpense().equals("expense");
-        String amount = (isExpense ? "-" : "+") + "$" + transaction.getAmount();
+
+        String rawAmount = transaction.getAmount();
+        DecimalFormat df = new DecimalFormat("0.00");
+        
+        String amount = (isExpense ? "-" : "+") + "$" + df.format(Double.parseDouble(rawAmount));
         String description = transaction.getProduct();
 //        String remark = transaction.getRemark();
         String category = transaction.getType();
         String date = transaction.getTime().toLocalDate().format(DateTimeFormatter.ofPattern("MMM d, uuuu", Locale.ENGLISH));
-
+        if (isExpense) {
+            amountLabel.getStyleClass().add("text-red-500");
+        } else {
+            amountLabel.getStyleClass().add("text-green-500");
+        }
         accountLabel.setText(account);
         categoryCombobox.getSelectionModel().select(category);
         descriptionLabel.setText(description);
