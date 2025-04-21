@@ -89,8 +89,9 @@ public class TransactionRequestHandler {
     public TransactionDto handleAddTransactionManually(String userId, String incomeOrExpense, String amount,
                                                        LocalDateTime time, String remark, String type, String accountId)
             throws ServiceException {
-        // 调用 TransactionService 中的 addTransactionManually 方法来创建一个新的交易记录
+        if (userId == null || userId.isEmpty()) {
+            throw new ServiceException("User ID cannot be null or empty", null);
+        }
         return transactionService.addTransactionManually(userId, incomeOrExpense, amount, time, remark, type, accountId);
     }
-
 }
