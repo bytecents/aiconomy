@@ -177,10 +177,14 @@ public class SidebarController implements Initializable {
         fadeOut.setOnFinished(event -> {
             MyFXMLLoader loader = new MyFXMLLoader(fxmlPath);
             contentArea.setContent(loader.load());
-            if (fxmlPath.contains("budgets")) {
-                AddBudgetController budgetController = loader.getController();
-                budgetController.setOnOpenListener(this::openAddBudgetPanel);
+            if (fxmlPath.contains("add_budget")) {
+                AddBudgetController controller = loader.getController();
+                controller.setOnOpenListener(this::openAddBudgetPanel);
+            } else if (fxmlPath.contains("budgets")) {
+                BudgetController controller = loader.getController();
+                // 如果你也有 BudgetController 需要设置内容，可以在这里处理
             }
+
 
             FadeTransition fadeIn = new FadeTransition(Duration.millis(100), contentArea);
             fadeIn.setFromValue(0.0);

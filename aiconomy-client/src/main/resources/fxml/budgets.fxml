@@ -8,7 +8,7 @@
 
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.shape.Circle?>
-<StackPane fx:id="rootPane" xmlns:fx="http://javafx.com/fxml" fx:controller="com.se.aiconomy.client.controller.AddBudgetController">
+<StackPane fx:id="rootPane" xmlns:fx="http://javafx.com/fxml" fx:controller="com.se.aiconomy.client.controller.BudgetController">
     <VBox fx:id="mainVBox" styleClass="p-8">
         <padding>
             <Insets top="20" right="20" bottom="20" left="20"/>

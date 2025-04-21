@@ -52,6 +52,8 @@ public class BudgetController extends BaseController {
 
     @FXML
     private UserInfo userInfo;
+    private OnOpenListener openListener;
+
     @FXML
     public void initialize() {
         if (userInfo == null) {
@@ -208,6 +210,14 @@ public class BudgetController extends BaseController {
             remainingOrOverLabel.setStyle("-fx-text-fill: green;");
         }
     }
+    @FXML
+    public void setOnOpenListener(BudgetController.OnOpenListener listener) {
+        this.openListener = listener;
+    }
+    public interface OnOpenListener {
+        void onOpenBudgetPanel();
+    }
+    
 }
 
 
