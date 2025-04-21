@@ -1,5 +1,6 @@
 package com.se.aiconomy.client.controller;
 
+import com.se.aiconomy.client.Application.StyleClassFixer;
 import com.se.aiconomy.client.common.MyFXMLLoader;
 import com.se.aiconomy.client.controller.transactions.AddTransactionController;
 import com.se.aiconomy.client.controller.transactions.TransactionsController;
@@ -228,7 +229,7 @@ public class SidebarController implements Initializable {
                 fadeIn.setToValue(1.0);
                 fadeIn.play();
 
-            } catch (IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         });
