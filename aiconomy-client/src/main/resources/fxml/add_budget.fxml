@@ -243,18 +243,15 @@
                 <Region HBox.hgrow="ALWAYS"/>
 
                 <HBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
-                    <RadioButton fx:id="six" text="60%" fx:id="option1RadioButton"
-                                 style="-fx-font-size: 14px; -fx-text-fill: #333333;"/>
+                    <RadioButton fx:id="six" text="60%" style="-fx-font-size: 14px; -fx-text-fill: #333333;"/>
                 </HBox>
 
                 <HBox alignment="CENTER" HBox.hgrow="ALWAYS">
-                    <RadioButton fx:id="eight" text="80%" fx:id="option2RadioButton"
-                                 style="-fx-font-size: 14px; -fx-text-fill: #333333;"/>
+                    <RadioButton fx:id="eight" text="80%" style="-fx-font-size: 14px; -fx-text-fill: #333333;"/>
                 </HBox>
 
                 <HBox alignment="CENTER_RIGHT" HBox.hgrow="ALWAYS">
-                    <RadioButton fx:id="ten" text="100%" fx:id="option3RadioButton"
-                                 style="-fx-font-size: 14px; -fx-text-fill: #333333;"/>
+                    <RadioButton fx:id="ten" text="100%" style="-fx-font-size: 14px; -fx-text-fill: #333333;"/>
                 </HBox>
             </HBox>
         </VBox>

@@ -109,7 +109,7 @@ public class AddBudgetController extends BaseController {
             alertSettings = 1;
         } 
         BudgetAddRequest request = new BudgetAddRequest();
-        request.setUserId(userInfo.getId());
+        // request.setUserId(userInfo.getId());
         request.setBudgetAmount(budgetAmount);
         request.setBudgetCategory(budgetCategory);
         request.setAlertSettings(alertSettings);
