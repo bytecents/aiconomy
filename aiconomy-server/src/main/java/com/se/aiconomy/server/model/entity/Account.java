@@ -24,7 +24,7 @@ public class Account implements Identifiable {
     private String accountType; //账户类型（Checking, Savings, CreditCard）
     private String accountName; // 账户名称（e.g. Primary Checking）
     private double balance; // 余额（添加账户时银行卡的初始余额）
-    // 信用卡专有属性
+    // CreditCardOnly
     private double creditLimit; // 信用卡的额度
     private double currentDebt; // 当前欠款
     private LocalDateTime paymentDueDate; // 还款期限

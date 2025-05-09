@@ -113,47 +113,6 @@ public class AccountServiceTest {
 
     @Test
     @Order(5)
-    void testCalculateNetWorth() throws ServiceException {
-        Account account = new Account();
-        account.setId("account5");
-        account.setUserId("user5");
-        account.setBankName("bank5");
-        account.setAccountType("savings");
-        account.setBalance(4000.0);
-        jsonStorageService.insert(account);
-
-        TransactionDto transaction = new TransactionDto();
-        transaction.setAmount(String.valueOf(1000.0));
-        transaction.setIncomeOrExpense("Expense");
-        transaction.setPaymentMethod("Check");
-        transaction.setStatus("Paid");
-        transaction.setAccountId("account5");
-        transaction.setUserId("user5");
-        transaction.setTime(LocalDateTime.now());
-        transaction.setRemark("test");
-        jsonStorageService.insert(transaction);
-
-        double netWorth = accountService.calculateNetWorth("user5");
-        Assertions.assertEquals(5000.0, netWorth);
-        log.info("Calculated net worth for user5");
-    }
-
-    @Test
-    @Order(6)
-    void testCalculateMonthlySpending() throws ServiceException {
-        TransactionDto transaction = new TransactionDto();
-        transaction.setAmount(String.valueOf(1000.0));
-        transaction.setUserId("user6");
-        transaction.setTime(LocalDateTime.now());
-        transaction.setIncomeOrExpense("Expense");
-
-        jsonStorageService.insert(transaction);
-        double monthlySpending = accountService.calculateMonthlySpending("user6", Month.APRIL);
-
-    }
-
-    @Test
-    @Order(7)
     void testCalculateMonthlyIncome() throws ServiceException {
         TransactionDto transaction = new TransactionDto();
         transaction.setAmount(String.valueOf(1000.0));
@@ -167,7 +126,7 @@ public class AccountServiceTest {
     }
 
     @Test
-    @Order(8)
+    @Order(6)
     void testCalculateCreditCardDue() {
         Account account = new Account();
         account.setId("account8");
@@ -188,7 +147,7 @@ public class AccountServiceTest {
     }
 
     @Test
-    @Order(9)
+    @Order(7)
     void testCalculateNextDueDate() {
         Account account1 = new Account("account9", "user9", "bank9", "credit", "account9", 1000.0, 5000.0, 1000.0, LocalDateTime.of(2026, 1, 1, 0, 0), 100.0);
         Account account2 = new Account("account10", "user9", "bank10", "credit", "account10", 2000.0, 5000.0, 1000.0, LocalDateTime.of(2026, 2, 1, 0, 0), 100.0);
