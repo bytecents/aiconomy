@@ -1,14 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.shape.Circle?>
 
-<AnchorPane id="Content" prefHeight="545.0" prefWidth="430.0" xmlns="http://javafx.com/javafx/23.0.1"
-            fx:controller="com.se.aiconomy.client.controller.SettingsController" xmlns:fx="http://javafx.com/fxml/1">
-    <Label alignment="CENTER" layoutX="14.0" layoutY="14.0" style="&#10;" text="Settings Content" textAlignment="CENTER">
-        <font>
-            <Font name="Arial Bold" size="23.25" />
-        </font>
-    </Label>
-</AnchorPane>
+<StackPane fx:id="rootPane" xmlns:fx="http://javafx.com/fxml" fx:controller="com.se.aiconomy.client.controller.BudgetController">
+    <VBox fx:id="mainVBox" spacing="20" styleClass="p-8">
+        <padding>
+            <Insets top="20" right="20" bottom="20" left="20"/>
+        </padding>
+
+        <!-- Title Bar -->
+        <HBox alignment="CENTER_LEFT" spacing="20">
+            <Label text="Settings" styleClass="text-2xl font-bold text-gray-900" />
+            <Region HBox.hgrow="ALWAYS" />
+            <Button text="Save Changes"
+                    fx:id="saveChangeBtn"
+                    onAction="#onAddBudgetClick"
+                    styleClass="hover-bg-blue-700 p-4-2 bg-blue-600 text-white font-roboto cursor-pointer" />
+        </HBox>
+    </VBox>
+</StackPane>
