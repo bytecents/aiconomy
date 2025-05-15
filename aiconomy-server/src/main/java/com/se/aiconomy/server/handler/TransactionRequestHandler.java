@@ -12,6 +12,7 @@ import com.se.aiconomy.server.model.dto.transaction.request.TransactionImportReq
 import com.se.aiconomy.server.service.TransactionService;
 import com.se.aiconomy.server.service.impl.TransactionServiceImpl;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -72,4 +73,27 @@ public class TransactionRequestHandler {
         }
         return transactions;
     }
+
+    /**
+     * 手动添加交易记录
+     * @param userId 用户ID
+     * @param incomeOrExpense 收入或支出
+     * @param amount 金额
+     * @param time 交易时间
+     * @param  product 产品名称
+     * @param type 交易类型
+     * @param accountId 账户ID
+     * @return 返回创建的 TransactionDto
+     * @throws ServiceException 如果保存交易记录时发生错误
+     */
+    public TransactionDto handleAddTransactionManually(String userId, String incomeOrExpense, String amount,
+                                                       LocalDateTime time, String product, String type, String accountId)
+            throws ServiceException {
+        if (userId == null || userId.isEmpty()) {
+            throw new ServiceException("User ID cannot be null or empty", null);
+        }
+        return transactionService.addTransactionManually(userId, incomeOrExpense, amount, time, product, type, accountId);
+    }
+
+//    public TransactionDto updateTransaction
 }
