@@ -11,4 +11,6 @@ public class BudgetCategoryInfo {
     private String categoryName;
     private double budgetAmount;
     private double spentAmount;
+    private double remainingAmount;
+    private double usedRatio;
 }

@@ -138,11 +138,15 @@ public class BudgetRequestHandler {
 
                 double budgetAmount = budgetService.getTotalBudgetByCategory(request.getUserId(), category);
                 double spentAmount = budgetService.getTotalSpentByCategory(request.getUserId(), category);
+                double remainingAmount = budgetAmount - spentAmount;
+                double usedRatio = spentAmount / budgetAmount;
 
                 BudgetCategoryInfo info = new BudgetCategoryInfo();
                 info.setCategoryName(category);
                 info.setBudgetAmount(budgetAmount);
                 info.setSpentAmount(spentAmount);
+                info.setRemainingAmount(remainingAmount);
+                info.setUsedRatio(usedRatio);
 
                 budgetCategoryInfoList.add(info);
                 processedCategories.add(category); // 标记为已处理
