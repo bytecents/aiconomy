@@ -8,7 +8,7 @@
 
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.shape.Circle?>
-<StackPane fx:id="rootPane" xmlns:fx="http://javafx.com/fxml" fx:controller="com.se.aiconomy.client.controller.BudgetController">
+<StackPane fx:id="rootPane" xmlns:fx="http://javafx.com/fxml" fx:controller="com.se.aiconomy.client.controller.AccountsController">
     <VBox fx:id="mainVBox" styleClass="p-8">
         <padding>
             <Insets top="20" right="20" bottom="20" left="20"/>
@@ -20,7 +20,7 @@
             </VBox>
             <Region HBox.hgrow="ALWAYS"/>
             <Button text="Add Accounts"
-                    onAction="#onAddBudgetClick"
+                    onAction="#onAddAccountClick"
                     fx:id="addAccountBtn"
                     styleClass="hover-bg-blue-700 p-4-2 bg-blue-600 text-white font-roboto cursor-pointer"/>
         </HBox>

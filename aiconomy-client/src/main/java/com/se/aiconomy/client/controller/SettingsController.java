@@ -19,13 +19,15 @@ import javafx.scene.shape.Circle;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
+
+import java.net.URL;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.ResourceBundle;
 
 public class SettingsController extends BaseController {
 
-    @FXML
-    private DatePicker birthDatePicker;  // 对应 FXML 中的 fx:id
+
 
     @FXML private Rectangle switchTrack;
     @FXML private Circle switchThumb;
@@ -57,6 +59,12 @@ public class SettingsController extends BaseController {
         }
     }
 
+    @FXML
+    private DatePicker birthDatePicker;
+
+    public void initialize(URL location, ResourceBundle resources) {
+        birthDatePicker.setValue(LocalDate.of(1990, 1, 1)); // 正确设置 LocalDate 类型
+    }
 
 
     private void init() {
@@ -80,14 +88,14 @@ public class SettingsController extends BaseController {
 
         @FXML
         public void initialize() {
-            currencyComboBox.setItems(FXCollections.observableArrayList("USD", "EUR", "GBP", "JPY"));
+            currencyComboBox.setItems(FXCollections.observableArrayList("USD", "EUR", "GBP"));
             languageComboBox.setItems(FXCollections.observableArrayList("English", "Chinese", "Spanish", "French"));
-            dateFormatComboBox.setItems(FXCollections.observableArrayList("YYYY-MM-DD", "DD/MM/YYYY", "MM-DD-YYYY"));
+            dateFormatComboBox.setItems(FXCollections.observableArrayList("YYYY-MM-DD", "YYYY/MM/DD", "MM-DD-YYYY"));
 
             // 可选：设置默认值
             currencyComboBox.setValue("USD");
             languageComboBox.setValue("English");
-            dateFormatComboBox.setValue("YYYY-MM-DD");
+            dateFormatComboBox.setValue("YYYY/MM/DD");
         }
 
     @FXML
