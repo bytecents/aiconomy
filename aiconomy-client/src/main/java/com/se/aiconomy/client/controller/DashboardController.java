@@ -99,6 +99,7 @@ public class DashboardController extends BaseController {
     @FXML
     public void quickAdd(ActionEvent actionEvent) throws IOException {
         goToBudget(actionEvent);
+        mainController.openAddBudgetPanel();
     }
 
     public void goToTransaction(ActionEvent actionEvent) throws IOException {

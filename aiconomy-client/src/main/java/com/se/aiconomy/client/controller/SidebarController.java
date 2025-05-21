@@ -207,11 +207,11 @@ public class SidebarController implements Initializable {
         }
     }
 
-    private void openAddTransactionPanel() {
+    protected void openAddTransactionPanel() {
         openPanel("/fxml/transactions/add-transaction.fxml");
     }
 
-    private void openAddBudgetPanel() {
+    protected void openAddBudgetPanel() {
         openPanel("/fxml/add_budget.fxml");
     }
 
