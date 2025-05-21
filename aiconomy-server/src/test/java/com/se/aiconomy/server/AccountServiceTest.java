@@ -1,5 +1,7 @@
 package com.se.aiconomy.server;
 
+import com.se.aiconomy.server.common.exception.ServiceException;
+import com.se.aiconomy.server.model.dto.TransactionDto;
 import com.se.aiconomy.server.model.entity.Account;
 import com.se.aiconomy.server.service.AccountService;
 import com.se.aiconomy.server.service.impl.AccountServiceImpl;
@@ -10,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.LocalDateTime;
+import java.time.Month;
 import java.util.List;
 
 public class AccountServiceTest {
@@ -80,13 +83,57 @@ public class AccountServiceTest {
 
     @Test
     @Order(4)
+    void testGetAccountsByUserId() {
+        Account account1 = new Account();
+        account1.setId("account4");
+        account1.setUserId("user4");
+        account1.setBankName("bank4");
+        account1.setAccountType("credit");
+        account1.setAccountName("account4");
+        account1.setBalance(3000.0);
+        account1.setCreditLimit(5000.0);
+        account1.setCurrentDebt(1000.0);
+        account1.setPaymentDueDate(LocalDateTime.now());
+        account1.setMinimumPayment(100.0);
+
+        Account account2 = new Account();
+        account2.setId("account4_1");
+        account2.setUserId("user4");
+        account2.setBankName("bank4_1");
+        account2.setAccountType("savings");
+        account2.setAccountName("account4_1");
+        account2.setBalance(4000.0);
+
+        jsonStorageService.insert(account1);
+        jsonStorageService.insert(account2);
+        List<Account> accounts = accountService.getAccountsByUserId("user4");
+        Assertions.assertEquals(2, accounts.size());
+        log.info("Got accounts for user4");
+    }
+
+    @Test
+    @Order(5)
+    void testCalculateMonthlyIncome() throws ServiceException {
+        TransactionDto transaction = new TransactionDto();
+        transaction.setAmount(String.valueOf(1000.0));
+        transaction.setUserId("user7");
+        transaction.setTime(LocalDateTime.now());
+        transaction.setIncomeOrExpense("Income");
+
+        jsonStorageService.insert(transaction);
+        double monthlySpending = accountService.calculateMonthlySpending("user7", LocalDateTime.now().getMonth());
+
+    }
+
+    @Test
+    @Order(6)
     void testCalculateCreditCardDue() {
         Account account = new Account();
-        account.setId("account4");
-        account.setUserId("user4");
-        account.setBankName("bank4");
+        account.setId("account8");
+        account.setUserId("user8");
+        account.setBankName("bank8");
         account.setAccountType("credit");
-        account.setAccountName("account4");
+        account.setAccountName("account8");
         account.setBalance(3000.0);
         account.setCreditLimit(5000.0);
         account.setCurrentDebt(1000.0);
@@ -94,8 +141,21 @@ public class AccountServiceTest {
         account.setMinimumPayment(100.0);
 
         jsonStorageService.insert(account);
-        double creditCardDue = accountService.calculateCreditCardDue("user4");
+        double creditCardDue = accountService.calculateCreditCardDue("user8");
         Assertions.assertEquals(1000.0, creditCardDue);
         log.info("Calculated credit card due for user4");
+    }
+
+    @Test
+    @Order(7)
+    void testCalculateNextDueDate() {
+        Account account1 = new Account("account9", "user9", "bank9", "credit", "account9", 1000.0, 5000.0, 1000.0, LocalDateTime.of(2026, 1, 1, 0, 0), 100.0);
+        Account account2 = new Account("account10", "user9", "bank10", "credit", "account10", 2000.0, 5000.0, 1000.0, LocalDateTime.of(2026, 2, 1, 0, 0), 100.0);
+
+        jsonStorageService.insert(account1);
+        jsonStorageService.insert(account2);
+        LocalDateTime nextDueDate = accountService.calculateNextDueDate("user9");
+        Assertions.assertEquals(LocalDateTime.of(2026, 1, 1, 0, 0), nextDueDate);
+        log.info("Calculated next due date for user9");
     }
 }

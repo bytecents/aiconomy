@@ -48,8 +48,21 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public double calculateNetWorth(String userId) {
-        return 0;
+    public double calculateNetWorth(String userId) throws ServiceException {
+        List<Account> accounts = getAccountsByUserId(userId);
+        List<TransactionDto> transactions = getTransactionsByUserId(userId);
+        double netWorth = 0;
+        for (Account account : accounts) {
+            netWorth += account.getBalance();
+        }
+        for (TransactionDto transaction : transactions) {
+            if (transaction.getIncomeOrExpense().equals("Income")) {
+                netWorth += Double.parseDouble(transaction.getAmount());
+            } else if (transaction.getIncomeOrExpense().equals("Expense")) {
+                netWorth -= Double.parseDouble(transaction.getAmount());
+            }
+        }
+        return netWorth;
     }
 
     @Override
@@ -57,7 +70,7 @@ public class AccountServiceImpl implements AccountService {
         List<TransactionDto> transactions = getTransactionsByUserId(userId);
         double totalSpending = 0;
         for (TransactionDto transaction : transactions) {
-            if (transaction.getTime().getMonth().equals(month) && transaction.getIncomeOrExpense().equals("expense")) {
+            if (transaction.getTime().getMonth().equals(month) && transaction.getIncomeOrExpense().equals("Expense")) {
                 totalSpending += Double.parseDouble(transaction.getAmount());
             }
         }
@@ -69,7 +82,7 @@ public class AccountServiceImpl implements AccountService {
         List<TransactionDto> transactions = getTransactionsByUserId(userId);
         double totalIncome = 0;
         for (TransactionDto transaction : transactions) {
-            if (transaction.getTime().getMonth().equals(month) && transaction.getIncomeOrExpense().equals("income")) {
+            if (transaction.getTime().getMonth().equals(month) && transaction.getIncomeOrExpense().equals("Income")) {
                 totalIncome += Double.parseDouble(transaction.getAmount());
             }
         }
