@@ -14,6 +14,8 @@ public abstract class BaseController {
     @FXML
     protected UserInfo userInfo;
 
+    public SidebarController mainController;
+
     public void setBudgetCategoryInfo(BudgetCategoryInfo info) {
     }
 

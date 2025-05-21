@@ -8,7 +8,8 @@
 
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.shape.Circle?>
-<StackPane fx:id="rootPane" xmlns:fx="http://javafx.com/fxml" fx:controller="com.se.aiconomy.client.controller.AccountsController">
+<StackPane xmlns:fx="http://javafx.com/fxml" fx:id="rootPane"
+           fx:controller="com.se.aiconomy.client.controller.AccountsController">
     <VBox fx:id="mainVBox" styleClass="p-8">
         <padding>
             <Insets top="20" right="20" bottom="20" left="20"/>
@@ -20,7 +21,6 @@
             </VBox>
             <Region HBox.hgrow="ALWAYS"/>
             <Button text="Add Accounts"
-                    onAction="#onAddAccountClick"
                     fx:id="addAccountBtn"
                     styleClass="hover-bg-blue-700 p-4-2 bg-blue-600 text-white font-roboto cursor-pointer"/>
         </HBox>
@@ -61,9 +61,9 @@
                 <!-- Account 1 -->
                 <HBox alignment="CENTER_LEFT" spacing="12">
                     <StackPane prefHeight="50.0" prefWidth="50.0">
-                        <Circle fill="#dbeafe" radius="24.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+                        <Circle fill="#dbeafe" radius="24.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0"/>
                         <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                            <Image url="@../assets/dash_bank.png" />
+                            <Image url="@../assets/dash_bank.png"/>
                         </ImageView>
                     </StackPane>
                     <VBox>
@@ -81,9 +81,9 @@
                 <!-- Account 2 -->
                 <HBox alignment="CENTER_LEFT" spacing="12">
                     <StackPane prefHeight="50.0" prefWidth="50.0">
-                        <Circle fill="#fca5a5" radius="24.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+                        <Circle fill="#fca5a5" radius="24.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0"/>
                         <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                            <Image url="@../assets/eng_bank.png" />
+                            <Image url="@../assets/eng_bank.png"/>
                         </ImageView>
                     </StackPane>
                     <VBox>
@@ -101,9 +101,9 @@
                 <!-- Account 3 -->
                 <HBox alignment="CENTER_LEFT" spacing="12">
                     <StackPane prefHeight="50.0" prefWidth="50.0">
-                        <Circle fill="#dcfce7" radius="24.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+                        <Circle fill="#dcfce7" radius="24.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0"/>
                         <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                            <Image url="@../assets/well_fargo.png" />
+                            <Image url="@../assets/well_fargo.png"/>
                         </ImageView>
                     </StackPane>
                     <VBox>
@@ -131,9 +131,9 @@
             </columnConstraints>
 
             <!-- Button 1 -->
-            <HBox styleClass="card px-4 py-2" alignment="CENTER"  GridPane.columnIndex="0" prefHeight="50">
+            <HBox styleClass="card px-4 py-2" alignment="CENTER" GridPane.columnIndex="0" prefHeight="50">
                 <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
-                    <Image url="@../assets/sync_acc.png" />
+                    <Image url="@../assets/sync_acc.png"/>
                 </ImageView>
                 <Label text="  Sync Accounts" styleClass="text-sm text-gray-900 font-roboto"/>
             </HBox>
@@ -141,7 +141,7 @@
             <!-- Button 2 -->
             <HBox styleClass="card px-4 py-2" alignment="CENTER" spacing="8" GridPane.columnIndex="1" prefHeight="50">
                 <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
-                    <Image url="@../assets/download.png" />
+                    <Image url="@../assets/download.png"/>
                 </ImageView>
                 <Label text="Export Statement" styleClass="text-sm text-gray-900 font-roboto"/>
             </HBox>
@@ -149,12 +149,10 @@
             <!-- Button 3 -->
             <HBox styleClass="card px-4 py-2" alignment="CENTER" spacing="8" GridPane.columnIndex="2" prefHeight="50">
                 <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
-                    <Image url="@../assets/setting.png" />
+                    <Image url="@../assets/setting.png"/>
                 </ImageView>
                 <Label text="Account Settings" styleClass="text-sm text-gray-900 font-roboto"/>
             </HBox>
         </GridPane>
-
-
     </VBox>
 </StackPane>

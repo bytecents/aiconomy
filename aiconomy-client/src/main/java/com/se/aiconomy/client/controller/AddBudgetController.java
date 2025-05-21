@@ -2,16 +2,12 @@ package com.se.aiconomy.client.controller;
 
 //import com.alibaba.fastjson2.internal.asm.Label;
 
-import com.se.aiconomy.server.model.dto.user.response.UserInfo;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.input.MouseEvent;
@@ -22,11 +18,10 @@ import lombok.Setter;
 import javafx.scene.control.Label;
 
 
-import java.io.IOException;
 import java.util.List;
 
 @Setter
-public class BudgetController extends BaseController {
+public class AddBudgetController extends BaseController {
     @FXML
     private ToggleGroup toggleGroup;
 
@@ -81,12 +76,12 @@ public class BudgetController extends BaseController {
 
     }
 
-    @FXML
-    public void onAddBudgetClick(ActionEvent event) {
-        if (openListener != null) {
-            openListener.onOpenAddBudgetPanel();
-        }
-    }
+//    @FXML
+//    public void onAddBudgetClick(ActionEvent event) {
+//        if (openListener != null) {
+//            openListener.onOpenAddBudgetPanel();
+//        }
+//    }
 
     @FXML
     private void onCancel(ActionEvent event) {
