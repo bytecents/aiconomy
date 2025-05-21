@@ -13,14 +13,8 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Builder
 public class SettingsInfo {
-    private String email;
-    private String firstName; // 名字
-    private String lastName; // 姓氏
-    private String phone;
-    private LocalDate birthDate;
     private String id;
     private String userId;
-    private String currency;
     private String dateFormat;
     private String language;
     private String theme;

@@ -15,7 +15,6 @@ public class Settings implements Identifiable {
     @Id
     private String id; // Settings id
     private String userId; // User id
-    private String currency; // 货币类型
     private String dateFormat;
     private String language;
     private String theme;
