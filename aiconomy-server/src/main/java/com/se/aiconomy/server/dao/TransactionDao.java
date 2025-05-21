@@ -32,6 +32,7 @@ public class TransactionDao extends AbstractDao<TransactionDto> {
         return instance;
     }
 
+//    create a transtcion record
     @Override
     public TransactionDto create(TransactionDto transaction) {
         if (transaction.getTime() == null) {

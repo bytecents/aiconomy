@@ -13,12 +13,6 @@ import java.time.LocalDate;
 @Builder
 public class SettingsUpdateRequest extends BaseRequest {
     private String settingsId;
-    private String email;
-    private String firstName; // 名字
-    private String lastName; // 姓氏
-    private String phone;
-    private LocalDate birthDate;
-    private String currency;
     private String dateFormat;
     private String language;
     private String theme;

@@ -3,6 +3,7 @@ package com.se.aiconomy.server.service.impl;
 import com.se.aiconomy.server.common.exception.ServiceException;
 import com.se.aiconomy.server.common.utils.CSVUtils;
 import com.se.aiconomy.server.common.utils.ExcelUtils;
+import com.se.aiconomy.server.common.utils.JsonUtils;
 import com.se.aiconomy.server.dao.TransactionDao;
 import com.se.aiconomy.server.langchain.common.model.BillType;
 import com.se.aiconomy.server.langchain.common.model.DynamicBillType;
@@ -193,6 +194,8 @@ public class TransactionServiceImpl implements TransactionService {
                 transactions = readCSV(filePath);
             } else if ("xlsx".equalsIgnoreCase(fileExtension) || "xls".equalsIgnoreCase(fileExtension)) {
                 transactions = readExcel(filePath);
+            } else if ("json".equalsIgnoreCase(fileExtension)) {
+                transactions = readJson(filePath);
             } else {
                 // 抛出异常时，确保传递消息和 cause（第二个参数）
                 throw new ServiceException("Unsupported file type: " + fileExtension, null); // 无底层异常传 null
@@ -232,6 +235,11 @@ public class TransactionServiceImpl implements TransactionService {
      */
     private List<TransactionDto> readExcel(String filePath) throws IOException, ServiceException {
         return ExcelUtils.readExcel(filePath, TransactionDto.class);
+    }
+
+//    从Json文件中导入交易记录
+    private List<TransactionDto> readJson(String filePath) throws IOException {
+        return JsonUtils.readJson(filePath);
     }
 
     /**
