@@ -25,7 +25,7 @@ public class TransactionItemController {
 
         String rawAmount = transaction.getAmount();
         DecimalFormat df = new DecimalFormat("0.00");
-        
+
         String amount = (isExpense ? "-" : "+") + "$" + df.format(Double.parseDouble(rawAmount));
         String description = transaction.getProduct();
 //        String remark = transaction.getRemark();

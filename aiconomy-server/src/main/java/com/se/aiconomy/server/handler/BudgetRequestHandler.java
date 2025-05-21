@@ -110,6 +110,7 @@ public class BudgetRequestHandler {
             totalBudgetInfo.setTotalRemaining(budgetService.getTotalBudget(request.getUserId()) - budgetService.getTotalSpent(request.getUserId()));
             totalBudgetInfo.setTotalAlerts(budgetService.getTotalAlertCount(request.getUserId()));
             totalBudgetInfo.setDailyAvailableBudget(budgetService.getDailyAvailableBudget(request.getUserId()));
+            totalBudgetInfo.setLeftDays(budgetService.getLeftDays(request.getUserId()));
             return totalBudgetInfo;
         } catch (Exception e) {
             logger.error("Failed to get total budget info: {}", e.getMessage(), e);

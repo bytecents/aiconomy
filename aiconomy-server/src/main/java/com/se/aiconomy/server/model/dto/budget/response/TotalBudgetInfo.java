@@ -14,4 +14,5 @@ public class TotalBudgetInfo {
     private double totalRemaining;
     private int totalAlerts;
     private double dailyAvailableBudget;
+    private int leftDays;
 }

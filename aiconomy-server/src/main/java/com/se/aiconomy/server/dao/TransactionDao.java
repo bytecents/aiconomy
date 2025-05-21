@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -178,4 +179,36 @@ public class TransactionDao extends AbstractDao<TransactionDto> {
             .filter(t -> userId.equals(t.getUserId()))
             .collect(Collectors.toList());
     }
+
+    /**
+     * Delete a transaction by its ID.
+     *
+     * @param transactionId The ID of the transaction to delete
+     * @return The deleted transaction if found, null otherwise
+     */
+    public TransactionDto deleteTransaction(String transactionId) {
+        Optional<TransactionDto> transaction = findById(transactionId);
+        if (transaction.isPresent()) {
+            super.delete(transaction.get());  // Use the delete method from AbstractDao
+            return transaction.get();
+        }
+        log.warn("Transaction with ID {} not found", transactionId);
+        return null;
+    }
+
+    /**
+     * Update an existing transaction in the storage.
+     *
+     * @param transaction The transaction to update
+     * @return The updated transaction
+     */
+    public TransactionDto updateTransaction(TransactionDto transaction) {
+        Optional<TransactionDto> existingTransaction = findById(transaction.getId());
+        if (existingTransaction.isPresent()) {
+            return super.update(transaction);  // Use the update method from AbstractDao
+        }
+        log.warn("Transaction with ID {} not found", transaction.getId());
+        return null;
+    }
+
 }

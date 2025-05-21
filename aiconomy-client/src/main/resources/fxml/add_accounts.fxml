@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml"
+            xmlns="http://javafx.com/javafx"
+            fx:controller="com.se.aiconomy.client.controller.AddAccountController"
+            style="-fx-background-color: #f0f0f0;">
+
+    <VBox spacing="16" AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0"
+          AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0"
+          style="-fx-padding: 16;">
+        <!-- 标题栏 -->
+        <HBox spacing="8" alignment="CENTER">
+            <VBox spacing="4" HBox.hgrow="ALWAYS">
+                <Label text="Add New Account"
+                       style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+                <Label text="Connect your bank account securely"
+                       style="-fx-text-fill: #6B7280; -fx-font-size: 12px;"/>
+            </VBox>
+
+            <!-- 修改关闭按钮定义 -->
+            <Button text="×"
+                    onAction="#onCancel"
+                    style="-fx-font-size: 18px; -fx-background-color: transparent; -fx-text-fill: black;"/>
+        </HBox>
+
+        <!-- 表单内容 -->
+        <VBox spacing="12" style="-fx-background-color: white; -fx-padding: 16; -fx-background-radius: 8;">
+            <!-- 银行选择 -->
+            <VBox spacing="4">
+                <Label text="Select Bank" style="-fx-font-weight: bold;"/>
+                <HBox spacing="8" alignment="CENTER_LEFT">
+                    <ComboBox promptText="Choose a bank..." style="-fx-pref-width: 300px;"/>
+                    <Label text="✔" style="-fx-text-fill: green;"/>
+                </HBox>
+            </VBox>
+
+            <!-- 账户类型 -->
+            <VBox spacing="4">
+                <Label text="Account Type" style="-fx-font-weight: bold;"/>
+                <HBox spacing="8" alignment="CENTER_LEFT">
+                    <ComboBox promptText="Select type..." style="-fx-pref-width: 300px;"/>
+                    <Label text="✔" style="-fx-text-fill: green;"/>
+                </HBox>
+            </VBox>
+
+            <!-- 账户名称 -->
+            <VBox spacing="4">
+                <Label text="Account Name" style="-fx-font-weight: bold;"/>
+                <TextField promptText="e.g. Primary Checking" style="-fx-pref-width: 300px;"/>
+            </VBox>
+        </VBox>
+
+        <!-- 底部声明和按钮 -->
+        <VBox spacing="12" style="-fx-padding: 8 0;">
+            <CheckBox text="Your banking credentials are encrypted and secure. We use bank-level security measures."
+                      style="-fx-text-fill: #6B7280; -fx-font-size: 12px;" selected="false"/>
+
+            <HBox spacing="8" alignment="CENTER_RIGHT">
+                <Button text="Cancel" style="-fx-background-color: transparent; -fx-text-fill: #6B7280;"/>
+                <Button text="Save"
+                        onAction="#onSave"
+                        style="-fx-background-color: #2563eb; -fx-text-fill: white; -fx-background-radius: 6px;"/>
+            </HBox>
+        </VBox>
+    </VBox>
+</AnchorPane>

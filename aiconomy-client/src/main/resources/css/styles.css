@@ -701,6 +701,54 @@
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 2, 0, 0, 1);
 }
 
+.switch-container {
+    -fx-cursor: hand;
+    -fx-padding: 2;
+}
+
+/* 默认关闭状态 */
+#switchTrack {
+    -fx-fill: #ccc;
+    -fx-arc-width: 26;
+    -fx-arc-height: 26;
+}
+
+#switchThumb {
+    -fx-fill: white;
+    -fx-translate-x: 2;
+    -fx-effect: dropshadow(one-pass-box, rgba(0, 0, 0, 0.2), 2, 0, 0, 1);
+}
+
+/* 开启状态（我们通过添加类或切换手动设置） */
+.switch-on #switchTrack {
+    -fx-fill: #2563eb; /* blue */
+}
+
+.switch-on #switchThumb {
+    -fx-translate-x: 24; /* 向右滑动 */
+}
+/* 默认关闭状态 */
+#switchAITrack {
+    -fx-fill: #ccc;
+    -fx-arc-width: 26;
+    -fx-arc-height: 26;
+}
+
+#switchAIThumb {
+    -fx-fill: white;
+    -fx-translate-x: 2;
+    -fx-effect: dropshadow(one-pass-box, rgba(0, 0, 0, 0.2), 2, 0, 0, 1);
+}
+
+/* 开启状态（我们通过添加类或切换手动设置） */
+.switch-on #switchAITrack {
+    -fx-fill: #2563eb; /* blue */
+}
+
+.switch-on #switchAIThumb {
+    -fx-translate-x: 24; /* 向右滑动 */
+}
+
 .date-picker-padding .text-field {
     -fx-padding: 10px 48px 10px 48px;
 }
