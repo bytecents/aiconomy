@@ -177,7 +177,7 @@ public class LoginController extends BaseController {
             UserInfo userInfo = userRequestHandler.handleLoginRequest(UserLoginRequest.builder().email("2022213670@bupt.cn").password("123456").build());
             setUserInfo(userInfo);
             switchToMain(event, userInfo);
-            CustomDialog.show("Success", "Login successfully", "success", "OK");
+//            CustomDialog.show("Success", "Login successfully", "success", "OK");
         } catch (Exception e) {
             UserRegisterRequest userRegisterRequest = UserRegisterRequest.builder()
                 .email("2022213670@bupt.cn")
@@ -199,7 +199,7 @@ public class LoginController extends BaseController {
             UserInfo userInfo = userRequestHandler.handleLoginRequest(UserLoginRequest.builder().email("2022213670@bupt.cn").password("123456").build());
             setUserInfo(userInfo);
             switchToMain(event, userInfo);
-            CustomDialog.show("Success", "Login successfully", "success", "OK");
+//            CustomDialog.show("Success", "Login successfully", "success", "OK");
         }
     }
 }

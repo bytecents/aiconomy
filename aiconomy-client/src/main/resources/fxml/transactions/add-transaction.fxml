@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.collections.FXCollections?>
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      stylesheets="/css/styles.css"
+      styleClass="bg-white rounded-2xl shadow-xl"
+      fx:controller="com.se.aiconomy.client.controller.transactions.AddTransactionController">
+        <!-- Modal Header -->
+    <HBox alignment="CENTER_LEFT" styleClass="p-6 border-b border-gray-100">
+        <Label styleClass="text-xl font-semibold text-gray-900">Add Transaction</Label>
+        <Region HBox.hgrow="ALWAYS" />
+        <Button onMouseClicked="#closeAddTransaction" text="×" styleClass="bg-transparent hover-bg-gray-200 border-none p-0 text-gray-900 text-base rounded-lg w-6 h-6 cursor-pointer"/>
+    </HBox>
+
+    <!-- Modal Content -->
+    <VBox styleClass="p-6 gap-6" VBox.vgrow="ALWAYS">
+        <HBox styleClass="gap-4 w-full">
+            <Button fx:id="expenseBtn" onMouseClicked="#switchToExpense" HBox.hgrow="ALWAYS" styleClass="p-3-4-3-4 w-full border rounded-lg font-medium expense cursor-pointer">
+                Expense
+            </Button>
+            <Button fx:id="incomeBtn" onMouseClicked="#switchToIncome" HBox.hgrow="ALWAYS" styleClass="p-3-4-3-4 w-full border rounded-lg font-medium inactive cursor-pointer">
+                Income
+            </Button>
+        </HBox>
+
+        <!-- Description with AI Suggestions -->
+        <VBox styleClass="gap-2 w-full">
+            <Label styleClass="text-sm font-medium text-gray-700">Description</Label>
+            <TextField fx:id="descriptionInput" promptText="Enter description" AnchorPane.topAnchor="0" AnchorPane.leftAnchor="0" styleClass="w-full text-base rounded-lg font-roboto p-2-4-2-4" />
+        </VBox>
+
+        <!-- Date & Time -->
+        <HBox styleClass="gap-4">
+            <VBox HBox.hgrow="ALWAYS" styleClass="gap-2 w-full">
+                <Label styleClass="text-sm font-medium text-gray-700">Amount</Label>
+                <HBox alignment="CENTER_LEFT">
+                    <Label styleClass="text-gray-500 text-base font-roboto px-2">$</Label>
+                    <TextField fx:id="amountInput" promptText="0.00" HBox.hgrow="ALWAYS" styleClass="w-full text-base rounded-lg font-roboto" />
+                </HBox>
+            </VBox>
+
+            <VBox HBox.hgrow="ALWAYS" styleClass="gap-2 w-full">
+                <Label styleClass="text-sm font-medium text-gray-700">Date</Label>
+                <DatePicker fx:id="datePicker" styleClass="w-full rounded-lg" />
+            </VBox>
+        </HBox>
+
+<!--         Category with Smart Suggestions -->
+        <VBox fx:id="categoryPanel" styleClass="gap-2 w-full">
+            <Label styleClass="text-sm font-medium text-gray-700">Category</Label>
+            <GridPane vgap="12" hgap="12">
+                <columnConstraints>
+                    <ColumnConstraints percentWidth="25" />
+                    <ColumnConstraints percentWidth="25" />
+                    <ColumnConstraints percentWidth="25" />
+                    <ColumnConstraints percentWidth="25" />
+                </columnConstraints>
+
+                <VBox GridPane.columnIndex="0" fx:id="category1" onMouseClicked="#chooseCategory1" alignment="CENTER" styleClass="cursor-pointer p-3 gap-1 bg-gray-50 rounded-lg border">
+                    <Region styleClass="w-6 h-6 bg-gray-600" />
+                    <Label styleClass="text-sm text-gray-600"> Food &amp; Dining </Label>
+                </VBox>
+                <VBox GridPane.columnIndex="1" fx:id="category2" onMouseClicked="#chooseCategory2" alignment="CENTER" styleClass="cursor-pointer p-3 gap-1 bg-gray-50 rounded-lg border">
+                    <Region styleClass="w-6 h-6 bg-gray-600" />
+                    <Label styleClass="text-sm text-gray-600"> Transportation </Label>
+                </VBox>
+                <VBox GridPane.columnIndex="2" fx:id="category3" onMouseClicked="#chooseCategory3" alignment="CENTER" styleClass="cursor-pointer p-3 gap-1 bg-gray-50 rounded-lg border">
+                    <Region styleClass="w-6 h-6 bg-gray-600" />
+                    <Label styleClass="text-sm text-gray-600"> Shopping </Label>
+                </VBox>
+                <VBox GridPane.columnIndex="3" fx:id="category4" onMouseClicked="#chooseCategory4" alignment="CENTER" styleClass="cursor-pointer p-3 gap-1 bg-gray-50 rounded-lg border">
+                    <Region styleClass="w-6 h-6 bg-gray-600" />
+                    <Label styleClass="text-sm text-gray-600"> Entertainment </Label>
+                </VBox>
+<!--                <Button-->
+<!--                        type="button"-->
+<!--                        class="p-3 bg-gray-50 border rounded-lg text-center">-->
+<!--                    <img-->
+<!--                            src="https://unpkg.com/lucide-static@latest/icons/utensils.svg"-->
+<!--                            class="w-6 h-6 mx-auto mb-1" />-->
+<!--                    <span class="text-sm"> Food & Dining </span>-->
+<!--                </Button>-->
+<!--                <Button-->
+<!--                        type="button"-->
+<!--                        class="p-3 bg-gray-50 border rounded-lg text-center">-->
+<!--                    <img-->
+<!--                            src="https://unpkg.com/lucide-static@latest/icons/bus.svg"-->
+<!--                            class="w-6 h-6 mx-auto mb-1" />-->
+<!--                    <span class="text-sm"> Transportation </span>-->
+<!--                </Button>-->
+<!--                <Button-->
+<!--                        type="button"-->
+<!--                        class="p-3 bg-gray-50 border rounded-lg text-center">-->
+<!--                    <img-->
+<!--                            src="https://unpkg.com/lucide-static@latest/icons/shopping-bag.svg"-->
+<!--                            class="w-6 h-6 mx-auto mb-1" />-->
+<!--                    <span class="text-sm"> Shopping </span>-->
+<!--                </Button>-->
+            </GridPane>
+        </VBox>
+
+            <!-- Account -->
+        <VBox styleClass="gap-2 w-full">
+            <Label styleClass="text-sm font-medium text-gray-700">Account</Label>
+            <ComboBox fx:id="accountComboBox" styleClass="w-full text-base font-roboto cursor-pointer rounded-lg" value="Chase Bank">
+                <items>
+                    <FXCollections fx:factory="observableArrayList">
+                        <String fx:value="Chase Bank" />
+                        <String fx:value="Wells Fargo" />
+                    </FXCollections>
+                </items>
+            </ComboBox>
+        </VBox>
+    </VBox>
+
+    <!-- Modal Footer -->
+    <HBox alignment="CENTER_RIGHT" styleClass="gap-3 p-6 border-t border-gray-100 bg-gray-50 rounded-b-2xl">
+        <Button onMouseClicked="#closeAddTransaction" styleClass="p-2-4-2-4 border border-gray-200 rounded-lg hover-bg-gray-100 cursor-pointer">
+            Cancel
+        </Button>
+        <Button onMouseClicked="#handleSaveTransaction" styleClass="p-2-4-2-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 cursor-pointer">
+            Save Transaction
+        </Button>
+    </HBox>
+</VBox>

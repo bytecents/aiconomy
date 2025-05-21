@@ -13,9 +13,9 @@
           stylesheets="/css/styles.css"
           styleClass="gap-4 p-3-4-3-4 border-b rounded-t-xl hover-bg-gray-50">
     <columnConstraints>
-        <ColumnConstraints percentWidth="30" />
         <ColumnConstraints percentWidth="20" />
-        <ColumnConstraints percentWidth="15" />
+        <ColumnConstraints percentWidth="20" />
+        <ColumnConstraints percentWidth="25" />
         <ColumnConstraints percentWidth="15" />
         <ColumnConstraints percentWidth="10" />
         <ColumnConstraints percentWidth="10" />
@@ -24,27 +24,28 @@
         <RowConstraints percentHeight="100" />
     </rowConstraints>
     <HBox GridPane.columnIndex="0" styleClass="gap-3" alignment="CENTER_LEFT">
-        <Region styleClass="w-10 h-10 rounded-lg bg-blue-100" />
-        <VBox>
-            <Label styleClass="text-base font-medium">Amazon.com</Label>
-            <Label styleClass="text-sm text-gray-500">Online Shopping</Label>
+        <Region styleClass="w-10 h-10 rounded-lg bg-red-100" />
+        <VBox alignment="CENTER_LEFT">
+            <Label fx:id="descriptionLabel" styleClass="text-base font-medium" />
+<!--            <Label fx:id="remarkLabel" styleClass="text-sm text-gray-500">Online Shopping</Label>-->
         </VBox>
     </HBox>
-    <Label GridPane.columnIndex="1" styleClass="text-base font-roboto text-gray-600">Feb 15, 2024</Label>
+    <Label fx:id="dateLabel" GridPane.columnIndex="1" styleClass="text-sm font-roboto text-gray-600" />
     <VBox GridPane.columnIndex="2" alignment="CENTER_LEFT">
-        <ComboBox fx:id="categoryComboBox" styleClass="text-sm font-roboto cursor-pointer rounded-lg">
+        <ComboBox fx:id="categoryCombobox" styleClass="text-sm font-roboto cursor-pointer rounded-lg">
             <items>
                 <FXCollections fx:factory="observableArrayList">
+                    <String fx:value="Food &amp; Dining" />
                     <String fx:value="Shopping" />
-                    <String fx:value="Electronics" />
-                    <String fx:value="Home" />
+                    <String fx:value="Transportation" />
+                    <String fx:value="Entertainment" />
                 </FXCollections>
             </items>
         </ComboBox>
     </VBox>
-    <Label GridPane.columnIndex="3" styleClass="text-base font-roboto text-gray-600">Chase Bank</Label>
+    <Label fx:id="accountLabel" GridPane.columnIndex="3" styleClass="text-sm font-roboto text-gray-600">Chase Bank</Label>
     <HBox alignment="CENTER_RIGHT" GridPane.columnIndex="4">
-        <Label styleClass="text-sm font-medium text-red-500">-$129.99</Label>
+        <Label fx:id="amountLabel" styleClass="text-sm font-medium" />
     </HBox>
     <HBox alignment="CENTER_RIGHT" GridPane.columnIndex="5">
         <Button styleClass="w-6 h-6 bg-transparent border-none hover-bg-gray-100 cursor-pointer"> </Button>

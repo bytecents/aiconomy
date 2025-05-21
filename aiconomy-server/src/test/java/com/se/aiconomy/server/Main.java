@@ -2,6 +2,7 @@ package com.se.aiconomy.server;
 
 import com.se.aiconomy.server.common.exception.ServiceException;
 import com.se.aiconomy.server.handler.AccountRequestHandler;
+import com.se.aiconomy.server.handler.BudgetRequestHandler;
 import com.se.aiconomy.server.handler.TransactionRequestHandler;
 import com.se.aiconomy.server.handler.UserRequestHandler;
 import com.se.aiconomy.server.langchain.common.model.BillType;
@@ -11,6 +12,8 @@ import com.se.aiconomy.server.model.dto.TransactionDto;
 import com.se.aiconomy.server.model.dto.account.request.AddAccountsRequest;
 import com.se.aiconomy.server.model.dto.account.request.DeleteAccountRequest;
 import com.se.aiconomy.server.model.dto.account.request.GetAccountsByUserIdRequest;
+import com.se.aiconomy.server.model.dto.budget.request.BudgetAddRequest;
+import com.se.aiconomy.server.model.dto.budget.response.BudgetInfo;
 import com.se.aiconomy.server.model.dto.transaction.request.GetTransactionByUserIdRequest;
 import com.se.aiconomy.server.model.dto.transaction.request.TransactionClassificationRequest;
 import com.se.aiconomy.server.model.dto.transaction.request.TransactionImportRequest;
@@ -20,6 +23,7 @@ import com.se.aiconomy.server.model.dto.user.request.UserRegisterRequest;
 import com.se.aiconomy.server.model.dto.user.response.UserInfo;
 import com.se.aiconomy.server.model.entity.Account;
 import com.se.aiconomy.server.service.UserService;
+import com.se.aiconomy.server.service.impl.BudgetServiceImpl;
 import com.se.aiconomy.server.service.impl.UserServiceImpl;
 import com.se.aiconomy.server.storage.service.JSONStorageService;
 import com.se.aiconomy.server.storage.service.impl.JSONStorageServiceImpl;
@@ -175,5 +179,14 @@ public class Main {
         for (DynamicBillType billType : billTypes) {
             System.out.println(billType);
         }*/
+        BudgetRequestHandler budgetRequestHandler = new BudgetRequestHandler(new BudgetServiceImpl(JSONStorageServiceImpl.getInstance()));
+        BudgetAddRequest budgetAddRequest = new BudgetAddRequest();
+        budgetAddRequest.setUserId(userInfo.getId());
+        budgetAddRequest.setBudgetCategory("Food & Dining");
+        budgetAddRequest.setBudgetAmount(1000.00);
+        budgetAddRequest.setAlertSettings(80.0);
+        budgetAddRequest.setNotes("Monthly food budget");
+        BudgetInfo budgetInfo = budgetRequestHandler.handleBudgetAddRequest(budgetAddRequest);
+        System.out.println(budgetInfo);
     }
 }

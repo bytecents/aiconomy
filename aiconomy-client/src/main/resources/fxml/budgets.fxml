@@ -22,7 +22,7 @@
             <Button text="Add Budgets"
                     onAction="#onAddBudgetClick"
                     fx:id="addBudgetBtn"
-                    styleClass="hover-bg-blue-700 p-4-2 bg-blue-600 text-white font-roboto cursor-pointer"/>
+                    styleClass="hover-bg-blue-700 rounded-lg p-4-2 bg-blue-600 text-white font-roboto cursor-pointer"/>
         </HBox>
         <!-- Overview Cards -->
         <GridPane hgap="24" vgap="24" styleClass="pb-4">

@@ -15,12 +15,15 @@
 <?import java.lang.String?>
 
 <?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
 <VBox xmlns:fx="http://javafx.com/fxml/1"
       id="Content"
       xmlns="http://javafx.com/javafx/23.0.1"
       styleClass="p-8" fx:controller="com.se.aiconomy.client.controller.DashboardController"
       stylesheets="/css/styles.css">
-    <HBox alignment="CENTER" styleClass="pb-8 gap-5">
+    <HBox styleClass="pb-8 gap-5">
         <VBox styleClass="gap-1">
             <Label fx:id="welcomeTextField" text="Welcome back, Alex!"
                    styleClass="text-2xl font-semibold text-gray-900 pb-1"/>
@@ -28,7 +31,7 @@
         </VBox>
         <Region HBox.hgrow="ALWAYS"/>
         <Button fx:id="quickAddButton" onAction="#quickAdd" text="Quick Add"
-                styleClass="hover-bg-blue-700 p-4-2 bg-blue-600 text-white font-roboto cursor-pointer"/>
+                styleClass="hover-bg-blue-700 rounded-lg p-4-2 bg-blue-600 text-white font-roboto cursor-pointer"/>
     </HBox>
 
     <GridPane hgap="24" vgap="24" styleClass="pb-8">
@@ -41,28 +44,28 @@
 
         <VBox styleClass="card p-6" GridPane.columnIndex="0">
             <Label text="Net Worth" styleClass="text-sm text-gray-500 pb-2 font-roboto"/>
-            <Label text="\$125,380.50" styleClass="text-2xl font-bold text-gray-900 pb-2"/>
+            <Label fx:id="netWorth" text="\$125,380.50" styleClass="text-2xl font-bold text-gray-900 pb-2"/>
             <Label text="↑2.5% this month" styleClass="text-sm text-green-500 font-roboto"/>
         </VBox>
 
         <!-- Card 2 -->
         <VBox styleClass="card p-6" GridPane.columnIndex="1">
             <Label text="Monthly Spending" styleClass="text-sm text-gray-500 pb-2 font-roboto"/>
-            <Label text="\$3,240.50" styleClass="text-2xl font-bold text-gray-900 pb-2"/>
+            <Label fx:id="monthlySpending" text="\$3,240.50" styleClass="text-2xl font-bold text-gray-900 pb-2"/>
             <Label text="Budget left $1,759.50" styleClass="text-sm text-gray-500 font-roboto"/>
         </VBox>
 
         <!-- Card 3 -->
         <VBox styleClass="card p-6" GridPane.columnIndex="2">
             <Label text="Monthly Income" styleClass="text-sm text-gray-500 pb-2 font-roboto"/>
-            <Label text="\$8,650.00" styleClass="text-2xl font-bold text-gray-900 pb-2"/>
+            <Label fx:id="monthlyIncome" text="\$8,650.00" styleClass="text-2xl font-bold text-gray-900 pb-2"/>
             <Label text="↑8% vs last month" styleClass="text-sm text-green-500 font-roboto"/>
         </VBox>
 
         <!-- Card 4 -->
         <VBox styleClass="card p-6" GridPane.columnIndex="3">
             <Label text="Credit Card Due" styleClass="text-sm text-gray-500 pb-2 font-roboto"/>
-            <Label text="\$15,000.00" styleClass="text-2xl font-bold text-red-500 pb-2"/>
+            <Label fx:id="creditCardDue" text="\$15,000.00" styleClass="text-2xl font-bold text-red-500 pb-2"/>
             <Label text="Due on 25th" styleClass="text-sm text-gray-500 font-roboto"/>
         </VBox>
     </GridPane>
@@ -83,7 +86,7 @@
             <HBox alignment="CENTER_LEFT">
                 <Label text="Recent Transactions" styleClass="font-semibold text-base text-gray-900"/>
                 <Region HBox.hgrow="ALWAYS"/>
-                <Hyperlink text="View All" styleClass="text-sm font-roboto text-blue-600"/>
+                <Hyperlink onAction="#goToTransaction" text="View All" styleClass="text-sm font-roboto text-blue-600"/>
             </HBox>
 
             <!-- Transaction List -->
@@ -93,7 +96,12 @@
                     <!-- Left side -->
                     <HBox alignment="CENTER_LEFT" styleClass="gap-3">
                         <!-- Icon -->
-                        <Region styleClass="w-10 h-10 rounded-lg bg-red-100"/>
+                        <StackPane prefHeight="50.0" prefWidth="50.0">
+                            <Circle fill="#fee2e2" radius="24.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+                            <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                <Image url="@../assets/out_FoodDining.png" />
+                            </ImageView>
+                        </StackPane>
                         <!-- Text -->
                         <VBox styleClass="gap-0_5">
                             <Label text="Starbucks" styleClass="font-medium text-base"/>
@@ -115,7 +123,12 @@
                     <!-- Left side -->
                     <HBox alignment="CENTER_LEFT" styleClass="gap-3">
                         <!-- Icon -->
-                        <Region styleClass="w-10 h-10 rounded-lg bg-green-100"/>
+                        <StackPane prefHeight="50.0" prefWidth="50.0">
+                            <Circle fill="#dcfce7" radius="24.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+                            <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                <Image url="@../assets/income.png" />
+                            </ImageView>
+                        </StackPane>
                         <!-- Text -->
                         <VBox styleClass="gap-0_5">
                             <Label text="Salary Deposit" styleClass="font-medium text-base"/>
@@ -161,7 +174,7 @@
             <HBox alignment="CENTER_LEFT" styleClass="gap-3">
                 <Label text="Budget Progress" styleClass="font-semibold text-base text-gray-900"/>
                 <Region HBox.hgrow="ALWAYS"/>
-                <Hyperlink text="View Details" styleClass="text-sm font-roboto text-blue-600"/>
+                <Hyperlink onAction="#goToBudget" text="View Details" styleClass="text-sm font-roboto text-blue-600"/>
             </HBox>
 
             <!-- Budget Items -->
@@ -169,33 +182,33 @@
                 <!-- Food & Dining -->
                 <VBox styleClass="gap-1_5">
                     <HBox alignment="CENTER_LEFT" styleClass="gap-3 text-sm font-roboto pb-2">
-                        <Label text="Food &amp; Dining"/>
+                        <Label fx:id="budgetProgressCategoryLabel1" text="Food &amp; Dining"/>
                         <Region HBox.hgrow="ALWAYS"/>
-                        <Label text="85%" styleClass="text-red-500"/>
+                        <Label fx:id="budgetProgressCategoryRate1" text="85%" styleClass="text-red-500"/>
                     </HBox>
-                    <ProgressBar progress="0.85" maxWidth="Infinity"
+                    <ProgressBar fx:id="budgetProgressProgressBar1" progress="0.85" maxWidth="Infinity"
                                  styleClass="min-h-2 bg-gray-100 rounded-full red-bar"/>
                 </VBox>
 
                 <!-- Shopping -->
                 <VBox styleClass="gap-1_5">
                     <HBox alignment="CENTER_LEFT" styleClass="gap-3 text-sm font-roboto pb-2">
-                        <Label text="Shopping"/>
+                        <Label fx:id="budgetProgressCategoryLabel2" text="Shopping"/>
                         <Region HBox.hgrow="ALWAYS"/>
-                        <Label text="45%" styleClass="text-green-500"/>
+                        <Label fx:id="budgetProgressCategoryRate2" text="45%" styleClass="text-green-500"/>
                     </HBox>
-                    <ProgressBar progress="0.45" maxWidth="Infinity"
+                    <ProgressBar fx:id="budgetProgressProgressBar2" progress="0.45" maxWidth="Infinity"
                                  styleClass="min-h-2 bg-gray-100 rounded-full green-bar"/>
                 </VBox>
 
                 <!-- Transportation -->
                 <VBox styleClass="gap-1_5">
                     <HBox alignment="CENTER_LEFT" styleClass="gap-3 text-sm font-roboto pb-2">
-                        <Label text="Transportation"/>
+                        <Label fx:id="budgetProgressCategoryLabel3" text="Transportation"/>
                         <Region HBox.hgrow="ALWAYS"/>
-                        <Label text="60%" styleClass="text-blue-500"/>
+                        <Label fx:id="budgetProgressCategoryRate3" text="60%" styleClass="text-blue-500"/>
                     </HBox>
-                    <ProgressBar progress="0.6" maxWidth="Infinity"
+                    <ProgressBar fx:id="budgetProgressProgressBar3" progress="0.6" maxWidth="Infinity"
                                  styleClass="min-h-2 bg-gray-100 rounded-full blue-bar"/>
                 </VBox>
             </VBox>
@@ -206,7 +219,8 @@
             <HBox alignment="CENTER_LEFT" styleClass="gap-3">
                 <Label text="Accounts Overview" styleClass="text-base font-semibold text-gray-900"/>
                 <Region HBox.hgrow="ALWAYS"/>
-                <Hyperlink text="Manage Accounts" styleClass="font-roboto text-sm text-blue-600"/>
+                <Hyperlink onAction="#goToAccount" text="Manage Accounts"
+                           styleClass="font-roboto text-sm text-blue-600"/>
             </HBox>
 
             <!-- Accounts List -->
@@ -215,7 +229,12 @@
                 <HBox alignment="CENTER_LEFT" styleClass="p-3 gap-3 hover-bg-gray-50 rounded-lg cursor-pointer">
                     <!-- Left side -->
                     <HBox alignment="CENTER_LEFT" styleClass="gap-3">
-                        <Region styleClass="w-10 h-10 bg-blue-100 rounded-lg"/>
+                        <StackPane prefHeight="50.0" prefWidth="50.0">
+                            <Circle fill="#dbeafe" radius="24.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+                            <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                <Image url="@../assets/dash_bank.png" />
+                            </ImageView>
+                        </StackPane>
                         <VBox styleClass="gap-0_5">
                             <Label text="Chase Bank" styleClass="text-base font-medium"/>
                             <Label text="Checking" styleClass="font-roboto text-sm text-gray-500"/>
@@ -232,7 +251,13 @@
                 <HBox alignment="CENTER_LEFT" styleClass="p-3 gap-3 hover-bg-gray-50 rounded-lg cursor-pointer">
                     <!-- Left side -->
                     <HBox alignment="CENTER_LEFT" styleClass="gap-3">
-                        <Region styleClass="w-10 h-10 bg-green-100 rounded-lg"/>
+                        <StackPane prefHeight="50.0" prefWidth="50.0">
+                            <Circle fill="#dcfce7" radius="24.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+                            <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                <Image url="@../assets/well_fargo.png" />
+                            </ImageView>
+                        </StackPane>
+
                         <VBox styleClass="gap-0_5">
                             <Label text="Wells Fargo" styleClass="text-base font-medium"/>
                             <Label text="Savings" styleClass="font-roboto text-sm text-gray-500"/>

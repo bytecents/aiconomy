@@ -6,6 +6,7 @@ import com.se.aiconomy.server.langchain.common.model.DynamicBillType;
 import com.se.aiconomy.server.langchain.common.model.Transaction;
 import com.se.aiconomy.server.model.dto.TransactionDto;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -25,4 +26,6 @@ public interface TransactionService {
     List<TransactionDto> getTransactionsByUserId(String userId) throws ServiceException;
 
     List<TransactionDto> getTransactionsByAccountId(String accountId, String userId) throws ServiceException;
+
+    TransactionDto addTransactionManually(String userId, String incomeOrExpense, String amount, LocalDateTime time, String product, String type, String accountId) throws ServiceException;
 }

@@ -37,22 +37,22 @@ public class TransactionServiceImpl implements TransactionService {
     @Override
     public List<Map<Transaction, DynamicBillType>> classifyTransactions(List<TransactionDto> transactions) {
         List<Transaction> transactionList = transactions.stream()
-            .map(transactionDto -> new Transaction(
-                transactionDto.getId(),
-                transactionDto.getTime(),
-                transactionDto.getType(),
-                transactionDto.getCounterparty(),
-                transactionDto.getProduct(),
-                transactionDto.getIncomeOrExpense(),
-                transactionDto.getAmount(),
-                "CNY",
-                transactionDto.getPaymentMethod(),
-                transactionDto.getStatus(),
-                transactionDto.getProduct(),
-                transactionDto.getAccountId(),
-                transactionDto.getRemark()
-            ))
-            .toList();
+                .map(transactionDto -> new Transaction(
+                        transactionDto.getId(),
+                        transactionDto.getTime(),
+                        transactionDto.getType(),
+                        transactionDto.getCounterparty(),
+                        transactionDto.getProduct(),
+                        transactionDto.getIncomeOrExpense(),
+                        transactionDto.getAmount(),
+                        "CNY",
+                        transactionDto.getPaymentMethod(),
+                        transactionDto.getStatus(),
+                        transactionDto.getProduct(),
+                        transactionDto.getAccountId(),
+                        transactionDto.getRemark()
+                ))
+                .toList();
 
         List<Map<Transaction, DynamicBillType>> classifiedTransactions = new ArrayList<>();
         List<DynamicBillType> billTypes = new TransactionClassificationService().classifyTransactions(transactionList);
@@ -106,21 +106,21 @@ public class TransactionServiceImpl implements TransactionService {
                 DynamicBillType billType = entry.getValue();
 
                 TransactionDto transactionDto = TransactionDto.builder()
-                    .id(transaction.getId())
-                    .time(transaction.getTime())
-                    .type(transaction.getType())
-                    .counterparty(transaction.getCounterparty())
-                    .product(transaction.getProduct())
-                    .incomeOrExpense(transaction.getIncomeOrExpense())
-                    .amount(transaction.getAmount())
-                    .paymentMethod(transaction.getPaymentMethod())
-                    .status(transaction.getStatus())
-                    .merchantOrderId(transaction.getMerchantOrderId())
-                    .accountId(transaction.getAccountId())
-                    .billType(billType)
-                    .userId(userId)
-                    .accountId(transaction.getAccountId())
-                    .build();
+                        .id(transaction.getId())
+                        .time(transaction.getTime())
+                        .type(transaction.getType())
+                        .counterparty(transaction.getCounterparty())
+                        .product(transaction.getProduct())
+                        .incomeOrExpense(transaction.getIncomeOrExpense())
+                        .amount(transaction.getAmount())
+                        .paymentMethod(transaction.getPaymentMethod())
+                        .status(transaction.getStatus())
+                        .merchantOrderId(transaction.getMerchantOrderId())
+                        .accountId(transaction.getAccountId())
+                        .billType(billType)
+                        .userId(userId)
+                        .accountId(transaction.getAccountId())
+                        .build();
 
                 transactionDtos.add(transactionDto);
             }
@@ -141,21 +141,21 @@ public class TransactionServiceImpl implements TransactionService {
                 DynamicBillType billType = entry.getValue();
 
                 TransactionDto transactionDto = TransactionDto.builder()
-                    .id(transaction.getId())
-                    .time(transaction.getTime())
-                    .type(transaction.getType())
-                    .counterparty(transaction.getCounterparty())
-                    .product(transaction.getProduct())
-                    .incomeOrExpense(transaction.getIncomeOrExpense())
-                    .amount(transaction.getAmount())
-                    .paymentMethod(transaction.getPaymentMethod())
-                    .status(transaction.getStatus())
-                    .merchantOrderId(transaction.getMerchantOrderId())
-                    .accountId(transaction.getAccountId())
-                    .billType(billType)
-                    .userId(userId)
-                    .accountId(accountId)
-                    .build();
+                        .id(transaction.getId())
+                        .time(transaction.getTime())
+                        .type(transaction.getType())
+                        .counterparty(transaction.getCounterparty())
+                        .product(transaction.getProduct())
+                        .incomeOrExpense(transaction.getIncomeOrExpense())
+                        .amount(transaction.getAmount())
+                        .paymentMethod(transaction.getPaymentMethod())
+                        .status(transaction.getStatus())
+                        .merchantOrderId(transaction.getMerchantOrderId())
+                        .accountId(transaction.getAccountId())
+                        .billType(billType)
+                        .userId(userId)
+                        .accountId(accountId)
+                        .build();
 
                 transactionDtos.add(transactionDto);
             }
@@ -305,14 +305,14 @@ public class TransactionServiceImpl implements TransactionService {
         List<TransactionDto> transactions = getTransactionsByDateRange(startTime, endTime);
 
         double totalIncome = transactions.stream()
-            .filter(t -> "收入".equals(t.getIncomeOrExpense()))
-            .mapToDouble(t -> Double.parseDouble(t.getAmount()))
-            .sum();
+                .filter(t -> "收入".equals(t.getIncomeOrExpense()))
+                .mapToDouble(t -> Double.parseDouble(t.getAmount()))
+                .sum();
 
         double totalExpense = transactions.stream()
-            .filter(t -> "支出".equals(t.getIncomeOrExpense()))
-            .mapToDouble(t -> Double.parseDouble(t.getAmount()))
-            .sum();
+                .filter(t -> "支出".equals(t.getIncomeOrExpense()))
+                .mapToDouble(t -> Double.parseDouble(t.getAmount()))
+                .sum();
 
         Map<String, String> statistics = new HashMap<>();
         statistics.put("totalIncome", String.format("%.2f", totalIncome));
@@ -329,14 +329,14 @@ public class TransactionServiceImpl implements TransactionService {
         List<TransactionDto> allTransactions = transactionDao.findAll();
 
         return allTransactions.stream()
-            .filter(t -> t.getPaymentMethod() != null)
-            .collect(Collectors.groupingBy(
-                TransactionDto::getPaymentMethod,
-                Collectors.collectingAndThen(
-                    Collectors.summingDouble(t -> Double.parseDouble(t.getAmount())),
-                    sum -> String.format("%.2f", sum)
-                )
-            ));
+                .filter(t -> t.getPaymentMethod() != null)
+                .collect(Collectors.groupingBy(
+                        TransactionDto::getPaymentMethod,
+                        Collectors.collectingAndThen(
+                                Collectors.summingDouble(t -> Double.parseDouble(t.getAmount())),
+                                sum -> String.format("%.2f", sum)
+                        )
+                ));
     }
 
     /**
@@ -346,14 +346,14 @@ public class TransactionServiceImpl implements TransactionService {
         List<TransactionDto> allTransactions = transactionDao.findAll();
 
         return allTransactions.stream()
-            .filter(t -> t.getCounterparty() != null)
-            .collect(Collectors.groupingBy(
-                TransactionDto::getCounterparty,
-                Collectors.collectingAndThen(
-                    Collectors.summingDouble(t -> Double.parseDouble(t.getAmount())),
-                    sum -> String.format("%.2f", sum)
-                )
-            ));
+                .filter(t -> t.getCounterparty() != null)
+                .collect(Collectors.groupingBy(
+                        TransactionDto::getCounterparty,
+                        Collectors.collectingAndThen(
+                                Collectors.summingDouble(t -> Double.parseDouble(t.getAmount())),
+                                sum -> String.format("%.2f", sum)
+                        )
+                ));
     }
 
     /**
@@ -375,8 +375,8 @@ public class TransactionServiceImpl implements TransactionService {
         List<TransactionDto> allTransactions = transactionDao.findAll();
 
         return allTransactions.stream()
-            .filter(criteria::matches)
-            .collect(Collectors.toList());
+                .filter(criteria::matches)
+                .collect(Collectors.toList());
     }
 
     /**
@@ -415,6 +415,40 @@ public class TransactionServiceImpl implements TransactionService {
         return filteredTransactions;
     }
 
+    @Override
+    /**
+     * 手动添加交易记录
+     * @param userId 用户ID
+     * @param incomeOrExpense 收入或支出
+     * @param amount 金额
+     * @param time 交易时间
+     * @param product 产品名称
+     * @param type 交易类型
+     * @param accountId 账户ID
+     * @return 返回创建的 TransactionDto
+     * @throws ServiceException 如果创建交易时发生错误
+     */
+    public TransactionDto addTransactionManually(String userId, String incomeOrExpense, String amount,
+                                                 LocalDateTime time, String product, String type, String accountId)
+            throws ServiceException {
+
+        if (userId == null || incomeOrExpense == null || amount == null || type == null || accountId == null) {
+            throw new ServiceException("Missing required fields for transaction", null);
+        }
+
+        TransactionDto transaction = new TransactionDto();
+        transaction.setUserId(userId);
+        transaction.setIncomeOrExpense(incomeOrExpense);
+        transaction.setAmount(amount);
+        transaction.setTime(time != null ? time : LocalDateTime.now());
+        transaction.setProduct(product);
+        transaction.setType(type);
+        transaction.setAccountId(accountId);
+
+        return transactionDao.create(transaction);
+    }
+
+
     /**
      * 内部类：交易搜索条件
      */
@@ -435,13 +469,13 @@ public class TransactionServiceImpl implements TransactionService {
 
         public boolean matches(TransactionDto transaction) {
             return (type == null || type.equals(transaction.getType())) &&
-                (counterparty == null || counterparty.equals(transaction.getCounterparty())) &&
-                (paymentMethod == null || paymentMethod.equals(transaction.getPaymentMethod())) &&
-                (status == null || status.equals(transaction.getStatus())) &&
-                (incomeOrExpense == null || incomeOrExpense.equals(transaction.getIncomeOrExpense())) &&
-                (product == null || product.equals(transaction.getProduct())) &&
-                (startTime == null || !transaction.getTime().isBefore(startTime)) &&
-                (endTime == null || !transaction.getTime().isAfter(endTime));
+                    (counterparty == null || counterparty.equals(transaction.getCounterparty())) &&
+                    (paymentMethod == null || paymentMethod.equals(transaction.getPaymentMethod())) &&
+                    (status == null || status.equals(transaction.getStatus())) &&
+                    (incomeOrExpense == null || incomeOrExpense.equals(transaction.getIncomeOrExpense())) &&
+                    (product == null || product.equals(transaction.getProduct())) &&
+                    (startTime == null || !transaction.getTime().isBefore(startTime)) &&
+                    (endTime == null || !transaction.getTime().isAfter(endTime));
         }
     }
 }
