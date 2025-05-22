@@ -46,7 +46,6 @@ public class DashboardController extends BaseController {
     void initialize() {
         if (userInfo == null) {
             Platform.runLater(() -> {
-                // 延迟到事件调度线程中处理
                 if (userInfo != null) {
                     init();
                 }
@@ -98,8 +97,7 @@ public class DashboardController extends BaseController {
 
     @FXML
     public void quickAdd(ActionEvent actionEvent) throws IOException {
-        goToBudget(actionEvent);
-        mainController.openAddBudgetPanel();
+        goToTransaction(actionEvent);
     }
 
     public void goToTransaction(ActionEvent actionEvent) throws IOException {

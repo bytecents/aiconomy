@@ -86,7 +86,7 @@
             <HBox alignment="CENTER_LEFT">
                 <Label text="Recent Transactions" styleClass="font-semibold text-base text-gray-900"/>
                 <Region HBox.hgrow="ALWAYS"/>
-                <Hyperlink text="View All" styleClass="text-sm font-roboto text-blue-600"/>
+                <Hyperlink text="View All" onAction="#goToTransaction" styleClass="text-sm font-roboto text-blue-600"/>
             </HBox>
 
             <!-- Transaction List -->
@@ -175,7 +175,7 @@
             <HBox alignment="CENTER_LEFT" styleClass="gap-3">
                 <Label text="Budget Progress" styleClass="font-semibold text-base text-gray-900"/>
                 <Region HBox.hgrow="ALWAYS"/>
-                <Hyperlink text="View Details" styleClass="text-sm font-roboto text-blue-600"/>
+                <Hyperlink text="View Details" onAction="#goToBudget" styleClass="text-sm font-roboto text-blue-600"/>
             </HBox>
 
             <!-- Budget Items -->
@@ -220,7 +220,7 @@
             <HBox alignment="CENTER_LEFT" styleClass="gap-3">
                 <Label text="Accounts Overview" styleClass="text-base font-semibold text-gray-900"/>
                 <Region HBox.hgrow="ALWAYS"/>
-                <Hyperlink text="Manage Accounts" styleClass="font-roboto text-sm text-blue-600"/>
+                <Hyperlink text="Manage Accounts" onAction="#goToAccount" styleClass="font-roboto text-sm text-blue-600"/>
             </HBox>
 
             <!-- Accounts List -->
