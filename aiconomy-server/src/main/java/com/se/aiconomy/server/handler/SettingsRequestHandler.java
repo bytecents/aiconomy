@@ -2,6 +2,7 @@ package com.se.aiconomy.server.handler;
 
 import com.se.aiconomy.server.model.dto.Settings.request.SettingsUpdateRequest;
 import com.se.aiconomy.server.model.dto.Settings.response.SettingsInfo;
+import com.se.aiconomy.server.model.dto.Settings.response.SettingsUserInfo;
 import com.se.aiconomy.server.model.dto.user.request.UserUpdateRequest;
 import com.se.aiconomy.server.model.dto.user.response.UserInfo;
 import com.se.aiconomy.server.model.entity.Settings;
@@ -21,6 +22,22 @@ public class SettingsRequestHandler {
     public SettingsRequestHandler(UserService userService, SettingsService settingsService) {
         this.userService = userService;
         this.settingsService = settingsService;
+    }
+
+    public SettingsUserInfo handleGetSettingsUserInfoRequest(String userId) {
+        logger.info("Processing get settings user info request for userId: {}", userId);
+        try {
+            User user = userService.getUserById(userId);
+            return new SettingsUserInfo(user.getAvatarUrl(),
+                    user.getFirstName(),
+                    user.getLastName(),
+                    user.getPhone(),
+                    user.getBirthDate(),
+                    user.getCurrency());
+        } catch (Exception e) {
+            logger.error("Failed to get settings user info for userId: {}", e.getMessage());
+            throw new RuntimeException("Failed to get settings user info for userId: " + e.getMessage());
+        }
     }
 
     public UserInfo handleUpdateUserRequest(UserUpdateRequest request) {
