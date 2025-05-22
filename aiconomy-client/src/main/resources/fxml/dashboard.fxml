@@ -225,14 +225,14 @@
                             </ImageView>
                         </StackPane>
                         <VBox styleClass="gap-0_5">
-                            <Label text="Chase Bank" styleClass="text-base font-medium"/>
-                            <Label text="Checking" styleClass="font-roboto text-sm text-gray-500"/>
+                            <Label fx:id="accountBankName1" text="Chase Bank" styleClass="text-base font-medium"/>
+                            <Label fx:id="accountType1" text="Checking" styleClass="font-roboto text-sm text-gray-500"/>
                         </VBox>
                     </HBox>
                     <Region HBox.hgrow="ALWAYS"/>
                     <!-- Right side -->
                     <VBox alignment="CENTER_RIGHT">
-                        <Label text="\$15,380.50" styleClass="text-base font-medium"/>
+                        <Label fx:id="accountBalance1" text="\$15,380.50" styleClass="text-base font-medium"/>
                     </VBox>
                 </HBox>
 
@@ -248,14 +248,14 @@
                         </StackPane>
 
                         <VBox styleClass="gap-0_5">
-                            <Label text="Wells Fargo" styleClass="text-base font-medium"/>
-                            <Label text="Savings" styleClass="font-roboto text-sm text-gray-500"/>
+                            <Label fx:id="accountBankName2" text="Wells Fargo" styleClass="text-base font-medium"/>
+                            <Label fx:id="accountType2" text="Savings" styleClass="font-roboto text-sm text-gray-500"/>
                         </VBox>
                     </HBox>
                     <Region HBox.hgrow="ALWAYS"/>
                     <!-- Right side -->
                     <VBox alignment="CENTER_RIGHT">
-                        <Label text="\$28,650.00" styleClass="text-base font-medium"/>
+                        <Label fx:id="accountBalance2" text="\$28,650.00" styleClass="text-base font-medium"/>
                     </VBox>
                 </HBox>
             </VBox>

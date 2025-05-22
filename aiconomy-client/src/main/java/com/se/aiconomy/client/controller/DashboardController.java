@@ -2,7 +2,9 @@ package com.se.aiconomy.client.controller;
 
 import com.se.aiconomy.server.common.exception.ServiceException;
 import com.se.aiconomy.server.handler.DashboardRequestHandler;
+import com.se.aiconomy.server.model.dto.TransactionDto;
 import com.se.aiconomy.server.model.entity.Account;
+import com.se.aiconomy.server.service.TransactionService;
 import com.se.aiconomy.server.service.impl.AccountServiceImpl;
 import com.se.aiconomy.server.service.impl.BudgetServiceImpl;
 import com.se.aiconomy.server.service.impl.TransactionServiceImpl;
@@ -57,6 +59,19 @@ public class DashboardController extends BaseController {
     @FXML
     private ProgressBar budgetProgressProgressBar3;
     @FXML
+    private Label accountBankName1;
+    @FXML
+    private Label accountBankName2;
+    @FXML
+    private Label accountBalance1;
+    @FXML
+    private Label accountBalance2;
+    @FXML
+    private Label accountType1;
+    @FXML
+    private Label accountType2;
+
+    @FXML
     private Button quickAddButton;
 
 
@@ -103,18 +118,13 @@ public class DashboardController extends BaseController {
     }
 
     private void setDashBoardTransactionData() throws ServiceException {
-//        TransactionService transactionService = new TransactionServiceImpl();
-//        List<TransactionDto> transactionInfo = transactionService.getTransactionsByUserId(userInfo.getId());
-//        System.out.println(transactionInfo);
+        TransactionService transactionService = new TransactionServiceImpl();
+        List<TransactionDto> transactionInfo = transactionService.getTransactionsByUserId(userInfo.getId());
+        System.out.println(transactionInfo);
     }
 
     private void setDashboardSpendTrendsData() throws ServiceException {
 
-    }
-
-    private void setDashboardAccountOverviewData() throws ServiceException {
-        List<Account> userAccount = dashBoardRequestHandler.getAccountsForUser(userInfo.getId());
-        System.out.println("user Account: " + userAccount);
     }
 
     private void setDashBoardBudgetsData() throws ServiceException {
@@ -139,6 +149,31 @@ public class DashboardController extends BaseController {
                     budgetProgressCategoryLabel3.setText(category);
                     adjustRatioText(budgetProgressCategoryRate3, ratio);
                     adjustProgressBar(budgetProgressProgressBar3, ratio);
+                }
+            }
+            count++;
+        }
+    }
+
+    private void setDashboardAccountOverviewData() throws ServiceException {
+        List<Account> userAccount = dashBoardRequestHandler.getAccountsForUser(userInfo.getId());
+        // System.out.println("user Account: " + userAccount.getFirst());
+        int count = 0;
+        for (Account account : userAccount) {
+            if (count == 2) break;
+            String accountBankName = account.getBankName();
+            String accountType = account.getAccountType();
+            double accountBalance = account.getBalance();
+            switch (count) {
+                case 0: {
+                    accountBankName1.setText(accountBankName);
+                    accountType1.setText(accountType);
+                    accountBalance1.setText("$ " + accountBalance);
+                }
+                case 1: {
+                    accountBankName2.setText(accountBankName);
+                    accountType1.setText(accountType);
+                    accountBalance2.setText("$ " + accountBalance);
                 }
             }
             count++;
