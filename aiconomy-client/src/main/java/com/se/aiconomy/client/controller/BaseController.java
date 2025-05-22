@@ -15,10 +15,4 @@ public abstract class BaseController {
     protected UserInfo userInfo;
 
     public SidebarController mainController;
-
-    public void setBudgetCategoryInfo(BudgetCategoryInfo info) {
-    }
-
-    public void setUserId(int userId) {
-    }
 }
