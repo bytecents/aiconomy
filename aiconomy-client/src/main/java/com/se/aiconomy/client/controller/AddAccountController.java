@@ -24,6 +24,12 @@ public class AddAccountController {
      @FXML
      private StackPane rootPane;
 
+    @FXML
+    private void onSave(ActionEvent event) {
+        // TODO: 保存逻辑
+        closeDialog(event);
+    }
+
      private void closeDialog(ActionEvent event) {
          if (rootPane != null) {
              rootPane.getChildren().removeIf(node ->

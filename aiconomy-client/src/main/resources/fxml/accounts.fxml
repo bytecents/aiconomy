@@ -22,7 +22,9 @@
             <Region HBox.hgrow="ALWAYS"/>
             <Button text="Add Accounts"
                     fx:id="addAccountBtn"
+                    onAction="#onAddAccountClick"
                     styleClass="hover-bg-blue-700 p-4-2 bg-blue-600 text-white font-roboto cursor-pointer"/>
+
         </HBox>
         <!-- Overview Cards -->
         <GridPane hgap="24" vgap="24" styleClass="pb-4">
