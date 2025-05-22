@@ -67,6 +67,17 @@ public class BudgetServiceImpl implements BudgetService {
     }
 
     @Override
+    public Budget getBudgetByCategory(String userId, String category) {
+        List<Budget> budgets = getBudgetsByUserId(userId);
+        for (Budget budget : budgets) {
+            if (budget.getBudgetCategory().equals(category)) {
+                return budget;
+            }
+        }
+        return null;
+    }
+
+    @Override
     public double getTotalBudget(String userId) {
         List<Budget> budgets = getBudgetsByUserId(userId);
         double totalBudget = 0;

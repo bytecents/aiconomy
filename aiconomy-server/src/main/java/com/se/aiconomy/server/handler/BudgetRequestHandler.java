@@ -36,17 +36,13 @@ public class BudgetRequestHandler {
      */
     public BudgetInfo handleBudgetAddRequest(BudgetAddRequest request) {
         logger.info("Adding budget for category: {}", request.getBudgetCategory());
-        Budget budget = new Budget(
-                request.getId(),
-                request.getUserId(),
-                request.getBudgetCategory(),
-                request.getBudgetAmount(),
-                request.getAlertSettings(),
-                request.getNotes()
-        );
-        if (budget.getId() == null) {
-            budget.setId(UUID.randomUUID().toString()); // 生成唯一 ID
-        }
+        Budget budget = new Budget();
+        budget.setId(UUID.randomUUID().toString()); // 生成唯一 ID
+        budget.setUserId(request.getUserId());
+        budget.setBudgetCategory(request.getBudgetCategory());
+        budget.setBudgetAmount(request.getBudgetAmount());
+        budget.setAlertSettings(request.getAlertSettings());
+        budget.setNotes(request.getNotes());
         try {
             budgetService.addBudget(budget);
             logger.info("Added budget for category: {}", request.getBudgetCategory());
@@ -61,9 +57,10 @@ public class BudgetRequestHandler {
      * 处理删除预算请求
      */
     public boolean handleRemoveBudgetRequest(BudgetRemoveRequest request) {
-        logger.info("Removing budget with id: {}", request.getId());
+        logger.info("Removing budget with category: {}", request.getCategory());
         try {
-            budgetService.removeBudget(request.getId());
+            Budget budget = budgetService.getBudgetByCategory(request.getUserId(), request.getCategory());
+            budgetService.removeBudget(budget.getId());
             return true;
         } catch (Exception e) {
             logger.error("Failed to remove budget: {}", e.getMessage(), e);
@@ -78,8 +75,7 @@ public class BudgetRequestHandler {
         logger.info("Updating budget for category: {}", request.getBudgetCategory());
         try {
             // 构造 Budget 对象（假设是全量更新）
-            Budget budget = new Budget();
-            budget.setId(request.getId());
+            Budget budget = budgetService.getBudgetByCategory(request.getUserId(), request.getBudgetCategory());
             budget.setUserId(request.getUserId());
             budget.setBudgetCategory(request.getBudgetCategory());
             budget.setBudgetAmount(request.getBudgetAmount());
@@ -89,7 +85,7 @@ public class BudgetRequestHandler {
             // 执行更新
             budgetService.updateBudget(budget);
 
-            logger.info("Successfully updated budget with id: {}", request.getId());
+            logger.info("Successfully updated budget with id: {}", budget.getId());
             return convertToBudgetInfo(budget);
         } catch (Exception e) {
             logger.error("Failed to update budget: {}", e.getMessage(), e);
