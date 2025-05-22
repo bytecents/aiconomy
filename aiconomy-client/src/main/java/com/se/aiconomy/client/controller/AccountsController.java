@@ -6,6 +6,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
@@ -13,6 +14,8 @@ import javafx.scene.layout.StackPane;
 import java.io.IOException;
 
 public class AccountsController extends BaseController {
+
+
     @FXML
     public void initialize() {
         if (userInfo == null) {
