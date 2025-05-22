@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.Circle?>
+<HBox xmlns:fx="http://javafx.com/fxml/1" alignment="CENTER_LEFT" spacing="12" xmlns="http://javafx.com/javafx/23.0.1"
+      fx:controller="com.se.aiconomy.client.controller.accounts.AccountItemController">
+    <StackPane prefHeight="50.0" prefWidth="50.0">
+        <Circle fx:id="iconCircle" radius="24.0" stroke="BLACK" strokeWidth="0.0"/>
+        <ImageView fx:id="iconImage" fitHeight="24.0" fitWidth="24.0" preserveRatio="true"/>
+    </StackPane>
+    <VBox>
+        <Label fx:id="bankNameLabel" styleClass="text-base font-bold"/>
+        <Label fx:id="accountTypeLabel" styleClass="text-sm text-gray-500"/>
+    </VBox>
+    <Region HBox.hgrow="ALWAYS"/>
+    <VBox alignment="CENTER_RIGHT">
+        <Label fx:id="balanceLabel" styleClass="text-base font-bold"/>
+        <Label fx:id="statusLabel" styleClass="text-sm"/>
+    </VBox>
+</HBox>
+
