@@ -114,8 +114,6 @@ public class BudgetController extends BaseController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/AddBudget.fxml"));
             Node node = loader.load();
             AddBudgetController controller = loader.getController();
-            controller.setBudgetCategoryInfo(info);
-            controller.setUserId(userId);
             return node;
         } catch (IOException e) {
             showError("加载预算卡片失败：" + e.getMessage());
