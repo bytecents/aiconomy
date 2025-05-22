@@ -11,6 +11,7 @@
     "status": "成功",
     "merchantOrderId": "7890",
     "accountId": "acc1",
+    "userId": "AureliaSKY",
     "remark": "购买iPhone 15"
   },
   {
@@ -25,6 +26,7 @@
     "status": "成功",
     "merchantOrderId": "SAL123",
     "accountId": "acc2",
+    "userId": "AureliaSKY",
     "remark": "月度工资"
   }
 ]
