@@ -2,6 +2,7 @@ package com.se.aiconomy.client.controller;
 
 import com.se.aiconomy.server.common.exception.ServiceException;
 import com.se.aiconomy.server.handler.DashboardRequestHandler;
+import com.se.aiconomy.server.model.entity.Account;
 import com.se.aiconomy.server.service.impl.AccountServiceImpl;
 import com.se.aiconomy.server.service.impl.BudgetServiceImpl;
 import com.se.aiconomy.server.service.impl.TransactionServiceImpl;
@@ -18,6 +19,7 @@ import java.io.IOException;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -76,7 +78,10 @@ public class DashboardController extends BaseController {
         setDate();
         try {
             setDashboardBasicData();
+            setDashBoardTransactionData(); // TBI
+            setDashboardSpendTrendsData(); // TBI
             setDashBoardBudgetsData();
+            setDashboardAccountOverviewData(); // TBI
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -90,15 +95,26 @@ public class DashboardController extends BaseController {
 
     private void setDashboardBasicData() throws ServiceException {
         DashboardRequestHandler.DashboardData dashboardData = dashBoardRequestHandler.getDashboardData(userInfo.getId(), LocalDate.now().getMonth());
-        System.out.println("dashboardData" + dashboardData);
-        netWorth.setText("$" + dashboardData.getNetWorth());
-        monthlySpending.setText("$" + dashboardData.getMonthlySpending());
-        monthlyIncome.setText("$" + dashboardData.getMonthlyIncome());
-        creditCardDue.setText("$" + dashboardData.getCreditCardDue());
+        System.out.println("dashboardData: " + dashboardData);
+        netWorth.setText("$ " + dashboardData.getNetWorth());
+        monthlySpending.setText("$ " + dashboardData.getMonthlySpending());
+        monthlyIncome.setText("$ " + dashboardData.getMonthlyIncome());
+        creditCardDue.setText("$ " + dashboardData.getCreditCardDue());
     }
 
     private void setDashBoardTransactionData() throws ServiceException {
-        
+//        TransactionService transactionService = new TransactionServiceImpl();
+//        List<TransactionDto> transactionInfo = transactionService.getTransactionsByUserId(userInfo.getId());
+//        System.out.println(transactionInfo);
+    }
+
+    private void setDashboardSpendTrendsData() throws ServiceException {
+
+    }
+
+    private void setDashboardAccountOverviewData() throws ServiceException {
+        List<Account> userAccount = dashBoardRequestHandler.getAccountsForUser(userInfo.getId());
+        System.out.println("user Account: " + userAccount);
     }
 
     private void setDashBoardBudgetsData() throws ServiceException {
