@@ -2,14 +2,11 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.Font?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.shape.Circle?>
-
-<?import javafx.scene.shape.Rectangle?>
-<StackPane fx:id="rootPane" xmlns:fx="http://javafx.com/fxml" fx:controller="com.se.aiconomy.client.controller.SettingsController">
+<?import javafx.scene.shape.*?>
+<StackPane xmlns:fx="http://javafx.com/fxml" fx:id="rootPane"
+           fx:controller="com.se.aiconomy.client.controller.SettingsController">
     <VBox fx:id="mainVBox" spacing="20" styleClass="p-8" StackPane.alignment="CENTER"
           VBox.vgrow="ALWAYS">
 
@@ -24,7 +21,8 @@
             </VBox>
             <Region HBox.hgrow="ALWAYS"/>
             <Button text="Save Settings"
-                    onAction="#onsaveClick"
+                    onAction="#onSaveClick"
+                    style="-fx-cursor: hand;"
                     fx:id="saveBtn"
                     styleClass="hover-bg-blue-700 p-4-2 bg-blue-600 text-white font-roboto cursor-pointer"/>
         </HBox>
@@ -35,7 +33,8 @@
             <VBox spacing="30" HBox.hgrow="ALWAYS" maxWidth="Infinity">
                 <!-- Preferences -->
                 <VBox spacing="20" styleClass="card p-6 bg-white rounded-xl shadow-md"
-                      VBox.vgrow="ALWAYS" maxWidth="Infinity">                    <Label text="Preferences" styleClass="text-xl font-bold pb-2" />
+                      VBox.vgrow="ALWAYS" maxWidth="Infinity">
+                    <Label text="Preferences" styleClass="text-xl font-bold pb-2"/>
                     <GridPane hgap="10" vgap="10">
                         <!-- 设置三列，各占 1/3 宽度 -->
                         <columnConstraints>
@@ -45,9 +44,10 @@
                         </columnConstraints>
 
                         <!-- 标签 -->
-                        <Label text="Currency" styleClass="text-bold" GridPane.rowIndex="0" GridPane.columnIndex="0" />
-                        <Label text="Language" styleClass="text-bold" GridPane.rowIndex="0" GridPane.columnIndex="1" />
-                        <Label text="Date Format" styleClass="text-bold" GridPane.rowIndex="0" GridPane.columnIndex="2" />
+                        <Label text="Currency" styleClass="text-bold" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                        <Label text="Language" styleClass="text-bold" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+                        <Label text="Date Format" styleClass="text-bold" GridPane.rowIndex="0"
+                               GridPane.columnIndex="2"/>
 
                         <!-- ComboBox 输入框，确保拉伸填满单元格 -->
                         <ComboBox fx:id="currencyComboBox"
@@ -79,16 +79,17 @@
                         <Label text="Theme" styleClass="font-semibold"/>
                         <columnConstraints>
                             <!-- 每列的宽度限制 -->
-                            <ColumnConstraints  hgrow="ALWAYS" percentWidth="33"/>
-                            <ColumnConstraints  hgrow="ALWAYS" percentWidth="33"/>
-                            <ColumnConstraints  hgrow="ALWAYS" percentWidth="33"/>
+                            <ColumnConstraints hgrow="ALWAYS" percentWidth="33"/>
+                            <ColumnConstraints hgrow="ALWAYS" percentWidth="33"/>
+                            <ColumnConstraints hgrow="ALWAYS" percentWidth="33"/>
                         </columnConstraints>
                         <VBox spacing="5" alignment="TOP_CENTER"
                               style="-fx-background-color: white; -fx-border-color: #e5e7eb; -fx-border-radius: 10; -fx-background-radius: 10; -fx-padding: 15;"
                               GridPane.columnIndex="0" GridPane.rowIndex="0" fx:id="vbox1" onMouseClicked="#handleClick"
                               maxWidth="Infinity" VBox.vgrow="ALWAYS">
                             <StackPane prefHeight="50.0" prefWidth="50.0" alignment="CENTER">
-                                <Circle fill="#f3f4f6" radius="24.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0"/>
+                                <Circle fill="#f3f4f6" radius="24.0" stroke="BLACK" strokeType="INSIDE"
+                                        strokeWidth="0.0"/>
                                 <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                     <Image url="@../assets/Mlight.png"/>
                                 </ImageView>
@@ -102,7 +103,8 @@
                               GridPane.columnIndex="1" GridPane.rowIndex="0" fx:id="vbox2" onMouseClicked="#handleClick"
                               maxWidth="Infinity" VBox.vgrow="ALWAYS">
                             <StackPane prefHeight="50.0" prefWidth="50.0" alignment="CENTER">
-                                <Circle fill="#f3f4f6" radius="24.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0"/>
+                                <Circle fill="#f3f4f6" radius="24.0" stroke="BLACK" strokeType="INSIDE"
+                                        strokeWidth="0.0"/>
                                 <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                     <Image url="@../assets/Mdark.png"/>
                                 </ImageView>
@@ -116,7 +118,8 @@
                               GridPane.columnIndex="2" GridPane.rowIndex="0" fx:id="vbox3" onMouseClicked="#handleClick"
                               maxWidth="Infinity" VBox.vgrow="ALWAYS">
                             <StackPane prefHeight="50.0" prefWidth="50.0" alignment="CENTER">
-                                <Circle fill="#f3f4f6" radius="24.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0"/>
+                                <Circle fill="#f3f4f6" radius="24.0" stroke="BLACK" strokeType="INSIDE"
+                                        strokeWidth="0.0"/>
                                 <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                     <Image url="@../assets/Msys.png"/>
                                 </ImageView>
@@ -131,27 +134,29 @@
 
                 <!-- Feature Settings -->
                 <VBox spacing="20" styleClass="card p-6 bg-white rounded-xl shadow-md"
-                      VBox.vgrow="ALWAYS" maxWidth="Infinity">                    <Label text="Feature Settings" styleClass="text-xl font-bold pb-2" />
+                      VBox.vgrow="ALWAYS" maxWidth="Infinity">
+                    <Label text="Feature Settings" styleClass="text-xl font-bold pb-2"/>
                     <!-- Card 1 -->
                     <HBox spacing="10" alignment="CENTER_LEFT" styleClass="card p-6">
                         <!-- 图标 -->
                         <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                            <Image url="@../assets/bell.png" />
+                            <Image url="@../assets/bell.png"/>
                         </ImageView>
 
                         <!-- 文本垂直排布 -->
                         <VBox spacing="2" alignment="CENTER_LEFT">
-                            <Label text="Push Notifications" styleClass="text-bold" />
-                            <Label text="Get notified about important updates" styleClass="text-gray-500" />
+                            <Label text="Push Notifications" styleClass="text-bold"/>
+                            <Label text="Get notified about important updates" styleClass="text-gray-500"/>
                         </VBox>
 
                         <!-- 占位符拉伸区域，使右边的 toggle switch 靠右 -->
-                        <Region HBox.hgrow="ALWAYS" />
+                        <Region HBox.hgrow="ALWAYS"/>
 
                         <!-- Toggle Switch -->
-                        <StackPane fx:id="switchPane" onMouseClicked="#toggleSwitch" styleClass="switch-container" alignment="CENTER">
-                            <Rectangle fx:id="switchTrack" arcWidth="26" arcHeight="26" width="50" height="26" />
-                            <Circle fx:id="switchThumb" radius="11" />
+                        <StackPane fx:id="switchPane" onMouseClicked="#toggleSwitch" styleClass="switch-container"
+                                   alignment="CENTER">
+                            <Rectangle fx:id="switchTrack" arcWidth="26" arcHeight="26" width="50" height="26"/>
+                            <Circle fx:id="switchThumb" radius="11"/>
                         </StackPane>
                     </HBox>
 
@@ -159,22 +164,23 @@
                     <HBox spacing="10" alignment="CENTER_LEFT" styleClass="card p-6">
                         <!-- 图标 -->
                         <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                            <Image url="@../assets/cpu.png" />
+                            <Image url="@../assets/cpu.png"/>
                         </ImageView>
 
                         <!-- 文本垂直排布 -->
                         <VBox spacing="2" alignment="CENTER_LEFT">
-                            <Label text="Enable AI Features " styleClass="text-bold" />
-                            <Label text="Turn on Al-powered functionalities" styleClass="text-gray-500" />
+                            <Label text="Enable AI Features " styleClass="text-bold"/>
+                            <Label text="Turn on Al-powered functionalities" styleClass="text-gray-500"/>
                         </VBox>
 
                         <!-- 占位符拉伸区域，使右边的 toggle switch 靠右 -->
-                        <Region HBox.hgrow="ALWAYS" />
+                        <Region HBox.hgrow="ALWAYS"/>
 
                         <!-- Toggle Switch -->
-                        <StackPane fx:id="switchAIPane" onMouseClicked="#toggleAISwitch" styleClass="switch-container" alignment="CENTER">
-                            <Rectangle fx:id="switchAITrack" arcWidth="26" arcHeight="26" width="50" height="26" />
-                            <Circle fx:id="switchAIThumb" radius="11" />
+                        <StackPane fx:id="switchAIPane" onMouseClicked="#toggleAISwitch" styleClass="switch-container"
+                                   alignment="CENTER">
+                            <Rectangle fx:id="switchAITrack" arcWidth="26" arcHeight="26" width="50" height="26"/>
+                            <Circle fx:id="switchAIThumb" radius="11"/>
                         </StackPane>
                     </HBox>
                 </VBox>
@@ -186,7 +192,7 @@
                 <!-- Account Settings -->
                 <VBox spacing="20" alignment="CENTER_LEFT" styleClass="card p-6 bg-white rounded-xl shadow-md"
                       VBox.vgrow="ALWAYS" maxWidth="Infinity">                    <!-- 卡片标题 -->
-                    <Label text="Account Settings" styleClass="text-xl font-bold pb-2" />
+                    <Label text="Account Settings" styleClass="text-xl font-bold pb-2"/>
 
                     <!-- 内部卡片 -->
                     <VBox spacing="15" alignment="CENTER" styleClass="bg-white p-4 rounded-xl shadow-md">
@@ -195,54 +201,66 @@
                         <HBox alignment="CENTER_LEFT" spacing="40">
                             <!-- 用户头像 -->
                             <StackPane prefHeight="50.0" prefWidth="50.0">
-                                <Circle fill="#f3f4f6" radius="48.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+                                <Circle fill="#f3f4f6" radius="48.0" stroke="BLACK" strokeType="INSIDE"
+                                        strokeWidth="0.0"/>
                                 <ImageView fitHeight="36.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true">
-                                    <Image url="@../assets/users.png" />
+                                    <Image url="@../assets/users.png"/>
                                 </ImageView>
                             </StackPane>
 
                             <!-- 更换/移除按钮 -->
                             <VBox spacing="10" alignment="CENTER_LEFT">
-                                <Button text="Change Photo" styleClass="bg-blue-600 text-white" prefWidth="240" />
-                                <Button text="Remove" styleClass="bg-gray-200 text-black" prefWidth="240" />
+                                <Button text="Change Photo" styleClass="bg-blue-600 text-white"
+                                        style="-fx-cursor: hand;" prefWidth="240"/>
+                                <Button text="Remove" styleClass="bg-gray-200 text-black" style="-fx-cursor: hand;"
+                                        prefWidth="240"/>
                             </VBox>
                         </HBox>
 
                         <!-- 用户信息输入区域 -->
                         <GridPane hgap="10" vgap="10">
                             <columnConstraints>
-                                <ColumnConstraints halignment="LEFT" />
-                                <ColumnConstraints hgrow="ALWAYS" />
-                                <ColumnConstraints halignment="LEFT" />
-                                <ColumnConstraints hgrow="ALWAYS" />
+                                <ColumnConstraints halignment="LEFT"/>
+                                <ColumnConstraints hgrow="ALWAYS"/>
+                                <ColumnConstraints halignment="LEFT"/>
+                                <ColumnConstraints hgrow="ALWAYS"/>
                             </columnConstraints>
 
                             <!-- First + Last Name -->
-                            <Label text="First Name" styleClass="text-bold" GridPane.rowIndex="0" GridPane.columnIndex="0" />
-                            <TextField text="John" GridPane.rowIndex="1" GridPane.columnIndex="0">
+                            <Label text="First Name" styleClass="text-bold" GridPane.rowIndex="0"
+                                   GridPane.columnIndex="0"/>
+                            <TextField fx:id="firstNameTextField" text="John" GridPane.rowIndex="1"
+                                       GridPane.columnIndex="0">
                                 <GridPane.hgrow>
                                     <Priority fx:constant="ALWAYS"/>
                                 </GridPane.hgrow>
                             </TextField>
 
-                            <Label text="Last Name" styleClass="text-bold" GridPane.rowIndex="0" GridPane.columnIndex="1" />
-                            <TextField text="Doe" GridPane.rowIndex="1" GridPane.columnIndex="1">
+                            <Label text="Last Name" styleClass="text-bold" GridPane.rowIndex="0"
+                                   GridPane.columnIndex="1"/>
+                            <TextField fx:id="lastNameTextField" text="Doe" GridPane.rowIndex="1"
+                                       GridPane.columnIndex="1">
                                 <GridPane.hgrow>
                                     <Priority fx:constant="ALWAYS"/>
                                 </GridPane.hgrow>
                             </TextField>
 
                             <!-- Phone -->
-                            <Label text="Phone Number" styleClass="text-bold" GridPane.rowIndex="2" GridPane.columnIndex="0" />
-                            <TextField text="1234567890" GridPane.rowIndex="3" GridPane.columnIndex="0" GridPane.columnSpan="1">
+                            <Label text="Phone Number" styleClass="text-bold" GridPane.rowIndex="2"
+                                   GridPane.columnIndex="0"/>
+                            <TextField fx:id="phoneNumberTextField" text="1234567890" GridPane.rowIndex="3"
+                                       GridPane.columnIndex="0"
+                                       GridPane.columnSpan="1">
                                 <GridPane.hgrow>
                                     <Priority fx:constant="ALWAYS"/>
                                 </GridPane.hgrow>
                             </TextField>
 
                             <!-- DOB -->
-                            <Label text="Date of Birth" styleClass="text-bold" GridPane.rowIndex="2" GridPane.columnIndex="1" />
-                            <DatePicker fx:id="birthDatePicker" GridPane.rowIndex="3" GridPane.columnIndex="1" GridPane.columnSpan="3">
+                            <Label text="Date of Birth" styleClass="text-bold" GridPane.rowIndex="2"
+                                   GridPane.columnIndex="1"/>
+                            <DatePicker fx:id="birthDatePicker" GridPane.rowIndex="3" GridPane.columnIndex="1"
+                                        GridPane.columnSpan="3">
                                 <GridPane.hgrow>
                                     <Priority fx:constant="ALWAYS"/>
                                 </GridPane.hgrow>
@@ -255,17 +273,17 @@
                 <!-- Account Actions -->
                 <VBox spacing="20" styleClass="card p-6 bg-white rounded-xl shadow-md"
                       alignment="CENTER_LEFT" VBox.vgrow="ALWAYS" maxWidth="Infinity">
-                    <Label text="Account Actions" styleClass="text-xl font-bold pb-2" />
+                    <Label text="Account Actions" styleClass="text-xl font-bold pb-2"/>
 
                     <!-- 按钮纵向排列 -->
                     <VBox spacing="10" alignment="CENTER">
                         <Button text="Log Out"
-                                style="-fx-graphic-text-gap: 8px;"
+                                style="-fx-graphic-text-gap: 8px; -fx-cursor: hand;"
                                 styleClass="bg-red-100 text-red-500"
                                 maxWidth="350">
                             <graphic>
                                 <ImageView fitHeight="16" fitWidth="16">
-                                    <Image url="@../assets/logout.png" />
+                                    <Image url="@../assets/logout.png"/>
                                 </ImageView>
                             </graphic>
                         </Button>
@@ -273,16 +291,15 @@
                         <Button text="Delete Account"
                                 styleClass="text-red-500"
                                 style="-fx-border-color: #ef4444;
-                       -fx-border-width: 0.5;
-                       -fx-border-radius: 8;
-                       -fx-background-radius: 8;
-                       -fx-background-color: transparent;"
+                                       -fx-cursor: hand;
+                                       -fx-border-width: 0.5;
+                                       -fx-border-radius: 8;
+                                       -fx-background-radius: 8;
+                                       -fx-background-color: transparent;"
                                 maxWidth="350"/>
                     </VBox>
 
                 </VBox>
-
-
             </VBox>
         </HBox>
     </VBox>
