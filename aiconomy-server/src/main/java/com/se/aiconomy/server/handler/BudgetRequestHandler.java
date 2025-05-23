@@ -1,5 +1,8 @@
 package com.se.aiconomy.server.handler;
 
+import com.se.aiconomy.server.common.exception.ServiceException;
+import com.se.aiconomy.server.langchain.common.model.DynamicBillType;
+import com.se.aiconomy.server.langchain.service.analysis.budget.BudgetAnalysisService;
 import com.se.aiconomy.server.model.dto.budget.request.*;
 import com.se.aiconomy.server.model.dto.budget.response.BudgetCategoryInfo;
 import com.se.aiconomy.server.model.dto.budget.response.BudgetInfo;
@@ -9,6 +12,7 @@ import com.se.aiconomy.server.service.BudgetService;
 import com.se.aiconomy.server.service.impl.BudgetServiceImpl;
 import com.se.aiconomy.server.storage.service.JSONStorageService;
 import com.se.aiconomy.server.storage.service.impl.JSONStorageServiceImpl;
+import com.se.aiconomy.server.langchain.common.model.Budget.AIAnalysis;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,12 +25,14 @@ import java.util.UUID;
 public class BudgetRequestHandler {
     private static final Logger logger = LoggerFactory.getLogger(BudgetRequestHandler.class);
     private final BudgetService budgetService;
+    private final BudgetAnalysisService budgetAnalysisService = new BudgetAnalysisService();
+    ;
 
     public BudgetRequestHandler(BudgetService budgetService) {
         this.budgetService = budgetService;
     }
 
-    public BudgetRequestHandler(){
+    public BudgetRequestHandler() {
         JSONStorageService jsonStorageService = JSONStorageServiceImpl.getInstance();
         this.budgetService = new BudgetServiceImpl(jsonStorageService);
     }
@@ -153,6 +159,39 @@ public class BudgetRequestHandler {
         } catch (Exception e) {
             logger.error("Failed to get budgets for category: {}", e.getMessage(), e);
             throw new RuntimeException("Get budgets for category failed: " + e.getMessage());
+        }
+    }
+
+    public AIAnalysis handleBudgetAnalysisRequest(BudgetAnalysisRequest request) {
+        String userId = request.getUserId();
+        logger.info("Analyzing budget for user: {}", userId);
+        try {
+            List<Budget> budgets = budgetService.getBudgetsByUserId(userId);
+            System.out.println("budgets = " + budgets);
+
+            List<com.se.aiconomy.server.langchain.common.model.Budget.CategoryBudget> categoryBudgets = new ArrayList<>();
+            for (Budget budget : budgets) {
+                double spent = budgetService.getTotalSpentByCategory(userId, budget.getBudgetCategory());
+                categoryBudgets.add(new com.se.aiconomy.server.langchain.common.model.Budget.CategoryBudget(
+                        DynamicBillType.fromString(budget.getBudgetCategory()),
+                        budget.getBudgetAmount(),
+                        spent
+                ));
+            }
+
+            com.se.aiconomy.server.langchain.common.model.Budget willBeAnalyzedBudget = new com.se.aiconomy.server.langchain.common.model.Budget();
+            willBeAnalyzedBudget.setTotalBudget(budgetService.getTotalBudget(userId));
+            willBeAnalyzedBudget.setSpent(budgetService.getTotalSpent(userId));
+            willBeAnalyzedBudget.setAlerts(budgetService.getTotalAlertCount(userId));
+            willBeAnalyzedBudget.setCategoryBudgets(categoryBudgets);
+
+            System.out.println("willBeAnalyzedBudget = " + willBeAnalyzedBudget);
+            AIAnalysis analysis = budgetAnalysisService.analyzeBudget(willBeAnalyzedBudget);
+            logger.info("Successfully analyzed budget for user: {}", userId);
+            return analysis;
+        } catch (Exception e) {
+            logger.error("Failed to analyze budget: {}", e.getMessage(), e);
+            throw new RuntimeException("Analyze budget failed: " + e.getMessage());
         }
     }
 
