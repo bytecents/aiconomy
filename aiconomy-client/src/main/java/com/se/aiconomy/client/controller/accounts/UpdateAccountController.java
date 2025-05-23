@@ -3,6 +3,7 @@ package com.se.aiconomy.client.controller.accounts;
 import com.se.aiconomy.client.controller.BaseController;
 import com.se.aiconomy.server.handler.AccountRequestHandler;
 import com.se.aiconomy.server.model.dto.account.request.DeleteAccountRequest;
+import com.se.aiconomy.server.model.dto.account.request.UpdateAccountRequest;
 import com.se.aiconomy.server.model.entity.Account;
 import com.se.aiconomy.server.service.impl.AccountServiceImpl;
 import com.se.aiconomy.server.storage.service.impl.JSONStorageServiceImpl;
@@ -66,7 +67,6 @@ public class UpdateAccountController extends BaseController {
     private void init() {
         bankComboBox.setItems(FXCollections.observableArrayList("Chase", "Bank of America", "Wells Fargo", "Citibank"));
         typeComboBox.setItems(FXCollections.observableArrayList("Checking", "Saving", "Credit", "Investment"));
-        // 可选：设置默认值
         bankComboBox.setValue(account.getBankName());
         typeComboBox.setValue(account.getAccountType());
         accountNameTextField.setText(account.getAccountName());
@@ -93,7 +93,17 @@ public class UpdateAccountController extends BaseController {
     private void saveAccount() {
         // TODO: Implement saving logic
         try {
-            System.out.println("Update TBI");
+            UpdateAccountRequest updateAccountRequest = new UpdateAccountRequest();
+            Account newAccount = new Account();
+            newAccount.setAccountName(accountNameTextField.getText());
+            newAccount.setAccountType(typeComboBox.getValue());
+            newAccount.setBalance(Double.parseDouble(balanceTextField.getText()));
+            newAccount.setBankName(bankComboBox.getValue());
+            newAccount.setId(account.getId());
+            newAccount.setUserId(userInfo.getId());
+            updateAccountRequest.setAccount(newAccount);
+            updateAccountRequest.setUserId(userInfo.getId());
+            accountRequestHandler.handleUpdateAccountRequest(updateAccountRequest);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -114,7 +124,7 @@ public class UpdateAccountController extends BaseController {
     private void closeDialog(ActionEvent event) {
         if (rootPane != null) {
             rootPane.getChildren().removeIf(node ->
-                    node != rootPane.getChildren().get(0) // 保留主页面，移除弹窗和遮罩
+                    node != rootPane.getChildren().get(0)
             );
         }
         accountsController.refreshRootPane();
