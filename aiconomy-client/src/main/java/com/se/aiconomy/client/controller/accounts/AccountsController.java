@@ -73,27 +73,7 @@ public class AccountsController extends BaseController {
     private void getAccountList() {
         accountListVBox.getChildren().clear();
         for (Account account : accountList) {
-            String bankName = account.getBankName();
-            String accountType = account.getAccountType();
-            double accountBalance = account.getBalance();
-            String status = "Connected";
-            String balanceColor = "#3B82F6";
-            String iconPath, circleColor;
-            if (accountType.equals("Saving")) {
-                circleColor = "#fca5a5";
-                iconPath = "assets/eng_bank.png";
-            } else if (accountType.equals("Checking")) {
-                circleColor = "#dbeafe";
-                iconPath = "assets/dash_bank.png";
-            } else if (accountType.equals("Credit")) {
-                circleColor = "#dcfce7";
-                iconPath = "assets/well_fargo.png";
-            } else {
-                circleColor = "#dbeafe";
-                iconPath = "assets/logo.png";
-            }
-            System.out.println(account);
-            addAccountItem(bankName, accountType, "$" + accountBalance, status, balanceColor, iconPath, circleColor);
+            addAccountItem(account);
         }
     }
 
@@ -133,14 +113,51 @@ public class AccountsController extends BaseController {
         }
     }
 
-    private void addAccountItem(String bankName, String accountInfo, String balance, String status, String balanceColor, String iconPath, String circleColor) {
+    private void addAccountItem(Account account) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/accounts/account_item.fxml"));
             Parent node = loader.load();
             AccountItemController controller = loader.getController();
-            controller.setAccountData(bankName, accountInfo, balance, status, balanceColor, iconPath, circleColor);
+
+            String balanceColor = account.getAccountType().equals("Credit") ? "#DC2626" : "#3B82F6";
+            String iconPath, circleColor;
+
+            switch (account.getAccountType()) {
+                case "Saving":
+                    iconPath = "assets/eng_bank.png";
+                    circleColor = "#fca5a5";
+                    break;
+                case "Checking":
+                    iconPath = "assets/dash_bank.png";
+                    circleColor = "#dbeafe";
+                    break;
+                case "Credit":
+                    iconPath = "assets/well_fargo.png";
+                    circleColor = "#dcfce7";
+                    break;
+                default:
+                    iconPath = "assets/logo.png";
+                    circleColor = "#e0e7ff";
+            }
+
+            controller.setAccountData(
+                    account.getBankName(),
+                    account.getAccountName(),
+                    account.getAccountType(),
+                    "$" + account.getBalance(),
+                    "$" + account.getCreditLimit(),
+                    "$" + account.getCurrentDebt(),
+                    account.getPaymentDueDate().toLocalDate().toString(),
+                    "$" + account.getMinimumPayment(),
+                    "Connected",
+                    balanceColor,
+                    iconPath,
+                    circleColor
+            );
+
             accountListVBox.getChildren().add(node);
             accountListVBox.getChildren().add(new Separator());
+
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -13,7 +13,17 @@ public class AccountItemController {
     @FXML
     private Label accountTypeLabel;
     @FXML
+    private Label accountNameLabel;
+    @FXML
     private Label balanceLabel;
+    @FXML
+    private Label creditLimitLabel;
+    @FXML
+    private Label currentDebtLabel;
+    @FXML
+    private Label paymentDueDateLabel;
+    @FXML
+    private Label minimumPaymentLabel;
     @FXML
     private Label statusLabel;
     @FXML
@@ -21,15 +31,36 @@ public class AccountItemController {
     @FXML
     private Circle iconCircle;
 
-    public void setAccountData(String bankName, String accountInfo, String balance, String status, String balanceColor, String iconPath, String circleColor) {
+    public void setAccountData(
+            String bankName,
+            String accountName,
+            String accountType,
+            String balance,
+            String creditLimit,
+            String currentDebt,
+            String dueDate,
+            String minPayment,
+            String status,
+            String balanceColor,
+            String iconPath,
+            String circleColor
+    ) {
         bankNameLabel.setText(bankName);
-        bankNameLabel.setStyle("-fx-font-weight: bold");
-        accountTypeLabel.setText(accountInfo);
-        accountTypeLabel.setStyle("-fx-text-fill: #6B7280");
-        balanceLabel.setText(balance);
-        balanceLabel.setStyle("-fx-font-weight: bold; " + "-fx-text-fill: " + balanceColor + "; ");
+        accountNameLabel.setText(accountName);
+        accountTypeLabel.setText("Type: " + accountType);
+
+        balanceLabel.setText("Balance: " + balance);
+        balanceLabel.setStyle("-fx-text-fill: " + balanceColor);
+
+        creditLimitLabel.setText("Limit: " + creditLimit);
+        currentDebtLabel.setText("Debt: " + currentDebt);
+        currentDebtLabel.setStyle("-fx-text-fill: #DC2626");
+
+        paymentDueDateLabel.setText("Due: " + dueDate);
+        minimumPaymentLabel.setText("Min Pay: " + minPayment);
         statusLabel.setText(status);
         statusLabel.setStyle("-fx-text-fill: #10B981");
+
         iconImage.setImage(new Image(iconPath));
         iconCircle.setFill(Paint.valueOf(circleColor));
     }
