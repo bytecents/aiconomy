@@ -67,6 +67,19 @@
                     </TextField>
                 </HBox>
             </VBox>
+
+            <VBox spacing="4">
+                <Label text="Account Balance" style="-fx-font-weight: bold;"/>
+                <HBox spacing="8" alignment="CENTER_LEFT">
+                    <TextField fx:id="balanceField"
+                               promptText="e.g. $5000.00"
+                               maxWidth="Infinity">
+                        <HBox.hgrow>
+                            <Priority fx:constant="ALWAYS"/>
+                        </HBox.hgrow>
+                    </TextField>
+                </HBox>
+            </VBox>
         </VBox>
 
 

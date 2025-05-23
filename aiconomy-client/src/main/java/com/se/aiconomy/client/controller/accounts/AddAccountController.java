@@ -21,8 +21,8 @@ public class AddAccountController {
     @FXML
     public void initialize() {
         bankComboBox.setItems(FXCollections.observableArrayList("Chase", "Bank of America", "Wells Fargo", "Citibank"));
-        typeComboBox.setItems(FXCollections.observableArrayList("Checking", "Savings", "Credit Card", "Investment"));
-//        // 可选：设置默认值
+        typeComboBox.setItems(FXCollections.observableArrayList("Checking", "Saving", "Credit", "Investment"));
+////        // 可选：设置默认值
 //        bankComboBox.setValue("USD");
 //        typeComboBox.setValue("English");
     }
