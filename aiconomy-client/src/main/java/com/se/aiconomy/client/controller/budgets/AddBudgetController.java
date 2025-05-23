@@ -3,11 +3,14 @@ package com.se.aiconomy.client.controller.budgets;
 //import com.alibaba.fastjson2.internal.asm.Label;
 
 import com.se.aiconomy.client.controller.BaseController;
+import com.se.aiconomy.server.handler.BudgetRequestHandler;
+import com.se.aiconomy.server.model.dto.budget.request.BudgetAddRequest;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -16,18 +19,23 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import lombok.Getter;
 import lombok.Setter;
 
 import java.util.List;
 
 @Setter
 public class AddBudgetController extends BaseController {
+    private final BudgetRequestHandler budgetRequestHandler = new BudgetRequestHandler();
+    public TextField budgetAmountInput;
+    public TextField additionalNotesInput;
     @FXML
     private ToggleGroup toggleGroup;
-
+    @Setter
+    @Getter
+    private BudgetController budgetController;
     @FXML
     private StackPane rootPane;
-
     @FXML
     private VBox vbox1;
     @FXML
@@ -44,9 +52,8 @@ public class AddBudgetController extends BaseController {
     private VBox vbox7;
     @FXML
     private VBox vbox8;
-    @FXML
-    private VBox vboxMonthly, vboxWeekly, vboxYearly;
     private BudgetController.OnOpenListener openListener;
+    private String selectedCategory;
 
     @FXML
     public void setOnOpenListener(BudgetController.OnOpenListener listener) {
@@ -68,7 +75,6 @@ public class AddBudgetController extends BaseController {
     }
 
     private void init() {
-
     }
 
     @FXML
@@ -85,8 +91,24 @@ public class AddBudgetController extends BaseController {
 
     @FXML
     private void onSave(ActionEvent event) {
-        // TODO: 保存逻辑
+        addBudget();
         closeDialog(event);
+    }
+
+    private void addBudget() {
+        try {
+            double budgetAmount = Double.parseDouble(budgetAmountInput.getText());
+            BudgetAddRequest budgetAddRequest = new BudgetAddRequest();
+            budgetAddRequest.setUserId(userInfo.getId());
+            budgetAddRequest.setBudgetCategory(selectedCategory);
+            budgetAddRequest.setBudgetAmount(budgetAmount);
+            budgetAddRequest.setAlertSettings(0.8);
+            budgetAddRequest.setNotes(additionalNotesInput.getText());
+            budgetRequestHandler.handleBudgetAddRequest(budgetAddRequest);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     @FXML
@@ -112,6 +134,9 @@ public class AddBudgetController extends BaseController {
                         }
                     }
                 }
+            }
+            if (node instanceof Label) {
+                selectedCategory = ((Label) node).getText();
             }
         }
 
@@ -161,13 +186,10 @@ public class AddBudgetController extends BaseController {
     private void closeDialog(ActionEvent event) {
         if (rootPane != null) {
             rootPane.getChildren().removeIf(node ->
-                    node != rootPane.getChildren().get(0) // 保留主页面，移除弹窗和遮罩
+                    node != rootPane.getChildren().getFirst() // 保留主页面，移除弹窗和遮罩
             );
         }
-    }
-
-    public ToggleGroup getToggleGroup() {
-        return toggleGroup;
+        budgetController.refresh();
     }
 
     public interface OnOpenListener {

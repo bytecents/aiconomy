@@ -93,7 +93,7 @@ public class DashboardController extends BaseController {
         setDate();
         try {
             setDashboardBasicData();
-            setDashBoardTransactionData(); // TBI
+//            setDashBoardTransactionData(); // TBI
             setDashboardSpendTrendsData(); // TBI
             setDashBoardBudgetsData();
             setDashboardAccountOverviewData(); // TBI
@@ -129,6 +129,7 @@ public class DashboardController extends BaseController {
 
     private void setDashBoardBudgetsData() throws ServiceException {
         Map<String, Double> budgetSpendingRatio = dashBoardRequestHandler.getBudgetSpendingRatio(userInfo.getId());
+        System.out.println(budgetSpendingRatio);
         int count = 0;
         for (Map.Entry<String, Double> categoryInfo : budgetSpendingRatio.entrySet()) {
             if (count == 3) break;

@@ -84,7 +84,7 @@ public class SidebarController implements Initializable {
     private Label accountsLabel;
     @FXML
     private Label settingsLabel;
-//    private static final String INACTIVE_TEXT_COLOR = "";
+    //    private static final String INACTIVE_TEXT_COLOR = "";
     private String activePanel;
 
     private static String toHex(Color color) {
@@ -209,7 +209,7 @@ public class SidebarController implements Initializable {
     }
 
     public void openAddBudgetPanel() {
-        openPanel("/fxml/add_budget.fxml");
+        openPanel("/fxml/budgets/add_budget.fxml");
     }
 
     private void loadView(String fxmlPath) {
@@ -270,7 +270,7 @@ public class SidebarController implements Initializable {
     @FXML
     protected void switchToBudgets() {
         setActiveButton("budgets");
-        loadView("/fxml/budgets.fxml");
+        loadView("/fxml/budgets/budgets.fxml");
     }
 
     @FXML

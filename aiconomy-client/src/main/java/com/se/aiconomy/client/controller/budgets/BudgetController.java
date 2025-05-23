@@ -6,7 +6,6 @@ import com.se.aiconomy.server.model.dto.budget.request.BudgetCategoryInfoRequest
 import com.se.aiconomy.server.model.dto.budget.request.BudgetTotalInfoRequest;
 import com.se.aiconomy.server.model.dto.budget.response.BudgetCategoryInfo;
 import com.se.aiconomy.server.model.dto.budget.response.TotalBudgetInfo;
-import com.se.aiconomy.server.model.dto.user.response.UserInfo;
 import com.se.aiconomy.server.service.impl.BudgetServiceImpl;
 import com.se.aiconomy.server.storage.service.impl.JSONStorageServiceImpl;
 import javafx.application.Platform;
@@ -18,25 +17,29 @@ import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 import lombok.Setter;
 
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.List;
+import java.util.Objects;
 
 public class BudgetController extends BaseController {
 
 
-    private final BudgetRequestHandler handler =
-            new BudgetRequestHandler(new BudgetServiceImpl(JSONStorageServiceImpl.getInstance()));
+    private final BudgetRequestHandler handler = new BudgetRequestHandler(new BudgetServiceImpl(JSONStorageServiceImpl.getInstance()));
     @FXML
     private Label totalBudgetLabel;
     @FXML
     private Label totalSpentLabel;
+    @FXML
+    private Label dailyAvailableBudgetLabel;
+    @FXML
+    private Label totalUsedRatioLabel;
     @FXML
     private Label remainingLabel;
     @FXML
@@ -44,12 +47,9 @@ public class BudgetController extends BaseController {
     @FXML
     private Label daysLeftLabel;
     @FXML
-    private VBox budgetCardsContainer; // 存放每个类别预算卡片的容器
+    private GridPane budgetCardsContainer; // 存放每个类别预算卡片的容器
     @Setter
-    private int userId;
-    @FXML
-    private UserInfo userInfo;
-    private OnOpenListener openListener;
+    private String userId;
     @FXML
     private Label categoryLabel;
     @FXML
@@ -68,7 +68,6 @@ public class BudgetController extends BaseController {
     public void initialize() {
         if (userInfo == null) {
             Platform.runLater(() -> {
-                // 延迟到事件调度线程中处理
                 if (userInfo != null) {
                     init();
                 }
@@ -79,22 +78,29 @@ public class BudgetController extends BaseController {
     }
 
     private void init() {
+        userId = userInfo.getId();
         loadTotalBudgetInfo();
         loadCategoryBudgets();
     }
 
+    public void refresh() {
+        init();
+    }
+
     private void loadTotalBudgetInfo() {
         BudgetTotalInfoRequest request = new BudgetTotalInfoRequest();
-        request.setUserId(String.valueOf(userId));
+        request.setUserId(userId);
 
         try {
             TotalBudgetInfo info = handler.handleGetTotalBudgetRequest(request);
-
-            totalBudgetLabel.setText("¥ " + info.getTotalBudget());
-            totalSpentLabel.setText("¥ " + info.getTotalSpent());
-            remainingLabel.setText("¥ " + info.getTotalRemaining());
-            alertsLabel.setText(info.getTotalAlerts() + " 个超支警告");
-            daysLeftLabel.setText("本月剩余 " + getDaysLeftThisMonth() + " 天");
+            System.out.println(info);
+            totalBudgetLabel.setText("$ " + info.getTotalBudget());
+            totalUsedRatioLabel.setText("Used " + String.format("%.2f%%", info.getTotalUsedRatio() * 100));
+            totalSpentLabel.setText("$ " + info.getTotalSpent());
+            remainingLabel.setText("Left $ " + info.getTotalRemaining());
+            alertsLabel.setText(info.getTotalAlerts() + "");
+            dailyAvailableBudgetLabel.setText("$ " + String.format("%.2f", info.getDailyAvailableBudget()));
+            daysLeftLabel.setText(+getDaysLeftThisMonth() + " days left");
 
         } catch (Exception e) {
             showError("加载总预算失败：" + e.getMessage());
@@ -107,11 +113,21 @@ public class BudgetController extends BaseController {
 
         try {
             List<BudgetCategoryInfo> categoryInfoList = handler.handleGetBudgetByCategory(request);
-
+            System.out.println(categoryInfoList);
             budgetCardsContainer.getChildren().clear();
+            int row = 0;
+            int col = 0;
+
             for (BudgetCategoryInfo info : categoryInfoList) {
                 Node card = createBudgetCard(info);
-                budgetCardsContainer.getChildren().add(card);
+
+                budgetCardsContainer.add(card, col, row);
+
+                col++;
+                if (col > 1) {
+                    col = 0;
+                    row++;
+                }
             }
 
         } catch (Exception e) {
@@ -121,9 +137,71 @@ public class BudgetController extends BaseController {
 
     private Node createBudgetCard(BudgetCategoryInfo info) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/AddBudget.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/budgets/budget_category_card.fxml"));
             Node node = loader.load();
-            AddBudgetController controller = loader.getController();
+            BudgetCategoryCardController controller = loader.getController();
+            controller.setBudgetController(this);
+            controller.setBudgetCategoryInfo(info);
+            controller.setRootPane(rootPane);
+            controller.setBudgetController(this);
+            controller.setUserInfo(userInfo);
+            String imagePath;
+            String backgroundColor;
+            String progressBarStyle;
+            String percentageColorClass;
+            String categoryName = info.getCategoryName().toLowerCase();
+
+            if (categoryName.contains("food") || categoryName.contains("dining")) {
+                imagePath = Objects.requireNonNull(getClass().getResource("/assets/FoodDining.png")).toExternalForm();
+                backgroundColor = "#e0f2fe";
+                percentageColorClass = "text-red-500";
+            } else if (categoryName.contains("education")) {
+                imagePath = Objects.requireNonNull(getClass().getResource("/assets/Education1_blue.png")).toExternalForm();
+                backgroundColor = "#e0f2fe";
+                percentageColorClass = "text-green-500";
+            } else if (categoryName.contains("transport")) {
+                imagePath = Objects.requireNonNull(getClass().getResource("/assets/Transportation.png")).toExternalForm();
+                backgroundColor = "#dcfce7";
+                percentageColorClass = "text-green-500";
+            } else if (categoryName.contains("shop")) {
+                imagePath = Objects.requireNonNull(getClass().getResource("/assets/Shopping.png")).toExternalForm();
+                backgroundColor = "#e0bbff";
+                percentageColorClass = "text-red-500";
+            } else if (categoryName.contains("entertain")) {
+                imagePath = Objects.requireNonNull(getClass().getResource("/assets/Entertainment.png")).toExternalForm();
+                backgroundColor = "#fef9c3";
+                percentageColorClass = "text-yellow-500";
+            } else if (categoryName.contains("utilit")) {
+                imagePath = Objects.requireNonNull(getClass().getResource("/assets/Utilities.png")).toExternalForm();
+                backgroundColor = "#ffedd5";
+                percentageColorClass = "text-orange-500";
+            } else if (categoryName.contains("gift")) {
+                imagePath = Objects.requireNonNull(getClass().getResource("/assets/Gift1_blue.png")).toExternalForm();
+                backgroundColor = "#e0f2fe";
+                percentageColorClass = "text-orange-500";
+            } else {
+                imagePath = Objects.requireNonNull(getClass().getResource("/assets/Other.png")).toExternalForm();
+                backgroundColor = "#f3f4f6";
+                percentageColorClass = "text-gray-500";
+            }
+            String budgetText = String.format("$%.2f / month", info.getBudgetAmount());
+            String percentageText = String.format("%.0f%% used", info.getUsedRatio() * 100);
+            String statusText;
+            if (info.getSpentAmount() > info.getBudgetAmount()) {
+                double over = info.getSpentAmount() - info.getBudgetAmount();
+                statusText = String.format("$%.2f over budget", over);
+            } else {
+                statusText = String.format("$%.2f left", info.getRemainingAmount());
+            }
+            controller.setCardData(
+                    info.getCategoryName(),
+                    budgetText,
+                    imagePath,
+                    backgroundColor,
+                    info.getUsedRatio(),
+                    percentageText,
+                    statusText
+            );
             return node;
         } catch (IOException e) {
             showError("加载预算卡片失败：" + e.getMessage());
@@ -146,12 +224,13 @@ public class BudgetController extends BaseController {
     public void onAddBudgetClick(ActionEvent event) {
         try {
             // 加载 add_budget.fxml
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/add_budget.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/budgets/add_budget.fxml"));
             Parent dialogContent = loader.load();
             // 获取 controller 并传入 rootPane
             AddBudgetController controller = loader.getController();
-            controller.setRootPane(rootPane); // ⚠️这里的 rootPane 是你的页面最外层 StackPane
-
+            controller.setRootPane(rootPane);
+            controller.setBudgetController(this);
+            controller.setUserInfo(userInfo);
             // 设置弹窗样式（你可以在 FXML 里设也行）
             dialogContent.setStyle("-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 20;");
 
@@ -205,7 +284,6 @@ public class BudgetController extends BaseController {
 
     @FXML
     public void setOnOpenListener(BudgetController.OnOpenListener listener) {
-        this.openListener = listener;
     }
 
     public interface OnOpenListener {
