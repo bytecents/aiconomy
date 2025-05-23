@@ -143,7 +143,6 @@ public class BudgetController extends BaseController {
             controller.setBudgetController(this);
             controller.setBudgetCategoryInfo(info);
             controller.setRootPane(rootPane);
-            controller.setBudgetController(this);
             controller.setUserInfo(userInfo);
             String imagePath;
             String backgroundColor;
