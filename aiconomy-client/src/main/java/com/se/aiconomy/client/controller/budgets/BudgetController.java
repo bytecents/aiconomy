@@ -1,13 +1,14 @@
-package com.se.aiconomy.client.controller;
+package com.se.aiconomy.client.controller.budgets;
 
+import com.se.aiconomy.client.controller.BaseController;
+import com.se.aiconomy.server.handler.BudgetRequestHandler;
 import com.se.aiconomy.server.model.dto.budget.request.BudgetCategoryInfoRequest;
 import com.se.aiconomy.server.model.dto.budget.request.BudgetTotalInfoRequest;
 import com.se.aiconomy.server.model.dto.budget.response.BudgetCategoryInfo;
-import com.se.aiconomy.server.handler.BudgetRequestHandler;
 import com.se.aiconomy.server.model.dto.budget.response.TotalBudgetInfo;
+import com.se.aiconomy.server.model.dto.user.response.UserInfo;
 import com.se.aiconomy.server.service.impl.BudgetServiceImpl;
 import com.se.aiconomy.server.storage.service.impl.JSONStorageServiceImpl;
-import com.se.aiconomy.server.model.dto.user.response.UserInfo;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -30,6 +31,8 @@ import java.util.List;
 public class BudgetController extends BaseController {
 
 
+    private final BudgetRequestHandler handler =
+            new BudgetRequestHandler(new BudgetServiceImpl(JSONStorageServiceImpl.getInstance()));
     @FXML
     private Label totalBudgetLabel;
     @FXML
@@ -40,19 +43,26 @@ public class BudgetController extends BaseController {
     private Label alertsLabel;
     @FXML
     private Label daysLeftLabel;
-
     @FXML
     private VBox budgetCardsContainer; // 存放每个类别预算卡片的容器
-
     @Setter
     private int userId;
-
-    private final BudgetRequestHandler handler =
-            new BudgetRequestHandler(new BudgetServiceImpl(JSONStorageServiceImpl.getInstance()));
-
     @FXML
     private UserInfo userInfo;
     private OnOpenListener openListener;
+    @FXML
+    private Label categoryLabel;
+    @FXML
+    private Label budgetAmountLabel;
+    @FXML
+    private Label spendingLabel;
+    @FXML
+    private ProgressBar budgetProgressBar;
+    @FXML
+    private Label remainingOrOverLabel;
+    private BudgetCategoryInfo info;
+    @FXML
+    private StackPane rootPane; // 这个是 main.fxml 的最外层 StackPane
 
     @FXML
     public void initialize() {
@@ -133,21 +143,6 @@ public class BudgetController extends BaseController {
     }
 
     @FXML
-    private Label categoryLabel;
-    @FXML
-    private Label budgetAmountLabel;
-    @FXML
-    private Label spendingLabel;
-    @FXML
-    private ProgressBar budgetProgressBar;
-    @FXML
-    private Label remainingOrOverLabel;
-
-    private BudgetCategoryInfo info;
-    @FXML
-    private StackPane rootPane; // 这个是 main.fxml 的最外层 StackPane
-
-    @FXML
     public void onAddBudgetClick(ActionEvent event) {
         try {
             // 加载 add_budget.fxml
@@ -184,7 +179,6 @@ public class BudgetController extends BaseController {
     }
 
 
-
     public void setBudgetCategoryInfo(BudgetCategoryInfo info) {
         this.info = info;
         updateView();
@@ -208,14 +202,16 @@ public class BudgetController extends BaseController {
             remainingOrOverLabel.setStyle("-fx-text-fill: green;");
         }
     }
+
     @FXML
     public void setOnOpenListener(BudgetController.OnOpenListener listener) {
         this.openListener = listener;
     }
+
     public interface OnOpenListener {
         void onOpenBudgetPanel();
     }
-    
+
 }
 
 

@@ -2,7 +2,6 @@ package com.se.aiconomy.client.controller.transactions;
 
 import com.se.aiconomy.client.common.MyFXMLLoader;
 import com.se.aiconomy.client.controller.BaseController;
-import com.se.aiconomy.client.controller.BudgetController;
 import com.se.aiconomy.server.handler.TransactionRequestHandler;
 import com.se.aiconomy.server.model.dto.TransactionDto;
 import com.se.aiconomy.server.model.dto.transaction.request.GetTransactionByUserIdRequest;
@@ -11,20 +10,15 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.layout.VBox;
-import javafx.scene.shape.Rectangle;
 
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
 public class TransactionsController extends BaseController implements Initializable {
-    @FXML private VBox transactionItems;
     private final TransactionRequestHandler handler = new TransactionRequestHandler();
-
-    public interface OnOpenListener {
-        void onOpenAddTransactionPanel();
-    }
-
+    @FXML
+    private VBox transactionItems;
     private TransactionsController.OnOpenListener openListener;
 
     @FXML
@@ -38,7 +32,6 @@ public class TransactionsController extends BaseController implements Initializa
             openListener.onOpenAddTransactionPanel();
         }
     }
-
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -81,5 +74,9 @@ public class TransactionsController extends BaseController implements Initializa
     @FXML
     private void init() {
         refreshTransactionList();
+    }
+
+    public interface OnOpenListener {
+        void onOpenAddTransactionPanel();
     }
 }

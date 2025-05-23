@@ -2,13 +2,11 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.Font?>
-
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.shape.Circle?>
-<StackPane fx:id="rootPane" xmlns:fx="http://javafx.com/fxml" fx:controller="com.se.aiconomy.client.controller.BudgetController">
+<?import javafx.scene.shape.*?>
+<StackPane xmlns:fx="http://javafx.com/fxml" fx:id="rootPane"
+           fx:controller="com.se.aiconomy.client.controller.budgets.BudgetController">
     <VBox fx:id="mainVBox" styleClass="p-8">
         <padding>
             <Insets top="20" right="20" bottom="20" left="20"/>
@@ -90,12 +88,12 @@
                             <HBox alignment="CENTER_LEFT" styleClass="gap-3">
 
                                 <StackPane prefHeight="50.0" prefWidth="50.0">
-                                <Circle fill="#e0f2fe" radius="24.0" stroke="BLACK" strokeType="INSIDE"
-                                        strokeWidth="0.0"/>
-                                <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true"
-                                           preserveRatio="true">
-                                    <Image url="@../assets/FoodDining.png"/>
-                                </ImageView>
+                                    <Circle fill="#e0f2fe" radius="24.0" stroke="BLACK" strokeType="INSIDE"
+                                            strokeWidth="0.0"/>
+                                    <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true"
+                                               preserveRatio="true">
+                                        <Image url="@../assets/FoodDining.png"/>
+                                    </ImageView>
                                 </StackPane>
                                 <VBox styleClass="gap-0_5" HBox.hgrow="NEVER">
                                     <Label text="Food &amp; Dining" styleClass="font-medium text-base"/>

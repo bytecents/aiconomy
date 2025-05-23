@@ -1,22 +1,22 @@
-package com.se.aiconomy.client.controller;
+package com.se.aiconomy.client.controller.budgets;
 
 //import com.alibaba.fastjson2.internal.asm.Label;
 
+import com.se.aiconomy.client.controller.BaseController;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Label;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.input.MouseEvent;
-import javafx.event.ActionEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import lombok.Setter;
-import javafx.scene.control.Label;
-
 
 import java.util.List;
 
@@ -46,11 +46,6 @@ public class AddBudgetController extends BaseController {
     private VBox vbox8;
     @FXML
     private VBox vboxMonthly, vboxWeekly, vboxYearly;
-
-    public interface OnOpenListener {
-        void onOpenAddBudgetPanel();
-    }
-
     private BudgetController.OnOpenListener openListener;
 
     @FXML
@@ -76,17 +71,17 @@ public class AddBudgetController extends BaseController {
 
     }
 
+    @FXML
+    private void onCancel(ActionEvent event) {
+        closeDialog(event);
+    }
+
 //    @FXML
 //    public void onAddBudgetClick(ActionEvent event) {
 //        if (openListener != null) {
 //            openListener.onOpenAddBudgetPanel();
 //        }
 //    }
-
-    @FXML
-    private void onCancel(ActionEvent event) {
-        closeDialog(event);
-    }
 
     @FXML
     private void onSave(ActionEvent event) {
@@ -163,7 +158,6 @@ public class AddBudgetController extends BaseController {
         }
     }
 
-
     private void closeDialog(ActionEvent event) {
         if (rootPane != null) {
             rootPane.getChildren().removeIf(node ->
@@ -174,5 +168,9 @@ public class AddBudgetController extends BaseController {
 
     public ToggleGroup getToggleGroup() {
         return toggleGroup;
+    }
+
+    public interface OnOpenListener {
+        void onOpenAddBudgetPanel();
     }
 }

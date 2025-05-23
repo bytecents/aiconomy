@@ -1,15 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
-
-<?import javafx.scene.shape.Circle?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.image.Image?>
-
+<?import javafx.scene.shape.*?>
 <VBox xmlns:fx="http://javafx.com/fxml"
       xmlns="http://javafx.com/javafx"
-      fx:controller="com.se.aiconomy.client.controller.AddBudgetController"
+      fx:controller="com.se.aiconomy.client.controller.budgets.AddBudgetController"
       stylesheets="/css/styles.css"
       styleClass="gap-4 p-6 bg-white rounded-xl shadow-xl">
     <HBox spacing="8">
