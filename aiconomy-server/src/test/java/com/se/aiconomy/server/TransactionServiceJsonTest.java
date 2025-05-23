@@ -1,6 +1,7 @@
 package com.se.aiconomy.server;
 
 import com.se.aiconomy.server.common.exception.ServiceException;
+import com.se.aiconomy.server.common.utils.JsonUtils;
 import com.se.aiconomy.server.dao.TransactionDao;
 import com.se.aiconomy.server.langchain.common.model.DynamicBillType;
 import com.se.aiconomy.server.langchain.common.model.Transaction;
@@ -11,6 +12,7 @@ import org.junit.jupiter.api.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -225,6 +227,54 @@ public class TransactionServiceJsonTest {
         assertThrows(ServiceException.class,
                 () -> transactionService.updateTransactionStatus(nonExistentId, "已完成"),
                 "应抛出异常");
+    }
+
+    @Test
+    @Order(12)
+    @DisplayName("测试导出交易记录到 JSON 文件")
+    void testExportTransactionsToJson() throws Exception {
+        // 准备测试数据
+        createTestTransactions();
+
+        // 导出到临时文件
+        String exportFilePath = System.getProperty("java.io.tmpdir") + "/exported_transactions.json";
+        transactionService.exportTransactionsToJson(exportFilePath);
+
+        // 验证导出的文件
+        File exportedFile = new File(exportFilePath);
+        assertTrue(exportedFile.exists(), "导出的 JSON 文件不存在");
+
+        // 读取导出的文件并验证内容
+        List<TransactionDto> exportedTransactions = JsonUtils.readJson(exportFilePath);
+        assertEquals(2, exportedTransactions.size(), "导出的交易记录数不符");
+
+        TransactionDto firstTransaction = exportedTransactions.stream()
+                .filter(tx -> "12345".equals(tx.getId()))
+                .findFirst()
+                .orElse(null);
+        assertNotNull(firstTransaction, "未找到 ID 为 12345 的交易");
+        assertEquals("12345", firstTransaction.getId(), "交易 ID 不匹配");
+        assertEquals("2025-04-16T10:30:00", firstTransaction.getTime().format(FORMATTER),
+                "交易时间不匹配");
+        assertEquals(TEST_USER, firstTransaction.getUserId(), "用户 ID 不匹配");
+
+        // 清理临时文件
+        if (exportedFile.exists()) {
+            exportedFile.delete();
+        }
+    }
+
+    @Test
+    @Order(13)
+    @DisplayName("测试导出空交易记录")
+    void testExportEmptyTransactions() {
+        String exportFilePath = System.getProperty("java.io.tmpdir") + "/empty_transactions.json";
+        assertThrows(ServiceException.class,
+                () -> transactionService.exportTransactionsToJson(exportFilePath),
+                "应抛出异常：无交易记录可导出");
+
+        File exportedFile = new File(exportFilePath);
+        assertFalse(exportedFile.exists(), "空交易不应创建文件");
     }
 
     @Test

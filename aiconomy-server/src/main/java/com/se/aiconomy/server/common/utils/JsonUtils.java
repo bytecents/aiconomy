@@ -37,4 +37,15 @@ public class JsonUtils {
             throw e;
         }
     }
+
+    public static void writeJson(String filePath, List<TransactionDto> transactions) throws IOException {
+        File file = new File(filePath);
+        try {
+            mapper.writeValue(file, transactions);
+            System.out.println("Successfully wrote " + transactions.size() + " transactions to JSON file: " + filePath);
+        } catch (IOException e) {
+            System.err.println("Failed to write JSON file: " + filePath);
+            throw e;
+        }
+    }
 }

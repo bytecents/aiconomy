@@ -1,11 +1,13 @@
 package com.se.aiconomy.server.common.utils;
 
 
+import com.se.aiconomy.server.model.dto.TransactionDto;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.time.LocalDateTime;
@@ -210,6 +212,56 @@ public class ExcelUtils {
             return beanInstance;
         } catch (Exception e) {
             throw new IOException("Error creating bean from Excel row with mapping", e);
+        }
+    }
+
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+
+    public static void writeExcel(String filePath, List<TransactionDto> transactions) throws IOException {
+        try (Workbook workbook = new XSSFWorkbook()) {
+            Sheet sheet = workbook.createSheet("Transactions");
+
+            // Write header
+            String[] headers = {
+                    "id", "time", "type", "counterparty", "product", "incomeOrExpense", "amount",
+                    "paymentMethod", "status", "merchantOrderId", "accountId", "userId", "remark"
+            };
+            Row headerRow = sheet.createRow(0);
+            for (int i = 0; i < headers.length; i++) {
+                headerRow.createCell(i).setCellValue(headers[i]);
+            }
+
+            // Write transaction data
+            int rowNum = 1;
+            for (TransactionDto tx : transactions) {
+                Row row = sheet.createRow(rowNum++);
+                row.createCell(0).setCellValue(tx.getId());
+                row.createCell(1).setCellValue(tx.getTime() != null ? tx.getTime().format(FORMATTER) : "");
+                row.createCell(2).setCellValue(tx.getType());
+                row.createCell(3).setCellValue(tx.getCounterparty());
+                row.createCell(4).setCellValue(tx.getProduct());
+                row.createCell(5).setCellValue(tx.getIncomeOrExpense());
+                row.createCell(6).setCellValue(tx.getAmount());
+                row.createCell(7).setCellValue(tx.getPaymentMethod());
+                row.createCell(8).setCellValue(tx.getStatus());
+                row.createCell(9).setCellValue(tx.getMerchantOrderId());
+                row.createCell(10).setCellValue(tx.getAccountId());
+                row.createCell(12).setCellValue(tx.getRemark());
+            }
+            // Auto-size columns
+            for (int i = 0; i < headers.length; i++) {
+                sheet.autoSizeColumn(i);
+            }
+
+            // Write to file
+            try (FileOutputStream fileOut = new FileOutputStream(filePath)) {
+                workbook.write(fileOut);
+            }
+
+            System.out.println("Successfully wrote " + transactions.size() + " transactions to Excel file: " + filePath);
+        } catch (IOException e) {
+            System.err.println("Failed to write Excel file: " + filePath);
+            throw e;
         }
     }
 }

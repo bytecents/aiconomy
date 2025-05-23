@@ -1,25 +1,21 @@
 package com.se.aiconomy.server.service.impl;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
+
 import com.se.aiconomy.server.common.exception.ServiceException;
 import com.se.aiconomy.server.common.utils.CSVUtils;
 import com.se.aiconomy.server.common.utils.ExcelUtils;
 import com.se.aiconomy.server.common.utils.JsonUtils;
 import com.se.aiconomy.server.dao.TransactionDao;
-import com.se.aiconomy.server.langchain.common.model.BillType;
 import com.se.aiconomy.server.langchain.common.model.DynamicBillType;
 import com.se.aiconomy.server.langchain.common.model.Transaction;
 import com.se.aiconomy.server.langchain.service.classification.TransactionClassificationService;
 import com.se.aiconomy.server.model.dto.TransactionDto;
-import com.se.aiconomy.server.service.AccountService;
 import com.se.aiconomy.server.service.TransactionService;
 import lombok.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -183,7 +179,7 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     /**
-     * 根据文件类型导入交易记录（CSV 或 Excel）
+     * 根据文件类型导入交易记录（CSV 或 Excel 或 Json）
      *
      * @param filePath 文件路径
      * @return 成功导入的交易记录列表
@@ -245,6 +241,57 @@ public class TransactionServiceImpl implements TransactionService {
 //    从Json文件中导入交易记录
     private List<TransactionDto> readJson(String filePath) throws IOException {
         return JsonUtils.readJson(filePath);
+    }
+
+    @Override
+    public void exportTransactionsToJson(String filePath) throws ServiceException {
+        List<TransactionDto> transactions = transactionDao.findAll();
+        if (transactions.isEmpty()) {
+            log.warn("No transactions found to export");
+            throw new ServiceException("No transactions available to export", null);
+        }
+
+        try {
+            JsonUtils.writeJson(filePath, transactions);
+            log.info("Successfully exported {} transactions to JSON file: {}", transactions.size(), filePath);
+        } catch (IOException e) {
+            log.error("Failed to export transactions to JSON file: {}", filePath, e);
+            throw new ServiceException("Failed to export transactions to JSON file: " + filePath, e);
+        }
+    }
+
+    @Override
+    public void exportTransactionsToCsv(String filePath) throws ServiceException {
+        List<TransactionDto> transactions = transactionDao.findAll();
+        if (transactions.isEmpty()) {
+            log.warn("No transactions found to export");
+            throw new ServiceException("No transactions available to export", null);
+        }
+
+        try {
+            CSVUtils.writeCsv(filePath, transactions);
+            log.info("Successfully exported {} transactions to CSV file: {}", transactions.size(), filePath);
+        } catch (IOException e) {
+            log.error("Failed to export transactions to CSV file: {}", filePath, e);
+            throw new ServiceException("Failed to export transactions to CSV file: " + filePath, e);
+        }
+    }
+
+    @Override
+    public void exportTransactionsToExcel(String filePath) throws ServiceException {
+        List<TransactionDto> transactions = transactionDao.findAll();
+        if (transactions.isEmpty()) {
+            log.warn("No transactions found to export");
+            throw new ServiceException("No transactions available to export", null);
+        }
+
+        try {
+            ExcelUtils.writeExcel(filePath, transactions);
+            log.info("Successfully exported {} transactions to Excel file: {}", transactions.size(), filePath);
+        } catch (IOException e) {
+            log.error("Failed to export transactions to Excel file: {}", filePath, e);
+            throw new ServiceException("Failed to export transactions to Excel file: " + filePath, e);
+        }
     }
 
     /**
