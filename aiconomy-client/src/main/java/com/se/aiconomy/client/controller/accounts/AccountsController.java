@@ -1,6 +1,5 @@
 package com.se.aiconomy.client.controller.accounts;
 
-import com.se.aiconomy.client.controller.AddAccountController;
 import com.se.aiconomy.client.controller.BaseController;
 import com.se.aiconomy.server.common.exception.ServiceException;
 import com.se.aiconomy.server.handler.AccountRequestHandler;

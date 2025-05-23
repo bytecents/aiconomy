@@ -1,12 +1,17 @@
-package com.se.aiconomy.client.controller;
+package com.se.aiconomy.client.controller.accounts;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.layout.StackPane;
-import javafx.stage.Stage;
 
 public class AddAccountController {
+
+    /*
+     * 只有当FXML中有StackPane并设置fx:id="rootPane"时才需要此方法
+     * 当前FXML中无此定义，应注释掉
+     */
+    @FXML
+    private StackPane rootPane;
 
     @FXML
     private void onCancel(ActionEvent event) {
@@ -17,26 +22,19 @@ public class AddAccountController {
         closeDialog(event);
     }
 
-    /*
-     * 只有当FXML中有StackPane并设置fx:id="rootPane"时才需要此方法
-     * 当前FXML中无此定义，应注释掉
-     */
-     @FXML
-     private StackPane rootPane;
-
     @FXML
     private void onSave(ActionEvent event) {
         // TODO: 保存逻辑
         closeDialog(event);
     }
 
-     private void closeDialog(ActionEvent event) {
-         if (rootPane != null) {
-             rootPane.getChildren().removeIf(node ->
-                 "dialogPane".equals(node.getId()) // 建议给弹窗Pane设置id
-             );
-         }
-     }
+    private void closeDialog(ActionEvent event) {
+        if (rootPane != null) {
+            rootPane.getChildren().removeIf(node ->
+                    "dialogPane".equals(node.getId()) // 建议给弹窗Pane设置id
+            );
+        }
+    }
 
     public void setRootPane(StackPane rootPane) {
     }
