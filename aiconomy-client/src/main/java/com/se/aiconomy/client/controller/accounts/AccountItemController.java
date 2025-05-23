@@ -83,7 +83,6 @@ public class AccountItemController extends BaseController {
                 rootPane.getChildren().removeAll(overlay, dialogWrapper);
             });
 
-            // 添加遮罩和弹窗到页面顶层
             rootPane.getChildren().addAll(overlay, dialogWrapper);
         } catch (IOException e) {
             e.printStackTrace();
