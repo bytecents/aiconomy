@@ -4,6 +4,7 @@ import com.se.aiconomy.server.common.exception.ServiceException;
 import com.se.aiconomy.server.langchain.common.model.DynamicBillType;
 import com.se.aiconomy.server.langchain.common.model.Transaction;
 import com.se.aiconomy.server.model.dto.TransactionDto;
+import com.se.aiconomy.server.service.impl.TransactionServiceImpl;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -33,4 +34,12 @@ public interface TransactionService {
     void exportTransactionsToCsv(String filePath) throws ServiceException;
 
     void exportTransactionsToExcel(String filePath) throws ServiceException;
+
+    List<TransactionDto> searchTransactions(TransactionServiceImpl.TransactionSearchCriteria criteria);
+
+    TransactionDto updateTransactionStatus(String transactionId, String newStatus) throws ServiceException;
+
+    void deleteTransaction(String transactionId) throws ServiceException;
+
+    Map<String, String> getCounterpartyStatistics();
 }
