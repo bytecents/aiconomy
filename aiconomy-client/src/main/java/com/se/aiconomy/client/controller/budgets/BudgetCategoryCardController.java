@@ -1,19 +1,17 @@
 package com.se.aiconomy.client.controller.budgets;
 
 import com.se.aiconomy.client.controller.BaseController;
+import com.se.aiconomy.server.handler.BudgetRequestHandler;
+import com.se.aiconomy.server.model.dto.budget.request.BudgetRemoveRequest;
 import com.se.aiconomy.server.model.dto.budget.response.BudgetCategoryInfo;
 import javafx.animation.FadeTransition;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -23,11 +21,11 @@ import javafx.util.Duration;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.io.IOException;
 import java.text.DecimalFormat;
 
 public class BudgetCategoryCardController extends BaseController {
 
+    private final BudgetRequestHandler budgetRequestHandler = new BudgetRequestHandler();
     @FXML
     @Setter
     @Getter
@@ -55,6 +53,11 @@ public class BudgetCategoryCardController extends BaseController {
     @Setter
     @Getter
     private BudgetController budgetController;
+
+    @FXML
+    private void initialize() {
+        initPopover();
+    }
 
     private void initPopover() {
         VBox popoverContent = new VBox(10);
@@ -108,7 +111,6 @@ public class BudgetCategoryCardController extends BaseController {
 
         deleteBtn.setOnAction(e -> {
             onDeleteButtonClick();
-            System.out.println("Delete clicked");
             fadeOut.setOnFinished(event -> popup.hide());
             fadeOut.playFromStart();
         });
@@ -116,47 +118,20 @@ public class BudgetCategoryCardController extends BaseController {
 
     private void onUpdateButtonClick() {
         try {
-            // 加载 add_budget.fxml
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/budgets/add_budget.fxml"));
-            Parent dialogContent = loader.load();
-            // 获取 controller 并传入 rootPane
-            BudgetUpdateCardController controller = loader.getController();
-            controller.setRootPane(rootPane);
-            controller.setBudgetController(budgetController);
-            controller.setUserInfo(userInfo);
-            // 设置弹窗样式（你可以在 FXML 里设也行）
-            dialogContent.setStyle("-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 20;");
-
-            // 创建遮罩
-            Region overlay = new Region();
-            overlay.setStyle("-fx-background-color: rgba(0,0,0,0.5);");
-            overlay.setPrefSize(rootPane.getWidth(), rootPane.getHeight());
-
-            // 弹窗容器（居中）
-            StackPane dialogWrapper = new StackPane(dialogContent);
-            dialogWrapper.setMaxWidth(500);
-            dialogWrapper.setMaxHeight(600);
-
-            // 点击遮罩关闭弹窗
-            overlay.setOnMouseClicked((MouseEvent e) -> {
-                rootPane.getChildren().removeAll(overlay, dialogWrapper);
-            });
-
-            // 添加遮罩和弹窗到页面顶层
-            rootPane.getChildren().addAll(overlay, dialogWrapper);
-
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     private void onDeleteButtonClick() {
-
+        deleteBudgetCategory();
     }
 
-    @FXML
-    private void initialize() {
-        initPopover();
+    private void deleteBudgetCategory() {
+        BudgetRemoveRequest budgetRemoveRequest = new BudgetRemoveRequest(budgetCategoryInfo.getCategoryName());
+        budgetRemoveRequest.setUserId(userInfo.getId());
+        budgetRequestHandler.handleRemoveBudgetRequest(budgetRemoveRequest);
+        budgetController.refresh();
     }
 
     public void setCardData(String category, String budget, String imagePath, String colorHex,
