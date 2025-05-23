@@ -36,6 +36,6 @@
             <Label fx:id="statusLabel" styleClass="text-sm text-green-500"/>
         </HBox>
     </VBox>
-    <Button text="Update">
+    <Button onAction="#onUpdateButtonClicked" text="Update">
     </Button>
 </HBox>

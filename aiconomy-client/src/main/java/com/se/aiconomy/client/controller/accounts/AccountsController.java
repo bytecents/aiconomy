@@ -11,13 +11,18 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
+import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.io.IOException;
 import java.util.List;
@@ -29,6 +34,8 @@ public class AccountsController extends BaseController {
     @FXML
     private VBox accountListVBox;
     @FXML
+    @Setter
+    @Getter
     private StackPane rootPane; // 这个是 main.fxml 的最外层 StackPane
     @FXML
     private Label totalBalanceLabel;
@@ -58,6 +65,14 @@ public class AccountsController extends BaseController {
         }
     }
 
+    public void refreshRootPane() {
+        init();
+    }
+
+    public void refresh() {
+        init();
+    }
+
     private void getBasicData() throws ServiceException {
         GetAccountsByUserIdRequest getAccountsByUserIdRequest = new GetAccountsByUserIdRequest();
         getAccountsByUserIdRequest.setUserId(userInfo.getId());
@@ -72,9 +87,31 @@ public class AccountsController extends BaseController {
 
     private void getAccountList() {
         accountListVBox.getChildren().clear();
-        for (Account account : accountList) {
-            addAccountItem(account);
+        if (accountList.isEmpty()) {
+            // Create the label and hyperlink
+            Label messageLabel = new Label("It seems You don’t have any accounts. Try ");
+            Hyperlink createLink = new Hyperlink("creating one");
+
+            messageLabel.setStyle("-fx-font-size: 16px; -fx-text-fill: #6B7280;");
+            createLink.setStyle("-fx-font-size: 16px;");
+
+            HBox promptBox = new HBox(messageLabel, createLink);
+            promptBox.setSpacing(5);
+            promptBox.setAlignment(Pos.CENTER);
+
+            VBox container = new VBox(promptBox);
+            container.setAlignment(Pos.CENTER);
+            container.setPrefHeight(accountListVBox.getPrefHeight());
+
+            accountListVBox.getChildren().add(container);
+
+            createLink.setOnAction(e -> onAddAccountClick(null));
+        } else {
+            for (Account account : accountList) {
+                addAccountItem(account);
+            }
         }
+
     }
 
     @FXML
@@ -83,11 +120,10 @@ public class AccountsController extends BaseController {
             // 加载 add_budget.fxml
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/accounts/add_accounts.fxml"));
             Parent dialogContent = loader.load();
-            // 获取 controller 并传入 rootPane
             AddAccountController controller = loader.getController();
-            controller.setRootPane(rootPane); // ⚠️这里的 rootPane 是你的页面最外层 StackPane
-
-            // 设置弹窗样式（你可以在 FXML 里设也行）
+            controller.setRootPane(rootPane);
+            controller.setUserInfo(this.userInfo);
+            controller.setAccountsController(this);
             dialogContent.setStyle("-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 20;");
 
             // 创建遮罩
@@ -118,9 +154,12 @@ public class AccountsController extends BaseController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/accounts/account_item.fxml"));
             Parent node = loader.load();
             AccountItemController controller = loader.getController();
-
-            String balanceColor = account.getAccountType().equals("Credit") ? "#DC2626" : "#3B82F6";
-            String iconPath, circleColor;
+            controller.setAccountsController(this);
+            controller.setUserInfo(this.userInfo);
+            controller.setAccount(account);
+            String balanceColor = "Credit".equals(account.getAccountType()) ? "#DC2626" : "#3B82F6";
+            String iconPath;
+            String circleColor;
 
             switch (account.getAccountType()) {
                 case "Saving":
@@ -138,17 +177,29 @@ public class AccountsController extends BaseController {
                 default:
                     iconPath = "assets/logo.png";
                     circleColor = "#e0e7ff";
+                    break;
             }
 
+            String bankName = getOrNull(account.getBankName());
+            String accountName = getOrNull(account.getAccountName());
+            String accountType = getOrNull(account.getAccountType());
+            String balance = formatCurrency(account.getBalance());
+            String creditLimit = formatCurrency(account.getCreditLimit());
+            String currentDebt = formatCurrency(account.getCurrentDebt());
+            String paymentDueDate = account.getPaymentDueDate() != null
+                    ? account.getPaymentDueDate().toLocalDate().toString()
+                    : "not set";
+            String minimumPayment = formatCurrency(account.getMinimumPayment());
+
             controller.setAccountData(
-                    account.getBankName(),
-                    account.getAccountName(),
-                    account.getAccountType(),
-                    "$" + account.getBalance(),
-                    "$" + account.getCreditLimit(),
-                    "$" + account.getCurrentDebt(),
-                    account.getPaymentDueDate().toLocalDate().toString(),
-                    "$" + account.getMinimumPayment(),
+                    bankName,
+                    accountName,
+                    accountType,
+                    balance,
+                    creditLimit,
+                    currentDebt,
+                    paymentDueDate,
+                    minimumPayment,
                     "Connected",
                     balanceColor,
                     iconPath,
@@ -161,5 +212,13 @@ public class AccountsController extends BaseController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private String getOrNull(String val) {
+        return (val == null || val.isBlank()) ? null : val;
+    }
+
+    private String formatCurrency(Double val) {
+        return val == null ? null : "$" + String.format("%,.2f", val);
     }
 }

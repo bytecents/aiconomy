@@ -2,7 +2,7 @@ package com.se.aiconomy.client.controller.accounts;
 
 import com.se.aiconomy.client.controller.BaseController;
 import com.se.aiconomy.server.handler.AccountRequestHandler;
-import com.se.aiconomy.server.model.dto.account.request.AddAccountsRequest;
+import com.se.aiconomy.server.model.dto.account.request.DeleteAccountRequest;
 import com.se.aiconomy.server.model.entity.Account;
 import com.se.aiconomy.server.service.impl.AccountServiceImpl;
 import com.se.aiconomy.server.storage.service.impl.JSONStorageServiceImpl;
@@ -17,14 +17,16 @@ import javafx.scene.layout.StackPane;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class AddAccountController extends BaseController {
+public class UpdateAccountController extends BaseController {
 
     private final AccountRequestHandler accountRequestHandler = new AccountRequestHandler(new AccountServiceImpl(JSONStorageServiceImpl.getInstance()));
-
+    @FXML
     public Button saveButton;
+    @FXML
+    public Button deleteButton;
+    @Setter
+    @Getter
+    private AccountsController accountsController;
     @FXML
     private ComboBox<String> bankComboBox;
 
@@ -43,10 +45,10 @@ public class AddAccountController extends BaseController {
     @Setter
     @FXML
     private StackPane rootPane;
-    @FXML
-    @Setter
+
     @Getter
-    private AccountsController accountsController;
+    @Setter
+    private Account account;
 
     @FXML
     public void initialize() {
@@ -64,10 +66,11 @@ public class AddAccountController extends BaseController {
     private void init() {
         bankComboBox.setItems(FXCollections.observableArrayList("Chase", "Bank of America", "Wells Fargo", "Citibank"));
         typeComboBox.setItems(FXCollections.observableArrayList("Checking", "Saving", "Credit", "Investment"));
-
-        // default values
-        bankComboBox.setValue(bankComboBox.getItems().getFirst());
-        typeComboBox.setValue(typeComboBox.getItems().getFirst());
+        // 可选：设置默认值
+        bankComboBox.setValue(account.getBankName());
+        typeComboBox.setValue(account.getAccountType());
+        accountNameTextField.setText(account.getAccountName());
+        balanceTextField.setText(Double.toString(account.getBalance()));
     }
 
     @FXML
@@ -77,31 +80,36 @@ public class AddAccountController extends BaseController {
 
     @FXML
     private void onSave(ActionEvent event) {
-        // TODO: 保存逻辑
         saveAccount();
         closeDialog(event);
     }
 
+    @FXML
+    private void onDelete(ActionEvent event) {
+        deleteAccount();
+        closeDialog(event);
+    }
+
     private void saveAccount() {
+        // TODO: Implement saving logic
         try {
-            List<Account> accountList = new ArrayList<>();
-            Account account = Account.builder()
-                    .userId(userInfo.getId())
-                    .bankName(bankComboBox.getValue())
-                    .accountType(typeComboBox.getValue())
-                    .accountName(accountNameTextField.getText())
-                    .balance(Double.parseDouble(balanceTextField.getText()))
-                    .build();
-            accountList.add(account);
-            AddAccountsRequest addAccountsRequest = new AddAccountsRequest();
-            addAccountsRequest.setUserId(userInfo.getId());
-            addAccountsRequest.setAccounts(accountList);
-            accountRequestHandler.handleAddAccountRequest(addAccountsRequest);
+            System.out.println("Update TBI");
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
+
+    private void deleteAccount() {
+        try {
+            DeleteAccountRequest deleteAccountRequest = new DeleteAccountRequest();
+            deleteAccountRequest.setAccountId(account.getId());
+            deleteAccountRequest.setUserId(userInfo.getId());
+            accountRequestHandler.handleDeleteAccountRequest(deleteAccountRequest);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
     private void closeDialog(ActionEvent event) {
         if (rootPane != null) {
@@ -109,7 +117,7 @@ public class AddAccountController extends BaseController {
                     node != rootPane.getChildren().get(0) // 保留主页面，移除弹窗和遮罩
             );
         }
-        accountsController.refresh();
+        accountsController.refreshRootPane();
     }
 
 
