@@ -73,7 +73,27 @@ public class AccountsController extends BaseController {
     private void getAccountList() {
         accountListVBox.getChildren().clear();
         for (Account account : accountList) {
-            addAccountItem(account.getBankName(), account.getAccountType(), "$" + account.getBalance(), "Connected", "#3B82F6", "assets/well_fargo.png", "#DCFCE7");
+            String bankName = account.getBankName();
+            String accountType = account.getAccountType();
+            double accountBalance = account.getBalance();
+            String status = "Connected";
+            String balanceColor = "#3B82F6";
+            String iconPath, circleColor;
+            if (accountType.equals("Saving")) {
+                circleColor = "#fca5a5";
+                iconPath = "assets/eng_bank.png";
+            } else if (accountType.equals("Checking")) {
+                circleColor = "#dbeafe";
+                iconPath = "assets/dash_bank.png";
+            } else if (accountType.equals("Credit")) {
+                circleColor = "#dcfce7";
+                iconPath = "assets/well_fargo.png";
+            } else {
+                circleColor = "#dbeafe";
+                iconPath = "assets/logo.png";
+            }
+            System.out.println(account);
+            addAccountItem(bankName, accountType, "$" + accountBalance, status, balanceColor, iconPath, circleColor);
         }
     }
 
