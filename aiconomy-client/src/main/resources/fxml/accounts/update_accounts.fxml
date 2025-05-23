@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<VBox xmlns:fx="http://javafx.com/fxml"
+      xmlns="http://javafx.com/javafx"
+      fx:controller="com.se.aiconomy.client.controller.accounts.UpdateAccountController"
+      stylesheets="/css/styles.css"
+      styleClass="gap-4 p-6 bg-white rounded-xl shadow-xl">
+    <!-- 标题栏 -->
+    <HBox spacing="8" alignment="CENTER">
+        <VBox spacing="4" HBox.hgrow="ALWAYS">
+            <Label text="Update Account"
+                   style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+            <Label text="Update your account info"
+                   style="-fx-text-fill: #6B7280; -fx-font-size: 12px;"/>
+        </VBox>
+
+        <!-- 修改关闭按钮定义 -->
+        <Button text="×"
+                onAction="#onCancel"
+                style="-fx-font-size: 18px; -fx-background-color: transparent; -fx-text-fill: black; -fx-cursor: hand;"
+                focusTraversable="false"/>
+    </HBox>
+
+    <!-- 表单内容 -->
+    <VBox spacing="12" style="-fx-background-color: white; -fx-padding: 16; -fx-background-radius: 8;">
+
+        <!-- 银行选择 -->
+        <VBox spacing="4">
+            <Label text="Select Bank" style="-fx-font-weight: bold;"/>
+            <HBox spacing="8" alignment="CENTER_LEFT">
+                <ComboBox fx:id="bankComboBox"
+                          promptText="Choose a bank..."
+                          maxWidth="Infinity">
+                    <HBox.hgrow>
+                        <Priority fx:constant="ALWAYS"/>
+                    </HBox.hgrow>
+                </ComboBox>
+            </HBox>
+        </VBox>
+
+        <!-- 账户类型 -->
+        <VBox spacing="4">
+            <Label text="Account Type" style="-fx-font-weight: bold;"/>
+            <HBox spacing="8" alignment="CENTER_LEFT">
+                <ComboBox fx:id="typeComboBox"
+                          promptText="Select type..."
+                          maxWidth="Infinity">
+                    <HBox.hgrow>
+                        <Priority fx:constant="ALWAYS"/>
+                    </HBox.hgrow>
+                </ComboBox>
+            </HBox>
+        </VBox>
+
+        <!-- 账户名称 -->
+        <VBox spacing="4">
+            <Label text="Account Name" style="-fx-font-weight: bold;"/>
+            <HBox spacing="8" alignment="CENTER_LEFT">
+                <TextField fx:id="accountNameTextField"
+                           promptText="e.g. Primary Checking"
+                           maxWidth="Infinity">
+                    <HBox.hgrow>
+                        <Priority fx:constant="ALWAYS"/>
+                    </HBox.hgrow>
+                </TextField>
+            </HBox>
+        </VBox>
+
+        <VBox spacing="4">
+            <Label text="Account Balance" style="-fx-font-weight: bold;"/>
+            <HBox spacing="8" alignment="CENTER_LEFT">
+                <TextField fx:id="balanceTextField"
+                           promptText="e.g. 5000.00"
+                           maxWidth="Infinity">
+                    <HBox.hgrow>
+                        <Priority fx:constant="ALWAYS"/>
+                    </HBox.hgrow>
+                </TextField>
+            </HBox>
+        </VBox>
+    </VBox>
+
+
+    <!-- 底部声明和按钮 -->
+    <VBox spacing="12" style="-fx-padding: 8 0;">
+        <HBox alignment="TOP_LEFT" spacing="8">
+            <CheckBox fx:id="secureCheckBox"/>
+            <Label text="Your banking credentials are encrypted and secure. We use bank-level security measures."
+                   wrapText="true"
+                   style="-fx-text-fill: #6B7280; -fx-font-size: 12px;"
+                   maxWidth="Infinity"/>
+            <HBox.hgrow>
+                <Priority fx:constant="ALWAYS"/>
+            </HBox.hgrow>
+        </HBox>
+
+        <HBox spacing="16" alignment="CENTER_RIGHT">
+            <Button fx:id="deleteButton" mnemonicParsing="false" onAction="#onDelete" prefHeight="44.0"
+                    style="-fx-background-color: #eb2560; -fx-background-radius: 12px;" text="Delete" textFill="#2a2a2a"
+                    VBox.vgrow="ALWAYS">
+            </Button>
+            <Button fx:id="saveButton" mnemonicParsing="false" onAction="#onSave" prefHeight="44.0"
+                    style="-fx-background-color: #2563eb; -fx-background-radius: 12px;" text="Save" textFill="WHITE"
+                    VBox.vgrow="ALWAYS">
+            </Button>
+        </HBox>
+    </VBox>
+</VBox>
+
