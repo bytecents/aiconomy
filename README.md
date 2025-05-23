@@ -228,14 +228,14 @@ All modules use Log4j2 for logging. Configuration files are located in each modu
   - Budget page
 
 - **Youhao Zhong**
-  - Login system
+  - User management system
   - Dashboard co-development with Hu
 
 #### Backend Development
 - **Shiyu Li**
   - Budget implementation
   - Account co-development with Shi
-  - Login system
+  - User management system
 
 - **Keyi Shi**
   - Transaction processing system
@@ -250,4 +250,5 @@ All modules use Log4j2 for logging. Configuration files are located in each modu
 - **AI Pipeline**: Hu (Frontend) ↔ Zhao (Backend AI)
 - **Transaction System**: Hu (Frontend) ↔ Shi & Zhao (Backend)
 - **Budget System**: Yang & Zhong (Frontend) ↔ Li (Backend)
-- **Login System**: Zhong (Frontend) ↔ Li (Backend)
+- **Account System**: Zhong (Fronted) ↔ Shi & Li (Backend)
+- **User Management System**: Zhong (Frontend) ↔ Li (Backend)
