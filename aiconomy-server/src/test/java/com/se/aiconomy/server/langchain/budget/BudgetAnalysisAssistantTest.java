@@ -2,6 +2,7 @@ package com.se.aiconomy.server.langchain.budget;
 
 import com.se.aiconomy.server.langchain.common.model.BillType;
 import com.se.aiconomy.server.langchain.common.model.Budget;
+import com.se.aiconomy.server.langchain.common.model.DynamicBillType;
 import com.se.aiconomy.server.langchain.service.analysis.budget.BudgetAnalysisService;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -25,10 +26,10 @@ public class BudgetAnalysisAssistantTest {
         budget.setSpent(5000);
         budget.setAlerts(2);
         budget.setCategoryBudgets(new ArrayList<>(
-            List.of(
-                new Budget.CategoryBudget(BillType.EDUCATION, 1000, 800),
-                new Budget.CategoryBudget(BillType.ENTERTAINMENT, 500, 300)
-            )
+                List.of(
+                        new Budget.CategoryBudget(DynamicBillType.fromBillType(BillType.EDUCATION), 1000, 800),
+                        new Budget.CategoryBudget(DynamicBillType.fromBillType(BillType.ENTERTAINMENT), 500, 300)
+                )
         ));
 
         Budget.AIAnalysis analysis = service.analyzeBudget(budget);

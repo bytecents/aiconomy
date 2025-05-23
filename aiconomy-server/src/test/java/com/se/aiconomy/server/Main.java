@@ -2,15 +2,19 @@ package com.se.aiconomy.server;
 
 import com.se.aiconomy.server.common.exception.ServiceException;
 import com.se.aiconomy.server.handler.AccountRequestHandler;
+import com.se.aiconomy.server.handler.BudgetRequestHandler;
 import com.se.aiconomy.server.handler.TransactionRequestHandler;
 import com.se.aiconomy.server.handler.UserRequestHandler;
 import com.se.aiconomy.server.langchain.common.model.BillType;
+import com.se.aiconomy.server.langchain.common.model.Budget;
 import com.se.aiconomy.server.langchain.common.model.DynamicBillType;
 import com.se.aiconomy.server.langchain.common.model.Transaction;
 import com.se.aiconomy.server.model.dto.TransactionDto;
 import com.se.aiconomy.server.model.dto.account.request.AddAccountsRequest;
 import com.se.aiconomy.server.model.dto.account.request.DeleteAccountRequest;
 import com.se.aiconomy.server.model.dto.account.request.GetAccountsByUserIdRequest;
+import com.se.aiconomy.server.model.dto.budget.request.BudgetAddRequest;
+import com.se.aiconomy.server.model.dto.budget.request.BudgetAnalysisRequest;
 import com.se.aiconomy.server.model.dto.transaction.request.GetTransactionByUserIdRequest;
 import com.se.aiconomy.server.model.dto.transaction.request.TransactionClassificationRequest;
 import com.se.aiconomy.server.model.dto.transaction.request.TransactionImportRequest;
@@ -37,6 +41,7 @@ public class Main {
     static UserRequestHandler userRequestHandler = new UserRequestHandler(userService);
     static TransactionRequestHandler transactionRequestHandler = new TransactionRequestHandler();
     static AccountRequestHandler accountRequestHandler = new AccountRequestHandler();
+    static BudgetRequestHandler budgetRequestHandler = new BudgetRequestHandler();
 
     public static void main(String[] args) throws ServiceException {
         // 注册测试
@@ -175,5 +180,20 @@ public class Main {
         for (DynamicBillType billType : billTypes) {
             System.out.println(billType);
         }*/
+
+        // 添加budgets测试
+        /*budgetRequestHandler.handleBudgetAddRequest(new BudgetAddRequest(
+                userInfo.getId(),
+                "Transportation",
+                1000.0,
+                80.0,
+                "notes"
+        ));*/
+
+        // AI Optimize测试
+        /*BudgetAnalysisRequest budgetAnalysisRequest = new BudgetAnalysisRequest();
+        budgetAnalysisRequest.setUserId(userInfo.getId());
+        Budget.AIAnalysis aiAnalysis = budgetRequestHandler.handleBudgetAnalysisRequest(budgetAnalysisRequest);
+        System.out.println("AI Analysis: " + aiAnalysis);*/
     }
 }
