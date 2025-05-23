@@ -47,7 +47,7 @@ public class AccountItemController {
     ) {
         bankNameLabel.setText(bankName);
         accountNameLabel.setText(accountName);
-        accountTypeLabel.setText("Type: " + accountType);
+        accountTypeLabel.setText(accountType);
 
         balanceLabel.setText("Balance: " + balance);
         balanceLabel.setStyle("-fx-text-fill: " + balanceColor);
