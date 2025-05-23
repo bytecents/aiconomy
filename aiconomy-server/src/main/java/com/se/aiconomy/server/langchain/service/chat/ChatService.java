@@ -55,7 +55,7 @@ public class ChatService {
     private Assistant getAssistant(Locale locale) {
         return AiServices.builder(Assistant.class)
                 .chatLanguageModel(model)
-                .systemMessageProvider(obj -> (this.userId != null && this.userId.isEmpty()) ? getSystemMessage(locale) : getSystemMessage(locale, this.userId))
+                .systemMessageProvider(obj -> (this.userId == null || this.userId.isEmpty()) ? getSystemMessage(locale) : getSystemMessage(locale, this.userId))
                 .chatMemory(chatMemory)
                 .tools(new Tools())
                 .build();
@@ -64,7 +64,7 @@ public class ChatService {
     private Assistant getStreamingAssistant(Locale locale) {
         return AiServices.builder(Assistant.class)
                 .streamingChatLanguageModel(streamingModel)
-                .systemMessageProvider(obj -> (this.userId != null && this.userId.isEmpty()) ? getSystemMessage(locale) : getSystemMessage(locale, this.userId))
+                .systemMessageProvider(obj -> (this.userId == null || this.userId.isEmpty()) ? getSystemMessage(locale) : getSystemMessage(locale, this.userId))
                 .chatMemory(chatMemory)
                 .tools(new Tools())
                 .build();

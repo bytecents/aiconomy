@@ -22,7 +22,7 @@ public class ChatAssistantTest {
 
     @BeforeAll
     static void setUp() {
-        chatService = new ChatService();
+        chatService = new ChatService("1");
     }
 
     @Test
@@ -42,20 +42,20 @@ public class ChatAssistantTest {
         CompletableFuture<String> future = new CompletableFuture<>();
 
         chatService.stream(
-            "用户 1 的预算如何？",
-            Locale.EN,
-            partialResponse -> {
-                log.info("Partial response: {}", partialResponse);
-                assertNotNull(partialResponse, "Partial response should not be null");
-                onPartialResponseCalled.set(true);
-            },
-            completeResponse -> {
-                log.info("Complete response: {}", completeResponse);
-                assertNotNull(completeResponse, "Complete response should not be null");
-                onCompleteResponseCalled.set(true);
-                future.complete(String.valueOf(completeResponse));
-            },
-            future::completeExceptionally
+                "用户 1 的预算如何？",
+                Locale.EN,
+                partialResponse -> {
+                    log.info("Partial response: {}", partialResponse);
+                    assertNotNull(partialResponse, "Partial response should not be null");
+                    onPartialResponseCalled.set(true);
+                },
+                completeResponse -> {
+                    log.info("Complete response: {}", completeResponse);
+                    assertNotNull(completeResponse, "Complete response should not be null");
+                    onCompleteResponseCalled.set(true);
+                    future.complete(String.valueOf(completeResponse));
+                },
+                future::completeExceptionally
         );
 
         try {
