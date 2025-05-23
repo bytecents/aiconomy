@@ -27,8 +27,6 @@ public interface TransactionService {
 
     List<TransactionDto> getTransactionsByAccountId(String accountId, String userId) throws ServiceException;
 
-    TransactionDto addTransactionManually(String userId, String incomeOrExpense, String amount, LocalDateTime time, String product, String type, String accountId) throws ServiceException;
-
     void exportTransactionsToJson(String filePath) throws ServiceException;
 
     void exportTransactionsToCsv(String filePath) throws ServiceException;
@@ -42,4 +40,7 @@ public interface TransactionService {
     void deleteTransaction(String transactionId) throws ServiceException;
 
     Map<String, String> getCounterpartyStatistics();
+
+    TransactionDto addTransactionManually(String userId, String incomeOrExpense, String amount,
+                                          LocalDateTime time, String product, String type, String accountId, String remark) throws ServiceException;
 }

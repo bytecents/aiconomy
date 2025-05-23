@@ -135,7 +135,7 @@ public class TransactionRequestHandler {
 
     // 手动添加交易记录
     public TransactionDto handleAddTransactionManually(String userId, String incomeOrExpense, String amount,
-                                                       LocalDateTime time, String product, String type, String accountId)
+                                                       LocalDateTime time, String product, String type, String accountId, String remark)
             throws ServiceException {
         if (userId == null || userId.isEmpty()) {
             throw new ServiceException("User ID cannot be null or empty", null);
@@ -158,6 +158,6 @@ public class TransactionRequestHandler {
         if (accountId == null || accountId.isEmpty()) {
             throw new ServiceException("Account ID cannot be null or empty", null);
         }
-        return transactionService.addTransactionManually(userId, incomeOrExpense, amount, time, product, type, accountId);
+        return transactionService.addTransactionManually(userId, incomeOrExpense, amount, time, product, type, accountId, remark);
     }
 }

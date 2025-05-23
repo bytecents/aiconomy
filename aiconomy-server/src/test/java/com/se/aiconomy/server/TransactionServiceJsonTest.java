@@ -96,7 +96,7 @@ public class TransactionServiceJsonTest {
         String userId = TEST_USER;
         String accountId = "acc1";
         TransactionDto transaction = transactionService.addTransactionManually(
-                userId, "支出", "5999.99", TEST_TIME, "iPhone 15", "消费", accountId);
+                userId, "支出", "5999.99", TEST_TIME, "iPhone 15", "消费", accountId, "测试备注");
 
         assertNotNull(transaction, "手动添加的交易不应为空");
         assertEquals(userId, transaction.getUserId(), "用户 ID 不匹配");

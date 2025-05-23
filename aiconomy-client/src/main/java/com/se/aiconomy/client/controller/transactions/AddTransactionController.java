@@ -189,31 +189,31 @@ public class AddTransactionController extends BaseController implements Initiali
         }
     }
 
-    @FXML
-    public void handleSaveTransaction(MouseEvent mouseEvent) {
-        String description = descriptionInput.getText();
-        String amount = amountInput.getText();
-        LocalDateTime dateTime = LocalDateTime.of(datePicker.getValue(), LocalTime.of(0, 0));
-        String account = accountComboBox.getSelectionModel().getSelectedItem();
-        System.out.println(description);
-        try {
-            handler.handleAddTransactionManually(
-                    userInfo.getId(),
-                    isExpense ? "expense" : "income",
-                    amount,
-                    dateTime,
-                    description,
-                    isExpense ? chosenCategory : "None",
-                    account
-            );
-            System.out.println("Transaction import successful.");
-
-        } catch (ServiceException e) {
-            e.printStackTrace();
-        }
-//        if (mainController instanceof TransactionsController) {
-//            mainController.refreshTransactionList();
+//    @FXML
+//    public void handleSaveTransaction(MouseEvent mouseEvent) {
+//        String description = descriptionInput.getText();
+//        String amount = amountInput.getText();
+//        LocalDateTime dateTime = LocalDateTime.of(datePicker.getValue(), LocalTime.of(0, 0));
+//        String account = accountComboBox.getSelectionModel().getSelectedItem();
+//        System.out.println(description);
+//        try {
+//            handler.handleAddTransactionManually(
+//                    userInfo.getId(),
+//                    isExpense ? "expense" : "income",
+//                    amount,
+//                    dateTime,
+//                    description,
+//                    isExpense ? chosenCategory : "None",
+//                    account
+//            );
+//            System.out.println("Transaction import successful.");
+//
+//        } catch (ServiceException e) {
+//            e.printStackTrace();
 //        }
-        closeAddTransaction();
-    }
+////        if (mainController instanceof TransactionsController) {
+////            mainController.refreshTransactionList();
+////        }
+//        closeAddTransaction();
+//    }
 }

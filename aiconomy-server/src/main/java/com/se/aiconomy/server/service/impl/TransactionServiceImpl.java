@@ -15,10 +15,8 @@ import lombok.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -480,24 +478,69 @@ public class TransactionServiceImpl implements TransactionService {
         return filteredTransactions;
     }
 
+    //手动添加交易记录
+//    public TransactionDto addTransactionManually(String userId, String incomeOrExpense, String amount,
+//                                                 LocalDateTime time, String product, String type, String accountId)
+//            throws ServiceException {
+//
+//        if (userId == null || incomeOrExpense == null || amount == null || type == null || accountId == null) {
+//            throw new ServiceException("Missing required fields for transaction", null);
+//        }
+//
+//        TransactionDto transaction = new TransactionDto();
+//        transaction.setUserId(userId);
+//        transaction.setIncomeOrExpense(incomeOrExpense);
+//        transaction.setAmount(amount);
+//        transaction.setTime(time != null ? time : LocalDateTime.now());
+//        transaction.setProduct(product);
+//        transaction.setType(type);
+//        transaction.setAccountId(accountId);
+//
+//        return transactionDao.create(transaction);
+//    }
     @Override
-//手动添加交易记录
     public TransactionDto addTransactionManually(String userId, String incomeOrExpense, String amount,
-                                                 LocalDateTime time, String product, String type, String accountId)
+                                                 LocalDateTime time, String product, String type, String accountId, String remark)
             throws ServiceException {
 
-        if (userId == null || incomeOrExpense == null || amount == null || type == null || accountId == null) {
-            throw new ServiceException("Missing required fields for transaction", null);
+        if (userId == null || userId.isEmpty()) {
+            throw new ServiceException("User ID cannot be null or empty", null);
+        }
+        if (incomeOrExpense == null || incomeOrExpense.isEmpty()) {
+            throw new ServiceException("Income or expense cannot be null or empty", null);
+        }
+        if (amount == null || amount.isEmpty()) {
+            throw new ServiceException("Amount cannot be null or empty", null);
+        }
+        if (time == null) {
+            throw new ServiceException("Transaction time cannot be null", null);
+        }
+        if (product == null || product.isEmpty()) {
+            throw new ServiceException("Product cannot be null or empty", null);
+        }
+        if (type == null || type.isEmpty()) {
+            throw new ServiceException("Transaction type cannot be null or empty", null);
+        }
+        if (accountId == null || accountId.isEmpty()) {
+            throw new ServiceException("Account ID cannot be null or empty", null);
         }
 
+        // 创建 TransactionDto
         TransactionDto transaction = new TransactionDto();
+        transaction.setId(UUID.randomUUID().toString()); // 设置唯一 ID
         transaction.setUserId(userId);
         transaction.setIncomeOrExpense(incomeOrExpense);
         transaction.setAmount(amount);
-        transaction.setTime(time != null ? time : LocalDateTime.now());
+        transaction.setTime(time);
         transaction.setProduct(product);
         transaction.setType(type);
         transaction.setAccountId(accountId);
+        transaction.setRemark(remark);
+        // 其他字段允许为空，设置为 null
+        transaction.setCounterparty(null);
+        transaction.setPaymentMethod(null);
+        transaction.setStatus(null);
+        transaction.setMerchantOrderId(null);
 
         return transactionDao.create(transaction);
     }
