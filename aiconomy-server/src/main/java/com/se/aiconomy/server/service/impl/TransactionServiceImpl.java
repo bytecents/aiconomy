@@ -403,17 +403,20 @@ public class TransactionServiceImpl implements TransactionService {
      * 按交易对手统计交易金额
      */
     public Map<String, String> getCounterpartyStatistics() {
-        List<TransactionDto> allTransactions = transactionDao.findAll();
+        List<TransactionDto> transactions = transactionDao.findAll();
+        Map<String, Double> counterpartyTotals = new HashMap<>();
 
-        return allTransactions.stream()
-                .filter(t -> t.getCounterparty() != null)
-                .collect(Collectors.groupingBy(
-                        TransactionDto::getCounterparty,
-                        Collectors.collectingAndThen(
-                                Collectors.summingDouble(t -> Double.parseDouble(t.getAmount())),
-                                sum -> String.format("%.2f", sum)
-                        )
-                ));
+        for (TransactionDto tx : transactions) {
+            String counterparty = tx.getCounterparty();
+            if (counterparty != null && !counterparty.isEmpty()) {
+                double amount = Double.parseDouble(tx.getAmount());
+                counterpartyTotals.merge(counterparty, amount, Double::sum);
+            }
+        }
+
+        Map<String, String> statistics = new HashMap<>();
+        counterpartyTotals.forEach((key, value) -> statistics.put(key, value.toString()));
+        return statistics;
     }
 
     /**

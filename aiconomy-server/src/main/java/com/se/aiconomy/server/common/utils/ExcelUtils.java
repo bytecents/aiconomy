@@ -183,7 +183,7 @@ public class ExcelUtils {
                 try {
                     field = beanClass.getDeclaredField(fieldName);
                 } catch (NoSuchFieldException e) {
-                    continue;  // 如果没有这个字段，跳过
+                    continue;
                 }
 
                 field.setAccessible(true);
@@ -217,6 +217,7 @@ public class ExcelUtils {
 
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
 
+
     public static void writeExcel(String filePath, List<TransactionDto> transactions) throws IOException {
         try (Workbook workbook = new XSSFWorkbook()) {
             Sheet sheet = workbook.createSheet("Transactions");
@@ -230,7 +231,6 @@ public class ExcelUtils {
             for (int i = 0; i < headers.length; i++) {
                 headerRow.createCell(i).setCellValue(headers[i]);
             }
-
             // Write transaction data
             int rowNum = 1;
             for (TransactionDto tx : transactions) {
@@ -246,6 +246,7 @@ public class ExcelUtils {
                 row.createCell(8).setCellValue(tx.getStatus());
                 row.createCell(9).setCellValue(tx.getMerchantOrderId());
                 row.createCell(10).setCellValue(tx.getAccountId());
+                row.createCell(11).setCellValue(tx.getUserId());
                 row.createCell(12).setCellValue(tx.getRemark());
             }
             // Auto-size columns
