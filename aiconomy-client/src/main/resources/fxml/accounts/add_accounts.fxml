@@ -86,11 +86,14 @@
     <!-- 底部声明和按钮 -->
     <VBox spacing="12" style="-fx-padding: 8 0;">
         <HBox alignment="TOP_LEFT" spacing="8">
-            <CheckBox fx:id="secureCheckBox"/>
-            <Label text="Your banking credentials are encrypted and secure. We use bank-level security measures."
-                   wrapText="true"
-                   style="-fx-text-fill: #6B7280; -fx-font-size: 12px;"
-                   maxWidth="Infinity"/>
+            <Label wrapText="true"
+                   text="Your banking credentials are encrypted and secure. We use bank-level security measures."
+                   style="-fx-background-color:#eff6ff;
+              -fx-text-fill: #1e3a8a;
+              -fx-padding: 10px;
+              -fx-background-radius: 8px;
+              -fx-font-size: 12px;
+              -fx-font-family: 'Roboto';"/>
             <HBox.hgrow>
                 <Priority fx:constant="ALWAYS"/>
             </HBox.hgrow>
