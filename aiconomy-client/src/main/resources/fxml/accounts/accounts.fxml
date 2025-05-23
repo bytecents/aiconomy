@@ -120,43 +120,43 @@
             </VBox>
         </VBox>
 
-        <!-- Footer Buttons -->
-        <GridPane hgap="24" vgap="24">
-            <VBox.margin>
-                <Insets top="16"/>
-            </VBox.margin>
-            <columnConstraints>
-                <ColumnConstraints percentWidth="33"/>
-                <ColumnConstraints percentWidth="33"/>
-                <ColumnConstraints percentWidth="33"/>
-            </columnConstraints>
+<!--        &lt;!&ndash; Footer Buttons &ndash;&gt;-->
+<!--        <GridPane hgap="24" vgap="24">-->
+<!--            <VBox.margin>-->
+<!--                <Insets top="16"/>-->
+<!--            </VBox.margin>-->
+<!--            <columnConstraints>-->
+<!--                <ColumnConstraints percentWidth="33"/>-->
+<!--                <ColumnConstraints percentWidth="33"/>-->
+<!--                <ColumnConstraints percentWidth="33"/>-->
+<!--            </columnConstraints>-->
 
-            <!-- Button 1 -->
-            <HBox alignment="CENTER" prefHeight="50" styleClass="card px-4 py-2" GridPane.columnIndex="0">
-                <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
-                    <Image url="@../../assets/sync_acc.png"/>
-                </ImageView>
-                <Label styleClass="text-sm text-gray-900 font-roboto" text="  Sync Accounts"/>
-            </HBox>
+<!--            &lt;!&ndash; Button 1 &ndash;&gt;-->
+<!--            <HBox alignment="CENTER" prefHeight="50" styleClass="card px-4 py-2" GridPane.columnIndex="0">-->
+<!--                <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">-->
+<!--                    <Image url="@../../assets/sync_acc.png"/>-->
+<!--                </ImageView>-->
+<!--                <Label styleClass="text-sm text-gray-900 font-roboto" text="  Sync Accounts"/>-->
+<!--            </HBox>-->
 
-            <!-- Button 2 -->
-            <HBox alignment="CENTER" prefHeight="50" spacing="8" styleClass="card px-4 py-2" GridPane.columnIndex="1">
-                <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
-                    <Image url="@../../assets/download.png"/>
-                </ImageView>
-                <Label styleClass="text-sm text-gray-900 font-roboto" text="Export Statement"/>
-            </HBox>
+<!--            &lt;!&ndash; Button 2 &ndash;&gt;-->
+<!--            <HBox alignment="CENTER" prefHeight="50" spacing="8" styleClass="card px-4 py-2" GridPane.columnIndex="1">-->
+<!--                <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">-->
+<!--                    <Image url="@../../assets/download.png"/>-->
+<!--                </ImageView>-->
+<!--                <Label styleClass="text-sm text-gray-900 font-roboto" text="Export Statement"/>-->
+<!--            </HBox>-->
 
-            <!-- Button 3 -->
-            <HBox alignment="CENTER" prefHeight="50" spacing="8" styleClass="card px-4 py-2" GridPane.columnIndex="2">
-                <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
-                    <Image url="@../../assets/setting.png"/>
-                </ImageView>
-                <Label styleClass="text-sm text-gray-900 font-roboto" text="Account Settings"/>
-            </HBox>
-            <rowConstraints>
-                <RowConstraints/>
-            </rowConstraints>
-        </GridPane>
+<!--            &lt;!&ndash; Button 3 &ndash;&gt;-->
+<!--            <HBox alignment="CENTER" prefHeight="50" spacing="8" styleClass="card px-4 py-2" GridPane.columnIndex="2">-->
+<!--                <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">-->
+<!--                    <Image url="@../../assets/setting.png"/>-->
+<!--                </ImageView>-->
+<!--                <Label styleClass="text-sm text-gray-900 font-roboto" text="Account Settings"/>-->
+<!--            </HBox>-->
+<!--            <rowConstraints>-->
+<!--                <RowConstraints/>-->
+<!--            </rowConstraints>-->
+<!--        </GridPane>-->
     </VBox>
 </StackPane>
