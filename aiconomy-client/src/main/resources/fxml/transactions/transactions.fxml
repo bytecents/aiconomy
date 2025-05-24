@@ -84,24 +84,17 @@
             <AnchorPane>
                 <Region styleClass="w-5 h-5 bg-gray-400" AnchorPane.topAnchor="10" AnchorPane.leftAnchor="12"/>
                 <TextField promptText="Search transactions..." AnchorPane.topAnchor="0" AnchorPane.leftAnchor="0"
-                           styleClass="w-64 text-base rounded-lg font-roboto p-2-4-2-10"/>
+                           styleClass="w-64 text-base rounded-lg font-roboto p-2-4-2-10" fx:id="searchContent" onKeyTyped="#searchTransaction"/>
             </AnchorPane>
-            <ComboBox styleClass="text-base font-roboto cursor-pointer rounded-lg" value="All Transactions">
+            <ComboBox styleClass="text-base font-roboto cursor-pointer rounded-lg" value="All Categories" fx:id="categoryCombobox" onAction="#handleCategory">
                 <items>
                     <FXCollections fx:factory="observableArrayList">
-                        <String fx:value="All Categories"/>
-                        <String fx:value="Food &amp; Dining"/>
-                        <String fx:value="Shopping"/>
-                        <String fx:value="Transportation"/>
                     </FXCollections>
                 </items>
             </ComboBox>
-            <ComboBox styleClass="text-base font-roboto cursor-pointer rounded-lg" value="All Transactions">
+            <ComboBox styleClass="text-base font-roboto cursor-pointer rounded-lg" value="All Accounts" fx:id="transactionTypeCombobox" onAction="#handleTransactionType">
                 <items>
                     <FXCollections fx:factory="observableArrayList">
-                        <String fx:value="All Accounts"/>
-                        <String fx:value="Chase Bank"/>
-                        <String fx:value="Wells Fargo"/>
                     </FXCollections>
                 </items>
             </ComboBox>
