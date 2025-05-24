@@ -12,8 +12,20 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+/**
+ * Utility class for JSON serialization and deserialization of {@link TransactionDto} objects.
+ * Provides methods to read and write lists of transactions from/to JSON files,
+ * with support for Java 8 date and time types.
+ */
 public class JsonUtils {
+    /**
+     * The shared {@link ObjectMapper} instance configured for Java 8 date/time support.
+     */
     private static final ObjectMapper mapper = new ObjectMapper();
+
+    /**
+     * The {@link DateTimeFormatter} used for serializing and deserializing {@link LocalDateTime} fields.
+     */
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
 
     static {
@@ -24,6 +36,13 @@ public class JsonUtils {
         mapper.disable(com.fasterxml.jackson.databind.SerializationFeature.WRITE_DATES_WITH_CONTEXT_TIME_ZONE);
     }
 
+    /**
+     * Reads a list of {@link TransactionDto} objects from a JSON file.
+     *
+     * @param filePath the path to the JSON file
+     * @return a list of {@link TransactionDto} objects parsed from the file
+     * @throws IOException if an I/O error occurs while reading the file
+     */
     public static List<TransactionDto> readJson(String filePath) throws IOException {
         File file = new File(filePath);
         try {
@@ -38,6 +57,13 @@ public class JsonUtils {
         }
     }
 
+    /**
+     * Writes a list of {@link TransactionDto} objects to a JSON file.
+     *
+     * @param filePath     the path to the output JSON file
+     * @param transactions the list of transactions to write
+     * @throws IOException if an I/O error occurs while writing the file
+     */
     public static void writeJson(String filePath, List<TransactionDto> transactions) throws IOException {
         File file = new File(filePath);
         try {

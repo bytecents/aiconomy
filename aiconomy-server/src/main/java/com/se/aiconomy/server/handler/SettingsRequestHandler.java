@@ -14,16 +14,32 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
+/**
+ * Handler for processing user settings related requests.
+ * Provides methods to get and update user settings and user information.
+ */
 public class SettingsRequestHandler {
     private static final Logger logger = LoggerFactory.getLogger(SettingsRequestHandler.class);
     private final UserService userService;
     private final SettingsService settingsService;
 
+    /**
+     * Constructs a SettingsRequestHandler with the specified user and settings services.
+     *
+     * @param userService     the user service
+     * @param settingsService the settings service
+     */
     public SettingsRequestHandler(UserService userService, SettingsService settingsService) {
         this.userService = userService;
         this.settingsService = settingsService;
     }
 
+    /**
+     * Handles the request to get user information for settings.
+     *
+     * @param userId the user ID
+     * @return SettingsUserInfo containing user information for settings
+     */
     public SettingsUserInfo handleGetSettingsUserInfoRequest(String userId) {
         logger.info("Processing get settings user info request for userId: {}", userId);
         try {
@@ -40,14 +56,21 @@ public class SettingsRequestHandler {
         }
     }
 
+    /**
+     * Handles the request to update user information.
+     * Only non-null fields in the request will be updated.
+     *
+     * @param request the user update request
+     * @return UserInfo containing the updated user information
+     */
     public UserInfo handleUpdateUserRequest(UserUpdateRequest request) {
         logger.info("Processing update user request for userId: {}", request.getUserId());
 
         try {
-            // 获取当前用户信息
+            // Get current user information
             User existingUser = userService.getUserById(request.getUserId());
 
-            // 只更新非null的字段
+            // Update only non-null fields
             if (request.getEmail() != null) existingUser.setEmail(request.getEmail());
             if (request.getPassword() != null) existingUser.setPassword(request.getPassword());
             if (request.getAvatarUrl() != null) existingUser.setAvatarUrl(request.getAvatarUrl());
@@ -69,6 +92,12 @@ public class SettingsRequestHandler {
         }
     }
 
+    /**
+     * Handles the request to update user settings.
+     *
+     * @param request the settings update request
+     * @return SettingsInfo containing the updated settings information
+     */
     public SettingsInfo handleUpdateSettingsRequest(SettingsUpdateRequest request) {
         logger.info("handleUpdateSettingsRequest: {}", request);
         try {
@@ -94,6 +123,12 @@ public class SettingsRequestHandler {
         }
     }
 
+    /**
+     * Handles the request to get all settings for a user by user ID.
+     *
+     * @param userId the user ID
+     * @return a list of SettingsInfo for the user
+     */
     public List<SettingsInfo> handleGetSettingsByUserIdRequest(String userId) {
         logger.info("handleGetSettingsByUserIdRequest: {}", userId);
         try {
@@ -105,14 +140,18 @@ public class SettingsRequestHandler {
                     s.getTheme(),
                     s.getNotification(),
                     s.getAIFunctionality())).toList();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             logger.error("handleGetSettingsByUserIdRequest error: {}", e.getMessage());
             throw new RuntimeException("handleGetSettingsByUserIdRequest error: " + e.getMessage());
         }
     }
 
-
+    /**
+     * Converts a User entity to a UserInfo DTO.
+     *
+     * @param user the user entity
+     * @return UserInfo DTO
+     */
     private UserInfo convertToUserInfo(User user) {
         return new UserInfo(
                 user.getId(),

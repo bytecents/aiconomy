@@ -13,27 +13,45 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Utility class for reading from and writing to CSV files.
+ */
 public class CSVUtils {
 
     /**
-     * 将 CSV 文件转换为 Java Bean 列表
+     * The date-time formatter used for formatting the time field in the CSV.
+     */
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+
+    /**
+     * Reads a CSV file and converts its rows into a list of Java beans.
      *
-     * @param filePath  CSV 文件路径
-     * @param beanClass Java Bean 类
-     * @param <T>       Java Bean 类型
-     * @return Java Bean 列表
-     * @throws IOException 读取文件时可能抛出的异常
+     * @param filePath  the path to the CSV file
+     * @param beanClass the class of the Java bean
+     * @param <T>       the type of the Java bean
+     * @return a list of Java beans parsed from the CSV file
+     * @throws IOException if an I/O error occurs while reading the file
      */
     public static <T> List<T> readCsv(String filePath, Class<T> beanClass) throws IOException {
         try (FileReader reader = new FileReader(filePath)) {
             return new CsvToBeanBuilder<T>(reader)
-                .withType(beanClass)
-                .withSkipLines(1) // 跳过标题行
-                .build()
-                .parse();
+                    .withType(beanClass)
+                    .withSkipLines(1) // Skip the header row
+                    .build()
+                    .parse();
         }
     }
 
+    /**
+     * Reads a CSV file and converts its rows into a list of Java beans using a column mapping.
+     *
+     * @param filePath      the path to the CSV file
+     * @param beanClass     the class of the Java bean
+     * @param columnMapping a map from CSV column names to bean property names
+     * @param <T>           the type of the Java bean
+     * @return a list of Java beans parsed from the CSV file
+     * @throws IOException if an I/O error occurs while reading the file
+     */
     public static <T> List<T> readCsvWithMapping(String filePath, Class<T> beanClass, Map<String, String> columnMapping) throws IOException {
         try (FileReader reader = new FileReader(filePath)) {
             HeaderColumnNameTranslateMappingStrategy<T> strategy = new HeaderColumnNameTranslateMappingStrategy<>();
@@ -41,15 +59,20 @@ public class CSVUtils {
             strategy.setColumnMapping(columnMapping);
 
             return new CsvToBeanBuilder<T>(reader)
-                .withMappingStrategy(strategy)
-                .withSkipLines(1)
-                .build()
-                .parse();
+                    .withMappingStrategy(strategy)
+                    .withSkipLines(1)
+                    .build()
+                    .parse();
         }
     }
 
-    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
-
+    /**
+     * Writes a list of TransactionDto objects to a CSV file.
+     *
+     * @param filePath     the path to the output CSV file
+     * @param transactions the list of transactions to write
+     * @throws IOException if an I/O error occurs while writing the file
+     */
     public static void writeCsv(String filePath, List<TransactionDto> transactions) throws IOException {
         try (CSVWriter writer = new CSVWriter(new FileWriter(filePath), ',', CSVWriter.NO_QUOTE_CHARACTER, CSVWriter.DEFAULT_ESCAPE_CHARACTER, CSVWriter.DEFAULT_LINE_END)) {
             // Write header

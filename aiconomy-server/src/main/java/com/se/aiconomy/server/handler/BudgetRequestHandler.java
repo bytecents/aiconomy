@@ -1,6 +1,5 @@
 package com.se.aiconomy.server.handler;
 
-import com.se.aiconomy.server.common.exception.ServiceException;
 import com.se.aiconomy.server.langchain.common.model.DynamicBillType;
 import com.se.aiconomy.server.langchain.service.analysis.budget.BudgetAnalysisService;
 import com.se.aiconomy.server.model.dto.budget.request.*;
@@ -22,28 +21,41 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
+/**
+ * Handles budget-related requests, including adding, removing, updating, retrieving, and analyzing budgets.
+ */
 public class BudgetRequestHandler {
     private static final Logger logger = LoggerFactory.getLogger(BudgetRequestHandler.class);
     private final BudgetService budgetService;
     private final BudgetAnalysisService budgetAnalysisService = new BudgetAnalysisService();
-    ;
 
+    /**
+     * Constructs a BudgetRequestHandler with a custom BudgetService.
+     *
+     * @param budgetService the BudgetService to use
+     */
     public BudgetRequestHandler(BudgetService budgetService) {
         this.budgetService = budgetService;
     }
 
+    /**
+     * Constructs a BudgetRequestHandler with a default BudgetService implementation.
+     */
     public BudgetRequestHandler() {
         JSONStorageService jsonStorageService = JSONStorageServiceImpl.getInstance();
         this.budgetService = new BudgetServiceImpl(jsonStorageService);
     }
 
     /**
-     * 处理添加预算请求
+     * Handles the request to add a new budget.
+     *
+     * @param request the request containing budget details
+     * @return the added budget information
      */
     public BudgetInfo handleBudgetAddRequest(BudgetAddRequest request) {
         logger.info("Adding budget for category: {}", request.getBudgetCategory());
         Budget budget = new Budget();
-        budget.setId(UUID.randomUUID().toString()); // 生成唯一 ID
+        budget.setId(UUID.randomUUID().toString()); // Generate unique ID
         budget.setUserId(request.getUserId());
         budget.setBudgetCategory(request.getBudgetCategory());
         budget.setBudgetAmount(request.getBudgetAmount());
@@ -60,7 +72,10 @@ public class BudgetRequestHandler {
     }
 
     /**
-     * 处理删除预算请求
+     * Handles the request to remove a budget.
+     *
+     * @param request the request containing user ID and category to remove
+     * @return true if the budget was removed successfully, false otherwise
      */
     public boolean handleRemoveBudgetRequest(BudgetRemoveRequest request) {
         logger.info("Removing budget with category: {}", request.getCategory());
@@ -75,12 +90,15 @@ public class BudgetRequestHandler {
     }
 
     /**
-     * 处理更新预算请求
+     * Handles the request to update a budget.
+     *
+     * @param request the request containing updated budget details
+     * @return the updated budget information
      */
     public BudgetInfo handleBudgetUpdateRequest(BudgetUpdateRequest request) {
         logger.info("Updating budget for category: {}", request.getBudgetCategory());
         try {
-            // 构造 Budget 对象（假设是全量更新）
+            // Construct Budget object (assume full update)
             Budget budget = budgetService.getBudgetByCategory(request.getUserId(), request.getBudgetCategory());
 
             budget.setUserId(request.getUserId());
@@ -89,7 +107,7 @@ public class BudgetRequestHandler {
             budget.setAlertSettings(request.getAlertSettings());
             budget.setNotes(request.getNotes());
 
-            // 执行更新
+            // Perform update
             budgetService.updateBudget(budget);
 
             logger.info("Successfully updated budget with id: {}", budget.getId());
@@ -101,7 +119,10 @@ public class BudgetRequestHandler {
     }
 
     /**
-     * 处理获得展示数据请求
+     * Handles the request to get total budget information for a user.
+     *
+     * @param request the request containing the user ID
+     * @return the total budget information
      */
     public TotalBudgetInfo handleGetTotalBudgetRequest(BudgetTotalInfoRequest request) {
         logger.info("Getting total budget info for user: {}", request.getUserId());
@@ -122,7 +143,10 @@ public class BudgetRequestHandler {
     }
 
     /**
-     * 处理根据类别获得预算列表请求
+     * Handles the request to get a list of budgets by category for a user.
+     *
+     * @param request the request containing the user ID
+     * @return the list of budget category information
      */
     public List<BudgetCategoryInfo> handleGetBudgetByCategory(BudgetCategoryInfoRequest request) {
         logger.info("Getting budgets for user: {}", request.getUserId());
@@ -130,13 +154,13 @@ public class BudgetRequestHandler {
             List<Budget> budgets = budgetService.getBudgetsByUserId(request.getUserId());
             List<BudgetCategoryInfo> budgetCategoryInfoList = new ArrayList<>();
 
-            // 用于记录已经处理过的类别，防止重复
+            // Used to record processed categories to avoid duplicates
             Set<String> processedCategories = new HashSet<>();
 
             for (Budget budget : budgets) {
                 String category = budget.getBudgetCategory();
                 if (processedCategories.contains(category)) {
-                    continue; // 已处理，跳过
+                    continue; // Already processed, skip
                 }
 
                 double budgetAmount = budgetService.getTotalBudgetByCategory(request.getUserId(), category);
@@ -152,7 +176,7 @@ public class BudgetRequestHandler {
                 info.setUsedRatio(usedRatio);
 
                 budgetCategoryInfoList.add(info);
-                processedCategories.add(category); // 标记为已处理
+                processedCategories.add(category); // Mark as processed
             }
 
             logger.info("Successfully retrieved budget info for user: {}", request.getUserId());
@@ -163,6 +187,12 @@ public class BudgetRequestHandler {
         }
     }
 
+    /**
+     * Handles the request to analyze the budget for a user.
+     *
+     * @param request the request containing the user ID
+     * @return the AI analysis result of the budget
+     */
     public AIAnalysis handleBudgetAnalysisRequest(BudgetAnalysisRequest request) {
         String userId = request.getUserId();
         logger.info("Analyzing budget for user: {}", userId);
@@ -196,7 +226,12 @@ public class BudgetRequestHandler {
         }
     }
 
-
+    /**
+     * Converts a Budget entity to a BudgetInfo DTO.
+     *
+     * @param budget the Budget entity
+     * @return the BudgetInfo DTO
+     */
     private BudgetInfo convertToBudgetInfo(Budget budget) {
         return new BudgetInfo(
                 budget.getId(),

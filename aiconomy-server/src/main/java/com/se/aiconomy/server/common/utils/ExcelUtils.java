@@ -1,6 +1,5 @@
 package com.se.aiconomy.server.common.utils;
 
-
 import com.se.aiconomy.server.model.dto.TransactionDto;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -14,32 +13,40 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
+/**
+ * Utility class for reading from and writing to Excel files.
+ */
 public class ExcelUtils {
 
     /**
-     * 将 Excel 文件转换为 Java Bean 列表
+     * The date-time formatter used for formatting the time field in the Excel file.
+     */
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+
+    /**
+     * Reads an Excel file and converts its rows into a list of Java beans.
      *
-     * @param filePath  Excel 文件路径
-     * @param beanClass Java Bean 类
-     * @param <T>       Java Bean 类型
-     * @return Java Bean 列表
-     * @throws IOException 读取文件时可能抛出的异常
+     * @param filePath  the path to the Excel file
+     * @param beanClass the class of the Java bean
+     * @param <T>       the type of the Java bean
+     * @return a list of Java beans parsed from the Excel file
+     * @throws IOException if an I/O error occurs while reading the file
      */
     public static <T> List<T> readExcel(String filePath, Class<T> beanClass) throws IOException {
         try (FileInputStream fis = new FileInputStream(new File(filePath));
              Workbook workbook = new XSSFWorkbook(fis)) {
-            Sheet sheet = workbook.getSheetAt(0);  // 读取第一个Sheet
+            Sheet sheet = workbook.getSheetAt(0);  // Read the first sheet
             Iterator<Row> rowIterator = sheet.iterator();
             List<T> resultList = new ArrayList<>();
 
-            // 获取标题行
+            // Get header row
             Row headerRow = rowIterator.next();
             List<String> headers = new ArrayList<>();
             for (Cell cell : headerRow) {
                 headers.add(cell.getStringCellValue().trim());
             }
 
-            // 遍历数据行
+            // Iterate over data rows
             while (rowIterator.hasNext()) {
                 Row row = rowIterator.next();
                 T beanInstance = createBeanFromRow(row, beanClass, headers);
@@ -51,14 +58,14 @@ public class ExcelUtils {
     }
 
     /**
-     * 根据 Excel 表格中的行数据创建 Java Bean 实例
+     * Creates a Java bean instance from a row in the Excel table.
      *
-     * @param row       当前行
-     * @param beanClass Java Bean 类型
-     * @param headers   表头列名列表
-     * @param <T>       Java Bean 类型
-     * @return Java Bean 实例
-     * @throws IOException
+     * @param row       the current row
+     * @param beanClass the type of the Java bean
+     * @param headers   the list of header column names
+     * @param <T>       the type of the Java bean
+     * @return a Java bean instance
+     * @throws IOException if an error occurs during bean creation
      */
     private static <T> T createBeanFromRow(Row row, Class<T> beanClass, List<String> headers) throws IOException {
         try {
@@ -68,22 +75,22 @@ public class ExcelUtils {
                 Cell cell = row.getCell(i);
                 String header = headers.get(i).trim();
 
-                // 获取 Bean 的字段
+                // Get the field of the bean
                 Field field;
                 try {
                     field = beanClass.getDeclaredField(header);
                 } catch (NoSuchFieldException e) {
-                    continue;  // 如果没有这个字段，跳过
+                    continue;  // Skip if the field does not exist
                 }
 
                 field.setAccessible(true);
 
-                // 根据单元格类型设置字段值
+                // Set the field value according to the cell type
                 if (cell != null) {
                     switch (cell.getCellType()) {
                         case STRING:
                             if (field.getType() == LocalDateTime.class) {
-                                // 如果字段是 LocalDateTime 类型，解析日期字符串
+                                // If the field is LocalDateTime, parse the date string
                                 String dateString = cell.getStringCellValue();
                                 DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
                                 LocalDateTime dateTime = LocalDateTime.parse(dateString, formatter);
@@ -94,13 +101,13 @@ public class ExcelUtils {
                             break;
                         case NUMERIC:
                             if (DateUtil.isCellDateFormatted(cell)) {
-                                // 如果是日期格式的单元格，转换为 LocalDateTime
+                                // If the cell is a date, convert to LocalDateTime
                                 LocalDateTime dateTime = cell.getDateCellValue().toInstant()
                                         .atZone(java.time.ZoneId.systemDefault())
                                         .toLocalDateTime();
                                 field.set(beanInstance, dateTime);
                             } else {
-                                // 如果是数字类型，直接设置
+                                // If the cell is numeric, set directly
                                 if (field.getType() == Double.class) {
                                     field.set(beanInstance, cell.getNumericCellValue());
                                 } else {
@@ -123,30 +130,30 @@ public class ExcelUtils {
     }
 
     /**
-     * 将 Excel 文件转化为 Java Bean 列表，支持列映射
+     * Reads an Excel file and converts its rows into a list of Java beans using a column mapping.
      *
-     * @param filePath      Excel 文件路径
-     * @param beanClass     Java Bean 类
-     * @param columnMapping 映射关系 (Excel列名 -> Java字段名)
-     * @param <T>           Java Bean 类型
-     * @return Java Bean 列表
-     * @throws IOException 读取文件时可能抛出的异常
+     * @param filePath      the path to the Excel file
+     * @param beanClass     the class of the Java bean
+     * @param columnMapping a map from Excel column names to bean property names
+     * @param <T>           the type of the Java bean
+     * @return a list of Java beans parsed from the Excel file
+     * @throws IOException if an I/O error occurs while reading the file
      */
     public static <T> List<T> readExcelWithMapping(String filePath, Class<T> beanClass, Map<String, String> columnMapping) throws IOException {
         try (FileInputStream fis = new FileInputStream(new File(filePath));
              Workbook workbook = new XSSFWorkbook(fis)) {
-            Sheet sheet = workbook.getSheetAt(0);  // 读取第一个Sheet
+            Sheet sheet = workbook.getSheetAt(0);  // Read the first sheet
             Iterator<Row> rowIterator = sheet.iterator();
             List<T> resultList = new ArrayList<>();
 
-            // 获取标题行
+            // Get header row
             Row headerRow = rowIterator.next();
             List<String> headers = new ArrayList<>();
             for (Cell cell : headerRow) {
                 headers.add(cell.getStringCellValue().trim());
             }
 
-            // 遍历数据行
+            // Iterate over data rows
             while (rowIterator.hasNext()) {
                 Row row = rowIterator.next();
                 T beanInstance = createBeanFromRowWithMapping(row, beanClass, headers, columnMapping);
@@ -158,15 +165,15 @@ public class ExcelUtils {
     }
 
     /**
-     * 根据 Excel 表格中的行数据和列映射创建 Java Bean 实例
+     * Creates a Java bean instance from a row in the Excel table using column mapping.
      *
-     * @param row           当前行
-     * @param beanClass     Java Bean 类型
-     * @param headers       表头列名列表
-     * @param columnMapping 列映射关系 (Excel列名 -> Java字段名)
-     * @param <T>           Java Bean 类型
-     * @return Java Bean 实例
-     * @throws IOException
+     * @param row           the current row
+     * @param beanClass     the type of the Java bean
+     * @param headers       the list of header column names
+     * @param columnMapping the column mapping (Excel column name -> Java field name)
+     * @param <T>           the type of the Java bean
+     * @return a Java bean instance
+     * @throws IOException if an error occurs during bean creation
      */
     private static <T> T createBeanFromRowWithMapping(Row row, Class<T> beanClass, List<String> headers, Map<String, String> columnMapping) throws IOException {
         try {
@@ -175,10 +182,10 @@ public class ExcelUtils {
                 Cell cell = row.getCell(i);
                 String header = headers.get(i).trim();
 
-                // 如果列映射存在，则根据映射获取目标字段名
+                // If column mapping exists, get the target field name from mapping
                 String fieldName = columnMapping.getOrDefault(header, header);
 
-                // 获取 Bean 的字段
+                // Get the field of the bean
                 Field field;
                 try {
                     field = beanClass.getDeclaredField(fieldName);
@@ -188,7 +195,7 @@ public class ExcelUtils {
 
                 field.setAccessible(true);
 
-                // 根据单元格类型设置字段值
+                // Set the field value according to the cell type
                 if (cell != null) {
                     switch (cell.getCellType()) {
                         case STRING:
@@ -215,9 +222,13 @@ public class ExcelUtils {
         }
     }
 
-    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
-
-
+    /**
+     * Writes a list of TransactionDto objects to an Excel file.
+     *
+     * @param filePath     the path to the output Excel file
+     * @param transactions the list of transactions to write
+     * @throws IOException if an I/O error occurs while writing the file
+     */
     public static void writeExcel(String filePath, List<TransactionDto> transactions) throws IOException {
         try (Workbook workbook = new XSSFWorkbook()) {
             Sheet sheet = workbook.createSheet("Transactions");
