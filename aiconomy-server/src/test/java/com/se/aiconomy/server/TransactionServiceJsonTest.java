@@ -3,8 +3,6 @@ package com.se.aiconomy.server;
 import com.se.aiconomy.server.common.exception.ServiceException;
 import com.se.aiconomy.server.common.utils.JsonUtils;
 import com.se.aiconomy.server.dao.TransactionDao;
-import com.se.aiconomy.server.langchain.common.model.DynamicBillType;
-import com.se.aiconomy.server.langchain.common.model.Transaction;
 import com.se.aiconomy.server.model.dto.TransactionDto;
 import com.se.aiconomy.server.service.impl.TransactionServiceImpl;
 import com.se.aiconomy.server.service.impl.TransactionServiceImpl.TransactionSearchCriteria;

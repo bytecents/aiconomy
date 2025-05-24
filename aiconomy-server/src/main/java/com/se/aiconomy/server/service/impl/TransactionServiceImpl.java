@@ -15,8 +15,10 @@ import lombok.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -236,7 +238,7 @@ public class TransactionServiceImpl implements TransactionService {
         return ExcelUtils.readExcel(filePath, TransactionDto.class);
     }
 
-    //    从Json文件中导入交易记录
+//    从Json文件中导入交易记录
     private List<TransactionDto> readJson(String filePath) throws IOException {
         return JsonUtils.readJson(filePath);
     }
@@ -478,26 +480,6 @@ public class TransactionServiceImpl implements TransactionService {
         return filteredTransactions;
     }
 
-    //手动添加交易记录
-//    public TransactionDto addTransactionManually(String userId, String incomeOrExpense, String amount,
-//                                                 LocalDateTime time, String product, String type, String accountId)
-//            throws ServiceException {
-//
-//        if (userId == null || incomeOrExpense == null || amount == null || type == null || accountId == null) {
-//            throw new ServiceException("Missing required fields for transaction", null);
-//        }
-//
-//        TransactionDto transaction = new TransactionDto();
-//        transaction.setUserId(userId);
-//        transaction.setIncomeOrExpense(incomeOrExpense);
-//        transaction.setAmount(amount);
-//        transaction.setTime(time != null ? time : LocalDateTime.now());
-//        transaction.setProduct(product);
-//        transaction.setType(type);
-//        transaction.setAccountId(accountId);
-//
-//        return transactionDao.create(transaction);
-//    }
     @Override
     public TransactionDto addTransactionManually(String userId, String incomeOrExpense, String amount,
                                                  LocalDateTime time, String product, String type, String accountId, String remark)
