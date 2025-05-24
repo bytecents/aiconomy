@@ -1,11 +1,18 @@
 package com.se.aiconomy.client.controller;
 
+import com.se.aiconomy.server.handler.UserRequestHandler;
+import com.se.aiconomy.server.model.dto.user.request.UserUpdateRequest;
+import com.se.aiconomy.server.service.impl.UserServiceImpl;
+import com.se.aiconomy.server.storage.service.impl.JSONStorageServiceImpl;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -13,25 +20,43 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
 
-import javafx.collections.FXCollections;
-import javafx.fxml.FXML;
-import javafx.scene.control.ComboBox;
-
-import java.net.URL;
-import java.time.LocalDate;
 import java.util.List;
-import java.util.ResourceBundle;
 
 public class SettingsController extends BaseController {
 
-
-
-    @FXML private Rectangle switchTrack;
-    @FXML private Circle switchThumb;
+    private final UserRequestHandler userRequestHandler = new UserRequestHandler(new UserServiceImpl(JSONStorageServiceImpl.getInstance()));
+    @FXML
+    private Rectangle switchTrack;
+    @FXML
+    private Circle switchThumb;
     private boolean isOn = true;
+    @FXML
+    private Rectangle switchAITrack;
+    @FXML
+    private Circle switchAIThumb;
+    @FXML
+    private ComboBox<String> currencyComboBox;
+    @FXML
+    private ComboBox<String> languageComboBox;
+    @FXML
+    private ComboBox<String> dateFormatComboBox;
+    @FXML
+    private VBox vbox1;
+    @FXML
+    private VBox vbox2;
+    @FXML
+    private VBox vbox3;
+    @FXML
+    private TextField firstNameTextField;
+    @FXML
+    private TextField lastNameTextField;
+    @FXML
+    private TextField phoneNumberTextField;
+    @FXML
+    private DatePicker birthDatePicker;
 
     @FXML
     private void toggleSwitch() {
@@ -44,8 +69,6 @@ public class SettingsController extends BaseController {
             switchThumb.setTranslateX(-12); // 左移
         }
     }
-    @FXML private Rectangle switchAITrack;
-    @FXML private Circle switchAIThumb;
 
     @FXML
     private void toggleAISwitch() {
@@ -60,43 +83,59 @@ public class SettingsController extends BaseController {
     }
 
     @FXML
-    private DatePicker birthDatePicker;
-
-    public void initialize(URL location, ResourceBundle resources) {
-        birthDatePicker.setValue(LocalDate.of(1990, 1, 1)); // 正确设置 LocalDate 类型
+    public void onSaveClick(ActionEvent actionEvent) {
+        saveChanges();
     }
 
-
-    private void init() {
-        birthDatePicker.setValue(LocalDate.of(2000, 1, 1));
-
-
-    }
-
-    public void onsaveClick(ActionEvent actionEvent) {
-    }
-
-
-        @FXML
-        private ComboBox<String> currencyComboBox;
-
-        @FXML
-        private ComboBox<String> languageComboBox;
-
-        @FXML
-        private ComboBox<String> dateFormatComboBox;
-
-        @FXML
-        public void initialize() {
-            currencyComboBox.setItems(FXCollections.observableArrayList("USD", "EUR", "GBP"));
-            languageComboBox.setItems(FXCollections.observableArrayList("English", "Chinese", "Spanish", "French"));
-            dateFormatComboBox.setItems(FXCollections.observableArrayList("YYYY-MM-DD", "YYYY/MM/DD", "MM-DD-YYYY"));
-
-            // 可选：设置默认值
-            currencyComboBox.setValue("USD");
-            languageComboBox.setValue("English");
-            dateFormatComboBox.setValue("YYYY/MM/DD");
+    private void saveChanges() {
+        try {
+            UserUpdateRequest userUpdateRequest = new UserUpdateRequest();
+            userUpdateRequest.setUserId(userInfo.getId());
+            userUpdateRequest.setFirstName(firstNameTextField.getText());
+            userUpdateRequest.setLastName(lastNameTextField.getText());
+            userUpdateRequest.setPhone(phoneNumberTextField.getText());
+            userUpdateRequest.setBirthDate(birthDatePicker.getValue());
+            userUpdateRequest.setCurrency(currencyComboBox.getValue());
+            userRequestHandler.handleUpdateUserRequest(userUpdateRequest);
+            userInfo.setFirstName(firstNameTextField.getText());
+            userInfo.setLastName(lastNameTextField.getText());
+            userInfo.setPhone(phoneNumberTextField.getText());
+            userInfo.setBirthDate(birthDatePicker.getValue());
+            userInfo.setCurrency(currencyComboBox.getValue());
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+    }
+
+    @FXML
+    public void initialize() {
+        if (userInfo == null) {
+            Platform.runLater(() -> {
+                // 延迟到事件调度线程中处理
+                if (userInfo != null) {
+                    init();
+                }
+            });
+        } else {
+            init();
+        }
+    }
+
+    @FXML
+    public void init() {
+        currencyComboBox.setItems(FXCollections.observableArrayList("USD", "EUR", "GBP", "CNY", "JPY"));
+        languageComboBox.setItems(FXCollections.observableArrayList("English", "Chinese", "Spanish", "French"));
+        dateFormatComboBox.setItems(FXCollections.observableArrayList("YYYY-MM-DD", "YYYY/MM/DD", "MM-DD-YYYY"));
+
+        currencyComboBox.setValue(userInfo.getCurrency());
+        languageComboBox.setValue("English");
+        dateFormatComboBox.setValue("YYYY/MM/DD");
+
+        firstNameTextField.setText(userInfo.getFirstName());
+        lastNameTextField.setText(userInfo.getLastName());
+        phoneNumberTextField.setText(userInfo.getPhone());
+        birthDatePicker.setValue(userInfo.getBirthDate());
+    }
 
     @FXML
     private void handleClick(MouseEvent event) {
@@ -145,12 +184,7 @@ public class SettingsController extends BaseController {
             }
         }
     }
-    @FXML
-    private VBox vbox1;
-    @FXML
-    private VBox vbox2;
-    @FXML
-    private VBox vbox3;
+
     private void resetAllBoxes() {
         List<VBox> allBoxes = List.of(
                 vbox1, vbox2, vbox3);
