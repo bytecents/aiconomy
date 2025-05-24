@@ -72,9 +72,9 @@ public class AddTransactionController extends BaseController implements Initiali
     public void switchToExpense() {
         isExpense = true;
         expenseBtn.getStyleClass().remove("inactive");
-        incomeBtn.getStyleClass().remove("income");
+        incomeBtn.getStyleClass().remove("Income");
         incomeBtn.getStyleClass().add("inactive");
-        expenseBtn.getStyleClass().add("expense");
+        expenseBtn.getStyleClass().add("Expense");
         refreshDisableCategory();
     }
 
@@ -82,9 +82,9 @@ public class AddTransactionController extends BaseController implements Initiali
     public void switchToIncome() {
         isExpense = false;
         incomeBtn.getStyleClass().remove("inactive");
-        expenseBtn.getStyleClass().remove("expense");
+        expenseBtn.getStyleClass().remove("Expense");
         expenseBtn.getStyleClass().add("inactive");
-        incomeBtn.getStyleClass().add("income");
+        incomeBtn.getStyleClass().add("Income");
         refreshDisableCategory();
     }
 
@@ -200,7 +200,7 @@ public class AddTransactionController extends BaseController implements Initiali
         try {
             handler.handleAddTransactionManually(
                     userInfo.getId(),
-                    isExpense ? "expense" : "income",
+                    isExpense ? "Expense" : "Income",
                     amount,
                     dateTime,
                     description,
