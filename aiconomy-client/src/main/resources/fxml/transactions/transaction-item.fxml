@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
 <?import javafx.collections.FXCollections?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.image.ImageView?>
 <GridPane xmlns="http://javafx.com/javafx"
           xmlns:fx="http://javafx.com/fxml"
           fx:controller="com.se.aiconomy.client.controller.transactions.TransactionItemController"
@@ -24,7 +25,13 @@
         <RowConstraints percentHeight="100" />
     </rowConstraints>
     <HBox GridPane.columnIndex="0" styleClass="gap-3" alignment="CENTER_LEFT">
-        <Region styleClass="w-10 h-10 rounded-lg bg-red-100" />
+        <StackPane prefHeight="50.0" prefWidth="50.0">
+            <Circle fill="#fee2e2" radius="24.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0"/>
+            <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                <Image url="@/assets/out_FoodDining.png"/>
+            </ImageView>
+        </StackPane>
+
         <VBox alignment="CENTER_LEFT">
             <Label fx:id="descriptionLabel" styleClass="text-base font-medium" />
             <Label fx:id="remarkLabel" styleClass="text-sm text-gray-500">Online Shopping</Label>
@@ -48,7 +55,16 @@
         <Label fx:id="amountLabel" styleClass="text-sm font-medium" />
     </HBox>
     <HBox alignment="CENTER_RIGHT" GridPane.columnIndex="5">
-        <Button styleClass="w-6 h-6 bg-transparent border-none hover-bg-gray-100 cursor-pointer" onMouseClicked="#deleteTransaction"> </Button>
+        <Button styleClass="w-6 h-6 bg-transparent border-none hover-bg-gray-100 cursor-pointer"
+                onMouseClicked="#deleteTransaction">
+            <graphic>
+                <ImageView fitWidth="24" fitHeight="24" preserveRatio="true">
+                    <image>
+                        <Image url="@/assets/delete.png" />
+                    </image>
+                </ImageView>
+            </graphic>
+        </Button>
     </HBox>
 </GridPane>
 
