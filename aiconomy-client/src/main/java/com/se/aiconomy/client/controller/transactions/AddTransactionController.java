@@ -1,23 +1,16 @@
 package com.se.aiconomy.client.controller.transactions;
 
 import com.se.aiconomy.client.common.CustomDialog;
-import com.se.aiconomy.client.common.MyFXMLLoader;
 import com.se.aiconomy.client.controller.BaseController;
 import com.se.aiconomy.server.common.exception.ServiceException;
 import com.se.aiconomy.server.handler.AccountRequestHandler;
 import com.se.aiconomy.server.handler.TransactionRequestHandler;
-import com.se.aiconomy.server.langchain.common.model.DynamicBillType;
-import com.se.aiconomy.server.langchain.common.model.Transaction;
-import com.se.aiconomy.server.model.dto.TransactionDto;
 import com.se.aiconomy.server.model.dto.account.request.GetAccountsByUserIdRequest;
-import com.se.aiconomy.server.model.dto.transaction.request.GetTransactionByUserIdRequest;
-import com.se.aiconomy.server.model.dto.transaction.request.TransactionImportRequest;
 import com.se.aiconomy.server.model.entity.Account;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
@@ -35,36 +28,24 @@ import java.util.function.UnaryOperator;
 
 @Setter
 public class AddTransactionController extends BaseController implements Initializable {
-    @FXML
-    private VBox category1;
-    @FXML
-    private VBox category2;
-    @FXML
-    private VBox category3;
-    @FXML
-    private VBox category4;
+    @FXML private VBox category1;
+    @FXML private VBox category2;
+    @FXML private VBox category3;
+    @FXML private VBox category4;
     @FXML private VBox category5;
     @FXML private VBox category6;
     @FXML private VBox category7;
     @FXML private VBox category8;
     @FXML private Map<String, VBox> categoryList = new java.util.HashMap<>();
 
-    @FXML
-    private VBox categoryPanel;
-    @FXML
-    private ComboBox<String> accountComboBox;
-    @FXML
-    private TextField descriptionInput;
-    @FXML
-    private DatePicker datePicker;
-    @FXML
-    private TextField amountInput;
-    @FXML
-    private Button incomeBtn;
-    @FXML
-    private Button expenseBtn;
-    @FXML
-    private StackPane rootPane;
+    @FXML private VBox categoryPanel;
+    @FXML private ComboBox<String> accountComboBox;
+    @FXML private TextField descriptionInput;
+    @FXML private DatePicker datePicker;
+    @FXML private TextField amountInput;
+    @FXML private Button incomeBtn;
+    @FXML private Button expenseBtn;
+    @FXML private StackPane rootPane;
     private AccountRequestHandler accountHandler = new AccountRequestHandler();
     private TransactionRequestHandler handler = new TransactionRequestHandler();
     private boolean isExpense = true;
@@ -230,6 +211,8 @@ public class AddTransactionController extends BaseController implements Initiali
 
     public void onAccountSelected(ActionEvent actionEvent) {
     }
+
+    private AddTransactionController.OnCloseListener closeListener;
 
     @FXML
     public void setOnCloseListener(AddTransactionController.OnCloseListener listener) {
