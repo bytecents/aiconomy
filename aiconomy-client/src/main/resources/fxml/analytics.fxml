@@ -47,18 +47,19 @@
             <Label styleClass="text-2xl font-semibold text-gray-900">Analytics</Label>
             <Region HBox.hgrow="ALWAYS"/>
             <HBox styleClass="gap-3">
-                <ComboBox fx:id="trendSelect" styleClass="text-sm font-roboto" value="Last 30 Days">
-                    <items>
-                        <FXCollections fx:factory="observableArrayList">
-                            <String fx:value="Last 30 Days"/>
-                            <String fx:value="This Month"/>
-                            <String fx:value="Last Month"/>
-                            <String fx:value="Last 3 Months"/>
-                            <String fx:value="Custom Range"/>
-                        </FXCollections>
-                    </items>
-                </ComboBox>
-                <Button text="Export Report" styleClass="hover-bg-blue-700 p-4-2 bg-blue-600 text-white font-roboto cursor-pointer"/>
+<!--                <ComboBox fx:id="trendSelect" styleClass="text-sm font-roboto" value="Last 30 Days">-->
+<!--                    <items>-->
+<!--                        <FXCollections fx:factory="observableArrayList">-->
+<!--                            <String fx:value="Last 30 Days"/>-->
+<!--                            <String fx:value="This Month"/>-->
+<!--                            <String fx:value="Last Month"/>-->
+<!--                            <String fx:value="Last 3 Months"/>-->
+<!--                            <String fx:value="Custom Range"/>-->
+<!--                        </FXCollections>-->
+<!--                    </items>-->
+<!--                </ComboBox>-->
+<!--                <Button text="Export Report" styleClass="hover-bg-blue-700 p-4-2 bg-blue-600 text-white font-roboto cursor-pointer"/>-->
+                <Button onMouseClicked="#openAiPanel" text="AI Insights" styleClass="hover-bg-blue-700 p-4-2 bg-blue-600 text-white font-roboto cursor-pointer"/>
             </HBox>
         </HBox>
         <GridPane hgap="24" vgap="24" VBox.vgrow="ALWAYS"
@@ -76,18 +77,6 @@
                 <VBox styleClass="card p-4-6-6-6 gap-4" VBox.vgrow="SOMETIMES">
                     <HBox alignment="CENTER_LEFT" >
                         <Label styleClass="font-semibold text-base text-gray-900">Spending Trends</Label>
-                        <Region HBox.hgrow="ALWAYS"/>
-                        <ComboBox styleClass="text-sm font-roboto" value="Last 30 Days">
-                            <items>
-                                <FXCollections fx:factory="observableArrayList">
-                                    <String fx:value="Last 30 Days"/>
-                                    <String fx:value="This Month"/>
-                                    <String fx:value="Last Month"/>
-                                    <String fx:value="Last 3 Months"/>
-                                    <String fx:value="Custom Range"/>
-                                </FXCollections>
-                            </items>
-                        </ComboBox>
                     </HBox>
                     <StackPane styleClass="min-h-48" VBox.vgrow="ALWAYS">
                         <LineChart fx:id="spendingTrends"
