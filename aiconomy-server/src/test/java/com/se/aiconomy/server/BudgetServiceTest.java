@@ -98,7 +98,8 @@ public class BudgetServiceTest {
                 LocalDateTime.now(),
                 "Train",
                 "Transportation",
-                "account1");
+                "account1",
+                "test");
         Assertions.assertTrue(budgetService.isBudgetExceeded(budget));
     }
 
@@ -118,7 +119,8 @@ public class BudgetServiceTest {
                 LocalDateTime.now(),
                 "Train",
                 "Transportation",
-                "account1");
+                "account1",
+                "test");
         Assertions.assertTrue(budgetService.isAlertBudget(budget));
     }
 
@@ -158,14 +160,16 @@ public class BudgetServiceTest {
                 LocalDateTime.now(),
                 "Train",
                 "Transportation",
-                "account1");
+                "account1",
+                "test");
         transactionService.addTransactionManually("user7",
                 "Expense",
                 "300",
                 LocalDateTime.now(),
                 "Bus",
                 "Transportation",
-                "account1");
+                "account1",
+                "test");
         Assertions.assertEquals(800, budgetService.getTotalSpent("user7"));
     }
 
@@ -185,7 +189,8 @@ public class BudgetServiceTest {
                 LocalDateTime.now(),
                 "Train",
                 "Transportation",
-                "account1");
+                "account1",
+                "test");
         Assertions.assertEquals(500, budgetService.getMonthlySpent("user8"));
     }
 
@@ -213,14 +218,16 @@ public class BudgetServiceTest {
                 LocalDateTime.now(),
                 "Train",
                 "Transportation",
-                "account1");
+                "account1",
+                "test");
         transactionService.addTransactionManually("user9",
                 "Expense",
                 "900",
                 LocalDateTime.now(),
                 "Dinner",
                 "Food",
-                "account1");
+                "account1",
+                "test");
         
         Assertions.assertEquals(2, budgetService.getTotalAlertCount("user9"));
     }
@@ -241,7 +248,8 @@ public class BudgetServiceTest {
                 LocalDateTime.now(),
                 "Train",
                 "Transportation",
-                "account1");
+                "account1",
+                "test");
         
         double dailyAvailable = budgetService.getDailyAvailableBudget("user10");
         Assertions.assertTrue(dailyAvailable > 0);
@@ -300,14 +308,16 @@ public class BudgetServiceTest {
                 LocalDateTime.now(),
                 "Train",
                 "Transportation",
-                "account1");
+                "account1",
+                "test");
         transactionService.addTransactionManually("user13",
                 "Expense",
                 "400",
                 LocalDateTime.now(),
                 "Bus",
                 "Transportation",
-                "account1");
+                "account1",
+                "test");
         
         Assertions.assertEquals(700, budgetService.getTotalSpentByCategory("user13", "Transportation"));
     }

@@ -13,9 +13,14 @@ import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.PieChart;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
+import javafx.util.StringConverter;
 
 import java.io.IOException;
 import java.text.DecimalFormat;
@@ -72,6 +77,11 @@ public class DashboardController extends BaseController {
     private Label accountType2;
 
     @FXML
+    private LineChart<String, Number> spendingTrends;
+    @FXML
+    private NumberAxis yAxis;
+
+    @FXML
     private Button quickAddButton;
 
 
@@ -100,6 +110,31 @@ public class DashboardController extends BaseController {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+        spendingTrends.setLegendVisible(false);
+
+        yAxis.setTickLabelFormatter(new StringConverter<Number>() {
+            @Override
+            public String toString(Number object) {
+                return "$" + object.intValue();
+            }
+
+            @Override
+            public Number fromString(String string) {
+                return Integer.parseInt(string.replace("$", ""));
+            }
+        });
+
+        XYChart.Series<String, Number> series = new XYChart.Series<>();
+        series.setName("Expenses");
+        series.getData().add(new XYChart.Data<>("1", 500));
+        series.getData().add(new XYChart.Data<>("5", 800));
+        series.getData().add(new XYChart.Data<>("10", 600));
+        series.getData().add(new XYChart.Data<>("15", 1200));
+        series.getData().add(new XYChart.Data<>("20", 800));
+        series.getData().add(new XYChart.Data<>("25", 950));
+        series.getData().add(new XYChart.Data<>("30", 700));
+
+        spendingTrends.getData().add(series);
     }
 
     private void setDate() {
