@@ -20,32 +20,54 @@ import javafx.util.Duration;
 import java.io.IOException;
 import java.util.Objects;
 
+/**
+ * Controller for the signup process.
+ * Handles loading and switching between signup flow and tip views.
+ */
 public class SignupController extends BaseController {
 
+    /**
+     * User data for the signup process.
+     */
     private final User userData = new User();
-    @FXML
-    private HBox flowHBox;  // to load signupFlow*.fxml
-    @FXML
-    private HBox tipHBox;   // to load signupTip*.fxml
 
+    /**
+     * HBox for loading signup flow FXMLs.
+     */
+    @FXML
+    private HBox flowHBox;
+
+    /**
+     * HBox for loading signup tip FXMLs.
+     */
+    @FXML
+    private HBox tipHBox;
+
+    /**
+     * Initializes the controller by loading the first signup flow and tip views.
+     */
     public void initialize() {
         loadSignupFlow("signupFlow1.fxml");
         loadSignupTip("signupTip1.fxml");
     }
 
-
+    /**
+     * Loads a signup flow FXML into the flowHBox with fade transition.
+     *
+     * @param fxmlFileName the FXML file name to load (e.g., "signupFlow1.fxml")
+     */
     public void loadSignupFlow(String fxmlFileName) {
-        FadeTransition fadeOut = new FadeTransition(Duration.millis(100), flowHBox);  // Change from tipHBox to flowHBox
+        FadeTransition fadeOut = new FadeTransition(Duration.millis(100), flowHBox);
         fadeOut.setFromValue(1.0);
         fadeOut.setToValue(0.0);
         fadeOut.setOnFinished(event -> {
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/signup/signupFlows/" + fxmlFileName));
-                // Using controller factory to inject parent controller
+                // Use controller factory to inject parent controller and user data
                 loader.setControllerFactory(clazz -> {
                     if (clazz.equals(SignupFlowController1.class)) {
                         SignupFlowController1 controller = new SignupFlowController1();
-                        controller.setParentController(this);  // Set parent controller via Lombok's generated setter
+                        controller.setParentController(this);
                         controller.setUserData(userData);
                         return controller;
                     }
@@ -72,8 +94,8 @@ public class SignupController extends BaseController {
                 flowHBox.getChildren().clear();
                 flowHBox.getChildren().add(flowContent);
 
-                // Apply fade-in effect after loading the new content
-                FadeTransition fadeIn = new FadeTransition(Duration.millis(100), flowHBox);  // Change from tipHBox to flowHBox
+                // Fade in after loading new content
+                FadeTransition fadeIn = new FadeTransition(Duration.millis(100), flowHBox);
                 fadeIn.setFromValue(0.0);
                 fadeIn.setToValue(1.0);
                 fadeIn.play();
@@ -84,20 +106,23 @@ public class SignupController extends BaseController {
         fadeOut.play();
     }
 
-
+    /**
+     * Loads a signup tip FXML into the tipHBox with fade transition.
+     *
+     * @param fxmlFileName the FXML file name to load (e.g., "signupTip1.fxml")
+     */
     public void loadSignupTip(String fxmlFileName) {
-        FadeTransition fadeOut = new FadeTransition(Duration.millis(100), tipHBox);  // Apply fade-out to tipHBox
+        FadeTransition fadeOut = new FadeTransition(Duration.millis(100), tipHBox);
         fadeOut.setFromValue(1.0);
         fadeOut.setToValue(0.0);
         fadeOut.setOnFinished(event -> {
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/signup/signupTips/" + fxmlFileName));
-
-                // Using controller factory to inject parent controller
+                // Use controller factory to inject parent controller
                 loader.setControllerFactory(clazz -> {
                     if (clazz.equals(SignupTipController1.class)) {
                         SignupTipController1 controller = new SignupTipController1();
-                        controller.setParentController(this);  // Set parent controller via Lombok's generated setter
+                        controller.setParentController(this);
                         return controller;
                     }
                     if (clazz.equals(SignupTipController2.class)) {
@@ -122,8 +147,8 @@ public class SignupController extends BaseController {
                 tipHBox.getChildren().clear();
                 tipHBox.getChildren().add(tipContent);
 
-                // Apply fade-in effect after loading the new content
-                FadeTransition fadeIn = new FadeTransition(Duration.millis(100), tipHBox);  // Apply fade-in to tipHBox
+                // Fade in after loading new content
+                FadeTransition fadeIn = new FadeTransition(Duration.millis(100), tipHBox);
                 fadeIn.setFromValue(0.0);
                 fadeIn.setToValue(1.0);
                 fadeIn.play();
@@ -133,6 +158,4 @@ public class SignupController extends BaseController {
         });
         fadeOut.play();
     }
-
 }
-

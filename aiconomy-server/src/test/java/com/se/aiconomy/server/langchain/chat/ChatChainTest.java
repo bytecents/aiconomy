@@ -17,20 +17,43 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
 
+/**
+ * Unit tests for the {@link Chain} chat chain functionality.
+ * <p>
+ * This class tests both synchronous and streaming chat invocation using the Chain abstraction.
+ * </p>
+ */
 class ChatChainTest {
+
+    /**
+     * Logger instance for this test class.
+     */
     private static final Logger log = LoggerFactory.getLogger(ChatChainTest.class);
+
+    /**
+     * Chain instance used for testing.
+     */
     private Chain chain;
 
+    /**
+     * Initializes the Chain instance before each test.
+     */
     @BeforeEach
     void setUp() {
         chain = ChainFactory.createChain(Chain.class, new ModelConfig.Builder()
-            .baseUrl(Configs.BASE_URL)
-            .apiKey(Configs.API_KEY)
-            .modelName(Configs.MODEL)
-            .build()
+                .baseUrl(Configs.BASE_URL)
+                .apiKey(Configs.API_KEY)
+                .modelName(Configs.MODEL)
+                .build()
         );
     }
 
+    /**
+     * Tests the synchronous invocation of the chat chain.
+     * <p>
+     * Invokes the chain with a sample input and asserts that the response is not null.
+     * </p>
+     */
     @Test
     void testInvokeChatChain() {
         String response = chain.invoke(Locale.CN, Map.of("code", "python"));
@@ -38,6 +61,12 @@ class ChatChainTest {
         assertNotNull(response, "Response should not be null");
     }
 
+    /**
+     * Tests the streaming invocation of the chat chain.
+     * <p>
+     * Invokes the chain in streaming mode and verifies that partial and complete responses are received.
+     * </p>
+     */
     @Test
     void testStreamingChatChain() {
         chain.stream(Locale.CN, Map.of("code", "python"), new StreamingChatResponseHandler() {

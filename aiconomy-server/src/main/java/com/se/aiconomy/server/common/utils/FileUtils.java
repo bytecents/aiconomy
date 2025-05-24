@@ -1,17 +1,20 @@
 package com.se.aiconomy.server.common.utils;
 
+/**
+ * Utility class for file-related operations.
+ */
 public class FileUtils {
     /**
-     * 获取文件的扩展名
+     * Gets the file extension from a file path.
      *
-     * @param filePath 文件路径
-     * @return 文件扩展名（小写）
+     * @param filePath the file path
+     * @return the file extension in lower case, or an empty string if none exists
      */
     public static String getFileExtension(String filePath) {
         int dotIndex = filePath.lastIndexOf('.');
         if (dotIndex == -1) {
-            return "";  // 没有扩展名
+            return "";  // No extension found
         }
-        return filePath.substring(dotIndex + 1).toLowerCase();  // 返回扩展名并转换为小写
+        return filePath.substring(dotIndex + 1).toLowerCase();  // Return extension in lower case
     }
 }

@@ -11,6 +11,10 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
+/**
+ * Unit tests for {@link UserService}.
+ * This class tests user registration, login, update, deletion, and retrieval functionalities.
+ */
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class UserServiceTest {
     private static final Logger log = LoggerFactory.getLogger(User.class);
@@ -20,19 +24,29 @@ public class UserServiceTest {
     private static JSONStorageService jsonStorageService;
     private static UserService userService;
 
+    /**
+     * Initializes the storage and user service before all tests.
+     */
     @BeforeAll
     static void setup() {
         jsonStorageService = JSONStorageServiceImpl.getInstance();
         userService = new UserServiceImpl(jsonStorageService);
     }
 
+    /**
+     * Cleans up all users before each test to ensure test isolation.
+     */
     @BeforeEach
     void cleanUp() {
         jsonStorageService.findAll(User.class)
-            .forEach(u -> jsonStorageService.delete(u, User.class));
+                .forEach(u -> jsonStorageService.delete(u, User.class));
         log.info("Cleaned up all users before test");
     }
 
+    /**
+     * Tests user registration and login functionality.
+     * Asserts that a registered user can log in successfully.
+     */
     @Test
     @Order(1)
     void testRegisterAndLogin() {
@@ -45,6 +59,9 @@ public class UserServiceTest {
         log.info("Successfully test register and login");
     }
 
+    /**
+     * Tests that registering a user with a duplicate email throws an exception.
+     */
     @Test
     @Order(2)
     void testDuplicateEmailRegistration() {
@@ -57,15 +74,22 @@ public class UserServiceTest {
         log.info("Successfully test duplicate email registration");
     }
 
+    /**
+     * Tests that logging in with invalid credentials throws an exception.
+     */
     @Test
     @Order(3)
     void testInvalidLogin() {
         RuntimeException exception = Assertions.assertThrows(RuntimeException.class,
-            () -> userService.login("nonexistent@example.com", "wrong"));
+                () -> userService.login("nonexistent@example.com", "wrong"));
         Assertions.assertEquals("Invalid email or password", exception.getMessage());
         log.info("Successfully test invalid login");
     }
 
+    /**
+     * Tests updating user information.
+     * Asserts that the updated information is persisted.
+     */
     @Test
     @Order(4)
     void testUpdateUser() {
@@ -80,6 +104,10 @@ public class UserServiceTest {
         log.info("Successfully test update user");
     }
 
+    /**
+     * Tests deleting a user by ID.
+     * Asserts that the user cannot be found after deletion.
+     */
     @Test
     @Order(5)
     void testDeleteUser() {
@@ -89,11 +117,15 @@ public class UserServiceTest {
         userService.deleteUserById(TEST_USER_ID);
 
         RuntimeException exception = Assertions.assertThrows(RuntimeException.class,
-            () -> userService.getUserById(TEST_USER_ID));
+                () -> userService.getUserById(TEST_USER_ID));
         Assertions.assertEquals("User not found with id: " + TEST_USER_ID, exception.getMessage());
         log.info("Successfully test delete user");
     }
 
+    /**
+     * Tests retrieving a user by ID.
+     * Asserts that the correct user is returned.
+     */
     @Test
     @Order(6)
     void testGetUserById() {
@@ -106,6 +138,10 @@ public class UserServiceTest {
         log.info("Successfully test get user by ID");
     }
 
+    /**
+     * Tests retrieving all users.
+     * Asserts that the list contains the registered user.
+     */
     @Test
     @Order(7)
     void testGetAllUsers() {
@@ -119,6 +155,11 @@ public class UserServiceTest {
         log.info("Successfully test get all users");
     }
 
+    /**
+     * Helper method to create a sample user for testing.
+     *
+     * @return a sample {@link User} instance
+     */
     private User createSampleUser() {
         User user = new User();
         user.setId(TEST_USER_ID);

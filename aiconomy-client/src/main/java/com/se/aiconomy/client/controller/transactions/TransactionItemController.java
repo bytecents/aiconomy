@@ -37,6 +37,12 @@ public class TransactionItemController extends BaseController implements Initial
     @Setter
     private TransactionsController parentController;
 
+    /**
+     * Initializes the controller. If userInfo is not available, waits until it is set.
+     *
+     * @param location  The location used to resolve relative paths for the root object, or null if unknown.
+     * @param resources The resources used to localize the root object, or null if not localized.
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         if (userInfo == null) {
@@ -52,8 +58,16 @@ public class TransactionItemController extends BaseController implements Initial
         }
     }
 
+    /**
+     * Initializes UI components or data. Can be overridden for custom initialization.
+     */
     public void init() {}
 
+    /**
+     * Sets the transaction data to be displayed in the UI.
+     *
+     * @param transaction The transaction data transfer object.
+     */
     @FXML
     public void setTransaction(TransactionDto transaction) {
         this.transaction = transaction;
@@ -65,7 +79,7 @@ public class TransactionItemController extends BaseController implements Initial
 
         String amount = (isExpense ? "-" : "+") + "$" + df.format(Double.parseDouble(rawAmount));
         String description = transaction.getProduct();
-//        String remark = transaction.getRemark();
+        // String remark = transaction.getRemark();
         String category = transaction.getBillType().getDisplayName();
         String date = transaction.getTime().toLocalDate().format(DateTimeFormatter.ofPattern("MMM d, uuuu", Locale.ENGLISH));
         if (isExpense) {
@@ -75,7 +89,7 @@ public class TransactionItemController extends BaseController implements Initial
         }
         accountLabel.setText(accountId);
         descriptionLabel.setText(description);
-//        remarkLabel.setText(remark);
+        // remarkLabel.setText(remark);
         amountLabel.setText(amount);
         dateLabel.setText(date);
 
@@ -91,6 +105,11 @@ public class TransactionItemController extends BaseController implements Initial
         }
     }
 
+    /**
+     * Handles the delete transaction event. Deletes the transaction and refreshes the transaction list.
+     *
+     * @param mouseEvent The mouse event triggering the deletion.
+     */
     public void deleteTransaction(MouseEvent mouseEvent) {
         try {
             handler.handleDeleteTransaction(transaction.getId());
@@ -98,19 +117,23 @@ public class TransactionItemController extends BaseController implements Initial
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
+    /**
+     * Handles the category change event from the ComboBox.
+     *
+     * @param actionEvent The action event triggered by category selection.
+     */
     public void handleCategoryChange(ActionEvent actionEvent) {
-//        String selectedCategory = categoryCombobox.getValue();
-//        if (selectedCategory != null && !selectedCategory.equals("All Categories")) {
-//            BillType billType = BillType.fromType(selectedCategory);
-//            transaction.setBillType(billType);
-//            try {
-//                handler.handleUpdateTransactionStatus(transaction.getId(), transaction.getIncomeOrExpense());
-//            } catch (ServiceException e) {
-//                e.printStackTrace();
-//            }
-//        }
+        // String selectedCategory = categoryCombobox.getValue();
+        // if (selectedCategory != null && !selectedCategory.equals("All Categories")) {
+        //     BillType billType = BillType.fromType(selectedCategory);
+        //     transaction.setBillType(billType);
+        //     try {
+        //         handler.handleUpdateTransactionStatus(transaction.getId(), transaction.getIncomeOrExpense());
+        //     } catch (ServiceException e) {
+        //         e.printStackTrace();
+        //     }
+        // }
     }
 }

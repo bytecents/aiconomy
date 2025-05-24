@@ -37,10 +37,15 @@ import java.time.YearMonth;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Controller for managing the budget view and operations.
+ * Handles loading, displaying, and updating budget and category information.
+ */
 public class BudgetController extends BaseController {
 
-
+    /** Handler for budget requests. */
     private final BudgetRequestHandler handler = new BudgetRequestHandler(new BudgetServiceImpl(JSONStorageServiceImpl.getInstance()));
+
     @FXML
     private ScrollPane aiOptimizePanel;
     @FXML
@@ -61,8 +66,9 @@ public class BudgetController extends BaseController {
     private Label alertsLabel;
     @FXML
     private Label daysLeftLabel;
+    /** Container for budget category cards. */
     @FXML
-    private GridPane budgetCardsContainer; // 存放每个类别预算卡片的容器
+    private GridPane budgetCardsContainer;
     @Setter
     private String userId;
     @FXML
@@ -76,11 +82,16 @@ public class BudgetController extends BaseController {
     @FXML
     private Label remainingOrOverLabel;
     private BudgetCategoryInfo info;
+    /** The root pane of main.fxml. */
     @FXML
     @Setter
     @Getter
-    private StackPane rootPane; // 这个是 main.fxml 的最外层 StackPane
+    private StackPane rootPane;
 
+    /**
+     * Initializes the controller.
+     * Loads budget data if user info is available.
+     */
     @FXML
     public void initialize() {
         if (userInfo == null) {
@@ -94,6 +105,9 @@ public class BudgetController extends BaseController {
         }
     }
 
+    /**
+     * Initializes the budget view and loads data.
+     */
     private void init() {
         userId = userInfo.getId();
         loadTotalBudgetInfo();
@@ -102,10 +116,16 @@ public class BudgetController extends BaseController {
         aiOptimizeCol.setPercentWidth(0);
     }
 
+    /**
+     * Refreshes the budget view.
+     */
     public void refresh() {
         init();
     }
 
+    /**
+     * Loads and displays the total budget information.
+     */
     private void loadTotalBudgetInfo() {
         BudgetTotalInfoRequest request = new BudgetTotalInfoRequest();
         request.setUserId(userId);
@@ -119,13 +139,15 @@ public class BudgetController extends BaseController {
             remainingLabel.setText("Left $ " + info.getTotalRemaining());
             alertsLabel.setText(info.getTotalAlerts() + "");
             dailyAvailableBudgetLabel.setText("$ " + String.format("%.2f", info.getDailyAvailableBudget()));
-            daysLeftLabel.setText(+getDaysLeftThisMonth() + " days left");
-
+            daysLeftLabel.setText(getDaysLeftThisMonth() + " days left");
         } catch (Exception e) {
-            showError("加载总预算失败：" + e.getMessage());
+            showError("Failed to load total budget: " + e.getMessage());
         }
     }
 
+    /**
+     * Loads and displays the budget information for each category.
+     */
     private void loadCategoryBudgets() {
         BudgetCategoryInfoRequest request = new BudgetCategoryInfoRequest();
         request.setUserId(String.valueOf(userId));
@@ -139,21 +161,24 @@ public class BudgetController extends BaseController {
 
             for (BudgetCategoryInfo info : categoryInfoList) {
                 Node card = createBudgetCard(info);
-
                 budgetCardsContainer.add(card, col, row);
-
                 col++;
                 if (col > 1) {
                     col = 0;
                     row++;
                 }
             }
-
         } catch (Exception e) {
-            showError("加载分类预算失败：" + e.getMessage());
+            showError("Failed to load category budgets: " + e.getMessage());
         }
     }
 
+    /**
+     * Creates a budget card node for a given category.
+     *
+     * @param info the budget category info
+     * @return the node representing the budget card
+     */
     private Node createBudgetCard(BudgetCategoryInfo info) {
         MyFXMLLoader loader = new MyFXMLLoader("/fxml/budgets/budget_category_card.fxml");
         Node node = loader.load();
@@ -164,7 +189,6 @@ public class BudgetController extends BaseController {
         controller.setUserInfo(userInfo);
         String imagePath;
         String backgroundColor;
-        String progressBarStyle;
         String percentageColorClass;
         String categoryName = info.getCategoryName().toLowerCase();
 
@@ -230,47 +254,55 @@ public class BudgetController extends BaseController {
         return node;
     }
 
+    /**
+     * Gets the number of days left in the current month.
+     *
+     * @return days left in this month
+     */
     private int getDaysLeftThisMonth() {
         LocalDate today = LocalDate.now();
         YearMonth yearMonth = YearMonth.of(today.getYear(), today.getMonth());
         return yearMonth.lengthOfMonth() - today.getDayOfMonth();
     }
 
+    /**
+     * Displays an error message.
+     *
+     * @param msg the error message
+     */
     private void showError(String msg) {
         System.err.println("❌ " + msg);
-        // 或者弹窗提示
+        // Or show a popup dialog
     }
 
+    /**
+     * Handles the add budget button click event.
+     *
+     * @param event the action event
+     */
     @FXML
     public void onAddBudgetClick(ActionEvent event) {
         try {
-            // 加载 add_budget.fxml
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/budgets/add_budget.fxml"));
             Parent dialogContent = loader.load();
-            // 获取 controller 并传入 rootPane
             AddBudgetController controller = loader.getController();
             controller.setRootPane(rootPane);
             controller.setBudgetController(this);
             controller.setUserInfo(userInfo);
-            // 设置弹窗样式（你可以在 FXML 里设也行）
             dialogContent.setStyle("-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 20;");
 
-            // 创建遮罩
             Region overlay = new Region();
             overlay.setStyle("-fx-background-color: rgba(0,0,0,0.5);");
             overlay.setPrefSize(rootPane.getWidth(), rootPane.getHeight());
 
-            // 弹窗容器（居中）
             StackPane dialogWrapper = new StackPane(dialogContent);
             dialogWrapper.setMaxWidth(500);
             dialogWrapper.setMaxHeight(600);
 
-            // 点击遮罩关闭弹窗
             overlay.setOnMouseClicked((MouseEvent e) -> {
                 rootPane.getChildren().removeAll(overlay, dialogWrapper);
             });
 
-            // 添加遮罩和弹窗到页面顶层
             rootPane.getChildren().addAll(overlay, dialogWrapper);
 
         } catch (IOException e) {
@@ -278,12 +310,19 @@ public class BudgetController extends BaseController {
         }
     }
 
-
+    /**
+     * Sets the budget category info and updates the view.
+     *
+     * @param info the budget category info
+     */
     public void setBudgetCategoryInfo(BudgetCategoryInfo info) {
         this.info = info;
         updateView();
     }
 
+    /**
+     * Updates the budget category view with current info.
+     */
     private void updateView() {
         categoryLabel.setText(info.getCategoryName());
         budgetAmountLabel.setText("预算：¥" + info.getBudgetAmount());
@@ -291,7 +330,7 @@ public class BudgetController extends BaseController {
 
         double budget = info.getBudgetAmount();
         double spent = info.getSpentAmount();
-        double progress = Math.min(spent / budget, 1.0); // cap at 1.0
+        double progress = Math.min(spent / budget, 1.0);
         budgetProgressBar.setProgress(progress);
 
         if (spent > budget) {
@@ -303,14 +342,26 @@ public class BudgetController extends BaseController {
         }
     }
 
+    /**
+     * Sets a listener for opening the budget panel.
+     *
+     * @param listener the listener
+     */
     @FXML
     public void setOnOpenListener(BudgetController.OnOpenListener listener) {
+        // Implementation can be added as needed
     }
 
+    /**
+     * Listener interface for opening the budget panel.
+     */
     public interface OnOpenListener {
         void onOpenBudgetPanel();
     }
 
+    /**
+     * Opens the AI optimize panel with animation.
+     */
     @FXML
     public void openAiOptimizePanel() {
         if (aiOptimizePanel.getContent() != null) {
@@ -346,6 +397,9 @@ public class BudgetController extends BaseController {
         }
     }
 
+    /**
+     * Closes the AI optimize panel with animation.
+     */
     private void closeAiOptimizePanel() {
         if (aiOptimizePanel.getContent() == null) {
             return;
@@ -369,11 +423,7 @@ public class BudgetController extends BaseController {
             aiOptimizePanel.setContent(null);
             mainCol.setPercentWidth(100);
             aiOptimizeCol.setPercentWidth(0);
-//            setColumnCount(analyticsGrid, 2);
         });
         activetimeline.play();
     }
-
 }
-
-

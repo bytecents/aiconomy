@@ -12,8 +12,29 @@ import java.time.LocalDate;
 import java.util.List;
 
 /**
- * 用户信息更新请求DTO
- * 所有字段都是可选的，只更新非null的字段
+ * Request DTO for updating user information.
+ * <p>
+ * All fields are optional; only non-null fields will be updated.
+ * </p>
+ *
+ * <ul>
+ *   <li><b>email</b>: The user's email address.</li>
+ *   <li><b>password</b>: The user's password.</li>
+ *   <li><b>avatarUrl</b>: The URL of the user's avatar.</li>
+ *   <li><b>firstName</b>: The user's first name.</li>
+ *   <li><b>lastName</b>: The user's last name.</li>
+ *   <li><b>phone</b>: The user's phone number.</li>
+ *   <li><b>birthDate</b>: The user's date of birth.</li>
+ *   <li><b>currency</b>: The user's preferred currency.</li>
+ *   <li><b>financialGoal</b>: A list of the user's financial goals.</li>
+ *   <li><b>monthlyIncome</b>: The user's monthly income.</li>
+ *   <li><b>mainExpenseType</b>: A list of the user's main expense types.</li>
+ * </ul>
+ *
+ * <p>
+ * Lombok annotations are used to generate boilerplate code such as getters, setters,
+ * constructors, toString, and builder methods.
+ * </p>
  */
 @Getter
 @Setter
@@ -22,34 +43,77 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class UserUpdateRequest extends BaseRequest {
-    private String email;        // 邮箱
-    private String password;     // 密码
-    private String avatarUrl;    // 头像URL
-    private String firstName;    // 名字
-    private String lastName;     // 姓氏
-    private String phone;        // 手机号
-    private LocalDate birthDate; // 出生日期
-    private String currency;     // 货币类型
-    private List<String> financialGoal; // 理财目标
-    private Double monthlyIncome; // 月收入
-    private List<String> mainExpenseType; // 主要开销类型
+    /**
+     * The user's email address.
+     */
+    private String email;
 
     /**
-     * 检查字段是否有更新
+     * The user's password.
+     */
+    private String password;
+
+    /**
+     * The URL of the user's avatar.
+     */
+    private String avatarUrl;
+
+    /**
+     * The user's first name.
+     */
+    private String firstName;
+
+    /**
+     * The user's last name.
+     */
+    private String lastName;
+
+    /**
+     * The user's phone number.
+     */
+    private String phone;
+
+    /**
+     * The user's date of birth.
+     */
+    private LocalDate birthDate;
+
+    /**
+     * The user's preferred currency.
+     */
+    private String currency;
+
+    /**
+     * A list of the user's financial goals.
+     */
+    private List<String> financialGoal;
+
+    /**
+     * The user's monthly income.
+     */
+    private Double monthlyIncome;
+
+    /**
+     * A list of the user's main expense types.
+     */
+    private List<String> mainExpenseType;
+
+    /**
+     * Checks if any field has been updated.
      *
-     * @return 如果有任何字段不为null则返回true
+     * @return true if any field is not null, false otherwise
      */
     public boolean hasUpdates() {
         return email != null ||
-            password != null ||
-            avatarUrl != null ||
-            firstName != null ||
-            lastName != null ||
-            phone != null ||
-            birthDate != null ||
-            currency != null ||
-            financialGoal != null ||
-            monthlyIncome != null ||
-            mainExpenseType != null;
+               password != null ||
+               avatarUrl != null ||
+               firstName != null ||
+               lastName != null ||
+               phone != null ||
+               birthDate != null ||
+               currency != null ||
+               financialGoal != null ||
+               monthlyIncome != null ||
+               mainExpenseType != null;
     }
 }

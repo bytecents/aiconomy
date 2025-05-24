@@ -12,15 +12,28 @@ import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Unit tests for CSV file reading functionality using {@link CSVUtils}.
+ * This class tests reading a CSV file and mapping its contents to {@link TransactionDto} objects.
+ */
 public class CSVTest {
 
+    /**
+     * Logger for logging test information.
+     */
     private static final Logger log = LoggerFactory.getLogger(CSVTest.class);
 
+    /**
+     * Tests reading a CSV file and mapping its contents to a list of {@link TransactionDto} objects.
+     * Verifies that the list is not null, not empty, and that the first transaction's fields match expected values.
+     *
+     * @throws IOException if an I/O error occurs while reading the CSV file
+     */
     @Test
     public void testReadCsv() throws IOException {
         List<TransactionDto> transactions = CSVUtils.readCsv(
-            Objects.requireNonNull(getClass().getClassLoader().getResource("transactions.csv")).getPath(),
-            TransactionDto.class
+                Objects.requireNonNull(getClass().getClassLoader().getResource("transactions.csv")).getPath(),
+                TransactionDto.class
         );
 
         log.info("Transactions: {}", transactions);

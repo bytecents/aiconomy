@@ -14,17 +14,40 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Unit tests for {@link ChatService}.
+ * <p>
+ * This class tests the chat and streaming functionalities of the ChatService,
+ * including normal chat, streaming responses, continuous chat, and clearing chat memory.
+ * </p>
+ */
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class ChatAssistantTest {
 
+    /**
+     * Logger instance for this test class.
+     */
     private static final Logger log = LoggerFactory.getLogger(ChatAssistantTest.class);
+
+    /**
+     * ChatService instance used for testing.
+     */
     private static ChatService chatService;
 
+    /**
+     * Initializes the ChatService before all tests.
+     */
     @BeforeAll
     static void setUp() {
         chatService = new ChatService("1");
     }
 
+    /**
+     * Tests the chat functionality of {@link ChatService}.
+     * <p>
+     * Sends a message and asserts that the response is not null.
+     * </p>
+     */
     @Test
     @Order(1)
     void testChat() {
@@ -33,6 +56,12 @@ public class ChatAssistantTest {
         assertNotNull(response, "Response should not be null");
     }
 
+    /**
+     * Tests the streaming chat functionality of {@link ChatService}.
+     * <p>
+     * Sends a message and verifies that both partial and complete responses are received.
+     * </p>
+     */
     @Test
     @Order(2)
     void testStream() {
@@ -74,6 +103,12 @@ public class ChatAssistantTest {
         }
     }
 
+    /**
+     * Tests the continuous chat functionality of {@link ChatService}.
+     * <p>
+     * Sends a follow-up message and logs the response.
+     * </p>
+     */
     @Test
     @Order(3)
     void testContinuousChat() {
@@ -81,6 +116,12 @@ public class ChatAssistantTest {
         log.info("Response: {}", response);
     }
 
+    /**
+     * Tests clearing the chat memory in {@link ChatService}.
+     * <p>
+     * Clears the chat memory and sends a message to verify the memory is cleared.
+     * </p>
+     */
     @Test
     @Order(4)
     void testClearChatMemory() {

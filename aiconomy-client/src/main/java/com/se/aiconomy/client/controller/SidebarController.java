@@ -31,64 +31,71 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
+/**
+ * Controller for the sidebar navigation in the application.
+ * Handles navigation button states, view loading, and dialog panels.
+ */
 public class SidebarController implements Initializable {
 
-    //    private static final String ACTIVE_STYLE = "-fx-background-color: #EFF6FF; -fx-background-radius: 8;";
+    /** Style for inactive navigation buttons. */
     private static final String INACTIVE_STYLE = "-fx-background-radius: 8;";
+    /** Style for active navigation button text color. */
     private static final String ACTIVE_TEXT_COLOR = "-fx-text-fill: #2563EB;";
+
+    /** Map of navigation button keys to their HBox nodes. */
     private final Map<String, HBox> navButtons = new HashMap<>();
+    /** Map of navigation button keys to their icon ImageView nodes. */
     private final Map<String, ImageView> navIcons = new HashMap<>();
+    /** Map of navigation button keys to their Label nodes. */
     private final Map<String, Label> navLabels = new HashMap<>();
+
+    /** User information for the current session. */
     @Setter
     @FXML
     UserInfo userInfo;
+
+    /** Root StackPane of the sidebar. */
     @FXML
     private StackPane root;
+
+    /** ScrollPane for the main content area. */
     @FXML
     private ScrollPane contentArea;
+
     // Navigation buttons
-    @FXML
-    private HBox dashboardBtn;
-    @FXML
-    private HBox transactionsBtn;
-    @FXML
-    private HBox analyticsBtn;
-    @FXML
-    private HBox budgetsBtn;
-    @FXML
-    private HBox accountsBtn;
-    @FXML
-    private HBox settingsBtn;
+    @FXML private HBox dashboardBtn;
+    @FXML private HBox transactionsBtn;
+    @FXML private HBox analyticsBtn;
+    @FXML private HBox budgetsBtn;
+    @FXML private HBox accountsBtn;
+    @FXML private HBox settingsBtn;
+
     // Icons
-    @FXML
-    private ImageView dashboardIcon;
-    @FXML
-    private ImageView transactionsIcon;
-    @FXML
-    private ImageView analyticsIcon;
-    @FXML
-    private ImageView budgetsIcon;
-    @FXML
-    private ImageView accountsIcon;
-    @FXML
-    private ImageView settingsIcon;
+    @FXML private ImageView dashboardIcon;
+    @FXML private ImageView transactionsIcon;
+    @FXML private ImageView analyticsIcon;
+    @FXML private ImageView budgetsIcon;
+    @FXML private ImageView accountsIcon;
+    @FXML private ImageView settingsIcon;
+
     // Labels
-    @FXML
-    private Label dashboardLabel;
-    @FXML
-    private Label transactionsLabel;
-    @FXML
-    private Label analyticsLabel;
-    @FXML
-    private Label budgetsLabel;
-    @FXML
-    private Label accountsLabel;
-    @FXML
-    private Label settingsLabel;
-    //    private static final String INACTIVE_TEXT_COLOR = "";
+    @FXML private Label dashboardLabel;
+    @FXML private Label transactionsLabel;
+    @FXML private Label analyticsLabel;
+    @FXML private Label budgetsLabel;
+    @FXML private Label accountsLabel;
+    @FXML private Label settingsLabel;
+
+    /** The key of the currently active panel. */
     private String activePanel;
+    /** The controller of the currently loaded main content. */
     private BaseController controller;
 
+    /**
+     * Converts a JavaFX Color to a hex string.
+     * @param color the color to convert
+     * @return the hex string representation
+     */
     private static String toHex(Color color) {
         return String.format("#%02X%02X%02X",
                 (int) (color.getRed() * 255),
@@ -96,6 +103,11 @@ public class SidebarController implements Initializable {
                 (int) (color.getBlue() * 255));
     }
 
+    /**
+     * Initializes the sidebar controller and sets up navigation.
+     * @param location the location used to resolve relative paths for the root object, or null if unknown
+     * @param resources the resources used to localize the root object, or null if not localized
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         // Initialize maps for easy access to UI components
@@ -124,6 +136,10 @@ public class SidebarController implements Initializable {
         switchToDashboard();
     }
 
+    /**
+     * Sets the active navigation button and updates styles and icons.
+     * @param buttonKey the key of the button to activate
+     */
     private void setActiveButton(String buttonKey) {
         if (buttonKey.equals(activePanel)) {
             return;
@@ -164,6 +180,10 @@ public class SidebarController implements Initializable {
         activePanel = buttonKey;
     }
 
+    /**
+     * Opens a modal panel with the specified FXML file.
+     * @param fxmlPath the path to the FXML file
+     */
     private void openPanel(String fxmlPath) {
         MyFXMLLoader loader = new MyFXMLLoader(fxmlPath);
         Parent dialogContent = loader.load();
@@ -224,14 +244,24 @@ public class SidebarController implements Initializable {
         }
     }
 
+    /**
+     * Opens the add transaction modal panel.
+     */
     private void openAddTransactionPanel() {
         openPanel("/fxml/transactions/add-transaction.fxml");
     }
 
+    /**
+     * Opens the add budget modal panel.
+     */
     public void openAddBudgetPanel() {
         openPanel("/fxml/budgets/add_budget.fxml");
     }
 
+    /**
+     * Loads a new view into the main content area with fade transitions.
+     * @param fxmlPath the path to the FXML file to load
+     */
     private void loadView(String fxmlPath) {
         FadeTransition fadeOut = new FadeTransition(Duration.millis(100), contentArea);
         fadeOut.setFromValue(1.0);
@@ -266,36 +296,54 @@ public class SidebarController implements Initializable {
         fadeOut.play();
     }
 
+    /**
+     * Switches to the dashboard view.
+     */
     @FXML
     protected void switchToDashboard() {
         setActiveButton("dashboard");
         loadView("/fxml/dashboard.fxml");
     }
 
+    /**
+     * Switches to the transactions view.
+     */
     @FXML
     protected void switchToTransactions() {
         setActiveButton("transactions");
         loadView("/fxml/transactions/transactions.fxml");
     }
 
+    /**
+     * Switches to the analytics view.
+     */
     @FXML
     protected void switchToAnalytics() {
         setActiveButton("analytics");
         loadView("/fxml/analytics.fxml");
     }
 
+    /**
+     * Switches to the budgets view.
+     */
     @FXML
     protected void switchToBudgets() {
         setActiveButton("budgets");
         loadView("/fxml/budgets/budgets.fxml");
     }
 
+    /**
+     * Switches to the accounts view.
+     */
     @FXML
     protected void switchToAccounts() {
         setActiveButton("accounts");
         loadView("/fxml/accounts/accounts.fxml");
     }
 
+    /**
+     * Switches to the settings view.
+     */
     @FXML
     protected void switchToSettings() {
         setActiveButton("settings");

@@ -25,25 +25,74 @@ import java.util.ArrayList;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
+/**
+ * Controller for the AI chat panel.
+ * Handles user input, message sending, and UI updates for the AI assistant.
+ */
 public class AiController extends BaseController implements Initializable {
+
+    /**
+     * List of all messages in the chat.
+     */
     public ArrayList<Message> messageList = new ArrayList<>();
+
+    /**
+     * Service for handling chat interactions with the AI.
+     */
     ChatService chatService = new ChatService();
+
+    /**
+     * Send button in the chat panel.
+     */
     @FXML
     private Button sendBtn;
+
+    /**
+     * Input field for user messages.
+     */
     @FXML
     private TextField inputField;
+
+    /**
+     * Container for quick question buttons.
+     */
     @FXML
     private FlowPane questionBtnContainer;
+
+    /**
+     * VBox containing all chat messages.
+     */
     @FXML
     private VBox messageContent;
+
+    /**
+     * VBox for displaying AI insights.
+     */
     @FXML
     private VBox insightContent;
+
+    /**
+     * ScrollPane for the chat message area.
+     */
     @FXML
     private ScrollPane messagePanel;
+
+    /**
+     * Indicates if the AI is currently generating a response.
+     */
     private boolean isGenerating = false;
+
+    /**
+     * Listener for closing the AI panel.
+     */
     @Setter
     private OnCloseListener onCloseListener;
 
+    /**
+     * Handles the send button click event.
+     *
+     * @param mouseEvent the mouse event triggered by clicking the send button
+     */
     public void handleSend(MouseEvent mouseEvent) {
         String input = inputField.getText();
         if (input != null && !input.trim().isEmpty()) {
@@ -52,11 +101,19 @@ public class AiController extends BaseController implements Initializable {
         }
     }
 
+    /**
+     * Updates the disabled state of the send button based on input and AI state.
+     */
     public void updateSendDisable() {
         String input = inputField.getText();
         sendBtn.setDisable(isGenerating || input == null || input.isEmpty());
     }
 
+    /**
+     * Handles the Enter key press event in the input field.
+     *
+     * @param keyEvent the key event triggered by pressing a key
+     */
     public void handleEnterPressed(KeyEvent keyEvent) {
         if (keyEvent.getCode().getName().equals("Enter")) {
             String input = inputField.getText();
@@ -67,6 +124,12 @@ public class AiController extends BaseController implements Initializable {
         }
     }
 
+    /**
+     * Initializes the controller and UI components.
+     *
+     * @param location  the location used to resolve relative paths for the root object, or null if unknown
+     * @param resources the resources used to localize the root object, or null if not localized
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         inputField.textProperty().addListener((obs, oldText, newText) -> {
@@ -98,6 +161,11 @@ public class AiController extends BaseController implements Initializable {
         }
     }
 
+    /**
+     * Sends a user message to the AI and updates the chat UI.
+     *
+     * @param content the message content to send
+     */
     public void sendMessage(String content) {
         Message message = new Message(content, true);
         messageList.add(message);
@@ -139,6 +207,9 @@ public class AiController extends BaseController implements Initializable {
         refreshMessageList();
     }
 
+    /**
+     * Refreshes the chat message list in the UI.
+     */
     private void refreshMessageList() {
         messageContent.getChildren().clear();
         messageContent.getStyleClass().add("gap-2_5");
@@ -173,13 +244,20 @@ public class AiController extends BaseController implements Initializable {
         }
     }
 
+    /**
+     * Handles the click event for a quick question button.
+     *
+     * @param questionBtn the button that was clicked
+     */
     private void handleQuestionButtonClick(Button questionBtn) {
-        // Handle the question button click
         String question = questionBtn.getText().trim();
         sendMessage(question);
-        // Add any additional logic for handling the question button click
+        // Additional logic for handling the question button click can be added here
     }
 
+    /**
+     * Closes the AI panel.
+     */
     @FXML
     public void closeAiPanel() {
         if (onCloseListener != null) {
@@ -187,14 +265,36 @@ public class AiController extends BaseController implements Initializable {
         }
     }
 
+    /**
+     * Listener interface for closing the AI panel.
+     */
     public interface OnCloseListener {
+        /**
+         * Called when the AI panel should be closed.
+         */
         void onCloseAiPanel();
     }
 
+    /**
+     * Represents a chat message.
+     */
     public static class Message {
+        /**
+         * The content of the message.
+         */
         public String content;
+
+        /**
+         * Whether this message is from the user.
+         */
         public boolean isUserMessage;
 
+        /**
+         * Constructs a new Message.
+         *
+         * @param content        the message content
+         * @param isUserMessage  true if the message is from the user, false if from AI
+         */
         public Message(String content, boolean isUserMessage) {
             this.content = content;
             this.isUserMessage = isUserMessage;

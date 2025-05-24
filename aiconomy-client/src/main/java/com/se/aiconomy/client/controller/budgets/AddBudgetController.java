@@ -24,18 +24,46 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
+/**
+ * Controller for adding a new budget in the budget management module.
+ */
 @Setter
 public class AddBudgetController extends BaseController {
+
+    /**
+     * Handler for budget-related requests.
+     */
     private final BudgetRequestHandler budgetRequestHandler = new BudgetRequestHandler();
+
+    /**
+     * Input field for the budget amount.
+     */
     public TextField budgetAmountInput;
+
+    /**
+     * Input field for additional notes.
+     */
     public TextField additionalNotesInput;
+
+    /**
+     * Toggle group for alert ratio radio buttons.
+     */
     @FXML
     private ToggleGroup toggleGroup;
+
+    /**
+     * Reference to the parent BudgetController.
+     */
     @Setter
     @Getter
     private BudgetController budgetController;
+
+    /**
+     * Root pane of the dialog.
+     */
     @FXML
     private StackPane rootPane;
+
     @FXML
     private VBox vbox1;
     @FXML
@@ -52,8 +80,17 @@ public class AddBudgetController extends BaseController {
     private VBox vbox7;
     @FXML
     private VBox vbox8;
+
+    /**
+     * Listener for opening the add budget panel.
+     */
     private BudgetController.OnOpenListener openListener;
+
+    /**
+     * The currently selected budget category.
+     */
     private String selectedCategory;
+
     @FXML
     private RadioButton option1RadioButton;
     @FXML
@@ -61,16 +98,24 @@ public class AddBudgetController extends BaseController {
     @FXML
     private RadioButton option3RadioButton;
 
+    /**
+     * Sets the listener for opening the add budget panel.
+     *
+     * @param listener the listener to set
+     */
     @FXML
     public void setOnOpenListener(BudgetController.OnOpenListener listener) {
         this.openListener = listener;
     }
 
+    /**
+     * Initializes the controller. If user info is not available, initialization is deferred.
+     */
     @FXML
     public void initialize() {
         if (userInfo == null) {
             Platform.runLater(() -> {
-                // 延迟到事件调度线程中处理
+                // Defer initialization to the event dispatch thread
                 if (userInfo != null) {
                     init();
                 }
@@ -80,6 +125,9 @@ public class AddBudgetController extends BaseController {
         }
     }
 
+    /**
+     * Initializes the toggle group and sets the default selected radio button.
+     */
     private void init() {
         toggleGroup = new ToggleGroup();
         option1RadioButton.setToggleGroup(toggleGroup);
@@ -88,18 +136,30 @@ public class AddBudgetController extends BaseController {
         option1RadioButton.setSelected(true);
     }
 
+    /**
+     * Handles the cancel action, closing the dialog.
+     *
+     * @param event the action event
+     */
     @FXML
     private void onCancel(ActionEvent event) {
         closeDialog(event);
     }
 
-//    @FXML
-//    public void onAddBudgetClick(ActionEvent event) {
-//        if (openListener != null) {
-//            openListener.onOpenAddBudgetPanel();
-//        }
-//    }
+    /*
+    //@FXML
+    //public void onAddBudgetClick(ActionEvent event) {
+    //    if (openListener != null) {
+    //        openListener.onOpenAddBudgetPanel();
+    //    }
+    //}
+    */
 
+    /**
+     * Handles the save action, adding the budget if the form is valid.
+     *
+     * @param event the action event
+     */
     @FXML
     private void onSave(ActionEvent event) {
         if (!addBudget()) {
@@ -108,6 +168,11 @@ public class AddBudgetController extends BaseController {
         closeDialog(event);
     }
 
+    /**
+     * Checks if the form is valid.
+     *
+     * @return true if the form is valid, false otherwise
+     */
     private boolean checkForm() {
         if (selectedCategory == null) {
             CustomDialog.show("Error", "Please select a category!", "error", "Try Again");
@@ -138,6 +203,11 @@ public class AddBudgetController extends BaseController {
         return true;
     }
 
+    /**
+     * Adds a new budget if the form is valid.
+     *
+     * @return true if the budget was added, false otherwise
+     */
     private boolean addBudget() {
         if (!checkForm()) {
             return false;
@@ -159,6 +229,12 @@ public class AddBudgetController extends BaseController {
         return true;
     }
 
+    /**
+     * Constructs a BudgetAddRequest object from the form data.
+     *
+     * @param alertRatio the alert ratio to set
+     * @return a BudgetAddRequest object
+     */
     private @NotNull BudgetAddRequest getBudgetAddRequest(double alertRatio) {
         double budgetAmount = Double.parseDouble(budgetAmountInput.getText());
         BudgetAddRequest budgetAddRequest = new BudgetAddRequest();
@@ -170,6 +246,11 @@ public class AddBudgetController extends BaseController {
         return budgetAddRequest;
     }
 
+    /**
+     * Handles the click event for category selection boxes.
+     *
+     * @param event the mouse event
+     */
     @FXML
     private void handleClick(MouseEvent event) {
         resetAllBoxes();  // Reset all boxes to default styles
@@ -207,6 +288,9 @@ public class AddBudgetController extends BaseController {
         }
     }
 
+    /**
+     * Resets all category selection boxes to their default styles.
+     */
     private void resetAllBoxes() {
         List<VBox> allBoxes = List.of(
                 vbox1, vbox2, vbox3, vbox4, vbox5, vbox6, vbox7, vbox8
@@ -242,16 +326,27 @@ public class AddBudgetController extends BaseController {
         }
     }
 
+    /**
+     * Closes the dialog and refreshes the parent budget controller.
+     *
+     * @param event the action event
+     */
     private void closeDialog(ActionEvent event) {
         if (rootPane != null) {
             rootPane.getChildren().removeIf(node ->
-                    node != rootPane.getChildren().getFirst() // 保留主页面，移除弹窗和遮罩
+                    node != rootPane.getChildren().getFirst() // Keep the main page, remove dialog and overlay
             );
         }
         budgetController.refresh();
     }
 
+    /**
+     * Listener interface for opening the add budget panel.
+     */
     public interface OnOpenListener {
+        /**
+         * Called when the add budget panel should be opened.
+         */
         void onOpenAddBudgetPanel();
     }
 }

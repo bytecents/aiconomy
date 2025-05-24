@@ -12,25 +12,33 @@ import org.slf4j.LoggerFactory;
 import java.util.Set;
 
 /**
- * 用户请求处理器
- * 负责处理所有与用户相关的请求
+ * User request handler.
+ * Responsible for handling all user-related requests.
  */
 public class UserRequestHandler {
     private static final Logger logger = LoggerFactory.getLogger(UserRequestHandler.class);
     private static final Set<DynamicBillType> BILL_TYPES = BillTypeRegistry.getInstance().getAllTypes();
     private final UserService userService;
 
+    /**
+     * Constructs a UserRequestHandler with the specified UserService.
+     *
+     * @param userService the user service
+     */
     public UserRequestHandler(UserService userService) {
         this.userService = userService;
     }
 
     /**
-     * 处理用户注册请求
+     * Handles user registration requests.
+     *
+     * @param request the user registration request
+     * @return UserInfo DTO of the newly registered user
      */
     public UserInfo handleRegisterRequest(UserRegisterRequest request) {
         logger.info("Processing register request for email: {}", request.getEmail());
 
-        // 创建新用户实体
+        // Create new user entity
         User newUser = new User();
         newUser.setEmail(request.getEmail());
         newUser.setPassword(request.getPassword());
@@ -44,7 +52,7 @@ public class UserRequestHandler {
         newUser.setMainExpenseType(request.getMainExpenseType());
         newUser.setBillTypes(BILL_TYPES);
 
-        // 注册用户
+        // Register user
         try {
             userService.register(newUser);
             logger.info("Successfully registered user with email: {}", request.getEmail());
@@ -56,7 +64,10 @@ public class UserRequestHandler {
     }
 
     /**
-     * 处理用户登录请求
+     * Handles user login requests.
+     *
+     * @param request the user login request
+     * @return UserInfo DTO of the logged-in user
      */
     public UserInfo handleLoginRequest(UserLoginRequest request) {
         logger.info("Processing login request for email: {}", request.getEmail());
@@ -73,7 +84,10 @@ public class UserRequestHandler {
     }
 
     /**
-     * 处理获取用户信息请求
+     * Handles requests to get user information.
+     *
+     * @param request the user info request
+     * @return UserInfo DTO of the user
      */
     public UserInfo handleGetUserInfoRequest(UserInfoRequest request) {
         logger.info("Processing get user info request for userId: {}", request.getUserId());
@@ -89,16 +103,19 @@ public class UserRequestHandler {
     }
 
     /**
-     * 处理更新用户信息请求
+     * Handles requests to update user information.
+     *
+     * @param request the user update request
+     * @return UserInfo DTO of the updated user
      */
     public UserInfo handleUpdateUserRequest(UserUpdateRequest request) {
         logger.info("Processing update user request for userId: {}", request.getUserId());
 
         try {
-            // 获取当前用户信息
+            // Get current user information
             User existingUser = userService.getUserById(request.getUserId());
 
-            // 只更新非null的字段
+            // Only update non-null fields
             if (request.getEmail() != null) existingUser.setEmail(request.getEmail());
             if (request.getPassword() != null) existingUser.setPassword(request.getPassword());
             if (request.getAvatarUrl() != null) existingUser.setAvatarUrl(request.getAvatarUrl());
@@ -121,7 +138,10 @@ public class UserRequestHandler {
     }
 
     /**
-     * 处理删除用户请求
+     * Handles requests to delete a user.
+     *
+     * @param request the user delete request
+     * @return true if the user was successfully deleted, otherwise throws an exception
      */
     public Boolean handleDeleteUserRequest(UserDeleteRequest request) {
         logger.info("Processing delete user request for userId: {}", request.getUserId());
@@ -136,6 +156,12 @@ public class UserRequestHandler {
         }
     }
 
+    /**
+     * Gets the bill types for a user.
+     *
+     * @param userId the user ID
+     * @return a set of DynamicBillType for the user
+     */
     public Set<DynamicBillType> getBillTypes(String userId) {
         logger.info("Getting bill types for userId: {}", userId);
         try {
@@ -146,6 +172,13 @@ public class UserRequestHandler {
         }
     }
 
+    /**
+     * Adds a bill type for a user.
+     *
+     * @param userId   the user ID
+     * @param billType the bill type to add
+     * @return a set of DynamicBillType after addition
+     */
     public Set<DynamicBillType> addBillType(String userId, DynamicBillType billType) {
         logger.info("Adding bill type for userId: {}", userId);
         try {
@@ -157,7 +190,10 @@ public class UserRequestHandler {
     }
 
     /**
-     * 将User实体转换为UserInfo DTO
+     * Converts a User entity to a UserInfo DTO.
+     *
+     * @param user the user entity
+     * @return UserInfo DTO
      */
     private UserInfo convertToUserInfo(User user) {
         return new UserInfo(

@@ -16,19 +16,43 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Service for analyzing budget information using AI assistants.
+ * <p>
+ * This service constructs prompts based on budget data and interacts with an AI assistant
+ * to analyze the budget. It supports internationalization and variable substitution in prompts.
+ * </p>
+ */
 public class BudgetAnalysisService {
+    /**
+     * Logger instance for logging information and debugging.
+     */
     private static final Logger log = LoggerFactory.getLogger(BudgetAnalysisService.class);
+
+    /**
+     * The AI assistant used for budget analysis.
+     */
     private final Assistant assistant;
 
+    /**
+     * Constructs a new BudgetAnalysisService and initializes the AI assistant.
+     */
     public BudgetAnalysisService() {
         ChatLanguageModel model = OpenAiChatModel.builder()
-            .baseUrl(Configs.BASE_URL)
-            .apiKey(Configs.API_KEY)
-            .modelName(String.valueOf(Configs.MODEL))
-            .build();
+                .baseUrl(Configs.BASE_URL)
+                .apiKey(Configs.API_KEY)
+                .modelName(String.valueOf(Configs.MODEL))
+                .build();
         this.assistant = AiServices.create(Assistant.class, model);
     }
 
+    /**
+     * Analyzes the given budget using the specified locale.
+     *
+     * @param budget the budget to analyze
+     * @param locale the locale for prompt internationalization
+     * @return the result of the AI budget analysis
+     */
     public Budget.AIAnalysis analyzeBudget(@NotNull Budget budget, Locale locale) {
         Map<String, Object> context = buildContext(budget);
         String prompt = new I18nPrompt(new Prompt()).render(locale, context);
@@ -36,10 +60,22 @@ public class BudgetAnalysisService {
         return assistant.analyzeBudgetFrom(prompt);
     }
 
+    /**
+     * Analyzes the given budget using the default locale (English).
+     *
+     * @param budget the budget to analyze
+     * @return the result of the AI budget analysis
+     */
     public Budget.AIAnalysis analyzeBudget(@NotNull Budget budget) {
         return analyzeBudget(budget, Locale.EN);
     }
 
+    /**
+     * Builds the context map for prompt variable substitution based on the given budget.
+     *
+     * @param budget the budget to build context from
+     * @return a map containing context variables for the prompt
+     */
     private Map<String, Object> buildContext(@NotNull Budget budget) {
         Map<String, Object> context = new HashMap<>();
 
@@ -53,6 +89,12 @@ public class BudgetAnalysisService {
         return context;
     }
 
+    /**
+     * Builds a list of context maps for each category budget.
+     *
+     * @param categoryBudgets the list of category budgets
+     * @return a list of maps, each representing a category budget context
+     */
     private List<Map<String, Object>> buildCategoryBudgetsContext(List<Budget.CategoryBudget> categoryBudgets) {
         List<Map<String, Object>> categoryContextList = new ArrayList<>();
 

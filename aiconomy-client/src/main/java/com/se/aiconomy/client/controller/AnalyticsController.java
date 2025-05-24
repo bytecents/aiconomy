@@ -19,35 +19,60 @@ import javafx.util.StringConverter;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/**
+ * Controller for the analytics dashboard, handling chart initialization and AI panel interactions.
+ */
 public class AnalyticsController extends BaseController implements Initializable {
-    //    @FXML private Hyperlink aiInsightBtn;
+
+    /** The panel displaying AI insights. */
     @FXML
     private ScrollPane aiPanel;
+
+    /** The main grid layout for analytics content. */
     @FXML
     private GridPane analyticsGrid;
+
+    /** The main column constraint for layout adjustment. */
     @FXML
     private ColumnConstraints mainCol;
+
+    /** The AI column constraint for layout adjustment. */
     @FXML
     private ColumnConstraints aiCol;
+
+    /** The line chart showing spending trends. */
     @FXML
     private LineChart<String, Number> spendingTrends;
+
+    /** The pie chart showing category distribution. */
     @FXML
     private PieChart categoryDistribution;
+
+    /** The Y axis for the spending trends chart. */
     @FXML
     private NumberAxis yAxis;
 
-//    private boolean isOpenAiPanel = false;
-
+    /**
+     * Sets the number of columns in the given grid, distributing width evenly.
+     *
+     * @param grid the grid pane to modify
+     * @param n    the number of columns
+     */
     private void setColumnCount(GridPane grid, int n) {
-        grid.getColumnConstraints().clear();  // 清空旧的列配置
-
+        grid.getColumnConstraints().clear();
         for (int i = 0; i < n; i++) {
             ColumnConstraints col = new ColumnConstraints();
-            col.setPercentWidth(100.0 / n);  // 每列平均分宽度
+            col.setPercentWidth(100.0 / n);
             grid.getColumnConstraints().add(col);
         }
     }
 
+    /**
+     * Initializes the analytics dashboard, setting up charts and layout.
+     *
+     * @param location  the location used to resolve relative paths for the root object, or null if unknown
+     * @param resources the resources used to localize the root object, or null if not localized
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         mainCol.setPercentWidth(100);
@@ -89,6 +114,9 @@ public class AnalyticsController extends BaseController implements Initializable
         );
     }
 
+    /**
+     * Closes the AI panel with an animated transition.
+     */
     private void closeAiPanel() {
         if (aiPanel.getContent() == null) {
             return;
@@ -112,11 +140,13 @@ public class AnalyticsController extends BaseController implements Initializable
             aiPanel.setContent(null);
             mainCol.setPercentWidth(100);
             aiCol.setPercentWidth(0);
-//            setColumnCount(analyticsGrid, 2);
         });
         activetimeline.play();
     }
 
+    /**
+     * Opens the AI panel with an animated transition and loads the AI insight view.
+     */
     @FXML
     public void openAiPanel() {
         if (aiPanel.getContent() != null) {
@@ -124,7 +154,7 @@ public class AnalyticsController extends BaseController implements Initializable
         }
         try {
             MyFXMLLoader loader = new MyFXMLLoader("/fxml/ai/ai.fxml");
-            Node view = loader.load();  // 加载 FXML 成为 Node
+            Node view = loader.load();
             AiController controller = loader.getController();
             aiPanel.setContent(view);
 
@@ -147,7 +177,6 @@ public class AnalyticsController extends BaseController implements Initializable
                 aiCol.setPercentWidth(aiColWidth);
             });
             activetimeline.play();
-//            setColumnCount(analyticsGrid, 1);
         } catch (Exception e) {
             e.printStackTrace();
         }

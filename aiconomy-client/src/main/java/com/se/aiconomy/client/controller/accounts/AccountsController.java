@@ -27,26 +27,59 @@ import lombok.Setter;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * Controller for managing the accounts list view and related actions.
+ * <p>
+ * Handles loading, displaying, and updating account items for the current user.
+ * </p>
+ */
 public class AccountsController extends BaseController {
 
+    /**
+     * Handler for account-related requests.
+     */
     private final AccountRequestHandler accountRequestHandler = new AccountRequestHandler(new AccountServiceImpl(JSONStorageServiceImpl.getInstance()));
+
+    /**
+     * List of accounts for the current user.
+     */
     private List<Account> accountList;
+
+    /**
+     * VBox container for displaying account items.
+     */
     @FXML
     private VBox accountListVBox;
+
+    /**
+     * The root StackPane of the main.fxml.
+     */
     @FXML
     @Setter
     @Getter
-    private StackPane rootPane; // 这个是 main.fxml 的最外层 StackPane
+    private StackPane rootPane;
+
+    /**
+     * Label for displaying the total balance.
+     */
     @FXML
     private Label totalBalanceLabel;
+
+    /**
+     * Label for displaying the number of active accounts.
+     */
     @FXML
     private Label activateAccountsLabel;
 
+    /**
+     * Initializes the controller after its root element has been completely processed.
+     * If userInfo is not available, initialization is deferred to the JavaFX application thread.
+     */
     @FXML
     public void initialize() {
         if (userInfo == null) {
             Platform.runLater(() -> {
-                // 延迟到事件调度线程中处理
+                // Defer initialization to the event dispatch thread
                 if (userInfo != null) {
                     init();
                 }
@@ -56,6 +89,9 @@ public class AccountsController extends BaseController {
         }
     }
 
+    /**
+     * Initializes basic data and account list.
+     */
     private void init() {
         try {
             getBasicData();
@@ -65,14 +101,25 @@ public class AccountsController extends BaseController {
         }
     }
 
+    /**
+     * Refreshes the root pane by re-initializing data.
+     */
     public void refreshRootPane() {
         init();
     }
 
+    /**
+     * Refreshes the account list and related data.
+     */
     public void refresh() {
         init();
     }
 
+    /**
+     * Loads basic account data for the current user, including total balance and account count.
+     *
+     * @throws ServiceException if an error occurs while fetching account data
+     */
     private void getBasicData() throws ServiceException {
         GetAccountsByUserIdRequest getAccountsByUserIdRequest = new GetAccountsByUserIdRequest();
         getAccountsByUserIdRequest.setUserId(userInfo.getId());
@@ -85,6 +132,9 @@ public class AccountsController extends BaseController {
         activateAccountsLabel.setText(Integer.toString(accountList.size()));
     }
 
+    /**
+     * Loads and displays the list of accounts. If no accounts exist, shows a prompt to create one.
+     */
     private void getAccountList() {
         accountListVBox.getChildren().clear();
         if (accountList.isEmpty()) {
@@ -111,13 +161,18 @@ public class AccountsController extends BaseController {
                 addAccountItem(account);
             }
         }
-
     }
 
+    /**
+     * Handles the action of adding a new account.
+     * Loads the add account dialog and displays it as a modal popup with an overlay.
+     *
+     * @param event the action event triggered by clicking the add account button
+     */
     @FXML
     public void onAddAccountClick(ActionEvent event) {
         try {
-            // 加载 add_budget.fxml
+            // Load add_accounts.fxml
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/accounts/add_accounts.fxml"));
             Parent dialogContent = loader.load();
             AddAccountController controller = loader.getController();
@@ -126,22 +181,22 @@ public class AccountsController extends BaseController {
             controller.setAccountsController(this);
             dialogContent.setStyle("-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 20;");
 
-            // 创建遮罩
+            // Create overlay
             Region overlay = new Region();
             overlay.setStyle("-fx-background-color: rgba(0,0,0,0.5);");
             overlay.setPrefSize(rootPane.getWidth(), rootPane.getHeight());
 
-            // 弹窗容器（居中）
+            // Dialog wrapper (centered)
             StackPane dialogWrapper = new StackPane(dialogContent);
             dialogWrapper.setMaxWidth(500);
             dialogWrapper.setMaxHeight(600);
 
-            // 点击遮罩关闭弹窗
+            // Close dialog when overlay is clicked
             overlay.setOnMouseClicked((MouseEvent e) -> {
                 rootPane.getChildren().removeAll(overlay, dialogWrapper);
             });
 
-            // 添加遮罩和弹窗到页面顶层
+            // Add overlay and dialog to the root pane
             rootPane.getChildren().addAll(overlay, dialogWrapper);
 
         } catch (IOException e) {
@@ -149,6 +204,11 @@ public class AccountsController extends BaseController {
         }
     }
 
+    /**
+     * Adds an account item to the account list view.
+     *
+     * @param account the account entity to display
+     */
     private void addAccountItem(Account account) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/accounts/account_item.fxml"));
@@ -214,10 +274,22 @@ public class AccountsController extends BaseController {
         }
     }
 
+    /**
+     * Returns the value if not null or blank, otherwise returns null.
+     *
+     * @param val the string value to check
+     * @return the original value or null
+     */
     private String getOrNull(String val) {
         return (val == null || val.isBlank()) ? null : val;
     }
 
+    /**
+     * Formats a double value as a currency string.
+     *
+     * @param val the double value to format
+     * @return the formatted currency string or null if value is null
+     */
     private String formatCurrency(Double val) {
         return val == null ? null : "$" + String.format("%,.2f", val);
     }
