@@ -14,11 +14,20 @@ import org.slf4j.LoggerFactory;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * Unit tests for {@link AccountService} and {@link JSONStorageService} related to account operations.
+ * <p>
+ * This class tests CRUD operations, account retrieval, and calculation functionalities for accounts.
+ * </p>
+ */
 public class AccountServiceTest {
     private static final Logger log = LoggerFactory.getLogger(BudgetServiceTest.class);
     private static JSONStorageService jsonStorageService;
     private static AccountService accountService;
 
+    /**
+     * Initializes the storage service and account service before all tests.
+     */
     @BeforeAll
     static void setup() {
         jsonStorageService = JSONStorageServiceImpl.getInstance();
@@ -27,6 +36,9 @@ public class AccountServiceTest {
         log.info("JSONStorageService initialized for Budget");
     }
 
+    /**
+     * Cleans up all accounts from storage before each test.
+     */
     @BeforeEach
     void cleanUp() {
         jsonStorageService.findAll(Account.class)
@@ -34,6 +46,9 @@ public class AccountServiceTest {
         log.info("Cleaned up all budgets before test");
     }
 
+    /**
+     * Tests adding a new account to the storage.
+     */
     @Test
     @Order(1)
     void testAddAccount() {
@@ -50,6 +65,9 @@ public class AccountServiceTest {
         log.info("Added account1");
     }
 
+    /**
+     * Tests updating an existing account in the storage.
+     */
     @Test
     @Order(2)
     void testUpdateAccount() {
@@ -70,6 +88,9 @@ public class AccountServiceTest {
         log.info("Updated account2");
     }
 
+    /**
+     * Tests removing an account from the storage.
+     */
     @Test
     @Order(3)
     void testRemoveAccount() {
@@ -82,6 +103,9 @@ public class AccountServiceTest {
         log.info("Removed account3");
     }
 
+    /**
+     * Tests retrieving accounts by user ID.
+     */
     @Test
     @Order(4)
     void testGetAccountsByUserId() {
@@ -112,6 +136,11 @@ public class AccountServiceTest {
         log.info("Got accounts for user4");
     }
 
+    /**
+     * Tests calculating monthly income for a user.
+     *
+     * @throws ServiceException if calculation fails
+     */
     @Test
     @Order(5)
     void testCalculateMonthlyIncome() throws ServiceException {
@@ -125,6 +154,9 @@ public class AccountServiceTest {
         accountService.calculateMonthlySpending("user7", LocalDateTime.now().getMonth());
     }
 
+    /**
+     * Tests calculating the credit card due amount for a user.
+     */
     @Test
     @Order(6)
     void testCalculateCreditCardDue() {
@@ -146,6 +178,9 @@ public class AccountServiceTest {
         log.info("Calculated credit card due for user4");
     }
 
+    /**
+     * Tests calculating the next due date for a user's credit card accounts.
+     */
     @Test
     @Order(7)
     void testCalculateNextDueDate() {

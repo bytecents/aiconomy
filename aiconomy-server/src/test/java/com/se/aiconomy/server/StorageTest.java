@@ -13,14 +13,43 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Unit tests for {@link JSONStorageService} with {@link TransactionDto} entity.
+ * <p>
+ * This class tests the basic CRUD operations and upsert functionality
+ * for transaction data using the JSONStorageService implementation.
+ * </p>
+ */
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class StorageTest {
+    /**
+     * Logger instance for logging test information.
+     */
     private static final Logger log = LoggerFactory.getLogger(StorageTest.class);
+
+    /**
+     * Test transaction ID used in test cases.
+     */
     private static final String TEST_TRANSACTION_ID = "T2025041001";
+
+    /**
+     * Test merchant order ID used in test cases.
+     */
     private static final String TEST_MERCHANT_ORDER_ID = "M2025041001";
+
+    /**
+     * Test transaction time used in test cases.
+     */
     private static final LocalDateTime TEST_TRANSACTION_TIME = LocalDateTime.of(2025, 4, 10, 9, 23, 11);
+
+    /**
+     * JSON storage service instance used for persisting transactions.
+     */
     private static JSONStorageService jsonStorageService;
 
+    /**
+     * Initializes the JSON storage service before all tests.
+     */
     @BeforeAll
     static void setup() {
         jsonStorageService = JSONStorageServiceImpl.getInstance();
@@ -28,16 +57,25 @@ public class StorageTest {
             log.info("Collection initialized for TransactionDto");
         }
         log.info("JSONStorageService initialized with location: {}",
-            System.getProperty("jsonStorage.location"));
+                System.getProperty("jsonStorage.location"));
     }
 
+    /**
+     * Cleans up all transaction data before each test to ensure test isolation.
+     */
     @BeforeEach
     void cleanupBeforeTest() {
         jsonStorageService.findAll(TransactionDto.class)
-            .forEach(instance -> jsonStorageService.delete(instance, TransactionDto.class));
+                .forEach(instance -> jsonStorageService.delete(instance, TransactionDto.class));
         log.info("Cleaned up test data");
     }
 
+    /**
+     * Tests inserting a transaction into the storage.
+     * <p>
+     * Asserts that the transaction can be found after insertion and its fields match the expected values.
+     * </p>
+     */
     @Test
     @Order(1)
     void testInsertTransaction() {
@@ -51,6 +89,12 @@ public class StorageTest {
         log.info("Successfully tested transaction insertion");
     }
 
+    /**
+     * Tests updating a transaction in the storage.
+     * <p>
+     * Inserts a transaction, updates its amount and status, and asserts the changes are persisted.
+     * </p>
+     */
     @Test
     @Order(2)
     void testUpdateTransaction() {
@@ -71,6 +115,12 @@ public class StorageTest {
         log.info("Successfully tested transaction update");
     }
 
+    /**
+     * Tests deleting a transaction from the storage.
+     * <p>
+     * Inserts and then deletes a transaction, asserting it cannot be found afterwards.
+     * </p>
+     */
     @Test
     @Order(3)
     void testDeleteTransaction() {
@@ -84,6 +134,12 @@ public class StorageTest {
         log.info("Successfully tested transaction deletion");
     }
 
+    /**
+     * Tests retrieving all transactions from the storage.
+     * <p>
+     * Inserts multiple transactions and asserts the total count matches the number inserted.
+     * </p>
+     */
     @Test
     @Order(4)
     void testFindAllTransactions() {
@@ -101,17 +157,23 @@ public class StorageTest {
         log.info("Successfully tested finding all transactions");
     }
 
+    /**
+     * Tests upserting a transaction in the storage.
+     * <p>
+     * Asserts that upsert can both insert and update a transaction.
+     * </p>
+     */
     @Test
     @Order(5)
     void testUpsertTransaction() {
         TransactionDto transaction = createSampleTransaction();
 
-        // Test_odl insert via upsert
+        // Test initial insert via upsert
         jsonStorageService.upsert(transaction);
         Optional<TransactionDto> found = jsonStorageService.findById(TEST_TRANSACTION_ID, TransactionDto.class);
         Assertions.assertTrue(found.isPresent());
 
-        // Test_odl update via upsert
+        // Test update via upsert
         transaction.setRemark("Updated via upsert");
         jsonStorageService.upsert(transaction);
         found = jsonStorageService.findById(TEST_TRANSACTION_ID, TransactionDto.class);
@@ -120,6 +182,12 @@ public class StorageTest {
         log.info("Successfully tested transaction upsert");
     }
 
+    /**
+     * Tests inserting a transaction with null fields.
+     * <p>
+     * Asserts that the transaction is stored and null fields remain null.
+     * </p>
+     */
     @Test
     @Order(6)
     void testTransactionWithNullFields() {
@@ -137,26 +205,30 @@ public class StorageTest {
         log.info("Successfully tested transaction with null fields");
     }
 
+    /**
+     * Creates a sample {@link TransactionDto} for use in tests.
+     *
+     * @return a sample TransactionDto instance
+     */
     private TransactionDto createSampleTransaction() {
-        // 使用 builder 模式创建 TransactionDto 对象
+        // Create TransactionDto object using builder pattern
         TransactionDto transaction = TransactionDto.builder()
-            .time(TEST_TRANSACTION_TIME)  // 设置交易时间
-            .type("购物")  // 设置交易类型
-            .counterparty("Apple Store")  // 设置交易对方
-            .product("iPhone 15")  // 设置商品名称
-            .incomeOrExpense("支出")  // 设置收入或支出
-            .amount("3999.99")  // 设置金额
-            .paymentMethod("信用卡")  // 设置支付方式
-            .status("待支付")  // 设置交易状态
-            .merchantOrderId(TEST_MERCHANT_ORDER_ID)  // 设置商户订单号
-            .accountId("userAcc001")  // 设置账户ID
-            .billType(DynamicBillType.fromBillType(BillType.EDUCATION))  // 设置账单类型
-            .userId("1")  // 设置用户ID
-            .accountId("userAcc002")  // 设置账户ID
-            .build();  // 使用 build() 方法创建对象
+                .time(TEST_TRANSACTION_TIME)  // Set transaction time
+                .type("购物")  // Set transaction type
+                .counterparty("Apple Store")  // Set counterparty
+                .product("iPhone 15")  // Set product name
+                .incomeOrExpense("支出")  // Set income or expense
+                .amount("3999.99")  // Set amount
+                .paymentMethod("信用卡")  // Set payment method
+                .status("待支付")  // Set transaction status
+                .merchantOrderId(TEST_MERCHANT_ORDER_ID)  // Set merchant order ID
+                .accountId("userAcc001")  // Set account ID
+                .billType(DynamicBillType.fromBillType(BillType.EDUCATION))  // Set bill type
+                .userId("1")  // Set user ID
+                .accountId("userAcc002")  // Set account ID
+                .build();  // Build the object
 
         transaction.setId(TEST_TRANSACTION_ID);
         return transaction;
     }
-
 }

@@ -13,11 +13,31 @@ import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Unit tests for JSON reading functionality.
+ * <p>
+ * This class tests the ability to read a list of {@link TransactionDto} objects from a JSON file
+ * using the {@link JsonUtils#readJson(String)} utility method. It verifies that the data is correctly
+ * deserialized and the fields of the first transaction match the expected values.
+ * </p>
+ */
 public class JsonTest {
 
+    /**
+     * Logger instance for logging test information.
+     */
     private static final Logger log = LoggerFactory.getLogger(JsonTest.class);
+
+    /**
+     * DateTimeFormatter for formatting transaction time.
+     */
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
 
+    /**
+     * Tests reading transactions from a JSON file and validates the deserialized data.
+     *
+     * @throws IOException if reading the JSON file fails
+     */
     @Test
     public void testReadJson() throws IOException {
         List<TransactionDto> transactions = JsonUtils.readJson(
