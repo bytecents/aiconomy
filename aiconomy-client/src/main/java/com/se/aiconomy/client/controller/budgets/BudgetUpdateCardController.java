@@ -15,6 +15,7 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -121,7 +122,6 @@ public class BudgetUpdateCardController extends BaseController {
             CustomDialog.show("Error", "Please input budget amount!", "error", "Try Again");
             return false;
         }
-
         try {
             double budgetAmount = Double.parseDouble(budgetText.trim());
             if (budgetAmount < 0) {
@@ -138,6 +138,17 @@ public class BudgetUpdateCardController extends BaseController {
             return false;
         }
         return true;
+    }
+
+    private @NotNull BudgetUpdateRequest getBudgetUpdateRequest() {
+        double budgetAmount = Double.parseDouble(budgetAmountInput.getText());
+        BudgetUpdateRequest budgetUpdateRequest = new BudgetUpdateRequest();
+        budgetUpdateRequest.setUserId(userInfo.getId());
+        budgetUpdateRequest.setBudgetCategory(selectedCategory);
+        budgetUpdateRequest.setBudgetAmount(budgetAmount);
+        budgetUpdateRequest.setAlertSettings(Double.parseDouble(budgetAmountInput.getText()));
+        budgetUpdateRequest.setNotes(additionalNotesInput.getText());
+        return budgetUpdateRequest;
     }
 
     private boolean saveBudget() {
@@ -164,17 +175,6 @@ public class BudgetUpdateCardController extends BaseController {
             CustomDialog.show("Error", e.getMessage(), "error", "Try Again");
         }
         return true;
-    }
-
-    private @NotNull BudgetUpdateRequest getBudgetUpdateRequest() {
-        double budgetAmount = Double.parseDouble(budgetAmountInput.getText());
-        BudgetUpdateRequest budgetUpdateRequest = new BudgetUpdateRequest();
-        budgetUpdateRequest.setUserId(userInfo.getId());
-        budgetUpdateRequest.setBudgetCategory(selectedCategory);
-        budgetUpdateRequest.setBudgetAmount(budgetAmount);
-        budgetUpdateRequest.setAlertSettings(Double.parseDouble(budgetAmountInput.getText()));
-        budgetUpdateRequest.setNotes(additionalNotesInput.getText());
-        return budgetUpdateRequest;
     }
 
     @FXML

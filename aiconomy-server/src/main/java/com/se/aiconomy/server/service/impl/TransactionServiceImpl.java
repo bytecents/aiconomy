@@ -478,67 +478,26 @@ public class TransactionServiceImpl implements TransactionService {
         return filteredTransactions;
     }
 
-    //手动添加交易记录
-//    public TransactionDto addTransactionManually(String userId, String incomeOrExpense, String amount,
-//                                                 LocalDateTime time, String product, String type, String accountId)
-//            throws ServiceException {
-//
-//        if (userId == null || incomeOrExpense == null || amount == null || type == null || accountId == null) {
-//            throw new ServiceException("Missing required fields for transaction", null);
-//        }
-//
-//        TransactionDto transaction = new TransactionDto();
-//        transaction.setUserId(userId);
-//        transaction.setIncomeOrExpense(incomeOrExpense);
-//        transaction.setAmount(amount);
-//        transaction.setTime(time != null ? time : LocalDateTime.now());
-//        transaction.setProduct(product);
-//        transaction.setType(type);
-//        transaction.setAccountId(accountId);
-//
-//        return transactionDao.create(transaction);
-//    }
     @Override
     public TransactionDto addTransactionManually(String userId, String incomeOrExpense, String amount,
                                                  LocalDateTime time, String product, String type, String accountId, String remark)
             throws ServiceException {
-        String id = UUID.randomUUID().toString();
-        Transaction transaction = new Transaction(
-                id,
-                time,
-                type,
-                null,
-                product,
-                incomeOrExpense,
-                amount,
-                "CNY",
-                null,
-                "SUCCESS",
-                product,
-                accountId,
-                remark
-        );
+        if (userId == null || incomeOrExpense == null || amount == null || type == null || accountId == null) {
+            throw new ServiceException("Missing required fields for transaction", null);
+        }
 
-        // 使用分类服务对单个交易进行分类
-        List<Transaction> transactionList = Collections.singletonList(transaction);
-        List<DynamicBillType> billTypes = new TransactionClassificationService().classifyTransactions(transactionList);
-        DynamicBillType billType = billTypes.get(0);
+        TransactionDto transaction = new TransactionDto();
+        transaction.setUserId(userId);
+        transaction.setIncomeOrExpense(incomeOrExpense);
+        transaction.setAmount(amount);
+        transaction.setTime(time != null ? time : LocalDateTime.now());
+        transaction.setProduct(product);
+        transaction.setType(type);
+        transaction.setAccountId(accountId);
+        transaction.setBillType(DynamicBillType.fromString(type));
+        transaction.setRemark(remark);
 
-        TransactionDto transactionDto = TransactionDto.builder()
-                .id(id)
-                .time(time)
-                .type(type)
-                .product(product)
-                .incomeOrExpense(incomeOrExpense)
-                .amount(amount)
-                .accountId(accountId)
-                .userId(userId)
-                .remark(remark)
-                .billType(billType)  // 设置 billType
-                .build();
-
-        transactionDao.create(transactionDto);
-        return transactionDto;
+        return transactionDao.create(transaction);
     }
 
     /**
@@ -561,13 +520,13 @@ public class TransactionServiceImpl implements TransactionService {
 
         public boolean matches(TransactionDto transaction) {
             return (type == null || type.equals(transaction.getType())) &&
-                    (counterparty == null || counterparty.equals(transaction.getCounterparty())) &&
-                    (paymentMethod == null || paymentMethod.equals(transaction.getPaymentMethod())) &&
-                    (status == null || status.equals(transaction.getStatus())) &&
-                    (incomeOrExpense == null || incomeOrExpense.equals(transaction.getIncomeOrExpense())) &&
-                    (product == null || product.equals(transaction.getProduct())) &&
-                    (startTime == null || !transaction.getTime().isBefore(startTime)) &&
-                    (endTime == null || !transaction.getTime().isAfter(endTime));
+                   (counterparty == null || counterparty.equals(transaction.getCounterparty())) &&
+                   (paymentMethod == null || paymentMethod.equals(transaction.getPaymentMethod())) &&
+                   (status == null || status.equals(transaction.getStatus())) &&
+                   (incomeOrExpense == null || incomeOrExpense.equals(transaction.getIncomeOrExpense())) &&
+                   (product == null || product.equals(transaction.getProduct())) &&
+                   (startTime == null || !transaction.getTime().isBefore(startTime)) &&
+                   (endTime == null || !transaction.getTime().isAfter(endTime));
         }
     }
 }

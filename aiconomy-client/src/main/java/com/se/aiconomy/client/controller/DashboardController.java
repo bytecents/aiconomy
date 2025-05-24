@@ -32,7 +32,8 @@ import java.util.Map;
 
 public class DashboardController extends BaseController {
     private final DashboardRequestHandler dashBoardRequestHandler = new DashboardRequestHandler(new AccountServiceImpl(JSONStorageServiceImpl.getInstance()), new TransactionServiceImpl(), new BudgetServiceImpl(JSONStorageServiceImpl.getInstance()));
-
+    @FXML
+    Button quickAddButton;
     @FXML
     private Label welcomeTextField;
     @FXML
@@ -82,10 +83,6 @@ public class DashboardController extends BaseController {
     private NumberAxis yAxis;
 
     @FXML
-    private Button quickAddButton;
-
-
-    @FXML
     void initialize() {
         if (userInfo == null) {
             Platform.runLater(() -> {
@@ -103,7 +100,7 @@ public class DashboardController extends BaseController {
         setDate();
         try {
             setDashboardBasicData();
-//            setDashBoardTransactionData(); // TBI
+            setDashBoardTransactionData(); // TBI
             setDashboardSpendTrendsData(); // TBI
             setDashBoardBudgetsData();
             setDashboardAccountOverviewData(); // TBI
@@ -164,7 +161,6 @@ public class DashboardController extends BaseController {
 
     private void setDashBoardBudgetsData() throws ServiceException {
         Map<String, Double> budgetSpendingRatio = dashBoardRequestHandler.getBudgetSpendingRatio(userInfo.getId());
-        System.out.println(budgetSpendingRatio);
         int count = 0;
         for (Map.Entry<String, Double> categoryInfo : budgetSpendingRatio.entrySet()) {
             if (count == 3) break;
@@ -208,7 +204,7 @@ public class DashboardController extends BaseController {
                 }
                 case 1: {
                     accountBankName2.setText(accountBankName);
-                    accountType1.setText(accountType);
+                    accountType2.setText(accountType);
                     accountBalance2.setText("$ " + accountBalance);
                 }
             }
