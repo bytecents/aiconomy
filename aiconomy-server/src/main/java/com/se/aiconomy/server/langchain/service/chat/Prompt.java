@@ -30,7 +30,7 @@ public class Prompt extends BasePromptTemplate {
             
                 Be concise, precise, and ensure that the user can easily understand the financial concepts you're discussing.
             
-                UserId: {{ user_id }}.
+                {% if user_id %}UserId: {{ user_id }}.{% endif %}
             """;
 
     private static final String PROMPT_TEMPLATE_CN = """
@@ -59,7 +59,7 @@ public class Prompt extends BasePromptTemplate {
             
                 请简洁、精确，并确保用户能够轻松理解您讨论的财务概念。
             
-                用户的ID为：{{ user_id }}。
+                {% if user_id %}用户的ID为：{{ user_id }}。{% endif %}
             """;
 
     private static final String PROMPT_TEMPLATE_JP = """
@@ -88,7 +88,7 @@ public class Prompt extends BasePromptTemplate {
             
                 簡潔で正確な回答を心掛け、ユーザーが財務に関する概念を簡単に理解できるようにしてください。
             
-                ユーザのIDは、{{ user_id }}です。
+                {% if user_id %}ユーザのIDは：{{ user_id }}です。{% endif %}
             """;
 
     public Prompt() {

@@ -2,6 +2,7 @@ package com.se.aiconomy.server;
 
 import com.se.aiconomy.server.common.exception.ServiceException;
 import com.se.aiconomy.server.handler.DashboardRequestHandler;
+import com.se.aiconomy.server.langchain.common.model.DynamicBillType;
 import com.se.aiconomy.server.model.dto.TransactionDto;
 import com.se.aiconomy.server.model.entity.Budget;
 import com.se.aiconomy.server.service.impl.BudgetServiceImpl;
@@ -46,7 +47,7 @@ public class DashboardRequestHandlerTest {
         String userId = TEST_USER;
 
         // 创建预算
-        Budget foodBudget = createBudget(userId, "budget1", "Food", 1000.0);
+        Budget foodBudget = createBudget(userId, "budget1", "Other", 1000.0);
         Budget shoppingBudget = createBudget(userId, "budget2", "Shopping", 500.0);
         Budget transportBudget = createBudget(userId, "budget3", "Transportation", 200.0);
 
@@ -56,7 +57,7 @@ public class DashboardRequestHandlerTest {
         storageService.insert(transportBudget);
 
         // 创建交易
-        TransactionDto foodTransaction = createTransaction(userId, "tx1", "Food", "Expense", "800.0", TEST_TIME);
+        TransactionDto foodTransaction = createTransaction(userId, "tx1", "Other", "Expense", "800.0", TEST_TIME);
         TransactionDto shoppingTransaction = createTransaction(userId, "tx2", "Shopping", "Expense", "450.0", TEST_TIME);
         TransactionDto transportTransaction = createTransaction(userId, "tx3", "Transportation", "Expense", "100.0", TEST_TIME);
 
@@ -72,14 +73,14 @@ public class DashboardRequestHandlerTest {
         assertNotNull(result, "结果不应为空");
         assertEquals(3, result.size(), "应包含 3 个预算类别");
 
-        // 验证排序（按比率降序：Shopping 0.9, Food 0.8, Transportation 0.5）
-        String[] expectedOrder = {"Shopping", "Food", "Transportation"};
+        // 验证排序（按比率降序：Shopping 0.9, Other 0.8, Transportation 0.5）
+        String[] expectedOrder = {"Shopping", "Other", "Transportation"};
         String[] actualOrder = result.keySet().toArray(new String[0]);
         assertArrayEquals(expectedOrder, actualOrder, "预算类别应按比率降序排序");
 
         // 验证比率值
         assertEquals(0.9, result.get("Shopping"), 0.001, "Shopping 比率应为 0.9");
-        assertEquals(0.8, result.get("Food"), 0.001, "Food 比率应为 0.8");
+        assertEquals(0.8, result.get("Other"), 0.001, "Food 比率应为 0.8");
         assertEquals(0.5, result.get("Transportation"), 0.001, "Transportation 比率应为 0.5");
     }
 
@@ -102,6 +103,7 @@ public class DashboardRequestHandlerTest {
         transaction.setIncomeOrExpense(incomeOrExpense);
         transaction.setAmount(amount);
         transaction.setTime(time);
+        transaction.setBillType(DynamicBillType.fromString(type));
         return transaction;
     }
 

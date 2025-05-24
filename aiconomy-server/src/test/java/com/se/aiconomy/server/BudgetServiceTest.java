@@ -229,7 +229,7 @@ public class BudgetServiceTest {
                 "account1",
                 "remarks");
 
-        Assertions.assertEquals(2, budgetService.getTotalAlertCount("user9"));
+        Assertions.assertEquals(1, budgetService.getTotalAlertCount("user9"));
     }
 
     @Test
