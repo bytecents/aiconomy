@@ -255,6 +255,10 @@
     -fx-border-radius: 9999;
 }
 
+.p-1-2-1-2 {
+    -fx-padding: 4 8 4 8;
+}
+
 .gap-0_5 {
     -fx-spacing: 2;
 }
@@ -349,6 +353,10 @@
 
 .bg-red-100 {
     -fx-background-color: #FEF2F2;
+}
+
+.border-red-100 {
+    -fx-border-color: #FEE2E2;
 }
 
 .bg-blue-100 {
@@ -764,6 +772,10 @@
     -fx-background-color: #EF4444;
 }
 
+.text-red-700 {
+    -fx-text-fill: #991B1B;
+}
+
 .hover-bg-gray-100:hover {
     -fx-background-color: #F3F4F6;
 }
@@ -778,6 +790,22 @@
 
 .blue-bar .track {
     -fx-background-color: #f3f4f6;
+}
+
+.purple-bar .track {
+    -fx-background-color: #f3f4f6;
+}
+
+.purple-bar .bar {
+    -fx-background-color: #9333ea;
+}
+
+.border-purple-200 {
+    -fx-border-color: #E0E7FF;
+}
+
+.text-purple-700 {
+    -fx-text-fill: #7e22ce;
 }
 
 .blue-bar .bar {

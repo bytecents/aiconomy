@@ -1,7 +1,9 @@
 package com.se.aiconomy.client.controller.budgets;
 
+import com.se.aiconomy.client.Application.StyleClassFixer;
 import com.se.aiconomy.client.common.MyFXMLLoader;
 import com.se.aiconomy.client.controller.BaseController;
+import com.se.aiconomy.client.controller.ai.AiController;
 import com.se.aiconomy.server.handler.BudgetRequestHandler;
 import com.se.aiconomy.server.model.dto.budget.request.BudgetCategoryInfoRequest;
 import com.se.aiconomy.server.model.dto.budget.request.BudgetTotalInfoRequest;
@@ -9,6 +11,8 @@ import com.se.aiconomy.server.model.dto.budget.response.BudgetCategoryInfo;
 import com.se.aiconomy.server.model.dto.budget.response.TotalBudgetInfo;
 import com.se.aiconomy.server.service.impl.BudgetServiceImpl;
 import com.se.aiconomy.server.storage.service.impl.JSONStorageServiceImpl;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -17,10 +21,13 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
+import javafx.util.Duration;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -34,6 +41,12 @@ public class BudgetController extends BaseController {
 
 
     private final BudgetRequestHandler handler = new BudgetRequestHandler(new BudgetServiceImpl(JSONStorageServiceImpl.getInstance()));
+    @FXML
+    private ScrollPane aiOptimizePanel;
+    @FXML
+    private ColumnConstraints mainCol;
+    @FXML
+    private ColumnConstraints aiOptimizeCol;
     @FXML
     private Label totalBudgetLabel;
     @FXML
@@ -85,6 +98,8 @@ public class BudgetController extends BaseController {
         userId = userInfo.getId();
         loadTotalBudgetInfo();
         loadCategoryBudgets();
+        mainCol.setPercentWidth(100);
+        aiOptimizeCol.setPercentWidth(0);
     }
 
     public void refresh() {
@@ -294,6 +309,69 @@ public class BudgetController extends BaseController {
 
     public interface OnOpenListener {
         void onOpenBudgetPanel();
+    }
+
+    @FXML
+    public void openAiOptimizePanel() {
+        if (aiOptimizePanel.getContent() != null) {
+            return;
+        }
+        try {
+            MyFXMLLoader loader = new MyFXMLLoader("/fxml/budgets/ai-optimize-panel.fxml");
+            Node view = loader.load();
+            AiOptimizePanelController controller = loader.getController();
+            aiOptimizePanel.setContent(view);
+
+            controller.setUserInfo(userInfo);
+            controller.setOnCloseListener(this::closeAiOptimizePanel);
+
+            Duration duration = Duration.millis(300);
+            Timeline activetimeline = new Timeline(new KeyFrame(duration));
+            activetimeline.currentTimeProperty().addListener((obs, oldTime, newTime) -> {
+                double t = newTime.toMillis() / duration.toMillis();
+                double easedProgress;
+                if (t < 0.5) {
+                    easedProgress = 4 * t * t * t;
+                } else {
+                    easedProgress = 1 - Math.pow(-2 * t + 2, 3) / 2;
+                }
+                double mainColWidth = 100 - 40 * easedProgress;
+                double aiColWidth = 40 * easedProgress;
+                mainCol.setPercentWidth(mainColWidth);
+                aiOptimizeCol.setPercentWidth(aiColWidth);
+            });
+            activetimeline.play();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void closeAiOptimizePanel() {
+        if (aiOptimizePanel.getContent() == null) {
+            return;
+        }
+        Duration duration = Duration.millis(300);
+        Timeline activetimeline = new Timeline(new KeyFrame(duration));
+        activetimeline.currentTimeProperty().addListener((obs, oldTime, newTime) -> {
+            double t = newTime.toMillis() / duration.toMillis();
+            double easedProgress;
+            if (t < 0.5) {
+                easedProgress = 4 * t * t * t;
+            } else {
+                easedProgress = 1 - Math.pow(-2 * t + 2, 3) / 2;
+            }
+            double mainColWidth = 60 + 40 * easedProgress;
+            double aiColWidth = 40 - 40 * easedProgress;
+            mainCol.setPercentWidth(mainColWidth);
+            aiOptimizeCol.setPercentWidth(aiColWidth);
+        });
+        activetimeline.setOnFinished(event -> {
+            aiOptimizePanel.setContent(null);
+            mainCol.setPercentWidth(100);
+            aiOptimizeCol.setPercentWidth(0);
+//            setColumnCount(analyticsGrid, 2);
+        });
+        activetimeline.play();
     }
 
 }

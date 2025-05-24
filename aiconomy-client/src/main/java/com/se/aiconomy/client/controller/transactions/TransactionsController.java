@@ -1,5 +1,6 @@
 package com.se.aiconomy.client.controller.transactions;
 
+import com.se.aiconomy.client.common.CustomDialog;
 import com.se.aiconomy.client.common.MyFXMLLoader;
 import com.se.aiconomy.client.controller.BaseController;
 import com.se.aiconomy.server.handler.AccountRequestHandler;
@@ -24,6 +25,7 @@ import javafx.scene.input.InputMethodEvent;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -226,6 +228,23 @@ public class TransactionsController extends BaseController implements Initializa
 
     public void handleTransactionType(ActionEvent actionEvent) {
         refreshTransactionList();
+    }
+
+    public void handleExportTransaction(ActionEvent actionEvent) {
+        DirectoryChooser directoryChooser = new DirectoryChooser();
+        directoryChooser.setTitle("Export Transaction File");
+
+        Stage stage = (Stage) transactionItems.getScene().getWindow();
+        File directory = directoryChooser.showDialog(stage);
+        if (directory != null) {
+            try {
+                String filePath = directory.getAbsolutePath();
+                handler.handleExportTransactionsToExcel(filePath + "/transactions.xlsx");
+            } catch (Exception e) {
+                CustomDialog.show("Error", e.getMessage(), "error", "OK");
+                e.printStackTrace();
+            }
+        }
     }
 
     public interface OnOpenListener {
