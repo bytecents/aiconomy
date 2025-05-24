@@ -34,24 +34,38 @@ import java.util.function.UnaryOperator;
 
 @Setter
 public class AddTransactionController extends BaseController implements Initializable {
-    @FXML private VBox category1;
-    @FXML private VBox category2;
-    @FXML private VBox category3;
-    @FXML private VBox category4;
-    @FXML private Map<String, VBox> categoryList = new java.util.HashMap<>();
+    @FXML
+    private VBox category1;
+    @FXML
+    private VBox category2;
+    @FXML
+    private VBox category3;
+    @FXML
+    private VBox category4;
+    @FXML
+    private Map<String, VBox> categoryList = new java.util.HashMap<>();
 
-    @FXML private VBox categoryPanel;
-    @FXML private ComboBox<String> accountComboBox;
-    @FXML private TextField descriptionInput;
-    @FXML private DatePicker datePicker;
-    @FXML private TextField amountInput;
-    @FXML private Button incomeBtn;
-    @FXML private Button expenseBtn;
-    @FXML private StackPane rootPane;
+    @FXML
+    private VBox categoryPanel;
+    @FXML
+    private ComboBox<String> accountComboBox;
+    @FXML
+    private TextField descriptionInput;
+    @FXML
+    private DatePicker datePicker;
+    @FXML
+    private TextField amountInput;
+    @FXML
+    private Button incomeBtn;
+    @FXML
+    private Button expenseBtn;
+    @FXML
+    private StackPane rootPane;
     private TransactionRequestHandler handler = new TransactionRequestHandler();
     private boolean isExpense = true;
     private String chosenCategory;
     private BaseController parentController;
+    private AddTransactionController.OnCloseListener closeListener;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -173,12 +187,6 @@ public class AddTransactionController extends BaseController implements Initiali
         chooseCategory("Entertainment");
     }
 
-    public interface OnCloseListener {
-        void onCloseAddTransactionPanel();
-    }
-
-    private AddTransactionController.OnCloseListener closeListener;
-
     @FXML
     public void setOnCloseListener(AddTransactionController.OnCloseListener listener) {
         this.closeListener = listener;
@@ -200,7 +208,7 @@ public class AddTransactionController extends BaseController implements Initiali
         try {
             handler.handleAddTransactionManually(
                     userInfo.getId(),
-                    isExpense ? "expense" : "income",
+                    isExpense ? "Expense" : "Income",
                     amount,
                     dateTime,
                     description,
@@ -218,5 +226,9 @@ public class AddTransactionController extends BaseController implements Initiali
             System.out.println("Transaction refreshed.");
         }
         closeAddTransaction();
+    }
+
+    public interface OnCloseListener {
+        void onCloseAddTransactionPanel();
     }
 }

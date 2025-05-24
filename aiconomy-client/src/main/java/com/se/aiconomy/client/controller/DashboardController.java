@@ -32,7 +32,8 @@ import java.util.Map;
 
 public class DashboardController extends BaseController {
     private final DashboardRequestHandler dashBoardRequestHandler = new DashboardRequestHandler(new AccountServiceImpl(JSONStorageServiceImpl.getInstance()), new TransactionServiceImpl(), new BudgetServiceImpl(JSONStorageServiceImpl.getInstance()));
-
+    @FXML
+    Button quickAddButton;
     @FXML
     private Label welcomeTextField;
     @FXML
@@ -76,7 +77,9 @@ public class DashboardController extends BaseController {
     @FXML
     private Label accountType2;
     @FXML
-    Button quickAddButton;
+    private LineChart<String, Number> spendingTrends;
+    @FXML
+    private NumberAxis yAxis;
 
     @FXML
     void initialize() {
@@ -200,7 +203,7 @@ public class DashboardController extends BaseController {
                 }
                 case 1: {
                     accountBankName2.setText(accountBankName);
-                    accountType1.setText(accountType);
+                    accountType2.setText(accountType);
                     accountBalance2.setText("$ " + accountBalance);
                 }
             }
