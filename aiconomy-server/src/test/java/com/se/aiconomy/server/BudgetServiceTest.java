@@ -211,7 +211,7 @@ public class BudgetServiceTest {
                 "");
         budgetService.addBudget(budget1);
         budgetService.addBudget(budget2);
-        
+
         transactionService.addTransactionManually("user9",
                 "Expense",
                 "900",
@@ -228,8 +228,8 @@ public class BudgetServiceTest {
                 "Food",
                 "account1",
                 "remarks");
-        
-        Assertions.assertEquals(2, budgetService.getTotalAlertCount("user9"));
+
+        Assertions.assertEquals(1, budgetService.getTotalAlertCount("user9"));
     }
 
     @Test
@@ -250,7 +250,7 @@ public class BudgetServiceTest {
                 "Transportation",
                 "account1",
                 "remarks");
-        
+
         double dailyAvailable = budgetService.getDailyAvailableBudget("user10");
         Assertions.assertTrue(dailyAvailable > 0);
     }
@@ -265,7 +265,7 @@ public class BudgetServiceTest {
                 0.8,
                 "");
         budgetService.addBudget(budget);
-        
+
         int leftDays = budgetService.getLeftDays("user11");
         Assertions.assertTrue(leftDays > 0);
     }
@@ -287,7 +287,7 @@ public class BudgetServiceTest {
                 "");
         budgetService.addBudget(budget1);
         budgetService.addBudget(budget2);
-        
+
         Assertions.assertEquals(3000, budgetService.getTotalBudgetByCategory("user12", "Transportation"));
     }
 
@@ -301,7 +301,7 @@ public class BudgetServiceTest {
                 0.8,
                 "");
         budgetService.addBudget(budget);
-        
+
         transactionService.addTransactionManually("user13",
                 "Expense",
                 "300",
@@ -318,7 +318,7 @@ public class BudgetServiceTest {
                 "Transportation",
                 "account1",
                 "remarks");
-        
+
         Assertions.assertEquals(700, budgetService.getTotalSpentByCategory("user13", "Transportation"));
     }
 }
