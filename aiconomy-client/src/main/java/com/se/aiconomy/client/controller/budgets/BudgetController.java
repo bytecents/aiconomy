@@ -173,7 +173,7 @@ public class BudgetController extends BaseController {
             imagePath = Objects.requireNonNull(getClass().getResource("/assets/Entertainment.png")).toExternalForm();
             backgroundColor = "#fef9c3";
             percentageColorClass = "text-yellow-500";
-        } else if (categoryName.contains("utilit")) {
+        } else if (categoryName.contains("utilities")) {
             imagePath = Objects.requireNonNull(getClass().getResource("/assets/Utilities.png")).toExternalForm();
             backgroundColor = "#ffedd5";
             percentageColorClass = "text-orange-500";
@@ -181,6 +181,14 @@ public class BudgetController extends BaseController {
             imagePath = Objects.requireNonNull(getClass().getResource("/assets/Gift1_blue.png")).toExternalForm();
             backgroundColor = "#e0f2fe";
             percentageColorClass = "text-orange-500";
+        } else if (categoryName.contains("housing")) {
+            imagePath = Objects.requireNonNull(getClass().getResource("/assets/House1_blue.png")).toExternalForm();
+            backgroundColor = "#e0f2fe";
+            percentageColorClass = "text-blue-500";
+        } else if (categoryName.contains("groceries")) {
+            imagePath = Objects.requireNonNull(getClass().getResource("/assets/shopping-basket_blue.png")).toExternalForm();
+            backgroundColor = "#e0f2fe";
+            percentageColorClass = "text-blue-500";
         } else {
             imagePath = Objects.requireNonNull(getClass().getResource("/assets/Other.png")).toExternalForm();
             backgroundColor = "#f3f4f6";

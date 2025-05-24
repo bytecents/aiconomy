@@ -25,40 +25,31 @@
         <RowConstraints percentHeight="100" />
     </rowConstraints>
     <HBox GridPane.columnIndex="0" styleClass="gap-3" alignment="CENTER_LEFT">
-        <StackPane prefHeight="50.0" prefWidth="50.0">
-            <Circle fill="#fee2e2" radius="24.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0"/>
-            <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                <Image url="@/assets/out_FoodDining.png"/>
-            </ImageView>
-        </StackPane>
+<!--        <StackPane prefHeight="50.0" prefWidth="50.0">-->
+<!--            <Circle fill="#fee2e2" radius="24.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0"/>-->
+<!--            <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">-->
+<!--                <Image url="@/assets/out_FoodDining.png"/>-->
+<!--            </ImageView>-->
+<!--        </StackPane>-->
 
         <VBox alignment="CENTER_LEFT">
             <Label fx:id="descriptionLabel" styleClass="text-base font-medium" />
-            <Label fx:id="remarkLabel" styleClass="text-sm text-gray-500">Online Shopping</Label>
+<!--            <Label fx:id="remarkLabel" styleClass="text-sm text-gray-500">Online Shopping</Label>-->
         </VBox>
     </HBox>
     <Label fx:id="dateLabel" GridPane.columnIndex="1" styleClass="text-sm font-roboto text-gray-600" />
     <VBox GridPane.columnIndex="2" alignment="CENTER_LEFT">
-        <ComboBox fx:id="categoryCombobox" styleClass="text-sm font-roboto cursor-pointer rounded-lg">
-            <items>
-                <FXCollections fx:factory="observableArrayList">
-                    <String fx:value="Food &amp; Dining" />
-                    <String fx:value="Shopping" />
-                    <String fx:value="Transportation" />
-                    <String fx:value="Entertainment" />
-                </FXCollections>
-            </items>
-        </ComboBox>
+        <ComboBox fx:id="categoryCombobox" styleClass="text-sm font-roboto cursor-pointer rounded-lg" onAction="#handleCategoryChange" />
     </VBox>
     <Label fx:id="accountLabel" GridPane.columnIndex="3" styleClass="text-sm font-roboto text-gray-600">Chase Bank</Label>
     <HBox alignment="CENTER_RIGHT" GridPane.columnIndex="4">
         <Label fx:id="amountLabel" styleClass="text-sm font-medium" />
     </HBox>
     <HBox alignment="CENTER_RIGHT" GridPane.columnIndex="5">
-        <Button styleClass="w-6 h-6 bg-transparent border-none hover-bg-gray-100 cursor-pointer"
+        <Button styleClass="w-4 h-4 bg-transparent border-none hover-bg-gray-100 cursor-pointer"
                 onMouseClicked="#deleteTransaction">
             <graphic>
-                <ImageView fitWidth="24" fitHeight="24" preserveRatio="true">
+                <ImageView fitWidth="16" fitHeight="16" preserveRatio="true">
                     <image>
                         <Image url="@/assets/delete.png" />
                     </image>

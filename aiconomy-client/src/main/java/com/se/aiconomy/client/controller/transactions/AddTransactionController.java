@@ -1,19 +1,16 @@
 package com.se.aiconomy.client.controller.transactions;
 
-import com.se.aiconomy.client.common.MyFXMLLoader;
+import com.se.aiconomy.client.common.CustomDialog;
 import com.se.aiconomy.client.controller.BaseController;
 import com.se.aiconomy.server.common.exception.ServiceException;
+import com.se.aiconomy.server.handler.AccountRequestHandler;
 import com.se.aiconomy.server.handler.TransactionRequestHandler;
-import com.se.aiconomy.server.langchain.common.model.DynamicBillType;
-import com.se.aiconomy.server.langchain.common.model.Transaction;
-import com.se.aiconomy.server.model.dto.TransactionDto;
-import com.se.aiconomy.server.model.dto.transaction.request.GetTransactionByUserIdRequest;
-import com.se.aiconomy.server.model.dto.transaction.request.TransactionImportRequest;
+import com.se.aiconomy.server.model.dto.account.request.GetAccountsByUserIdRequest;
+import com.se.aiconomy.server.model.entity.Account;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
@@ -26,10 +23,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Locale;
-import java.util.Map;
-import java.util.ResourceBundle;
+import java.util.*;
 import java.util.function.UnaryOperator;
 
 @Setter
@@ -42,6 +36,14 @@ public class AddTransactionController extends BaseController implements Initiali
     private VBox category3;
     @FXML
     private VBox category4;
+    @FXML
+    private VBox category5;
+    @FXML
+    private VBox category6;
+    @FXML
+    private VBox category7;
+    @FXML
+    private VBox category8;
     @FXML
     private Map<String, VBox> categoryList = new java.util.HashMap<>();
 
@@ -61,6 +63,7 @@ public class AddTransactionController extends BaseController implements Initiali
     private Button expenseBtn;
     @FXML
     private StackPane rootPane;
+    private AccountRequestHandler accountHandler = new AccountRequestHandler();
     private TransactionRequestHandler handler = new TransactionRequestHandler();
     private boolean isExpense = true;
     private String chosenCategory;
@@ -131,8 +134,24 @@ public class AddTransactionController extends BaseController implements Initiali
         categoryList.put("Food & Dining", category1);
         categoryList.put("Transportation", category2);
         categoryList.put("Shopping", category3);
-        categoryList.put("Entertainment", category4);
+        categoryList.put("Housing", category4);
+        categoryList.put("Education", category5);
+        categoryList.put("Travel", category6);
+        categoryList.put("Gifts", category7);
+        categoryList.put("Groceries", category8);
         chooseCategory("Food & Dining");
+
+        try {
+            GetAccountsByUserIdRequest request = new GetAccountsByUserIdRequest();
+            request.setUserId(userInfo.getId());
+            List<Account> accounts = accountHandler.handleGetAccountsByUserIdRequest(request);
+            for (Account account : accounts) {
+                accountComboBox.getItems().add(account.getBankName());
+            }
+            accountComboBox.getSelectionModel().selectFirst();
+        } catch (ServiceException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
@@ -184,7 +203,30 @@ public class AddTransactionController extends BaseController implements Initiali
 
     @FXML
     public void chooseCategory4(MouseEvent mouseEvent) {
-        chooseCategory("Entertainment");
+        chooseCategory("Housing");
+    }
+
+    @FXML
+    public void chooseCategory5(MouseEvent mouseEvent) {
+        chooseCategory("Education");
+    }
+
+    @FXML
+    public void chooseCategory6(MouseEvent mouseEvent) {
+        chooseCategory("Travel");
+    }
+
+    @FXML
+    public void chooseCategory7(MouseEvent mouseEvent) {
+        chooseCategory("Gifts");
+    }
+
+    @FXML
+    public void chooseCategory8(MouseEvent mouseEvent) {
+        chooseCategory("Groceries");
+    }
+
+    public void onAccountSelected(ActionEvent actionEvent) {
     }
 
     @FXML
@@ -219,7 +261,8 @@ public class AddTransactionController extends BaseController implements Initiali
             System.out.println("Transaction import successful.");
 
         } catch (ServiceException e) {
-            e.printStackTrace();
+            CustomDialog.show("Error", e.getMessage(), "error", "OK");
+            return;
         }
         if (parentController instanceof TransactionsController transactionsController) {
             transactionsController.refreshTransactionList();
