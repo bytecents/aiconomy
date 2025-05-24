@@ -1,5 +1,6 @@
 package com.se.aiconomy.client.controller.accounts;
 
+import com.se.aiconomy.client.common.CustomDialog;
 import com.se.aiconomy.client.controller.BaseController;
 import com.se.aiconomy.server.handler.AccountRequestHandler;
 import com.se.aiconomy.server.model.dto.account.request.AddAccountsRequest;
@@ -78,11 +79,39 @@ public class AddAccountController extends BaseController {
     @FXML
     private void onSave(ActionEvent event) {
         // TODO: 保存逻辑
-        saveAccount();
+        if (!saveAccount()) {
+            return;
+        }
         closeDialog(event);
     }
 
-    private void saveAccount() {
+    private boolean checkForm() {
+        if (accountNameTextField.getText() == null || accountNameTextField.getText().trim().isEmpty()) {
+            CustomDialog.show("Error", "Account name cannot be empty!", "error", "Try Again");
+        }
+        String balanceText = balanceTextField.getText();
+        if (balanceText == null || balanceText.trim().isEmpty()) {
+            CustomDialog.show("Error", "Please input balance amount!", "error", "Try Again");
+            return false;
+        }
+
+        try {
+            double balanceAmount = Double.parseDouble(balanceText.trim());
+            if (balanceAmount < 0) {
+                CustomDialog.show("Error", "Balance amount must be non-negative!", "error", "Try Again");
+                return false;
+            }
+        } catch (NumberFormatException e) {
+            CustomDialog.show("Error", "Balance amount must be a valid number!", "error", "Try Again");
+            return false;
+        }
+        return true;
+    }
+
+    private boolean saveAccount() {
+        if (!checkForm()) {
+            return false;
+        }
         try {
             List<Account> accountList = new ArrayList<>();
             Account account = Account.builder()
@@ -99,8 +128,9 @@ public class AddAccountController extends BaseController {
             accountRequestHandler.handleAddAccountRequest(addAccountsRequest);
         } catch (Exception e) {
             e.printStackTrace();
+            CustomDialog.show("Error", e.getMessage(), "error", "Try Again");
         }
-
+        return true;
     }
 
     private void closeDialog(ActionEvent event) {

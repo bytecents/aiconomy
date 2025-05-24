@@ -1,5 +1,6 @@
 package com.se.aiconomy.client.controller.accounts;
 
+import com.se.aiconomy.client.common.CustomDialog;
 import com.se.aiconomy.client.controller.BaseController;
 import com.se.aiconomy.server.handler.AccountRequestHandler;
 import com.se.aiconomy.server.model.dto.account.request.DeleteAccountRequest;
@@ -80,7 +81,9 @@ public class UpdateAccountController extends BaseController {
 
     @FXML
     private void onSave(ActionEvent event) {
-        saveAccount();
+        if (!saveAccount()) {
+            return;
+        }
         closeDialog(event);
     }
 
@@ -90,8 +93,33 @@ public class UpdateAccountController extends BaseController {
         closeDialog(event);
     }
 
-    private void saveAccount() {
-        // TODO: Implement saving logic
+    private boolean checkForm() {
+        if (accountNameTextField.getText() == null || accountNameTextField.getText().trim().isEmpty()) {
+            CustomDialog.show("Error", "Account name cannot be empty!", "error", "Try Again");
+        }
+        String balanceText = balanceTextField.getText();
+        if (balanceText == null || balanceText.trim().isEmpty()) {
+            CustomDialog.show("Error", "Please input balance amount!", "error", "Try Again");
+            return false;
+        }
+
+        try {
+            double balanceAmount = Double.parseDouble(balanceText.trim());
+            if (balanceAmount < 0) {
+                CustomDialog.show("Error", "Balance amount must be non-negative!", "error", "Try Again");
+                return false;
+            }
+        } catch (NumberFormatException e) {
+            CustomDialog.show("Error", "Balance amount must be a valid number!", "error", "Try Again");
+            return false;
+        }
+        return true;
+    }
+
+    private boolean saveAccount() {
+        if (!checkForm()) {
+            return false;
+        }
         try {
             UpdateAccountRequest updateAccountRequest = new UpdateAccountRequest();
             Account newAccount = new Account();
@@ -106,7 +134,9 @@ public class UpdateAccountController extends BaseController {
             accountRequestHandler.handleUpdateAccountRequest(updateAccountRequest);
         } catch (Exception e) {
             e.printStackTrace();
+            CustomDialog.show("Error", e.getMessage(), "error", "Try Again");
         }
+        return true;
     }
 
     private void deleteAccount() {
@@ -117,6 +147,7 @@ public class UpdateAccountController extends BaseController {
             accountRequestHandler.handleDeleteAccountRequest(deleteAccountRequest);
         } catch (Exception e) {
             e.printStackTrace();
+            CustomDialog.show("Error", e.getMessage(), "error", "Try Again");
         }
     }
 
