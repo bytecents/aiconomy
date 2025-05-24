@@ -28,24 +28,41 @@ import java.util.function.UnaryOperator;
 
 @Setter
 public class AddTransactionController extends BaseController implements Initializable {
-    @FXML private VBox category1;
-    @FXML private VBox category2;
-    @FXML private VBox category3;
-    @FXML private VBox category4;
-    @FXML private VBox category5;
-    @FXML private VBox category6;
-    @FXML private VBox category7;
-    @FXML private VBox category8;
-    @FXML private Map<String, VBox> categoryList = new java.util.HashMap<>();
+    @FXML
+    private VBox category1;
+    @FXML
+    private VBox category2;
+    @FXML
+    private VBox category3;
+    @FXML
+    private VBox category4;
+    @FXML
+    private VBox category5;
+    @FXML
+    private VBox category6;
+    @FXML
+    private VBox category7;
+    @FXML
+    private VBox category8;
+    @FXML
+    private Map<String, VBox> categoryList = new java.util.HashMap<>();
 
-    @FXML private VBox categoryPanel;
-    @FXML private ComboBox<String> accountComboBox;
-    @FXML private TextField descriptionInput;
-    @FXML private DatePicker datePicker;
-    @FXML private TextField amountInput;
-    @FXML private Button incomeBtn;
-    @FXML private Button expenseBtn;
-    @FXML private StackPane rootPane;
+    @FXML
+    private VBox categoryPanel;
+    @FXML
+    private ComboBox<String> accountComboBox;
+    @FXML
+    private TextField descriptionInput;
+    @FXML
+    private DatePicker datePicker;
+    @FXML
+    private TextField amountInput;
+    @FXML
+    private Button incomeBtn;
+    @FXML
+    private Button expenseBtn;
+    @FXML
+    private StackPane rootPane;
     private AccountRequestHandler accountHandler = new AccountRequestHandler();
     private TransactionRequestHandler handler = new TransactionRequestHandler();
     private boolean isExpense = true;
@@ -212,8 +229,6 @@ public class AddTransactionController extends BaseController implements Initiali
     public void onAccountSelected(ActionEvent actionEvent) {
     }
 
-    private AddTransactionController.OnCloseListener closeListener;
-
     @FXML
     public void setOnCloseListener(AddTransactionController.OnCloseListener listener) {
         this.closeListener = listener;
@@ -248,7 +263,6 @@ public class AddTransactionController extends BaseController implements Initiali
         } catch (ServiceException e) {
             CustomDialog.show("Error", e.getMessage(), "error", "OK");
             return;
-//            e.printStackTrace();
         }
         if (parentController instanceof TransactionsController transactionsController) {
             transactionsController.refreshTransactionList();
