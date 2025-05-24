@@ -27,7 +27,7 @@
         <Region styleClass="w-10 h-10 rounded-lg bg-red-100" />
         <VBox alignment="CENTER_LEFT">
             <Label fx:id="descriptionLabel" styleClass="text-base font-medium" />
-<!--            <Label fx:id="remarkLabel" styleClass="text-sm text-gray-500">Online Shopping</Label>-->
+            <Label fx:id="remarkLabel" styleClass="text-sm text-gray-500">Online Shopping</Label>
         </VBox>
     </HBox>
     <Label fx:id="dateLabel" GridPane.columnIndex="1" styleClass="text-sm font-roboto text-gray-600" />

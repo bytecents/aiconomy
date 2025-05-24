@@ -24,7 +24,7 @@
                 Upload your transaction data file
             </Label>
             <VBox styleClass="gap-2">
-                <Button styleClass="w-full p-2-4-2-4 cursor-pointer bg-white border border-gray-200 rounded-lg hover-bg-gray-50 text-sm">
+                <Button styleClass="w-full p-2-4-2-4 cursor-pointer bg-white border border-gray-200 rounded-lg hover-bg-gray-50 text-sm" onMouseClicked="#importTransactionFile">
                     Choose File
                 </Button>
                 <HBox alignment="CENTER_LEFT" styleClass="gap-2 pt-1">
@@ -51,64 +51,18 @@
                 <VBox alignment="CENTER" HBox.hgrow="ALWAYS"
                       styleClass="h-full cursor-pointer p-2-4-2-4 border border-blue-200 bg-blue-50 rounded-lg hover-bg-blue-100 gap-1">
                     <Region styleClass="w-4 h-4 bg-blue-600"/>
-                    <Label styleClass="text-blue-600 text-sm font-roboto">CSV</Label>
+                    <Label styleClass="text-blue-600 text-sm font-roboto" onMouseClicked="#downloadCSVTemplate">CSV</Label>
                 </VBox>
                 <VBox alignment="CENTER" HBox.hgrow="ALWAYS"
                       styleClass="h-full cursor-pointer p-2-4-2-4 border border-green-200 bg-green-50 rounded-lg hover-bg-green-100 gap-1">
                     <Region styleClass="w-4 h-4 bg-green-600"/>
-                    <Label styleClass="text-green-600 text-sm font-roboto">Excel</Label>
+                    <Label styleClass="text-green-600 text-sm font-roboto" onMouseClicked="#downloadExcelTemplate">Excel</Label>
                 </VBox>
                 <VBox alignment="CENTER" HBox.hgrow="ALWAYS"
                       styleClass="h-full cursor-pointer p-2-4-2-4 border border-yellow-200 bg-yellow-50 rounded-lg hover-bg-yellow-100 gap-1">
                     <Region styleClass="w-4 h-4 bg-yellow-600"/>
-                    <Label styleClass="text-yellow-600 text-sm font-roboto">Json</Label>
+                    <Label styleClass="text-yellow-600 text-sm font-roboto" onMouseClicked="#downloadJsonTemplate">Json</Label>
                 </VBox>
-                <!--                    <button-->
-                <!--                            class="px-4 py-2 border border-green-200 bg-green-50 text-green-600 rounded-lg hover:bg-green-100 text-sm flex flex-col items-center justify-center gap-1">-->
-                <!--                        <svg-->
-                <!--                                xmlns="http://www.w3.org/2000/svg"-->
-                <!--                                width="24"-->
-                <!--                                height="24"-->
-                <!--                                viewBox="0 0 24 24"-->
-                <!--                                fill="none"-->
-                <!--                                stroke="currentColor"-->
-                <!--                                stroke-width="2"-->
-                <!--                                stroke-linecap="round"-->
-                <!--                                stroke-linejoin="round"-->
-                <!--                                class="lucide lucide-file-spreadsheet w-4 h-4">-->
-                <!--                            <path-->
-                <!--                                    d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" />-->
-                <!--                            <path d="M14 2v4a2 2 0 0 0 2 2h4" />-->
-                <!--                            <path d="M8 13h2" />-->
-                <!--                            <path d="M14 13h2" />-->
-                <!--                            <path d="M8 17h2" />-->
-                <!--                            <path d="M14 17h2" />-->
-                <!--                        </svg>-->
-                <!--                        Excel-->
-                <!--                    </button>-->
-                <!--                    <button-->
-                <!--                            class="px-4 py-2 border border-yellow-200 bg-yellow-50 text-yellow-600 rounded-lg hover:bg-yellow-100 text-sm flex flex-col items-center justify-center gap-2">-->
-                <!--                        <svg-->
-                <!--                                xmlns="http://www.w3.org/2000/svg"-->
-                <!--                                width="24"-->
-                <!--                                height="24"-->
-                <!--                                viewBox="0 0 24 24"-->
-                <!--                                fill="none"-->
-                <!--                                stroke="currentColor"-->
-                <!--                                stroke-width="2"-->
-                <!--                                stroke-linecap="round"-->
-                <!--                                stroke-linejoin="round"-->
-                <!--                                class="lucide lucide-file-json w-4 h-4">-->
-                <!--                            <path-->
-                <!--                                    d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" />-->
-                <!--                            <path d="M14 2v4a2 2 0 0 0 2 2h4" />-->
-                <!--                            <path-->
-                <!--                                    d="M10 12a1 1 0 0 0-1 1v1a1 1 0 0 1-1 1 1 1 0 0 1 1 1v1a1 1 0 0 0 1 1" />-->
-                <!--                            <path-->
-                <!--                                    d="M14 18a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1 1 1 0 0 1-1-1v-1a1 1 0 0 0-1-1" />-->
-                <!--                        </svg>-->
-                <!--                        JSON-->
-                <!--                    </button>-->
             </HBox>
         </VBox>
     </HBox>

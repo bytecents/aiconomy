@@ -15,20 +15,20 @@ public class TransactionItemController {
     @FXML private ComboBox<String> categoryCombobox;
     @FXML private Label amountLabel;
     @FXML private Label descriptionLabel;
-//    @FXML private Label remarkLabel;
+    @FXML private Label remarkLabel;
     @FXML private Label dateLabel;
 
     @FXML
     public void setTransaction(TransactionDto transaction) {
         String account = transaction.getAccountId();
-        boolean isExpense = transaction.getIncomeOrExpense().equals("expense");
+        boolean isExpense = transaction.getIncomeOrExpense().equals("expense") || transaction.getIncomeOrExpense().equals("支出");
 
         String rawAmount = transaction.getAmount();
         DecimalFormat df = new DecimalFormat("0.00");
 
         String amount = (isExpense ? "-" : "+") + "$" + df.format(Double.parseDouble(rawAmount));
         String description = transaction.getProduct();
-//        String remark = transaction.getRemark();
+        String remark = transaction.getRemark();
         String category = transaction.getType();
         String date = transaction.getTime().toLocalDate().format(DateTimeFormatter.ofPattern("MMM d, uuuu", Locale.ENGLISH));
         if (isExpense) {
@@ -39,7 +39,7 @@ public class TransactionItemController {
         accountLabel.setText(account);
         categoryCombobox.getSelectionModel().select(category);
         descriptionLabel.setText(description);
-//        remarkLabel.setText(remark);
+        remarkLabel.setText(remark);
         amountLabel.setText(amount);
         dateLabel.setText(date);
     }

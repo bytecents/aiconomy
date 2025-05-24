@@ -51,6 +51,7 @@ public class AddTransactionController extends BaseController implements Initiali
     private TransactionRequestHandler handler = new TransactionRequestHandler();
     private boolean isExpense = true;
     private String chosenCategory;
+    private BaseController parentController;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -204,16 +205,18 @@ public class AddTransactionController extends BaseController implements Initiali
                     dateTime,
                     description,
                     isExpense ? chosenCategory : "None",
-                    account
+                    account,
+                    "None"
             );
             System.out.println("Transaction import successful.");
 
         } catch (ServiceException e) {
             e.printStackTrace();
         }
-//        if (mainController instanceof TransactionsController) {
-//            mainController.refreshTransactionList();
-//        }
+        if (parentController instanceof TransactionsController transactionsController) {
+            transactionsController.refreshTransactionList();
+            System.out.println("Transaction refreshed.");
+        }
         closeAddTransaction();
     }
 }

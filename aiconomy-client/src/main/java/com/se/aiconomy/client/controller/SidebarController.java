@@ -3,6 +3,7 @@ package com.se.aiconomy.client.controller;
 import com.se.aiconomy.client.Application.StyleClassFixer;
 import com.se.aiconomy.client.common.MyFXMLLoader;
 import com.se.aiconomy.client.controller.budgets.BudgetController;
+import com.se.aiconomy.client.controller.transactions.AddTransactionController;
 import com.se.aiconomy.client.controller.transactions.TransactionsController;
 import com.se.aiconomy.server.model.dto.user.response.UserInfo;
 import javafx.animation.FadeTransition;
@@ -86,6 +87,7 @@ public class SidebarController implements Initializable {
     private Label settingsLabel;
     //    private static final String INACTIVE_TEXT_COLOR = "";
     private String activePanel;
+    private BaseController controller;
 
     private static String toHex(Color color) {
         return String.format("#%02X%02X%02X",
@@ -165,8 +167,8 @@ public class SidebarController implements Initializable {
     private void openPanel(String fxmlPath) {
         MyFXMLLoader loader = new MyFXMLLoader(fxmlPath);
         Parent dialogContent = loader.load();
-        BaseController controller = loader.getController();
-        controller.setUserInfo(userInfo);
+        BaseController panelController = loader.getController();
+        panelController.setUserInfo(userInfo);
 
         Region overlay = new Region();
         overlay.setStyle("-fx-background-color: rgba(0,0,0,0.5);");
@@ -202,6 +204,24 @@ public class SidebarController implements Initializable {
 
         ParallelTransition parallel = new ParallelTransition(fadeIn1, fadeIn2);
         parallel.play();
+
+        if (fxmlPath.contains("add-transaction")) {
+            AddTransactionController addTransactionController = loader.getController();
+            addTransactionController.setOnCloseListener(() -> {
+                FadeTransition fadeOut1 = new FadeTransition(Duration.millis(100), dialogWrapper);
+                fadeOut1.setFromValue(1.0);
+                fadeOut1.setToValue(0.0);
+
+                FadeTransition fadeOut2 = new FadeTransition(Duration.millis(100), overlay);
+                fadeOut1.setFromValue(1.0);
+                fadeOut1.setToValue(0.0);
+
+                ParallelTransition parallelOut = new ParallelTransition(fadeOut1, fadeOut2);
+                parallelOut.setOnFinished(event -> root.getChildren().removeAll(overlay, dialogWrapper));
+                parallelOut.play();
+            });
+            addTransactionController.setParentController(controller);
+        }
     }
 
     private void openAddTransactionPanel() {
@@ -222,20 +242,17 @@ public class SidebarController implements Initializable {
                 Parent dialogContent = loader.load();
                 StyleClassFixer.fixStyleClasses(dialogContent);
 
-                BaseController controller = loader.getController();
-                controller.setUserInfo(userInfo);
-                controller.setMainController(this);
+                controller = loader.getController();
 
-                if (fxmlPath.contains("budgets")) {
-                    BudgetController budgetController = loader.getController();
+                if (fxmlPath.contains("budgets") && controller instanceof BudgetController budgetController) {
                     budgetController.setOnOpenListener(this::openAddBudgetPanel);
-                } else if (fxmlPath.contains("transactions")) {
-                    TransactionsController transactionsController = loader.getController();
+                } else if (fxmlPath.contains("transactions") && controller instanceof TransactionsController transactionsController) {
                     transactionsController.setOnOpenListener(this::openAddTransactionPanel);
                 }
 
+                controller.setUserInfo(userInfo);
+                controller.setMainController(this);
                 contentArea.setContent(dialogContent);
-
 
                 FadeTransition fadeIn = new FadeTransition(Duration.millis(100), contentArea);
                 fadeIn.setFromValue(0.0);

@@ -15,10 +15,8 @@ import lombok.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -238,7 +236,7 @@ public class TransactionServiceImpl implements TransactionService {
         return ExcelUtils.readExcel(filePath, TransactionDto.class);
     }
 
-//    从Json文件中导入交易记录
+    //    从Json文件中导入交易记录
     private List<TransactionDto> readJson(String filePath) throws IOException {
         return JsonUtils.readJson(filePath);
     }
@@ -422,6 +420,7 @@ public class TransactionServiceImpl implements TransactionService {
     /**
      * 更新交易记录状态
      */
+    @Override
     public TransactionDto updateTransactionStatus(String transactionId, String newStatus) throws ServiceException {
         TransactionDto updated = transactionDao.updateStatus(transactionId, newStatus);
         if (updated == null) {
@@ -434,6 +433,7 @@ public class TransactionServiceImpl implements TransactionService {
      * 搜索交易记录
      * 支持按多个条件组合搜索
      */
+    @Override
     public List<TransactionDto> searchTransactions(TransactionSearchCriteria criteria) {
         List<TransactionDto> allTransactions = transactionDao.findAll();
 
@@ -478,42 +478,76 @@ public class TransactionServiceImpl implements TransactionService {
         return filteredTransactions;
     }
 
+    //手动添加交易记录
+//    public TransactionDto addTransactionManually(String userId, String incomeOrExpense, String amount,
+//                                                 LocalDateTime time, String product, String type, String accountId)
+//            throws ServiceException {
+//
+//        if (userId == null || incomeOrExpense == null || amount == null || type == null || accountId == null) {
+//            throw new ServiceException("Missing required fields for transaction", null);
+//        }
+//
+//        TransactionDto transaction = new TransactionDto();
+//        transaction.setUserId(userId);
+//        transaction.setIncomeOrExpense(incomeOrExpense);
+//        transaction.setAmount(amount);
+//        transaction.setTime(time != null ? time : LocalDateTime.now());
+//        transaction.setProduct(product);
+//        transaction.setType(type);
+//        transaction.setAccountId(accountId);
+//
+//        return transactionDao.create(transaction);
+//    }
     @Override
-    /**
-     * 手动添加交易记录
-     * @param userId 用户ID
-     * @param incomeOrExpense 收入或支出
-     * @param amount 金额
-     * @param time 交易时间
-     * @param product 产品名称
-     * @param type 交易类型
-     * @param accountId 账户ID
-     * @return 返回创建的 TransactionDto
-     * @throws ServiceException 如果创建交易时发生错误
-     */
     public TransactionDto addTransactionManually(String userId, String incomeOrExpense, String amount,
-                                                 LocalDateTime time, String product, String type, String accountId)
+                                                 LocalDateTime time, String product, String type, String accountId, String remark)
             throws ServiceException {
 
-        if (userId == null || incomeOrExpense == null || amount == null || type == null || accountId == null) {
-            throw new ServiceException("Missing required fields for transaction", null);
+        if (userId == null || userId.isEmpty()) {
+            throw new ServiceException("User ID cannot be null or empty", null);
+        }
+        if (incomeOrExpense == null || incomeOrExpense.isEmpty()) {
+            throw new ServiceException("Income or expense cannot be null or empty", null);
+        }
+        if (amount == null || amount.isEmpty()) {
+            throw new ServiceException("Amount cannot be null or empty", null);
+        }
+        if (time == null) {
+            throw new ServiceException("Transaction time cannot be null", null);
+        }
+        if (product == null || product.isEmpty()) {
+            throw new ServiceException("Product cannot be null or empty", null);
+        }
+        if (type == null || type.isEmpty()) {
+            throw new ServiceException("Transaction type cannot be null or empty", null);
+        }
+        if (accountId == null || accountId.isEmpty()) {
+            throw new ServiceException("Account ID cannot be null or empty", null);
         }
 
+        // 创建 TransactionDto
         TransactionDto transaction = new TransactionDto();
+        transaction.setId(UUID.randomUUID().toString()); // 设置唯一 ID
         transaction.setUserId(userId);
         transaction.setIncomeOrExpense(incomeOrExpense);
         transaction.setAmount(amount);
-        transaction.setTime(time != null ? time : LocalDateTime.now());
+        transaction.setTime(time);
         transaction.setProduct(product);
         transaction.setType(type);
         transaction.setAccountId(accountId);
+        transaction.setRemark(remark);
+        // 其他字段允许为空，设置为 null
+        transaction.setCounterparty(null);
+        transaction.setPaymentMethod(null);
+        transaction.setStatus(null);
+        transaction.setMerchantOrderId(null);
 
         return transactionDao.create(transaction);
     }
 
     /**
      * 内部类：交易搜索条件
-     */
+    */
     @Getter
     @Setter
     @NoArgsConstructor
