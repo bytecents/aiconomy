@@ -18,6 +18,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+import lombok.Setter;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -32,8 +33,6 @@ public class AiController extends BaseController implements Initializable {
     @FXML
     private TextField inputField;
     @FXML
-    private Button[] questionBtns;
-    @FXML
     private FlowPane questionBtnContainer;
     @FXML
     private VBox messageContent;
@@ -42,7 +41,8 @@ public class AiController extends BaseController implements Initializable {
     @FXML
     private ScrollPane messagePanel;
     private boolean isGenerating = false;
-    private OnCloseListener closeListener;
+    @Setter
+    private OnCloseListener onCloseListener;
 
     public void handleSend(MouseEvent mouseEvent) {
         String input = inputField.getText();
@@ -65,11 +65,6 @@ public class AiController extends BaseController implements Initializable {
                 inputField.clear();
             }
         }
-    }
-
-    @FXML
-    public void setOnCloseListener(OnCloseListener listener) {
-        this.closeListener = listener;
     }
 
     @Override
@@ -187,8 +182,8 @@ public class AiController extends BaseController implements Initializable {
 
     @FXML
     public void closeAiPanel() {
-        if (closeListener != null) {
-            closeListener.onCloseAiPanel();
+        if (onCloseListener != null) {
+            onCloseListener.onCloseAiPanel();
         }
     }
 

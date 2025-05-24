@@ -13,8 +13,12 @@
     <HBox styleClass="">
         <Label styleClass="text-2xl font-semibold text-gray-900">Transactions</Label>
         <Region HBox.hgrow="ALWAYS"/>
-        <Button onAction="#handleAddTransaction" text="Add Transactions"
-                styleClass="hover-bg-blue-700 p-4-2 bg-blue-600 text-white font-roboto cursor-pointer"/>
+        <HBox styleClass="gap-3">
+            <Button onAction="#handleExportTransaction" text="Export Transactions"
+                    styleClass="p-4-2 font-roboto cursor-pointer"/>
+            <Button onAction="#handleAddTransaction" text="Add Transactions"
+                    styleClass="hover-bg-blue-700 p-4-2 bg-blue-600 text-white font-roboto cursor-pointer"/>
+        </HBox>
     </HBox>
     <HBox styleClass="p-4 bg-gray-50 rounded-xl border border-gray-200 gap-6">
         <!-- Manual Import -->
@@ -87,16 +91,8 @@
                            styleClass="w-64 text-base rounded-lg font-roboto p-2-4-2-10" fx:id="searchContent" onKeyTyped="#searchTransaction"/>
             </AnchorPane>
             <ComboBox styleClass="text-base font-roboto cursor-pointer rounded-lg" value="All Categories" fx:id="categoryCombobox" onAction="#handleCategory">
-                <items>
-                    <FXCollections fx:factory="observableArrayList">
-                    </FXCollections>
-                </items>
             </ComboBox>
             <ComboBox styleClass="text-base font-roboto cursor-pointer rounded-lg" value="All Accounts" fx:id="transactionTypeCombobox" onAction="#handleTransactionType">
-                <items>
-                    <FXCollections fx:factory="observableArrayList">
-                    </FXCollections>
-                </items>
             </ComboBox>
         </HBox>
         <Region HBox.hgrow="ALWAYS"/>
