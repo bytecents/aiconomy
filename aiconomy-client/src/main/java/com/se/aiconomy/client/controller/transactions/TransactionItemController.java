@@ -31,7 +31,7 @@ public class TransactionItemController {
         this.transaction = transaction;
         String account = transaction.getAccountId();
         System.out.println(transaction.getIncomeOrExpense());
-        boolean isExpense = transaction.getIncomeOrExpense().equals("expense") || transaction.getIncomeOrExpense().equals("支出");
+        boolean isExpense = transaction.getIncomeOrExpense().equals("Expense") || transaction.getIncomeOrExpense().equals("支出");
 
         String rawAmount = transaction.getAmount();
         DecimalFormat df = new DecimalFormat("0.00");
