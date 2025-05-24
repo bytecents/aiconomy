@@ -75,15 +75,8 @@ public class DashboardController extends BaseController {
     private Label accountType1;
     @FXML
     private Label accountType2;
-
     @FXML
-    private LineChart<String, Number> spendingTrends;
-    @FXML
-    private NumberAxis yAxis;
-
-    @FXML
-    private Button quickAddButton;
-
+    Button quickAddButton;
 
     @FXML
     void initialize() {
@@ -164,7 +157,6 @@ public class DashboardController extends BaseController {
 
     private void setDashBoardBudgetsData() throws ServiceException {
         Map<String, Double> budgetSpendingRatio = dashBoardRequestHandler.getBudgetSpendingRatio(userInfo.getId());
-        System.out.println(budgetSpendingRatio);
         int count = 0;
         for (Map.Entry<String, Double> categoryInfo : budgetSpendingRatio.entrySet()) {
             if (count == 3) break;

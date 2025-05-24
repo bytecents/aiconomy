@@ -282,6 +282,7 @@ public class BudgetController extends BaseController {
 
     @FXML
     public void setOnOpenListener(BudgetController.OnOpenListener listener) {
+        this.openListener = listener;
     }
 
     public interface OnOpenListener {
