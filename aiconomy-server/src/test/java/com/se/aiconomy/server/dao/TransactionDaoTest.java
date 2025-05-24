@@ -12,32 +12,62 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Integration tests for TransactionDao
- * These tests use actual JSONStorageService
+ * Integration tests for {@link TransactionDao}.
+ * <p>
+ * This class tests the CRUD and query operations of the TransactionDao using the actual JSONStorageService.
+ * Each test ensures the correctness of transaction creation, update, deletion, and various query methods.
+ * Test data is cleaned up before and after each test to ensure isolation.
+ * </p>
  */
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class TransactionDaoTest {
     private static final Logger log = LoggerFactory.getLogger(TransactionDaoTest.class);
+    private static final LocalDateTime TEST_TIME = LocalDateTime.parse("2025-04-17T10:05:11");
     private static TransactionDao transactionDao;
     private static TransactionDto testTransaction;
-    private static final LocalDateTime TEST_TIME = LocalDateTime.parse("2025-04-17T10:05:11");
 
+    /**
+     * Initializes the TransactionDao instance before all tests.
+     * Asserts that the collection exists.
+     */
     @BeforeAll
     static void setUp() {
         transactionDao = TransactionDao.getInstance();
         assertTrue(transactionDao.collectionExists());
     }
 
+    /**
+     * Final cleanup after all tests to ensure all data is removed.
+     */
+    @AfterAll
+    static void cleanup() {
+        // Ensure all data is cleaned up
+        try {
+            TransactionDao.getInstance().findAll()
+                    .forEach(tx -> TransactionDao.getInstance().delete(tx));
+            log.info("Final test data cleanup completed successfully");
+        } catch (Exception e) {
+            log.error("Error in final cleanup", e);
+        }
+    }
+
+    /**
+     * Cleans up all existing transactions and prepares test data before each test.
+     */
     @BeforeEach
     void cleanupBeforeTest() {
-        // 清理所有现有数据
+        // Remove all existing data
         transactionDao.findAll().forEach(tx ->
-            transactionDao.delete(tx));
+                transactionDao.delete(tx));
 
-        // 准备测试数据
+        // Prepare test data
         prepareTestData();
     }
 
+    /**
+     * Prepares a sample transaction for testing and persists it.
+     * Asserts that the created transaction has a non-null ID.
+     */
     void prepareTestData() {
         testTransaction = new TransactionDto();
         testTransaction.setTime(TEST_TIME);
@@ -51,11 +81,15 @@ class TransactionDaoTest {
         testTransaction.setMerchantOrderId("JD123456789");
         testTransaction.setRemark("618活动购买");
 
-        // 直接创建测试数据
+        // Create test data directly
         testTransaction = transactionDao.create(testTransaction);
         assertNotNull(testTransaction.getId(), "Test transaction should have an ID after creation");
     }
 
+    /**
+     * Tests creating a new transaction.
+     * Asserts that the created transaction has the expected properties.
+     */
     @Test
     @Order(1)
     @DisplayName("测试创建交易记录")
@@ -74,6 +108,10 @@ class TransactionDaoTest {
         assertEquals("100.00", created.getAmount());
     }
 
+    /**
+     * Tests finding a transaction by its ID.
+     * Asserts that the found transaction matches the test data.
+     */
     @Test
     @Order(2)
     @DisplayName("测试根据ID查找交易记录")
@@ -84,6 +122,10 @@ class TransactionDaoTest {
         assertEquals(testTransaction.getMerchantOrderId(), found.get().getMerchantOrderId());
     }
 
+    /**
+     * Tests updating the status of a transaction.
+     * Asserts that the status is updated correctly.
+     */
     @Test
     @Order(3)
     @DisplayName("测试更新交易状态")
@@ -94,6 +136,10 @@ class TransactionDaoTest {
         assertEquals("已支付", updated.getStatus());
     }
 
+    /**
+     * Tests querying transactions by payment method.
+     * Asserts that the test transaction is included in the result.
+     */
     @Test
     @Order(4)
     @DisplayName("测试按支付方式查询")
@@ -102,9 +148,13 @@ class TransactionDaoTest {
 
         assertFalse(transactions.isEmpty());
         assertTrue(transactions.stream()
-            .anyMatch(t -> t.getId().equals(testTransaction.getId())));
+                .anyMatch(t -> t.getId().equals(testTransaction.getId())));
     }
 
+    /**
+     * Tests querying transactions within a time range.
+     * Asserts that the test transaction is included in the result.
+     */
     @Test
     @Order(5)
     @DisplayName("测试按时间范围查询")
@@ -116,9 +166,13 @@ class TransactionDaoTest {
 
         assertFalse(transactions.isEmpty());
         assertTrue(transactions.stream()
-            .anyMatch(t -> t.getId().equals(testTransaction.getId())));
+                .anyMatch(t -> t.getId().equals(testTransaction.getId())));
     }
 
+    /**
+     * Tests querying transactions by counterparty (merchant).
+     * Asserts that the test transaction is included in the result.
+     */
     @Test
     @Order(6)
     @DisplayName("测试按商户查询")
@@ -127,9 +181,13 @@ class TransactionDaoTest {
 
         assertFalse(transactions.isEmpty());
         assertTrue(transactions.stream()
-            .anyMatch(t -> t.getId().equals(testTransaction.getId())));
+                .anyMatch(t -> t.getId().equals(testTransaction.getId())));
     }
 
+    /**
+     * Tests querying transactions by income or expense type.
+     * Asserts that the test transaction is included in the result.
+     */
     @Test
     @Order(7)
     @DisplayName("测试按收支类型查询")
@@ -138,9 +196,13 @@ class TransactionDaoTest {
 
         assertFalse(transactions.isEmpty());
         assertTrue(transactions.stream()
-            .anyMatch(t -> t.getId().equals(testTransaction.getId())));
+                .anyMatch(t -> t.getId().equals(testTransaction.getId())));
     }
 
+    /**
+     * Tests querying transactions by product name.
+     * Asserts that the test transaction is included in the result.
+     */
     @Test
     @Order(8)
     @DisplayName("测试按商品名称查询")
@@ -149,9 +211,13 @@ class TransactionDaoTest {
 
         assertFalse(transactions.isEmpty());
         assertTrue(transactions.stream()
-            .anyMatch(t -> t.getId().equals(testTransaction.getId())));
+                .anyMatch(t -> t.getId().equals(testTransaction.getId())));
     }
 
+    /**
+     * Tests querying transactions by merchant order ID.
+     * Asserts that the test transaction is included in the result.
+     */
     @Test
     @Order(9)
     @DisplayName("测试按商户订单号查询")
@@ -160,9 +226,13 @@ class TransactionDaoTest {
 
         assertFalse(transactions.isEmpty());
         assertTrue(transactions.stream()
-            .anyMatch(t -> t.getId().equals(testTransaction.getId())));
+                .anyMatch(t -> t.getId().equals(testTransaction.getId())));
     }
 
+    /**
+     * Tests searching transactions by remark keyword.
+     * Asserts that the test transaction is included in the result.
+     */
     @Test
     @Order(10)
     @DisplayName("测试备注关键字搜索")
@@ -171,9 +241,13 @@ class TransactionDaoTest {
 
         assertFalse(transactions.isEmpty());
         assertTrue(transactions.stream()
-            .anyMatch(t -> t.getId().equals(testTransaction.getId())));
+                .anyMatch(t -> t.getId().equals(testTransaction.getId())));
     }
 
+    /**
+     * Tests creating a transaction without specifying the time.
+     * Asserts that the created transaction has a valid time set automatically.
+     */
     @Test
     @Order(11)
     @DisplayName("测试创建没有时间的交易记录")
@@ -186,38 +260,33 @@ class TransactionDaoTest {
 
         assertNotNull(created);
         assertNotNull(created.getTime());
-        // 验证时间是否在合理范围内
+        // Verify that the time is within a reasonable range
         assertTrue(created.getTime().isAfter(LocalDateTime.now().minusMinutes(1)));
         assertTrue(created.getTime().isBefore(LocalDateTime.now().plusMinutes(1)));
     }
 
+    /**
+     * Tests finding a non-existent transaction by ID.
+     * Asserts that the result is empty.
+     */
     @Test
     @Order(12)
     @DisplayName("测试查询不存在的交易记录")
     void testFindNonExistentTransaction() {
-        // 先清除所有数据确保测试环境干净
+        // Clean all data to ensure a clean test environment
         transactionDao.findAll().forEach(tx -> transactionDao.delete(tx));
 
         Optional<TransactionDto> notFound = transactionDao.findById("non-existent-id");
         assertFalse(notFound.isPresent());
     }
 
+    /**
+     * Cleans up all transactions after each test.
+     */
     @AfterEach
     void cleanupAfterTest() {
-        // 清理测试数据
+        // Clean up test data
         transactionDao.findAll().forEach(tx ->
-            transactionDao.delete(tx));
-    }
-
-    @AfterAll
-    static void cleanup() {
-        // 确保所有数据都被清理
-        try {
-            TransactionDao.getInstance().findAll()
-                .forEach(tx -> TransactionDao.getInstance().delete(tx));
-            log.info("Final test data cleanup completed successfully");
-        } catch (Exception e) {
-            log.error("Error in final cleanup", e);
-        }
+                transactionDao.delete(tx));
     }
 }

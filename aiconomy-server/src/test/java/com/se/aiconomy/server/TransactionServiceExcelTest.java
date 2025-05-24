@@ -1,7 +1,6 @@
 package com.se.aiconomy.server;
 
 import com.se.aiconomy.server.common.exception.ServiceException;
-import com.se.aiconomy.server.common.utils.ExcelUtils;
 import com.se.aiconomy.server.dao.TransactionDao;
 import com.se.aiconomy.server.model.dto.TransactionDto;
 import com.se.aiconomy.server.service.impl.TransactionServiceImpl;
@@ -24,6 +23,13 @@ import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Unit tests for transaction import, export, and statistics using Excel files.
+ * <p>
+ * This class tests the import and export of transaction data to and from Excel files,
+ * as well as various statistics and CRUD operations on transactions.
+ * </p>
+ */
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class TransactionServiceExcelTest {
     private static final Logger log = LoggerFactory.getLogger(TransactionServiceExcelTest.class);
@@ -34,6 +40,11 @@ public class TransactionServiceExcelTest {
     private static TransactionDao transactionDao;
     private static String testExcelPath;
 
+    /**
+     * Creates a test Excel file with sample transaction data.
+     *
+     * @throws IOException if file creation fails
+     */
     private static void createTestExcelFile() throws IOException {
         Workbook workbook = new XSSFWorkbook();
         Sheet sheet = workbook.createSheet("Transactions");
@@ -71,9 +82,14 @@ public class TransactionServiceExcelTest {
         }
 
         workbook.close();
-        log.info("Excel 文件创建成功!");
+        log.info("Excel file created successfully!");
     }
 
+    /**
+     * Initializes the test environment before all tests.
+     *
+     * @throws IOException if Excel file creation fails
+     */
     @BeforeAll
     static void setup() throws IOException {
         transactionService = new TransactionServiceImpl();
@@ -82,25 +98,36 @@ public class TransactionServiceExcelTest {
         testExcelPath = Objects.requireNonNull(TransactionServiceExcelTest.class.getClassLoader().getResource("transactions.xlsx")).getPath();
     }
 
+    /**
+     * Cleans up the transaction storage before and after each test.
+     */
     @BeforeEach
     @AfterEach
     void cleanStorage() {
         transactionDao.findAll().forEach(tx -> transactionDao.delete(tx));
     }
 
+    /**
+     * Tests importing transactions from an Excel file with all fields.
+     *
+     * @throws Exception if import fails
+     */
     @Test
     @Order(1)
-    @DisplayName("完整字段导入验证 - Excel")
+    @DisplayName("Complete field import validation - Excel")
     void testCompleteFieldImportFromExcel() throws Exception {
         List<TransactionDto> transactionList = transactionService.importTransactions(testExcelPath);
 
-        assertEquals(4, transactionList.size(), "成功导入记录数不符");
-        assertEquals(4, transactionDao.findAll().size(), "实际存储记录数不符");
+        assertEquals(4, transactionList.size(), "Number of successfully imported records does not match");
+        assertEquals(4, transactionDao.findAll().size(), "Number of records in storage does not match");
     }
 
+    /**
+     * Tests income and expense statistics within a time range using Excel data.
+     */
     @Test
     @Order(2)
-    @DisplayName("测试时间范围内的收支统计 - Excel")
+    @DisplayName("Test income and expense statistics within time range - Excel")
     void testIncomeAndExpenseStatisticsFromExcel() {
         createTestTransactions();
         Map<String, String> statistics = transactionService.getIncomeAndExpenseStatistics(
@@ -115,9 +142,12 @@ public class TransactionServiceExcelTest {
         );
     }
 
+    /**
+     * Tests payment method statistics using Excel data.
+     */
     @Test
     @Order(3)
-    @DisplayName("测试支付方式统计 - Excel")
+    @DisplayName("Test payment method statistics - Excel")
     void testPaymentMethodStatisticsFromExcel() {
         createTestTransactions();
         Map<String, String> statistics = transactionService.getPaymentMethodStatistics();
@@ -127,9 +157,12 @@ public class TransactionServiceExcelTest {
         assertTrue(Double.parseDouble(statistics.get("支付宝")) > 0);
     }
 
+    /**
+     * Tests counterparty statistics using Excel data.
+     */
     @Test
     @Order(4)
-    @DisplayName("测试交易对象统计 - Excel")
+    @DisplayName("Test counterparty statistics - Excel")
     void testCounterpartyStatisticsFromExcel() {
         createTestTransactions();
         Map<String, String> statistics = transactionService.getCounterpartyStatistics();
@@ -139,9 +172,14 @@ public class TransactionServiceExcelTest {
         assertTrue(Double.parseDouble(statistics.get("京东商城")) > 0);
     }
 
+    /**
+     * Tests updating the status of a transaction using Excel data.
+     *
+     * @throws Exception if update fails
+     */
     @Test
     @Order(5)
-    @DisplayName("测试交易状态更新 - Excel")
+    @DisplayName("Test transaction status update - Excel")
     void testUpdateTransactionStatusFromExcel() throws Exception {
         TransactionDto transaction = createTestTransaction();
         String newStatus = "已完成";
@@ -152,9 +190,12 @@ public class TransactionServiceExcelTest {
         assertEquals(newStatus, updated.getStatus());
     }
 
+    /**
+     * Tests searching for transactions with multiple criteria using Excel data.
+     */
     @Test
     @Order(6)
-    @DisplayName("测试多条件搜索 - Excel")
+    @DisplayName("Test multi-criteria search - Excel")
     void testSearchTransactionsFromExcel() {
         createTestTransactions();
         TransactionSearchCriteria criteria = TransactionSearchCriteria.builder()
@@ -175,9 +216,14 @@ public class TransactionServiceExcelTest {
         });
     }
 
+    /**
+     * Tests deleting a transaction using Excel data.
+     *
+     * @throws Exception if deletion fails
+     */
     @Test
     @Order(7)
-    @DisplayName("测试删除交易记录 - Excel")
+    @DisplayName("Test delete transaction - Excel")
     void testDeleteTransactionFromExcel() throws Exception {
         TransactionDto transaction = createTestTransaction();
         transactionService.deleteTransaction(transaction.getId());
@@ -185,27 +231,35 @@ public class TransactionServiceExcelTest {
         assertTrue(transactionDao.findById(transaction.getId()).isEmpty());
     }
 
+    /**
+     * Tests updating a non-existent transaction using Excel data.
+     */
     @Test
     @Order(8)
-    @DisplayName("测试更新不存在的交易记录 - Excel")
+    @DisplayName("Test update non-existent transaction - Excel")
     void testUpdateNonExistentTransactionFromExcel() {
         String nonExistentId = UUID.randomUUID().toString();
         assertThrows(Exception.class, () ->
                 transactionService.updateTransactionStatus(nonExistentId, "已完成"));
     }
 
+    /**
+     * Tests exporting transactions to an Excel file.
+     *
+     * @throws Exception if export or import fails
+     */
     @Test
     @Order(9)
-    @DisplayName("测试导出交易记录到 Excel 文件")
+    @DisplayName("Test export transactions to Excel file")
     void testExportTransactionsToExcel() throws Exception {
         createTestTransactions();
         String exportFilePath = System.getProperty("java.io.tmpdir") + "/exported_transactions.xlsx";
         transactionService.exportTransactionsToExcel(exportFilePath);
 
         File exportedFile = new File(exportFilePath);
-        assertTrue(exportedFile.exists(), "导出的 Excel 文件不存在");
+        assertTrue(exportedFile.exists(), "Exported Excel file does not exist");
 
-        // 调试：读取并打印 Excel 文件内容
+        // Debug: Read and print Excel file content
         try (Workbook workbook = new XSSFWorkbook(exportedFile)) {
             Sheet sheet = workbook.getSheetAt(0);
             for (Row row : sheet) {
@@ -213,14 +267,14 @@ public class TransactionServiceExcelTest {
                 for (Cell cell : row) {
                     rowData.append(cell.toString()).append(",");
                 }
-                log.info("Excel Row: {}", rowData.toString());
+                log.info("Excel Row: {}", rowData);
             }
         }
 
         List<TransactionDto> exportedTransactions = transactionService.importTransactions(exportFilePath);
-        assertEquals(2, exportedTransactions.size(), "导出的交易记录数不符");
+        assertEquals(2, exportedTransactions.size(), "Number of exported transactions does not match");
 
-        // 调试：打印导入的交易记录
+        // Debug: Print imported transactions
         exportedTransactions.forEach(tx -> log.info("Imported Transaction: id={}, userId={}, remark={}",
                 tx.getId(), tx.getUserId(), tx.getRemark()));
 
@@ -228,29 +282,38 @@ public class TransactionServiceExcelTest {
                 .filter(tx -> "消费".equals(tx.getType()))
                 .findFirst()
                 .orElse(null);
-        assertNotNull(firstTransaction, "未找到消费交易");
-        assertEquals("京东商城", firstTransaction.getCounterparty(), "交易对手不匹配");
-        assertEquals("2025-04-18T10:11:09", firstTransaction.getTime().format(FORMATTER), "交易时间不匹配");
-        assertEquals(TEST_USER, firstTransaction.getUserId(), "用户 ID 不匹配");
+        assertNotNull(firstTransaction, "Consumption transaction not found");
+        assertEquals("京东商城", firstTransaction.getCounterparty(), "Counterparty does not match");
+        assertEquals("2025-04-18T10:11:09", firstTransaction.getTime().format(FORMATTER), "Transaction time does not match");
+        assertEquals(TEST_USER, firstTransaction.getUserId(), "User ID does not match");
 
         if (exportedFile.exists()) {
             exportedFile.delete();
         }
     }
 
+    /**
+     * Tests exporting empty transactions to an Excel file.
+     * Asserts that an exception is thrown and no file is created when there are no transactions to export.
+     */
     @Test
     @Order(10)
-    @DisplayName("测试导出空交易记录到 Excel")
+    @DisplayName("Test export empty transactions to Excel")
     void testExportEmptyTransactionsToExcel() {
         String exportFilePath = System.getProperty("java.io.tmpdir") + "/empty_transactions.xlsx";
         assertThrows(ServiceException.class,
                 () -> transactionService.exportTransactionsToExcel(exportFilePath),
-                "应抛出异常：无交易记录可导出");
+                "Exception should be thrown: no transactions to export");
 
         File exportedFile = new File(exportFilePath);
-        assertFalse(exportedFile.exists(), "空交易不应创建文件");
+        assertFalse(exportedFile.exists(), "No file should be created for empty transactions");
     }
 
+    /**
+     * Helper method: Creates a test transaction and stores it.
+     *
+     * @return the created TransactionDto
+     */
     private TransactionDto createTestTransaction() {
         TransactionDto transaction = new TransactionDto();
         transaction.setId(UUID.randomUUID().toString());
@@ -270,6 +333,9 @@ public class TransactionServiceExcelTest {
         return transactionDao.create(transaction);
     }
 
+    /**
+     * Helper method: Creates multiple test transactions (one expense and one income).
+     */
     private void createTestTransactions() {
         createTestTransaction();
 

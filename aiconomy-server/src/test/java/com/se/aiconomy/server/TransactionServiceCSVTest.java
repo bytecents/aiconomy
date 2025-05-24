@@ -11,30 +11,61 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
-import java.time.format.DateTimeFormatter;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Unit tests for {@link TransactionServiceImpl} with CSV import/export and transaction operations.
+ * <p>
+ * This class covers scenarios such as importing/exporting transactions from/to CSV,
+ * statistics calculation, searching, updating, and deleting transactions.
+ * </p>
+ */
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class TransactionServiceCSVTest {
     private static final Logger log = LoggerFactory.getLogger(TransactionServiceCSVTest.class);
+    /**
+     * The test transaction time used in test cases.
+     */
     private static final LocalDateTime TEST_TIME = LocalDateTime.parse("2025-04-17T10:11:09");
+    /**
+     * The test user ID used in test cases.
+     */
     private static final String TEST_USER = "Aurelia";
-    private static TransactionServiceImpl transactionService;
-    private static TransactionDao transactionDao;
-    private final String testCsvPath = Objects.requireNonNull(getClass().getClassLoader().getResource("transactions.csv")).getPath();
+    /**
+     * The formatter for date-time string conversion.
+     */
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+    /**
+     * The TransactionServiceImpl instance under test.
+     */
+    private static TransactionServiceImpl transactionService;
+    /**
+     * The TransactionDao instance used for direct data access.
+     */
+    private static TransactionDao transactionDao;
+    /**
+     * The path to the test CSV file for import/export.
+     */
+    private final String testCsvPath = Objects.requireNonNull(getClass().getClassLoader().getResource("transactions.csv")).getPath();
 
+    /**
+     * Initializes the TransactionServiceImpl and TransactionDao before all tests.
+     */
     @BeforeAll
     static void setup() {
         transactionService = new TransactionServiceImpl();
         transactionDao = TransactionDao.getInstance();
     }
 
+    /**
+     * Cleans up all transactions before and after each test to ensure isolation.
+     */
     @BeforeEach
     @AfterEach
     void cleanStorage() {
@@ -42,6 +73,14 @@ public class TransactionServiceCSVTest {
                 transactionDao.delete(tx));
     }
 
+    /**
+     * Tests importing transactions from a CSV file with complete fields.
+     * <p>
+     * Asserts that the number of imported records matches the expected count.
+     * </p>
+     *
+     * @throws Exception if import fails
+     */
     @Test
     @Order(1)
     @DisplayName("完整字段导入验证")
@@ -52,11 +91,17 @@ public class TransactionServiceCSVTest {
         assertEquals(4, transactionDao.findAll().size(), "实际存储记录数不符");
     }
 
+    /**
+     * Tests income and expense statistics within a specific time range.
+     * <p>
+     * Asserts that the statistics are calculated correctly and net amount is the difference between income and expense.
+     * </p>
+     */
     @Test
     @Order(2)
     @DisplayName("测试时间范围内的收支统计")
     void testIncomeAndExpenseStatistics() {
-        // 准备测试数据
+        // Prepare test data
         createTestTransactions();
 
         Map<String, String> statistics = transactionService.getIncomeAndExpenseStatistics(
@@ -73,11 +118,17 @@ public class TransactionServiceCSVTest {
         );
     }
 
+    /**
+     * Tests statistics calculation for payment methods.
+     * <p>
+     * Asserts that the statistics contain the expected payment method and its value is greater than zero.
+     * </p>
+     */
     @Test
     @Order(3)
     @DisplayName("测试支付方式统计")
     void testPaymentMethodStatistics() {
-        // 准备测试数据
+        // Prepare test data
         createTestTransactions();
 
         Map<String, String> statistics = transactionService.getPaymentMethodStatistics();
@@ -87,11 +138,17 @@ public class TransactionServiceCSVTest {
         assertTrue(Double.parseDouble(statistics.get("支付宝")) > 0);
     }
 
+    /**
+     * Tests statistics calculation for counterparties.
+     * <p>
+     * Asserts that the statistics contain the expected counterparty and its value is greater than zero.
+     * </p>
+     */
     @Test
     @Order(4)
     @DisplayName("测试交易对手统计")
     void testCounterpartyStatistics() {
-        // 准备测试数据
+        // Prepare test data
         createTestTransactions();
 
         Map<String, String> statistics = transactionService.getCounterpartyStatistics();
@@ -101,11 +158,19 @@ public class TransactionServiceCSVTest {
         assertTrue(Double.parseDouble(statistics.get("京东商城")) > 0);
     }
 
+    /**
+     * Tests updating the status of a transaction.
+     * <p>
+     * Asserts that the transaction status is updated as expected.
+     * </p>
+     *
+     * @throws Exception if update fails
+     */
     @Test
     @Order(5)
     @DisplayName("测试交易状态更新")
     void testUpdateTransactionStatus() throws Exception {
-        // 创建测试交易
+        // Create a test transaction
         TransactionDto transaction = createTestTransaction();
         String newStatus = "已完成";
 
@@ -115,11 +180,17 @@ public class TransactionServiceCSVTest {
         assertEquals(newStatus, updated.getStatus());
     }
 
+    /**
+     * Tests searching for transactions with multiple criteria.
+     * <p>
+     * Asserts that the search results match the specified criteria.
+     * </p>
+     */
     @Test
     @Order(6)
     @DisplayName("测试多条件搜索")
     void testSearchTransactions() {
-        // 准备测试数据
+        // Prepare test data
         createTestTransactions();
 
         TransactionSearchCriteria criteria = TransactionSearchCriteria.builder()
@@ -140,20 +211,34 @@ public class TransactionServiceCSVTest {
         });
     }
 
+    /**
+     * Tests deleting a transaction.
+     * <p>
+     * Asserts that the transaction is deleted and no longer exists in the storage.
+     * </p>
+     *
+     * @throws Exception if deletion fails
+     */
     @Test
     @Order(7)
     @DisplayName("测试删除交易记录")
     void testDeleteTransaction() throws Exception {
-        // 创建测试交易
+        // Create a test transaction
         TransactionDto transaction = createTestTransaction();
 
-        // 删除交易
+        // Delete the transaction
         transactionService.deleteTransaction(transaction.getId());
 
-        // 验证删除结果
+        // Verify deletion
         assertTrue(transactionDao.findById(transaction.getId()).isEmpty());
     }
 
+    /**
+     * Tests updating a non-existent transaction.
+     * <p>
+     * Asserts that an exception is thrown when trying to update a transaction that does not exist.
+     * </p>
+     */
     @Test
     @Order(8)
     @DisplayName("测试更新不存在的交易记录")
@@ -164,6 +249,14 @@ public class TransactionServiceCSVTest {
                 transactionService.updateTransactionStatus(nonExistentId, "已完成"));
     }
 
+    /**
+     * Tests retrieving all transactions by accountId for a specific user.
+     * <p>
+     * Asserts that the returned transactions match the accountId and userId.
+     * </p>
+     *
+     * @throws ServiceException if retrieval fails
+     */
     @Test
     @Order(9)
     @DisplayName("测试根据 accountId 查找所有交易记录")
@@ -183,6 +276,14 @@ public class TransactionServiceCSVTest {
         transactions.forEach(transaction -> log.info("Found transaction with accountId {}: {}", accountId, transaction));
     }
 
+    /**
+     * Tests exporting transactions to a CSV file.
+     * <p>
+     * Asserts that the exported file exists and the exported transactions match the expected data.
+     * </p>
+     *
+     * @throws Exception if export or import fails
+     */
     @Test
     @Order(10)
     @DisplayName("测试导出交易记录到 CSV 文件")
@@ -211,6 +312,12 @@ public class TransactionServiceCSVTest {
         }
     }
 
+    /**
+     * Tests exporting empty transactions to a CSV file.
+     * <p>
+     * Asserts that an exception is thrown and no file is created when there are no transactions to export.
+     * </p>
+     */
     @Test
     @Order(11)
     @DisplayName("测试导出空交易记录到 CSV")
@@ -224,7 +331,11 @@ public class TransactionServiceCSVTest {
         assertFalse(exportedFile.exists(), "空交易不应创建文件");
     }
 
-    // 辅助方法：创建测试交易记录
+    /**
+     * Helper method: Creates a test transaction and stores it.
+     *
+     * @return the created TransactionDto
+     */
     private TransactionDto createTestTransaction() {
         TransactionDto transaction = new TransactionDto();
         transaction.setId(UUID.randomUUID().toString());
@@ -244,12 +355,14 @@ public class TransactionServiceCSVTest {
         return transactionDao.create(transaction);
     }
 
-    // 辅助方法：创建多条测试交易记录
+    /**
+     * Helper method: Creates multiple test transactions (one expense and one income).
+     */
     private void createTestTransactions() {
-        // 创建支出交易
+        // Create an expense transaction
         createTestTransaction();
 
-        // 创建收入交易
+        // Create an income transaction
         TransactionDto incomeTransaction = new TransactionDto();
         incomeTransaction.setId(UUID.randomUUID().toString());
         incomeTransaction.setTime(TEST_TIME);

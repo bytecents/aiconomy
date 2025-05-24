@@ -20,6 +20,22 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Unit tests for {@link TransactionServiceImpl} with JSON data import/export and related operations.
+ * <p>
+ * This class covers:
+ * <ul>
+ *     <li>Importing transactions from JSON files</li>
+ *     <li>Manual transaction addition</li>
+ *     <li>Querying by user/account/date</li>
+ *     <li>Statistics (income/expense, payment method, counterparty)</li>
+ *     <li>Multi-criteria search</li>
+ *     <li>Transaction status update and deletion</li>
+ *     <li>Exporting transactions to JSON</li>
+ *     <li>Handling empty export scenarios</li>
+ * </ul>
+ * All tests use a shared in-memory DAO and clean up before/after each test.
+ */
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class TransactionServiceJsonTest {
     private static final Logger log = LoggerFactory.getLogger(TransactionServiceJsonTest.class);
@@ -30,50 +46,61 @@ public class TransactionServiceJsonTest {
     private static TransactionDao transactionDao;
     private final String testJsonPath = Objects.requireNonNull(getClass().getClassLoader().getResource("transactions.json")).getPath();
     private final String testJsonString = """
-        [
-            {
-                "id": "12345",
-                "time": "2025-04-16T10:30:00",
-                "type": "消费",
-                "counterparty": "Walmart",
-                "product": "iPhone 15",
-                "incomeOrExpense": "支出",
-                "amount": "5999.99",
-                "paymentMethod": "微信支付",
-                "status": "成功",
-                "merchantOrderId": "7890",
-                "accountId": "acc1",
-                "remark": "购买iPhone 15"
-            },
-            {
-                "id": "67890",
-                "time": "2025-04-17T11:00:00",
-                "type": "工资",
-                "counterparty": "Company",
-                "product": "Salary",
-                "incomeOrExpense": "收入",
-                "amount": "10000.00",
-                "paymentMethod": "银行转账",
-                "status": "已完成",
-                "merchantOrderId": "SAL123",
-                "accountId": "acc2",
-                "remark": "月度工资"
-            }
-        ]
-        """;
+            [
+                {
+                    "id": "12345",
+                    "time": "2025-04-16T10:30:00",
+                    "type": "消费",
+                    "counterparty": "Walmart",
+                    "product": "iPhone 15",
+                    "incomeOrExpense": "支出",
+                    "amount": "5999.99",
+                    "paymentMethod": "微信支付",
+                    "status": "成功",
+                    "merchantOrderId": "7890",
+                    "accountId": "acc1",
+                    "remark": "购买iPhone 15"
+                },
+                {
+                    "id": "67890",
+                    "time": "2025-04-17T11:00:00",
+                    "type": "工资",
+                    "counterparty": "Company",
+                    "product": "Salary",
+                    "incomeOrExpense": "收入",
+                    "amount": "10000.00",
+                    "paymentMethod": "银行转账",
+                    "status": "已完成",
+                    "merchantOrderId": "SAL123",
+                    "accountId": "acc2",
+                    "remark": "月度工资"
+                }
+            ]
+            """;
 
+    /**
+     * Initializes the transaction service and DAO before all tests.
+     */
     @BeforeAll
     static void setup() {
         transactionService = new TransactionServiceImpl();
         transactionDao = TransactionDao.getInstance();
     }
 
+    /**
+     * Cleans up all transactions before and after each test.
+     */
     @BeforeEach
     @AfterEach
     void cleanStorage() {
         transactionDao.findAll().forEach(tx -> transactionDao.delete(tx));
     }
 
+    /**
+     * Tests importing transactions from a JSON file with all fields present.
+     *
+     * @throws Exception if import fails
+     */
     @Test
     @Order(1)
     @DisplayName("完整字段导入验证（JSON 文件）")
@@ -87,6 +114,11 @@ public class TransactionServiceJsonTest {
                 tx.getTime().format(FORMATTER)));
     }
 
+    /**
+     * Tests manually adding a transaction.
+     *
+     * @throws Exception if addition fails
+     */
     @Test
     @Order(2)
     @DisplayName("测试手动添加交易记录")
@@ -104,6 +136,11 @@ public class TransactionServiceJsonTest {
                 "交易时间不匹配");
     }
 
+    /**
+     * Tests retrieving transactions by user ID.
+     *
+     * @throws Exception if retrieval fails
+     */
     @Test
     @Order(3)
     @DisplayName("测试根据用户 ID 获取交易记录")
@@ -115,6 +152,11 @@ public class TransactionServiceJsonTest {
         transactions.forEach(tx -> assertEquals(TEST_USER, tx.getUserId(), "用户 ID 不匹配"));
     }
 
+    /**
+     * Tests retrieving transactions by account ID.
+     *
+     * @throws Exception if retrieval fails
+     */
     @Test
     @Order(4)
     @DisplayName("测试根据账户 ID 获取交易记录")
@@ -130,6 +172,9 @@ public class TransactionServiceJsonTest {
         });
     }
 
+    /**
+     * Tests income and expense statistics within a time range.
+     */
     @Test
     @Order(5)
     @DisplayName("测试时间范围内的收支统计")
@@ -147,6 +192,9 @@ public class TransactionServiceJsonTest {
                 "净金额计算错误");
     }
 
+    /**
+     * Tests payment method statistics.
+     */
     @Test
     @Order(6)
     @DisplayName("测试支付方式统计")
@@ -159,6 +207,9 @@ public class TransactionServiceJsonTest {
         assertTrue(Double.parseDouble(statistics.get("微信支付")) > 0, "微信支付金额应大于 0");
     }
 
+    /**
+     * Tests counterparty statistics.
+     */
     @Test
     @Order(7)
     @DisplayName("测试交易对手统计")
@@ -171,6 +222,9 @@ public class TransactionServiceJsonTest {
         assertTrue(Double.parseDouble(statistics.get("Walmart")) > 0, "Walmart 交易金额应大于 0");
     }
 
+    /**
+     * Tests searching for transactions with multiple criteria.
+     */
     @Test
     @Order(8)
     @DisplayName("测试多条件搜索")
@@ -194,6 +248,11 @@ public class TransactionServiceJsonTest {
         });
     }
 
+    /**
+     * Tests updating the status of a transaction.
+     *
+     * @throws Exception if update fails
+     */
     @Test
     @Order(9)
     @DisplayName("测试更新交易状态")
@@ -207,6 +266,11 @@ public class TransactionServiceJsonTest {
         assertEquals(newStatus, updated.getStatus(), "交易状态未更新");
     }
 
+    /**
+     * Tests deleting a transaction.
+     *
+     * @throws Exception if deletion fails
+     */
     @Test
     @Order(10)
     @DisplayName("测试删除交易记录")
@@ -217,6 +281,9 @@ public class TransactionServiceJsonTest {
         assertTrue(transactionDao.findById(transaction.getId()).isEmpty(), "交易记录未删除");
     }
 
+    /**
+     * Tests updating a non-existent transaction.
+     */
     @Test
     @Order(11)
     @DisplayName("测试更新不存在的交易记录")
@@ -227,22 +294,27 @@ public class TransactionServiceJsonTest {
                 "应抛出异常");
     }
 
+    /**
+     * Tests exporting transactions to a JSON file.
+     *
+     * @throws Exception if export or import fails
+     */
     @Test
     @Order(12)
     @DisplayName("测试导出交易记录到 JSON 文件")
     void testExportTransactionsToJson() throws Exception {
-        // 准备测试数据
+        // Prepare test data
         createTestTransactions();
 
-        // 导出到临时文件
+        // Export to temporary file
         String exportFilePath = System.getProperty("java.io.tmpdir") + "/exported_transactions.json";
         transactionService.exportTransactionsToJson(exportFilePath);
 
-        // 验证导出的文件
+        // Verify exported file
         File exportedFile = new File(exportFilePath);
         assertTrue(exportedFile.exists(), "导出的 JSON 文件不存在");
 
-        // 读取导出的文件并验证内容
+        // Read exported file and verify content
         List<TransactionDto> exportedTransactions = JsonUtils.readJson(exportFilePath);
         assertEquals(2, exportedTransactions.size(), "导出的交易记录数不符");
 
@@ -256,12 +328,16 @@ public class TransactionServiceJsonTest {
                 "交易时间不匹配");
         assertEquals(TEST_USER, firstTransaction.getUserId(), "用户 ID 不匹配");
 
-        // 清理临时文件
+        // Clean up temporary file
         if (exportedFile.exists()) {
             exportedFile.delete();
         }
     }
 
+    /**
+     * Tests exporting empty transactions to a JSON file.
+     * Asserts that an exception is thrown and no file is created when there are no transactions to export.
+     */
     @Test
     @Order(13)
     @DisplayName("测试导出空交易记录")
@@ -275,6 +351,9 @@ public class TransactionServiceJsonTest {
         assertFalse(exportedFile.exists(), "空交易不应创建文件");
     }
 
+    /**
+     * Tests retrieving transactions within a date range.
+     */
     @Test
     @Order(12)
     @DisplayName("测试时间范围查询")
@@ -290,6 +369,11 @@ public class TransactionServiceJsonTest {
         });
     }
 
+    /**
+     * Helper method: Creates a test transaction and stores it.
+     *
+     * @return the created TransactionDto
+     */
     private TransactionDto createTestTransaction() {
         TransactionDto transaction = new TransactionDto();
         transaction.setId(UUID.randomUUID().toString());
@@ -309,6 +393,10 @@ public class TransactionServiceJsonTest {
         return transactionDao.create(transaction);
     }
 
+    /**
+     * Helper method: Imports test transactions from the JSON file.
+     * Fails the test if import fails.
+     */
     private void createTestTransactions() {
         try {
             transactionService.importTransactions(testJsonPath);

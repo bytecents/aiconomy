@@ -9,13 +9,18 @@ import com.se.aiconomy.server.service.impl.BudgetServiceImpl;
 import com.se.aiconomy.server.service.impl.TransactionServiceImpl;
 import com.se.aiconomy.server.storage.service.JSONStorageService;
 import com.se.aiconomy.server.storage.service.impl.JSONStorageServiceImpl;
-import com.se.aiconomy.server.langchain.common.model.DynamicBillType;
 import org.junit.jupiter.api.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.LocalDateTime;
 
+/**
+ * Unit tests for {@link BudgetService} and related budget operations.
+ * <p>
+ * This class tests CRUD operations, budget retrieval, and calculation functionalities for budgets.
+ * </p>
+ */
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class BudgetServiceTest {
     private static final Logger log = LoggerFactory.getLogger(Budget.class);
@@ -24,6 +29,9 @@ public class BudgetServiceTest {
     private static BudgetService budgetService;
     private static TransactionService transactionService;
 
+    /**
+     * Initializes the storage service, budget service, and transaction service before all tests.
+     */
     @BeforeAll
     static void setup() {
         jsonStorageService = JSONStorageServiceImpl.getInstance();
@@ -31,6 +39,9 @@ public class BudgetServiceTest {
         transactionService = new TransactionServiceImpl();
     }
 
+    /**
+     * Cleans up all budgets and transactions from storage before each test.
+     */
     @BeforeEach
     void cleanUp() {
         jsonStorageService.findAll(Budget.class)
@@ -40,6 +51,9 @@ public class BudgetServiceTest {
         log.info("Cleaned up all budgets before test");
     }
 
+    /**
+     * Tests adding a new budget to the storage.
+     */
     @Test
     @Order(1)
     void testAddBudget() {
@@ -53,6 +67,9 @@ public class BudgetServiceTest {
         Assertions.assertEquals("budget1", budgetService.getBudgetsByUserId("user1").getFirst().getId());
     }
 
+    /**
+     * Tests updating an existing budget in the storage.
+     */
     @Test
     @Order(2)
     void testUpdateBudget() {
@@ -68,6 +85,9 @@ public class BudgetServiceTest {
         Assertions.assertEquals(2000, budgetService.getBudgetByCategory("user2", "Transportation").getBudgetAmount());
     }
 
+    /**
+     * Tests removing a budget from the storage.
+     */
     @Test
     @Order(3)
     void testRemoveBudget() {
@@ -82,6 +102,11 @@ public class BudgetServiceTest {
         Assertions.assertTrue(budgetService.getBudgetsByUserId("user3").isEmpty());
     }
 
+    /**
+     * Tests if the budget is exceeded after adding an expense transaction.
+     *
+     * @throws ServiceException if calculation fails
+     */
     @Test
     @Order(4)
     void testIsBudgetExceeded() throws ServiceException {
@@ -103,6 +128,11 @@ public class BudgetServiceTest {
         Assertions.assertTrue(budgetService.isBudgetExceeded(budget));
     }
 
+    /**
+     * Tests if the alert threshold for the budget is reached after adding an expense transaction.
+     *
+     * @throws ServiceException if calculation fails
+     */
     @Test
     @Order(5)
     void testIsAlertBudget() throws ServiceException {
@@ -124,6 +154,9 @@ public class BudgetServiceTest {
         Assertions.assertTrue(budgetService.isAlertBudget(budget));
     }
 
+    /**
+     * Tests calculating the total budget for a user.
+     */
     @Test
     @Order(6)
     void testGetTotalBudget() {
@@ -144,6 +177,11 @@ public class BudgetServiceTest {
         Assertions.assertEquals(3000, budgetService.getTotalBudget("user6"));
     }
 
+    /**
+     * Tests calculating the total spent amount for a user.
+     *
+     * @throws ServiceException if calculation fails
+     */
     @Test
     @Order(7)
     void testGetTotalSpent() throws ServiceException {
@@ -173,6 +211,11 @@ public class BudgetServiceTest {
         Assertions.assertEquals(800, budgetService.getTotalSpent("user7"));
     }
 
+    /**
+     * Tests calculating the monthly spent amount for a user.
+     *
+     * @throws ServiceException if calculation fails
+     */
     @Test
     @Order(8)
     void testGetMonthlySpent() throws ServiceException {
@@ -194,6 +237,11 @@ public class BudgetServiceTest {
         Assertions.assertEquals(500, budgetService.getMonthlySpent("user8"));
     }
 
+    /**
+     * Tests calculating the total alert count for a user.
+     *
+     * @throws ServiceException if calculation fails
+     */
     @Test
     @Order(9)
     void testGetTotalAlertCount() throws ServiceException {
@@ -232,6 +280,11 @@ public class BudgetServiceTest {
         Assertions.assertEquals(1, budgetService.getTotalAlertCount("user9"));
     }
 
+    /**
+     * Tests calculating the daily available budget for a user.
+     *
+     * @throws ServiceException if calculation fails
+     */
     @Test
     @Order(10)
     void testGetDailyAvailableBudget() throws ServiceException {
@@ -255,6 +308,9 @@ public class BudgetServiceTest {
         Assertions.assertTrue(dailyAvailable > 0);
     }
 
+    /**
+     * Tests calculating the number of days left in the budget period for a user.
+     */
     @Test
     @Order(11)
     void testGetLeftDays() {
@@ -270,6 +326,9 @@ public class BudgetServiceTest {
         Assertions.assertTrue(leftDays > 0);
     }
 
+    /**
+     * Tests calculating the total budget by category for a user.
+     */
     @Test
     @Order(12)
     void testGetTotalBudgetByCategory() {
@@ -291,6 +350,11 @@ public class BudgetServiceTest {
         Assertions.assertEquals(3000, budgetService.getTotalBudgetByCategory("user12", "Transportation"));
     }
 
+    /**
+     * Tests calculating the total spent amount by category for a user.
+     *
+     * @throws ServiceException if calculation fails
+     */
     @Test
     @Order(13)
     void testGetTotalSpentByCategory() throws ServiceException {

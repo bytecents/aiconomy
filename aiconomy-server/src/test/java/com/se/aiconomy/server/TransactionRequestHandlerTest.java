@@ -10,24 +10,50 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+/**
+ * Unit tests for {@link TransactionRequestHandler}.
+ * <p>
+ * This class tests the manual addition of transactions via the TransactionRequestHandler,
+ * ensuring that the handler correctly processes valid input and returns the expected TransactionDto.
+ * </p>
+ */
 class TransactionRequestHandlerTest {
 
+    /**
+     * Test user ID used in test cases.
+     */
     private static final String TEST_USER = "test-user";
-    private static final LocalDateTime TEST_TIME = LocalDateTime.of(2025, 5, 23, 10, 28); // 当前时间 2025-05-23 10:28 PDT
 
+    /**
+     * Test transaction time used in test cases.
+     */
+    private static final LocalDateTime TEST_TIME = LocalDateTime.of(2025, 5, 23, 10, 28); // Current time: 2025-05-23 10:28 PDT
+
+    /**
+     * TransactionRequestHandler instance under test.
+     */
     private TransactionRequestHandler transactionRequestHandler;
-    private TransactionService transactionService;
 
+    /**
+     * Initializes the TransactionRequestHandler and TransactionService before each test.
+     */
     @BeforeEach
     void setUp() {
-        // 初始化 TransactionServiceImpl
-        transactionService = new TransactionServiceImpl();
-        // 初始化 TransactionRequestHandler
+        TransactionService transactionService = new TransactionServiceImpl();
         transactionRequestHandler = new TransactionRequestHandler(transactionService);
     }
 
+    /**
+     * Tests the manual addition of a transaction with valid input.
+     * <p>
+     * Asserts that the returned TransactionDto is not null and all fields match the input values.
+     * </p>
+     *
+     * @throws ServiceException if the service fails to add the transaction
+     */
     @Test
     void testHandleAddTransactionManually_ValidInput() throws ServiceException {
         String userId = TEST_USER;
@@ -39,21 +65,21 @@ class TransactionRequestHandlerTest {
         String accountId = "userAcc001";
         String remark = "购买新电脑";
 
-        // 调用接口
+        // Call the handler method
         TransactionDto result = transactionRequestHandler.handleAddTransactionManually(
                 userId, incomeOrExpense, amount, time, product, type, accountId, remark
         );
 
-        // 验证结果
-        assertNotNull(result, "交易记录不应为空");
-        assertNotNull(result.getId(), "交易 ID 不应为空");
-        assertEquals(userId, result.getUserId(), "用户 ID 应匹配");
-        assertEquals(incomeOrExpense, result.getIncomeOrExpense(), "收支类型应匹配");
-        assertEquals(amount, result.getAmount(), "金额应匹配");
-        assertEquals(time, result.getTime(), "时间应匹配");
-        assertEquals(product, result.getProduct(), "产品应匹配");
-        assertEquals(type, result.getType(), "交易类型应匹配");
-        assertEquals(accountId, result.getAccountId(), "账户 ID 应匹配");
-        assertEquals(remark, result.getRemark(), "备注应匹配");
+        // Verify the result
+        assertNotNull(result, "Transaction record should not be null");
+        assertNotNull(result.getId(), "Transaction ID should not be null");
+        assertEquals(userId, result.getUserId(), "User ID should match");
+        assertEquals(incomeOrExpense, result.getIncomeOrExpense(), "Income or expense type should match");
+        assertEquals(amount, result.getAmount(), "Amount should match");
+        assertEquals(time, result.getTime(), "Time should match");
+        assertEquals(product, result.getProduct(), "Product should match");
+        assertEquals(type, result.getType(), "Transaction type should match");
+        assertEquals(accountId, result.getAccountId(), "Account ID should match");
+        assertEquals(remark, result.getRemark(), "Remark should match");
     }
 }

@@ -13,10 +13,28 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+/**
+ * Unit test for {@link com.se.aiconomy.server.langchain.service.analysis.budget.BudgetAnalysisService}.
+ * <p>
+ * This test verifies the budget analysis logic by providing a sample {@link Budget} object
+ * and asserting that the analysis result is not null.
+ * </p>
+ */
 public class BudgetAnalysisAssistantTest {
 
+    /**
+     * Logger instance for this test class.
+     */
     private static final Logger log = LoggerFactory.getLogger(BudgetAnalysisAssistantTest.class);
 
+    /**
+     * Tests the budget analysis functionality of {@link BudgetAnalysisService}.
+     * <p>
+     * This test creates a sample {@link Budget} with category budgets and invokes
+     * the {@code analyzeBudget} method. It asserts that the returned analysis result
+     * is not null and logs the analysis output.
+     * </p>
+     */
     @Test
     public void testBudgetAnalysis() {
         BudgetAnalysisService service = new BudgetAnalysisService();
