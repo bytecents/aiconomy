@@ -75,6 +75,7 @@ public class TransactionsController extends BaseController implements Initializa
                 Parent transactionItem = loader.load();
                 TransactionItemController controller = loader.getController();
                 controller.setTransaction(transactionDto);
+                controller.setParentController(this);
                 transactionItems.getChildren().add(transactionItem);
             }
         } catch (Exception e) {
