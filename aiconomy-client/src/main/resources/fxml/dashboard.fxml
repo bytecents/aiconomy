@@ -145,7 +145,7 @@
             <HBox alignment="CENTER_LEFT" styleClass="gap-3">
                 <Label text="Spending Trends" styleClass="font-semibold text-base text-gray-900"/>
                 <Region HBox.hgrow="ALWAYS"/>
-                <ComboBox fx:id="trendSelect" styleClass="text-sm font-roboto" >
+                <ComboBox fx:id="trendSelect" styleClass="text-sm font-roboto" value="Last 30 Days">
                     <items>
                         <FXCollections fx:factory="observableArrayList">
                             <String fx:value="Last 7 Days"/>

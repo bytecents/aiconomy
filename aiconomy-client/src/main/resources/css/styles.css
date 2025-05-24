@@ -966,16 +966,16 @@
 }
 
 .category-chosen {
-    -fx-background-color: #EDE9FE; /* Tailwind 的 bg-purple-100 */
-    -fx-border-color: #7C3AED;     /* Tailwind 的 purple-600 */
+    -fx-background-color: #DBEAFE; /* Tailwind 的 bg-purple-100 */
+    -fx-border-color: #2563EB;     /* Tailwind 的 purple-600 */
 }
 
 .category-chosen .label {
-    -fx-text-fill: #7C3AED;        /* 文字颜色变紫 */
+    -fx-text-fill: #2563EB;        /* 文字颜色变紫 */
 }
 
 .category-chosen .region {
-    -fx-background-color: #7C3AED; /* 图标变紫色 */
+    -fx-background-color: #2563EB; /* 图标变紫色 */
 }
 
 .expense {
