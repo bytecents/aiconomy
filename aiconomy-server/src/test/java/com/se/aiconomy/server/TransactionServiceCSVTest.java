@@ -9,11 +9,13 @@ import org.junit.jupiter.api.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
+import java.time.format.DateTimeFormatter;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -21,10 +23,11 @@ import static org.junit.jupiter.api.Assertions.*;
 public class TransactionServiceCSVTest {
     private static final Logger log = LoggerFactory.getLogger(TransactionServiceCSVTest.class);
     private static final LocalDateTime TEST_TIME = LocalDateTime.parse("2025-04-17T10:11:09");
-    private static final String TEST_USER = "AureliaSKY";
+    private static final String TEST_USER = "Aurelia";
     private static TransactionServiceImpl transactionService;
     private static TransactionDao transactionDao;
     private final String testCsvPath = Objects.requireNonNull(getClass().getClassLoader().getResource("transactions.csv")).getPath();
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
 
     @BeforeAll
     static void setup() {
@@ -161,6 +164,66 @@ public class TransactionServiceCSVTest {
                 transactionService.updateTransactionStatus(nonExistentId, "已完成"));
     }
 
+    @Test
+    @Order(9)
+    @DisplayName("测试根据 accountId 查找所有交易记录")
+    void testGetTransactionsByAccountId() throws ServiceException {
+        createTestTransactions();
+        String accountId = "userAcc002";
+        List<TransactionDto> transactions = transactionService.getTransactionsByAccountId(accountId, TEST_USER);
+
+        assertNotNull(transactions, "交易记录为空");
+        assertFalse(transactions.isEmpty(), "没有找到任何交易记录");
+
+        transactions.forEach(transaction -> {
+            assertEquals(accountId, transaction.getAccountId(), "accountId 不匹配");
+            assertEquals(TEST_USER, transaction.getUserId(), "userId 不匹配");
+        });
+
+        transactions.forEach(transaction -> log.info("Found transaction with accountId {}: {}", accountId, transaction));
+    }
+
+    @Test
+    @Order(10)
+    @DisplayName("测试导出交易记录到 CSV 文件")
+    void testExportTransactionsToCsv() throws Exception {
+        createTestTransactions();
+        String exportFilePath = System.getProperty("java.io.tmpdir") + "/exported_transactions.csv";
+        transactionService.exportTransactionsToCsv(exportFilePath);
+
+        File exportedFile = new File(exportFilePath);
+        assertTrue(exportedFile.exists(), "导出的 CSV 文件不存在");
+
+        List<TransactionDto> exportedTransactions = transactionService.importTransactions(exportFilePath);
+        assertEquals(2, exportedTransactions.size(), "导出的交易记录数不符");
+
+        TransactionDto firstTransaction = exportedTransactions.stream()
+                .filter(tx -> "消费".equals(tx.getType()))
+                .findFirst()
+                .orElse(null);
+        assertNotNull(firstTransaction, "未找到消费交易");
+        assertEquals("京东商城", firstTransaction.getCounterparty(), "交易对象不匹配");
+        assertEquals("2025-04-17T10:11:09", firstTransaction.getTime().format(FORMATTER), "交易时间不匹配");
+        assertEquals(TEST_USER, firstTransaction.getUserId(), "用户 ID 不匹配");
+
+        if (exportedFile.exists()) {
+            exportedFile.delete();
+        }
+    }
+
+    @Test
+    @Order(11)
+    @DisplayName("测试导出空交易记录到 CSV")
+    void testExportEmptyTransactionsToCsv() {
+        String exportFilePath = System.getProperty("java.io.tmpdir") + "/empty_transactions.csv";
+        assertThrows(ServiceException.class,
+                () -> transactionService.exportTransactionsToCsv(exportFilePath),
+                "应抛出异常：无交易记录可导出");
+
+        File exportedFile = new File(exportFilePath);
+        assertFalse(exportedFile.exists(), "空交易不应创建文件");
+    }
+
     // 辅助方法：创建测试交易记录
     private TransactionDto createTestTransaction() {
         TransactionDto transaction = new TransactionDto();
@@ -202,28 +265,5 @@ public class TransactionServiceCSVTest {
         incomeTransaction.setUserId("Aurelia");
 
         transactionDao.create(incomeTransaction);
-    }
-
-    @Test
-    @Order(9)
-    @DisplayName("测试根据 accountId 查找所有交易记录")
-    void testGetTransactionsByAccountId() throws ServiceException {
-        // 准备测试数据
-        createTestTransactions();
-
-        // 查找特定的 accountId (例如 "userAcc002")
-        String accountId = "userAcc002";
-        List<TransactionDto> transactions = transactionService.getTransactionsByAccountId(accountId, createTestTransaction().getUserId());
-
-        // 断言返回的交易记录不为空
-        assertNotNull(transactions, "交易记录为空");
-        assertFalse(transactions.isEmpty(), "没有找到任何交易记录");
-
-        // 断言返回的每一条交易记录的 accountId 匹配
-        transactions.forEach(transaction -> {
-            assertEquals(accountId, transaction.getAccountId(), "accountId 不匹配");
-        });
-
-        transactions.forEach(transaction -> log.info("Found transaction with accountId {}: {}", accountId, transaction));
     }
 }

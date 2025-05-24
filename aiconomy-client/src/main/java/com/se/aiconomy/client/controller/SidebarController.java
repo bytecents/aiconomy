@@ -276,7 +276,7 @@ public class SidebarController implements Initializable {
     @FXML
     protected void switchToAccounts() {
         setActiveButton("accounts");
-        loadView("/fxml/accounts.fxml");
+        loadView("/fxml/accounts/accounts.fxml");
     }
 
     @FXML

@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.Circle?>
+<StackPane xmlns:fx="http://javafx.com/fxml/1" fx:id="rootPane" xmlns="http://javafx.com/javafx/23.0.1"
+           fx:controller="com.se.aiconomy.client.controller.accounts.AccountsController">
+    <VBox fx:id="mainVBox" styleClass="p-8">
+        <padding>
+            <Insets bottom="20" left="20" right="20" top="20"/>
+        </padding>
+        <!-- Top Section -->
+        <HBox alignment="CENTER" styleClass="pb-4 gap-5">
+            <VBox styleClass="gap-1">
+                <Label styleClass="text-2xl font-bold text-gray-900 pb-1" text="Accounts"/>
+            </VBox>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Button fx:id="addAccountBtn" onAction="#onAddAccountClick"
+                    styleClass="hover-bg-blue-700 p-4-2 bg-blue-600 text-white font-roboto cursor-pointer"
+                    text="Add Accounts"/>
+
+        </HBox>
+        <!-- Overview Cards -->
+        <GridPane hgap="24" styleClass="pb-4" vgap="24">
+            <columnConstraints>
+                <ColumnConstraints percentWidth="33"/>
+                <ColumnConstraints percentWidth="33"/>
+                <ColumnConstraints percentWidth="33"/>
+            </columnConstraints>
+            <!-- Card 1 Total Budget-->
+            <VBox styleClass="card p-6" GridPane.columnIndex="0">
+                <Label styleClass="text-sm text-gray-500 pb-2 font-roboto" text="Total Balance"/>
+                <Label fx:id="totalBalanceLabel" styleClass="text-2xl font-bold text-gray-900 pb-2" text="\$24,150.30"/>
+                <Label styleClass="text-sm text-green-500 font-roboto" text="12.5% this month"/>
+            </VBox>
+            <!-- Card 2 Spent-->
+            <VBox styleClass="card p-6" GridPane.columnIndex="1">
+                <Label styleClass="text-sm text-gray-500 pb-2 font-roboto" text="Active Accounts"/>
+                <Label fx:id="activateAccountsLabel" styleClass="text-2xl font-bold text-gray-900 pb-2" text="5"/>
+                <Label styleClass="text-sm text-gray-500 font-roboto" text="Across 3 banks"/>
+            </VBox>
+
+            <!-- Card 3 Alerts-->
+            <VBox styleClass="card p-6" GridPane.columnIndex="2">
+                <Label styleClass="text-sm text-gray-500 pb-2 font-roboto" text="Last Sync"/>
+                <Label styleClass="text-2xl font-bold text-gray-900 pb-2" text="2 mins ago"/>
+                <Label styleClass="text-sm text-gray-500 font-roboto" text="All accounts up to date"/>
+            </VBox>
+            <rowConstraints>
+                <RowConstraints/>
+            </rowConstraints>
+        </GridPane>
+        <!-- Accounts Card Section -->
+        <VBox spacing="16" styleClass="card p-6" VBox.vgrow="ALWAYS">
+            <!-- Section Title -->
+            <Label styleClass="text-base font-bold text-gray-900 pb-2" text="Your Accounts"/>
+
+            <!-- Account Items -->
+            <VBox spacing="12" fx:id="accountListVBox">
+                <!-- Account 1 -->
+                <HBox alignment="CENTER_LEFT" spacing="12">
+                    <StackPane prefHeight="50.0" prefWidth="50.0">
+                        <Circle fill="#dbeafe" radius="24.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0"/>
+                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                            <Image url="@../../assets/dash_bank.png"/>
+                        </ImageView>
+                    </StackPane>
+                    <VBox>
+                        <Label styleClass="text-base font-bold" text="Chase Bank"/>
+                        <Label styleClass="text-sm text-gray-500" text="Checking **** 4521"/>
+                    </VBox>
+                    <Region HBox.hgrow="ALWAYS"/>
+                    <VBox alignment="CENTER_RIGHT">
+                        <Label styleClass="text-base font-bold" text="\$8,250.50"/>
+                        <Label styleClass="text-sm text-green-500" text="Connected"/>
+                    </VBox>
+                </HBox>
+                <Separator/>
+
+                <!-- Account 2 -->
+                <HBox alignment="CENTER_LEFT" spacing="12">
+                    <StackPane prefHeight="50.0" prefWidth="50.0">
+                        <Circle fill="#fca5a5" radius="24.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0"/>
+                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                            <Image url="@../../assets/eng_bank.png"/>
+                        </ImageView>
+                    </StackPane>
+                    <VBox>
+                        <Label styleClass="text-base font-bold" text="Bank of England"/>
+                        <Label styleClass="text-sm text-gray-500" text="Savings **** 7845"/>
+                    </VBox>
+                    <Region HBox.hgrow="ALWAYS"/>
+                    <VBox alignment="CENTER_RIGHT">
+                        <Label styleClass="text-base font-bold" text="\$12,380.25"/>
+                        <Label styleClass="text-sm text-green-500" text="Connected"/>
+                    </VBox>
+                </HBox>
+                <Separator/>
+
+                <!-- Account 3 -->
+                <HBox alignment="CENTER_LEFT" spacing="12">
+                    <StackPane prefHeight="50.0" prefWidth="50.0">
+                        <Circle fill="#dcfce7" radius="24.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0"/>
+                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                            <Image url="@../../assets/well_fargo.png"/>
+                        </ImageView>
+                    </StackPane>
+                    <VBox>
+                        <Label styleClass="text-base font-bold" text="Wells Fargo"/>
+                        <Label styleClass="text-sm text-gray-500" text="Credit Card **** 9632"/>
+                    </VBox>
+                    <Region HBox.hgrow="ALWAYS"/>
+                    <VBox alignment="CENTER_RIGHT">
+                        <Label styleClass="text-base text-red-500 font-bold" text="-$1,250.80"/>
+                        <Label styleClass="text-sm text-green-500" text="Connected"/>
+                    </VBox>
+                </HBox>
+            </VBox>
+        </VBox>
+
+<!--        &lt;!&ndash; Footer Buttons &ndash;&gt;-->
+<!--        <GridPane hgap="24" vgap="24">-->
+<!--            <VBox.margin>-->
+<!--                <Insets top="16"/>-->
+<!--            </VBox.margin>-->
+<!--            <columnConstraints>-->
+<!--                <ColumnConstraints percentWidth="33"/>-->
+<!--                <ColumnConstraints percentWidth="33"/>-->
+<!--                <ColumnConstraints percentWidth="33"/>-->
+<!--            </columnConstraints>-->
+
+<!--            &lt;!&ndash; Button 1 &ndash;&gt;-->
+<!--            <HBox alignment="CENTER" prefHeight="50" styleClass="card px-4 py-2" GridPane.columnIndex="0">-->
+<!--                <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">-->
+<!--                    <Image url="@../../assets/sync_acc.png"/>-->
+<!--                </ImageView>-->
+<!--                <Label styleClass="text-sm text-gray-900 font-roboto" text="  Sync Accounts"/>-->
+<!--            </HBox>-->
+
+<!--            &lt;!&ndash; Button 2 &ndash;&gt;-->
+<!--            <HBox alignment="CENTER" prefHeight="50" spacing="8" styleClass="card px-4 py-2" GridPane.columnIndex="1">-->
+<!--                <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">-->
+<!--                    <Image url="@../../assets/download.png"/>-->
+<!--                </ImageView>-->
+<!--                <Label styleClass="text-sm text-gray-900 font-roboto" text="Export Statement"/>-->
+<!--            </HBox>-->
+
+<!--            &lt;!&ndash; Button 3 &ndash;&gt;-->
+<!--            <HBox alignment="CENTER" prefHeight="50" spacing="8" styleClass="card px-4 py-2" GridPane.columnIndex="2">-->
+<!--                <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">-->
+<!--                    <Image url="@../../assets/setting.png"/>-->
+<!--                </ImageView>-->
+<!--                <Label styleClass="text-sm text-gray-900 font-roboto" text="Account Settings"/>-->
+<!--            </HBox>-->
+<!--            <rowConstraints>-->
+<!--                <RowConstraints/>-->
+<!--            </rowConstraints>-->
+<!--        </GridPane>-->
+    </VBox>
+</StackPane>

@@ -1,26 +1,27 @@
 package com.se.aiconomy.server;
 
-import com.se.aiconomy.server.common.utils.CSVUtils;
+import com.se.aiconomy.server.common.utils.JsonUtils;
 import com.se.aiconomy.server.model.dto.TransactionDto;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class CSVTest {
+public class JsonTest {
 
-    private static final Logger log = LoggerFactory.getLogger(CSVTest.class);
+    private static final Logger log = LoggerFactory.getLogger(JsonTest.class);
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
 
     @Test
-    public void testReadCsv() throws IOException {
-        List<TransactionDto> transactions = CSVUtils.readCsv(
-            Objects.requireNonNull(getClass().getClassLoader().getResource("transactions.csv")).getPath(),
-            TransactionDto.class
+    public void testReadJson() throws IOException {
+        List<TransactionDto> transactions = JsonUtils.readJson(
+                Objects.requireNonNull(getClass().getClassLoader().getResource("transactions.json")).getPath()
         );
 
         log.info("Transactions: {}", transactions);
@@ -30,7 +31,7 @@ public class CSVTest {
 
         TransactionDto transaction = transactions.getFirst();
         assertEquals("12345", transaction.getId(), "TransactionDto ID should be '12345'");
-        assertEquals("2025-04-16T10:30", transaction.getTime().toString(), "TransactionDto time should be '2025-04-16T10:30'");
+        assertEquals("2025-04-16T10:30:00", transaction.getTime().format(FORMATTER), "TransactionDto time should be '2025-04-16T10:30:00'");
         assertEquals("消费", transaction.getType(), "TransactionDto type should be '消费'");
         assertEquals("Walmart", transaction.getCounterparty(), "TransactionDto counterparty should be 'Walmart'");
         assertEquals("iPhone 15", transaction.getProduct(), "TransactionDto product should be 'iPhone 15'");
@@ -39,6 +40,7 @@ public class CSVTest {
         assertEquals("微信支付", transaction.getPaymentMethod(), "TransactionDto payment method should be '微信支付'");
         assertEquals("成功", transaction.getStatus(), "TransactionDto status should be '成功'");
         assertEquals("7890", transaction.getMerchantOrderId(), "TransactionDto merchant order ID should be '7890'");
+        assertEquals("acc1", transaction.getAccountId(), "TransactionDto account ID should be 'acc1'");
         assertEquals("购买iPhone 15", transaction.getRemark(), "TransactionDto remark should be '购买iPhone 15'");
     }
 }

@@ -4,6 +4,7 @@ import com.se.aiconomy.server.common.exception.ServiceException;
 import com.se.aiconomy.server.model.dto.account.request.AddAccountsRequest;
 import com.se.aiconomy.server.model.dto.account.request.DeleteAccountRequest;
 import com.se.aiconomy.server.model.dto.account.request.GetAccountsByUserIdRequest;
+import com.se.aiconomy.server.model.dto.account.request.UpdateAccountRequest;
 import com.se.aiconomy.server.model.entity.Account;
 import com.se.aiconomy.server.service.AccountService;
 import com.se.aiconomy.server.service.impl.AccountServiceImpl;
@@ -53,5 +54,32 @@ public class AccountRequestHandler {
         }
 
         return true;
+    }
+
+    public void handleUpdateAccountRequest(UpdateAccountRequest request) throws ServiceException {
+        if (request == null) {
+            throw new ServiceException("Update account request cannot be null", null);
+        }
+
+        String userId = request.getUserId();
+        Account account = request.getAccount();
+
+        if (userId == null || userId.isEmpty()) {
+            throw new ServiceException("User ID cannot be null or empty", null);
+        }
+
+        if (account == null || account.getId() == null || account.getId().isEmpty()) {
+            throw new ServiceException("Account or account ID cannot be null or empty", null);
+        }
+
+        // Verify that the account belongs to the user
+        List<Account> userAccounts = accountService.getAccountsByUserId(userId);
+        boolean accountExists = userAccounts.stream().anyMatch(acc -> acc.getId().equals(account.getId()));
+        if (!accountExists) {
+            throw new ServiceException("Account does not belong to the specified user", null);
+        }
+
+        // Update the account
+        accountService.updateAccount(account);
     }
 }

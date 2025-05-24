@@ -57,9 +57,11 @@ public class TransactionDto implements Identifiable {
     @CsvBindByPosition(position = 10)
     private String accountId; // 账户ID
 
+    @CsvBindByPosition(position = 11)
+    private String userId;
+
+    @CsvBindByPosition(position = 12)
     private String remark; // 备注
 
     private DynamicBillType billType;
-
-    private String userId;
 }

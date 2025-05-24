@@ -1,7 +1,6 @@
 package com.se.aiconomy.server.service;
 
 import com.se.aiconomy.server.common.exception.ServiceException;
-import com.se.aiconomy.server.langchain.common.model.BillType;
 import com.se.aiconomy.server.langchain.common.model.DynamicBillType;
 import com.se.aiconomy.server.langchain.common.model.Transaction;
 import com.se.aiconomy.server.model.dto.TransactionDto;
@@ -29,4 +28,9 @@ public interface TransactionService {
 
     TransactionDto addTransactionManually(String userId, String incomeOrExpense, String amount, LocalDateTime time, String product, String type, String accountId) throws ServiceException;
 
+    void exportTransactionsToJson(String filePath) throws ServiceException;
+
+    void exportTransactionsToCsv(String filePath) throws ServiceException;
+
+    void exportTransactionsToExcel(String filePath) throws ServiceException;
 }
