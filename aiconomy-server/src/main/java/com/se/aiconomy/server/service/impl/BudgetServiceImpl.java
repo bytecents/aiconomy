@@ -38,8 +38,18 @@ public class BudgetServiceImpl implements BudgetService {
 
     @Override
     public void removeBudget(String budgetId) {
-        Optional<Budget> budget = jsonStorageService.findById(budgetId, Budget.class);
-        budget.ifPresent(value -> jsonStorageService.delete(value, Budget.class));
+        String categoty = "";
+        String userId = "";
+        List<Budget> budgets = jsonStorageService.findAll(Budget.class);
+        for (Budget budget : budgets) {
+            if (budget.getId().equals(budgetId)) {
+                categoty = budget.getBudgetCategory();
+                userId = budget.getUserId();
+                break;
+            }
+        }
+        Budget budget = getBudgetByCategory(userId, categoty);
+        jsonStorageService.delete(budget, Budget.class);
     }
 
     @Override
