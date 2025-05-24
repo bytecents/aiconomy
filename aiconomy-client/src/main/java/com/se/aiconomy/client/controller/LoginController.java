@@ -191,7 +191,7 @@ public class LoginController extends BaseController {
                     .monthlyIncome(5000.0)
                     .mainExpenseType(List.of("Rent", "Groceries"))
                     .build();
-            System.out.println(userRequestHandler.handleRegisterRequest(userRegisterRequest));
+//            System.out.println(userRequestHandler.handleRegisterRequest(userRegisterRequest));
 
             UserInfoRequest userInfoRequest = new UserInfoRequest();
             userInfoRequest.setUserId("e2bd8d75-29a0-4cc0-9763-e806a52ea6e4");
