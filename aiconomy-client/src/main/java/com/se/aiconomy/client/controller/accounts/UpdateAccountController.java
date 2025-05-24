@@ -134,6 +134,7 @@ public class UpdateAccountController extends BaseController {
             accountRequestHandler.handleUpdateAccountRequest(updateAccountRequest);
         } catch (Exception e) {
             e.printStackTrace();
+            CustomDialog.show("Error", e.getMessage(), "error", "Try Again");
         }
         return true;
     }
@@ -146,6 +147,7 @@ public class UpdateAccountController extends BaseController {
             accountRequestHandler.handleDeleteAccountRequest(deleteAccountRequest);
         } catch (Exception e) {
             e.printStackTrace();
+            CustomDialog.show("Error", e.getMessage(), "error", "Try Again");
         }
     }
 

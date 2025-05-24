@@ -128,6 +128,7 @@ public class AddAccountController extends BaseController {
             accountRequestHandler.handleAddAccountRequest(addAccountsRequest);
         } catch (Exception e) {
             e.printStackTrace();
+            CustomDialog.show("Error", e.getMessage(), "error", "Try Again");
         }
         return true;
     }
