@@ -7,6 +7,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@ToString
 public class TotalBudgetInfo {
     private double totalBudget;
     private double totalUsedRatio;

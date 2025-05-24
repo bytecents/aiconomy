@@ -1,6 +1,5 @@
 package com.se.aiconomy.server.service.impl;
 
-import com.se.aiconomy.server.common.exception.ServiceException;
 import com.se.aiconomy.server.model.dto.TransactionDto;
 import com.se.aiconomy.server.model.entity.Account;
 import com.se.aiconomy.server.service.AccountService;
@@ -48,7 +47,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public double calculateNetWorth(String userId) throws ServiceException {
+    public double calculateNetWorth(String userId) {
         List<Account> accounts = getAccountsByUserId(userId);
         List<TransactionDto> transactions = getTransactionsByUserId(userId);
         double netWorth = 0;
@@ -66,7 +65,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public double calculateMonthlySpending(String userId, Month month) throws ServiceException {
+    public double calculateMonthlySpending(String userId, Month month) {
         List<TransactionDto> transactions = getTransactionsByUserId(userId);
         double totalSpending = 0;
         for (TransactionDto transaction : transactions) {
@@ -78,7 +77,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public double calculateMonthlyIncome(String userId, Month month) throws ServiceException {
+    public double calculateMonthlyIncome(String userId, Month month) {
         List<TransactionDto> transactions = getTransactionsByUserId(userId);
         double totalIncome = 0;
         for (TransactionDto transaction : transactions) {
@@ -115,9 +114,11 @@ public class AccountServiceImpl implements AccountService {
         return nextDueDate;
     }
 
-    List<TransactionDto> getTransactionsByUserId(String userId) throws ServiceException {
+    List<TransactionDto> getTransactionsByUserId(String userId) {
         List<TransactionDto> transactions = jsonStorageService.findAll(TransactionDto.class);
-        return transactions.stream().filter(transaction -> transaction.getUserId().equals(userId)).toList();
+        return transactions.stream()
+                .filter(transaction -> transaction.getUserId() != null && transaction.getUserId().equals(userId))
+                .toList();
     }
 
 //    @Override

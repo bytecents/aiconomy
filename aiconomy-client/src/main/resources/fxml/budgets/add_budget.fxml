@@ -1,15 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
-
-<?import javafx.scene.shape.Circle?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.image.Image?>
-
+<?import javafx.scene.shape.*?>
 <VBox xmlns:fx="http://javafx.com/fxml"
       xmlns="http://javafx.com/javafx"
-      fx:controller="com.se.aiconomy.client.controller.AddBudgetController"
+      fx:controller="com.se.aiconomy.client.controller.budgets.AddBudgetController"
       stylesheets="/css/styles.css"
       styleClass="gap-4 p-6 bg-white rounded-xl shadow-xl">
     <HBox spacing="8">
@@ -53,7 +50,7 @@
                     <StackPane prefHeight="50.0" prefWidth="50.0" alignment="CENTER">
                         <Circle fill="#f3f4f6" radius="24.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0"/>
                         <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                            <Image url="@../assets/FoodDining1.png"/>
+                            <Image url="@../../assets/FoodDining1.png"/>
                         </ImageView>
                     </StackPane>
                     <Label text="Food &amp; Dining" alignment="CENTER" wrapText="true"
@@ -68,7 +65,7 @@
                     <StackPane prefHeight="50.0" prefWidth="50.0" alignment="CENTER">
                         <Circle fill="#f3f4f6" radius="24.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0"/>
                         <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                            <Image url="@../assets/Transportation1.png"/>
+                            <Image url="@../../assets/Transportation1.png"/>
                         </ImageView>
                     </StackPane>
                     <Label text="Transportation" alignment="CENTER" wrapText="true"
@@ -83,7 +80,7 @@
                     <StackPane prefHeight="50.0" prefWidth="50.0">
                         <Circle fill="#f3f4f6" radius="24.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0"/>
                         <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                            <Image url="@../assets/Shopping1.png"/>
+                            <Image url="@../../assets/Shopping1.png"/>
                         </ImageView>
                     </StackPane>
                     <Label text="Shopping" alignment="CENTER" wrapText="true"
@@ -98,7 +95,7 @@
                     <StackPane prefHeight="50.0" prefWidth="50.0">
                         <Circle fill="#f3f4f6" radius="24.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0"/>
                         <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                            <Image url="@../assets/House1.png"/>
+                            <Image url="@../../assets/House1.png"/>
                         </ImageView>
                     </StackPane>
                     <Label text="Housing" alignment="CENTER" wrapText="true"
@@ -113,7 +110,7 @@
                     <StackPane prefHeight="50.0" prefWidth="50.0">
                         <Circle fill="#f3f4f6" radius="24.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0"/>
                         <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                            <Image url="@../assets/Education1.png"/>
+                            <Image url="@../../assets/Education1.png"/>
                         </ImageView>
                     </StackPane>
                     <Label text="Education" alignment="CENTER" wrapText="true"
@@ -128,7 +125,7 @@
                     <StackPane prefHeight="50.0" prefWidth="50.0">
                         <Circle fill="#f3f4f6" radius="24.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0"/>
                         <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                            <Image url="@../assets/Travel1.png"/>
+                            <Image url="@../../assets/Travel1.png"/>
                         </ImageView>
                     </StackPane>
                     <Label text="Travel" alignment="CENTER" wrapText="true"
@@ -143,7 +140,7 @@
                     <StackPane prefHeight="50.0" prefWidth="50.0">
                         <Circle fill="#f3f4f6" radius="24.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0"/>
                         <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                            <Image url="@../assets/Gift1.png"/>
+                            <Image url="@../../assets/Gift1.png"/>
                         </ImageView>
                     </StackPane>
                     <Label text="Gifts" alignment="CENTER" wrapText="true"
@@ -158,7 +155,7 @@
                     <StackPane prefHeight="50.0" prefWidth="50.0">
                         <Circle fill="#f3f4f6" radius="24.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0"/>
                         <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                            <Image url="@../assets/Custom1.png"/>
+                            <Image url="@../../assets/Custom1.png"/>
                         </ImageView>
                     </StackPane>
                     <Label text="Custom" alignment="CENTER" wrapText="true"

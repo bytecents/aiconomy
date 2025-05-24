@@ -128,6 +128,7 @@ public class AnalyticsController extends BaseController implements Initializable
             StyleClassFixer.fixStyleClasses(view);
             aiPanel.setContent(view);
 
+            controller.setUserInfo(userInfo);
             controller.setOnCloseListener(this::closeAiPanel);
 
             Duration duration = Duration.millis(300);

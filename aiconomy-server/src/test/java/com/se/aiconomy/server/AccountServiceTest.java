@@ -12,7 +12,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.LocalDateTime;
-import java.time.Month;
 import java.util.List;
 
 public class AccountServiceTest {
@@ -65,7 +64,9 @@ public class AccountServiceTest {
         jsonStorageService.insert(account);
         account.setAccountName("account2_updated");
         jsonStorageService.update(account, Account.class);
-        Assertions.assertEquals("account2_updated", jsonStorageService.findById("account2", Account.class).get().getAccountName());
+        Assertions.assertTrue(jsonStorageService.findById("account2", Account.class)
+                .map(a -> "account2_updated".equals(a.getAccountName()))
+                .orElse(false));
         log.info("Updated account2");
     }
 
@@ -121,8 +122,7 @@ public class AccountServiceTest {
         transaction.setIncomeOrExpense("Income");
 
         jsonStorageService.insert(transaction);
-        double monthlySpending = accountService.calculateMonthlySpending("user7", LocalDateTime.now().getMonth());
-
+        accountService.calculateMonthlySpending("user7", LocalDateTime.now().getMonth());
     }
 
     @Test

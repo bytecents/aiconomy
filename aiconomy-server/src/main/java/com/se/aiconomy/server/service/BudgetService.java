@@ -18,6 +18,8 @@ public interface BudgetService {
 
         List<Budget> getBudgetsByUserId(String userId); // 根据用户ID获取预算列表
 
+        Budget getBudgetByCategory(String userId, String category);
+
         double getTotalBudget(String userId); // 获取用户的总预算
 
         double getTotalSpent(String userId) throws ServiceException; // 获取用户的总支出

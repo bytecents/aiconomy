@@ -11,5 +11,5 @@ import lombok.ToString;
 @ToString
 @AllArgsConstructor
 public class BudgetRemoveRequest extends BaseRequest {
-    private String id;
+    private String category;
 }
