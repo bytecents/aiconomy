@@ -32,9 +32,15 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 
+/**
+ * Controller for handling user settings in the application.
+ * Provides functionality for updating user profile, toggling switches,
+ * handling logout, and managing UI interactions.
+ */
 public class SettingsController extends BaseController {
 
     private final UserRequestHandler userRequestHandler = new UserRequestHandler(new UserServiceImpl(JSONStorageServiceImpl.getInstance()));
+
     @FXML
     private Button logoutButton;
     @FXML
@@ -67,6 +73,11 @@ public class SettingsController extends BaseController {
     @FXML
     private DatePicker birthDatePicker;
 
+    /**
+     * Validates the user input form for updating profile information.
+     *
+     * @return true if the form is valid, false otherwise
+     */
     private boolean checkForm() {
         String firstName = firstNameTextField.getText();
         String lastName = lastNameTextField.getText();
@@ -126,35 +137,49 @@ public class SettingsController extends BaseController {
         return true;
     }
 
+    /**
+     * Toggles the main switch UI component.
+     */
     @FXML
     private void toggleSwitch() {
         isOn = !isOn;
         if (isOn) {
-            switchTrack.setFill(Paint.valueOf("#2563eb")); // ON 蓝色
-            switchThumb.setTranslateX(12); // 右移
+            switchTrack.setFill(Paint.valueOf("#2563eb")); // ON blue
+            switchThumb.setTranslateX(12); // Move right
         } else {
-            switchTrack.setFill(Paint.valueOf("#ccc")); // OFF 灰色
-            switchThumb.setTranslateX(-12); // 左移
+            switchTrack.setFill(Paint.valueOf("#ccc")); // OFF gray
+            switchThumb.setTranslateX(-12); // Move left
         }
     }
 
+    /**
+     * Toggles the AI switch UI component.
+     */
     @FXML
     private void toggleAISwitch() {
         isOn = !isOn;
         if (isOn) {
-            switchAITrack.setFill(Paint.valueOf("#2563eb")); // ON 蓝色
-            switchAIThumb.setTranslateX(12); // 右移
+            switchAITrack.setFill(Paint.valueOf("#2563eb")); // ON blue
+            switchAIThumb.setTranslateX(12); // Move right
         } else {
-            switchAITrack.setFill(Paint.valueOf("#ccc")); // OFF 灰色
-            switchAIThumb.setTranslateX(-12); // 左移
+            switchAITrack.setFill(Paint.valueOf("#ccc")); // OFF gray
+            switchAIThumb.setTranslateX(-12); // Move left
         }
     }
 
+    /**
+     * Handles the save button click event.
+     *
+     * @param actionEvent the action event
+     */
     @FXML
     public void onSaveClick(ActionEvent actionEvent) {
         saveChanges();
     }
 
+    /**
+     * Saves the changes made in the settings form.
+     */
     private void saveChanges() {
         if (!checkForm()) {
             return;
@@ -179,11 +204,14 @@ public class SettingsController extends BaseController {
         }
     }
 
+    /**
+     * Initializes the settings controller and loads user data.
+     */
     @FXML
     public void initialize() {
         if (userInfo == null) {
             Platform.runLater(() -> {
-                // 延迟到事件调度线程中处理
+                // Delay initialization to the event dispatch thread
                 if (userInfo != null) {
                     init();
                 }
@@ -193,6 +221,9 @@ public class SettingsController extends BaseController {
         }
     }
 
+    /**
+     * Initializes the UI components with user information.
+     */
     @FXML
     public void init() {
         currencyComboBox.setItems(FXCollections.observableArrayList("USD", "EUR", "GBP", "CNY", "JPY"));
@@ -209,6 +240,11 @@ public class SettingsController extends BaseController {
         birthDatePicker.setValue(userInfo.getBirthDate());
     }
 
+    /**
+     * Handles the logout action and navigates back to the login page.
+     *
+     * @param event the action event
+     */
     @FXML
     private void logout(ActionEvent event) {
         try {
@@ -235,6 +271,11 @@ public class SettingsController extends BaseController {
         }
     }
 
+    /**
+     * Handles the click event on a VBox option, updating its style and icon.
+     *
+     * @param event the mouse event
+     */
     @FXML
     private void handleClick(MouseEvent event) {
         resetAllBoxes(); // Reset all boxes to default styles
@@ -245,8 +286,7 @@ public class SettingsController extends BaseController {
         clickedVBox.setStyle(
                 "-fx-background-color: #eff6ff; -fx-border-color: #2563eb; -fx-border-width: 1; -fx-padding: 15; -fx-border-radius: 10; -fx-background-radius: 10;");
 
-        // Iterate through the children of the clicked VBox to update the Circle and
-        // Image styles
+        // Iterate through the children of the clicked VBox to update the Circle and Image styles
         for (Node node : clickedVBox.getChildren()) {
             if (node instanceof StackPane stackPane) {
                 for (Node child : stackPane.getChildren()) {
@@ -266,26 +306,23 @@ public class SettingsController extends BaseController {
         // Update the label's style for the clicked box (bold and blue text)
         for (Node node : clickedVBox.getChildren()) {
             if (node instanceof Label label) {
-                label.setStyle("-fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #2563eb;"); // Set bold and
-                // blue for
-                // selected box
+                label.setStyle("-fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #2563eb;");
             }
         }
 
-        // Update Label's style for clicked box
+        // Save the selected label (if needed for further logic)
         for (Node node : clickedVBox.getChildren()) {
             if (node instanceof Label label) {
-                label.setStyle("-fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #2563eb;");
-
-                // Save the selected label
                 Label selectedLabel = label;
             }
         }
     }
 
+    /**
+     * Resets all option boxes to their default styles.
+     */
     private void resetAllBoxes() {
-        List<VBox> allBoxes = List.of(
-                vbox1, vbox2, vbox3);
+        List<VBox> allBoxes = List.of(vbox1, vbox2, vbox3);
 
         // Reset all boxes to the default style
         for (VBox box : allBoxes) {
@@ -295,9 +332,7 @@ public class SettingsController extends BaseController {
             // Reset the styles of the label (only reset color and font-weight)
             for (Node node : box.getChildren()) {
                 if (node instanceof Label label) {
-                    label.setStyle("-fx-font-size: 12px; -fx-font-weight: normal; -fx-text-fill: #6b7280;"); // Default
-                    // label
-                    // style
+                    label.setStyle("-fx-font-size: 12px; -fx-font-weight: normal; -fx-text-fill: #6b7280;");
                 }
             }
 

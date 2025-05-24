@@ -28,11 +28,21 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Controller for updating budget cards in the UI.
+ * Handles user interactions for editing budget categories, amounts, and alert settings.
+ */
 @Setter
 public class BudgetUpdateCardController extends BaseController {
+    /** Handler for budget update requests. */
     private final BudgetRequestHandler budgetRequestHandler = new BudgetRequestHandler();
+
+    /** Input field for budget amount. */
     public TextField budgetAmountInput;
+
+    /** Input field for additional notes. */
     public TextField additionalNotesInput;
+
     @FXML
     private RadioButton option1RadioButton;
     @FXML
@@ -42,9 +52,11 @@ public class BudgetUpdateCardController extends BaseController {
 
     @FXML
     private ToggleGroup toggleGroup;
+
     @Setter
     @Getter
     private BudgetController budgetController;
+
     @FXML
     private StackPane rootPane;
     @FXML
@@ -67,20 +79,32 @@ public class BudgetUpdateCardController extends BaseController {
     @FXML
     private GridPane categoryPanel;
 
+    /** Listener for opening the budget panel. */
     private BudgetController.OnOpenListener openListener;
+
+    /** The currently selected category. */
     private String selectedCategory;
+
+    /** The current budget category info. */
     private BudgetCategoryInfo budgetCategoryInfo;
 
+    /**
+     * Sets the listener for opening the budget panel.
+     * @param listener the listener to set
+     */
     @FXML
     public void setOnOpenListener(BudgetController.OnOpenListener listener) {
         this.openListener = listener;
     }
 
+    /**
+     * Initializes the controller after its root element has been completely processed.
+     */
     @FXML
     public void initialize() {
         if (userInfo == null) {
             Platform.runLater(() -> {
-                // 延迟到事件调度线程中处理
+                // Delay initialization to the event dispatch thread
                 if (userInfo != null) {
                     init();
                 }
@@ -90,6 +114,9 @@ public class BudgetUpdateCardController extends BaseController {
         }
     }
 
+    /**
+     * Initializes toggle group and sets default selection.
+     */
     private void init() {
         toggleGroup = new ToggleGroup();
         option1RadioButton.setToggleGroup(toggleGroup);
@@ -98,11 +125,19 @@ public class BudgetUpdateCardController extends BaseController {
         option1RadioButton.setSelected(true);
     }
 
+    /**
+     * Handles the cancel button action.
+     * @param event the action event
+     */
     @FXML
     private void onCancel(ActionEvent event) {
         closeDialog(event);
     }
 
+    /**
+     * Handles the save button action.
+     * @param event the action event
+     */
     @FXML
     private void onSave(ActionEvent event) {
         if (!saveBudget()) {
@@ -111,6 +146,10 @@ public class BudgetUpdateCardController extends BaseController {
         closeDialog(event);
     }
 
+    /**
+     * Checks if the form input is valid.
+     * @return true if valid, false otherwise
+     */
     private boolean checkForm() {
         if (selectedCategory == null) {
             CustomDialog.show("Error", "Please select a category!", "error", "Try Again");
@@ -140,6 +179,10 @@ public class BudgetUpdateCardController extends BaseController {
         return true;
     }
 
+    /**
+     * Constructs a {@link BudgetUpdateRequest} from the current form input.
+     * @return the budget update request
+     */
     private @NotNull BudgetUpdateRequest getBudgetUpdateRequest() {
         double budgetAmount = Double.parseDouble(budgetAmountInput.getText());
         BudgetUpdateRequest budgetUpdateRequest = new BudgetUpdateRequest();
@@ -151,6 +194,10 @@ public class BudgetUpdateCardController extends BaseController {
         return budgetUpdateRequest;
     }
 
+    /**
+     * Saves the budget by validating the form and sending the update request.
+     * @return true if saved successfully, false otherwise
+     */
     private boolean saveBudget() {
         if (!checkForm()) {
             return false;
@@ -177,6 +224,9 @@ public class BudgetUpdateCardController extends BaseController {
         return true;
     }
 
+    /**
+     * Refreshes the category panel UI to reflect the current selection.
+     */
     @FXML
     private void refreshCategoryPanel() {
         List<VBox> allBoxes = List.of(vbox1, vbox2, vbox3, vbox4, vbox5, vbox6, vbox7, vbox8);
@@ -184,19 +234,19 @@ public class BudgetUpdateCardController extends BaseController {
             box.setStyle("-fx-background-color: white; -fx-border-color: #e5e7eb; -fx-border-radius: 10; -fx-background-radius: 10; -fx-padding: 15;");
             for (Node node : box.getChildren()) {
                 if (node instanceof Label label) {
-                    label.setStyle("-fx-font-size: 12px; -fx-font-weight: normal; -fx-text-fill: #6b7280;"); // Default label style
+                    label.setStyle("-fx-font-size: 12px; -fx-font-weight: normal; -fx-text-fill: #6b7280;");
                 }
             }
             for (Node node : box.getChildren()) {
                 if (node instanceof StackPane stackPane) {
                     for (Node child : stackPane.getChildren()) {
                         if (child instanceof Circle circle) {
-                            circle.setFill(Color.web("#f3f4f6"));  // Default circle color (gray-100)
+                            circle.setFill(Color.web("#f3f4f6"));
                         } else if (child instanceof ImageView imageView) {
                             String oldUrl = imageView.getImage().getUrl();
                             if (oldUrl.contains("_blue.png")) {
                                 String originalUrl = oldUrl.replace("_blue.png", ".png");
-                                imageView.setImage(new Image(originalUrl));  // Restore original image
+                                imageView.setImage(new Image(originalUrl));
                             }
                         }
                     }
@@ -217,12 +267,12 @@ public class BudgetUpdateCardController extends BaseController {
                     if (node instanceof StackPane stackPane) {
                         for (Node child : stackPane.getChildren()) {
                             if (child instanceof Circle circle) {
-                                circle.setFill(Color.web("#bfdbfe"));  // Set the circle color to blue
+                                circle.setFill(Color.web("#bfdbfe"));
                             } else if (child instanceof ImageView imageView) {
                                 String oldUrl = imageView.getImage().getUrl();
                                 if (oldUrl.contains(".png")) {
                                     String blueUrl = oldUrl.replace(".png", "_blue.png");
-                                    imageView.setImage(new Image(blueUrl));  // Change the image to the "_blue" version
+                                    imageView.setImage(new Image(blueUrl));
                                 }
                             }
                         }
@@ -230,22 +280,30 @@ public class BudgetUpdateCardController extends BaseController {
                 }
                 for (Node node : box.getChildren()) {
                     if (node instanceof Label label) {
-                        label.setStyle("-fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #2563eb;"); // Set bold and blue for selected box
+                        label.setStyle("-fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #2563eb;");
                     }
                 }
             }
         }
     }
 
+    /**
+     * Closes the dialog and refreshes the parent budget controller.
+     * @param event the action event
+     */
     private void closeDialog(ActionEvent event) {
         if (rootPane != null) {
             rootPane.getChildren().removeIf(node ->
-                    node != rootPane.getChildren().getFirst() // 保留主页面，移除弹窗和遮罩
+                    node != rootPane.getChildren().getFirst()
             );
         }
         budgetController.refresh();
     }
 
+    /**
+     * Sets the budget category info and updates the UI accordingly.
+     * @param budgetCategoryInfo the budget category info to set
+     */
     public void setBudget(BudgetCategoryInfo budgetCategoryInfo) {
         this.budgetCategoryInfo = budgetCategoryInfo;
         budgetAmountInput.setText(String.valueOf(budgetCategoryInfo.getBudgetAmount()));

@@ -20,22 +20,40 @@ import javafx.scene.text.TextFlow;
 import lombok.Setter;
 
 public class AiOptimizePanelController extends BaseController {
+    /** VBox to hold recommendation items. */
     @FXML
     private VBox recommendations;
+
+    /** Progress bar to display the budget health score. */
     @FXML
     private ProgressBar healthScoreBar;
+
+    /** Handler for budget-related requests. */
     final BudgetRequestHandler handler = new BudgetRequestHandler();
+
+    /** Label to display the optimization status. */
     @FXML
     private Label optimizeStatus;
+
+    /** Label to display the budget health score. */
     @FXML
     private Label healthScore;
+
+    /** TextFlow to display potential savings. */
     @FXML
     private TextFlow potentialSaving;
+
+    /** Text label for potential savings. */
     @FXML
     private Text potentialSavingLabel;
+
+    /** Label for the recommendations section. */
     @FXML
     private Label recommendationLabel;
 
+    /**
+     * Initializes the controller. If userInfo is not available, waits for it to be set before initializing.
+     */
     public void initialize() {
         if (userInfo == null) {
             Platform.runLater(() -> {
@@ -48,6 +66,9 @@ public class AiOptimizePanelController extends BaseController {
         }
     }
 
+    /**
+     * Initializes the panel by sending a budget analysis request and updating the UI with the results.
+     */
     private void init() {
         BudgetAnalysisRequest request = new BudgetAnalysisRequest();
         request.setUserId(userInfo.getId());
@@ -87,9 +108,13 @@ public class AiOptimizePanelController extends BaseController {
         new Thread(task).start();
     }
 
+    /** Listener for panel close events. */
     @Setter
     private OnCloseListener onCloseListener;
 
+    /**
+     * Closes the AI optimization panel and notifies the listener.
+     */
     @FXML
     public void closeAiOptimizePanel() {
         if (onCloseListener != null) {
@@ -97,7 +122,13 @@ public class AiOptimizePanelController extends BaseController {
         }
     }
 
+    /**
+     * Listener interface for handling panel close events.
+     */
     public interface OnCloseListener {
+        /**
+         * Called when the AI optimization panel should be closed.
+         */
         void onCloseAiOptimizePanel();
     }
 }

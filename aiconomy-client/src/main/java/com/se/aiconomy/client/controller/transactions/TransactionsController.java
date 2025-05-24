@@ -36,9 +36,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 
+/**
+ * Controller for managing transactions in the UI.
+ * Handles transaction listing, filtering, import/export, and template download.
+ */
 public class TransactionsController extends BaseController implements Initializable {
     private final TransactionRequestHandler handler = new TransactionRequestHandler();
     private final AccountRequestHandler accountHandler = new AccountRequestHandler();
+
     @FXML
     private ComboBox<String> categoryCombobox;
     @FXML
@@ -49,11 +54,20 @@ public class TransactionsController extends BaseController implements Initializa
     @FXML
     private TextField searchContent;
 
+    /**
+     * Sets the listener for opening the add transaction panel.
+     *
+     * @param listener the listener to set
+     */
     @FXML
     public void setOnOpenListener(TransactionsController.OnOpenListener listener) {
         this.openListener = listener;
     }
 
+    /**
+     * Handles the add transaction button click event.
+     * Notifies the listener to open the add transaction panel.
+     */
     @FXML
     public void handleAddTransaction() {
         if (openListener != null) {
@@ -61,6 +75,12 @@ public class TransactionsController extends BaseController implements Initializa
         }
     }
 
+    /**
+     * Initializes the controller. If userInfo is not available, waits until it is set.
+     *
+     * @param location  The location used to resolve relative paths for the root object, or null if unknown.
+     * @param resources The resources used to localize the root object, or null if not localized.
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         if (userInfo == null) {
@@ -76,6 +96,9 @@ public class TransactionsController extends BaseController implements Initializa
         }
     }
 
+    /**
+     * Refreshes the transaction list based on current filters and search content.
+     */
     @FXML
     public void refreshTransactionList() {
         GetTransactionByUserIdRequest request = new GetTransactionByUserIdRequest();
@@ -113,6 +136,9 @@ public class TransactionsController extends BaseController implements Initializa
         }
     }
 
+    /**
+     * Initializes UI components and loads account/category data.
+     */
     @FXML
     private void init() {
         categoryCombobox.getItems().add("All Categories");
@@ -133,6 +159,12 @@ public class TransactionsController extends BaseController implements Initializa
         refreshTransactionList();
     }
 
+    /**
+     * Downloads a template file for transaction import.
+     *
+     * @param templatePath the resource path of the template
+     * @param fileName     the default file name for saving
+     */
     private void downloadTemplate(String templatePath, String fileName) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Download Template");
@@ -173,18 +205,39 @@ public class TransactionsController extends BaseController implements Initializa
         }
     }
 
+    /**
+     * Handles the download CSV template button click.
+     *
+     * @param mouseEvent the mouse event
+     */
     public void downloadCSVTemplate(MouseEvent mouseEvent) {
         downloadTemplate("/assets/transactions.csv", "transaction_template.csv");
     }
 
+    /**
+     * Handles the download JSON template button click.
+     *
+     * @param mouseEvent the mouse event
+     */
     public void downloadJsonTemplate(MouseEvent mouseEvent) {
         downloadTemplate("/assets/transactions.json", "transaction_template.json");
     }
 
+    /**
+     * Handles the download Excel template button click.
+     *
+     * @param mouseEvent the mouse event
+     */
     public void downloadExcelTemplate(MouseEvent mouseEvent) {
         downloadTemplate("/assets/transactions.xlsx", "transaction_template.xlsx");
     }
 
+    /**
+     * Handles the import transaction file button click.
+     * Allows the user to select a file and imports transactions.
+     *
+     * @param mouseEvent the mouse event
+     */
     public void importTransactionFile(MouseEvent mouseEvent) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Import Transaction File");
@@ -218,18 +271,39 @@ public class TransactionsController extends BaseController implements Initializa
         }
     }
 
+    /**
+     * Handles the search transaction event (e.g., on key press).
+     *
+     * @param keyEvent the key event
+     */
     public void searchTransaction(KeyEvent keyEvent) {
         refreshTransactionList();
     }
 
+    /**
+     * Handles the category filter change event.
+     *
+     * @param actionEvent the action event
+     */
     public void handleCategory(ActionEvent actionEvent) {
         refreshTransactionList();
     }
 
+    /**
+     * Handles the transaction type (account) filter change event.
+     *
+     * @param actionEvent the action event
+     */
     public void handleTransactionType(ActionEvent actionEvent) {
         refreshTransactionList();
     }
 
+    /**
+     * Handles the export transaction button click.
+     * Allows the user to select a directory and exports transactions to an Excel file.
+     *
+     * @param actionEvent the action event
+     */
     public void handleExportTransaction(ActionEvent actionEvent) {
         DirectoryChooser directoryChooser = new DirectoryChooser();
         directoryChooser.setTitle("Export Transaction File");
@@ -247,7 +321,13 @@ public class TransactionsController extends BaseController implements Initializa
         }
     }
 
+    /**
+     * Listener interface for open events.
+     */
     public interface OnOpenListener {
+        /**
+         * Called when the add transaction panel should be opened.
+         */
         void onOpenAddTransactionPanel();
     }
 }

@@ -26,50 +26,86 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.function.UnaryOperator;
 
+/**
+ * Controller for adding a new transaction.
+ * Handles user input, category selection, and transaction saving logic.
+ */
 @Setter
 public class AddTransactionController extends BaseController implements Initializable {
+
+    /** VBox for Food & Dining category. */
     @FXML
     private VBox category1;
+    /** VBox for Transportation category. */
     @FXML
     private VBox category2;
+    /** VBox for Shopping category. */
     @FXML
     private VBox category3;
+    /** VBox for Housing category. */
     @FXML
     private VBox category4;
+    /** VBox for Education category. */
     @FXML
     private VBox category5;
+    /** VBox for Travel category. */
     @FXML
     private VBox category6;
+    /** VBox for Gifts category. */
     @FXML
     private VBox category7;
+    /** VBox for Groceries category. */
     @FXML
     private VBox category8;
+    /** Map of category names to their corresponding VBox. */
     @FXML
     private Map<String, VBox> categoryList = new java.util.HashMap<>();
 
+    /** Panel containing all categories. */
     @FXML
     private VBox categoryPanel;
+    /** ComboBox for selecting an account. */
     @FXML
     private ComboBox<String> accountComboBox;
+    /** TextField for transaction description. */
     @FXML
     private TextField descriptionInput;
+    /** DatePicker for selecting the transaction date. */
     @FXML
     private DatePicker datePicker;
+    /** TextField for entering the transaction amount. */
     @FXML
     private TextField amountInput;
+    /** Button to select income type. */
     @FXML
     private Button incomeBtn;
+    /** Button to select expense type. */
     @FXML
     private Button expenseBtn;
+    /** Root pane for dialogs and overlays. */
     @FXML
     private StackPane rootPane;
+
+    /** Handler for account-related requests. */
     private AccountRequestHandler accountHandler = new AccountRequestHandler();
+    /** Handler for transaction-related requests. */
     private TransactionRequestHandler handler = new TransactionRequestHandler();
+    /** Flag indicating if the transaction is an expense. */
     private boolean isExpense = true;
+    /** The currently chosen category. */
     private String chosenCategory;
+    /** Reference to the parent controller. */
     private BaseController parentController;
+    /** Listener for close events. */
     private AddTransactionController.OnCloseListener closeListener;
 
+    /**
+     * Initializes the controller and UI components.
+     * Loads user accounts and sets up category selection.
+     *
+     * @param location  the location used to resolve relative paths for the root object, or null if unknown
+     * @param resources the resources used to localize the root object, or null if not localized
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         if (userInfo == null) {
@@ -85,6 +121,10 @@ public class AddTransactionController extends BaseController implements Initiali
         }
     }
 
+    /**
+     * Switches the transaction type to expense.
+     * Updates button styles and category availability.
+     */
     @FXML
     public void switchToExpense() {
         isExpense = true;
@@ -95,6 +135,10 @@ public class AddTransactionController extends BaseController implements Initiali
         refreshDisableCategory();
     }
 
+    /**
+     * Switches the transaction type to income.
+     * Updates button styles and disables categories.
+     */
     @FXML
     public void switchToIncome() {
         isExpense = false;
@@ -105,6 +149,9 @@ public class AddTransactionController extends BaseController implements Initiali
         refreshDisableCategory();
     }
 
+    /**
+     * Initializes UI components, sets up input filters, loads accounts, and sets default category.
+     */
     @FXML
     private void init() {
         UnaryOperator<TextFormatter.Change> filter = change -> {
@@ -154,6 +201,10 @@ public class AddTransactionController extends BaseController implements Initiali
         }
     }
 
+    /**
+     * Refreshes the category buttons' styles based on the transaction type.
+     * Disables categories for income, enables for expense.
+     */
     @FXML
     private void refreshDisableCategory() {
         if (!isExpense) {
@@ -171,6 +222,12 @@ public class AddTransactionController extends BaseController implements Initiali
         }
     }
 
+    /**
+     * Selects a category for the transaction.
+     * Only available for expense transactions.
+     *
+     * @param category the category name to select
+     */
     @FXML
     private void chooseCategory(String category) {
         if (category.equals(chosenCategory)) {
@@ -186,60 +243,119 @@ public class AddTransactionController extends BaseController implements Initiali
         chosenCategory = category;
     }
 
+    /**
+     * Handles click event for Food & Dining category.
+     *
+     * @param mouseEvent the mouse event
+     */
     @FXML
     public void chooseCategory1(MouseEvent mouseEvent) {
         chooseCategory("Food & Dining");
     }
 
+    /**
+     * Handles click event for Transportation category.
+     *
+     * @param mouseEvent the mouse event
+     */
     @FXML
     public void chooseCategory2(MouseEvent mouseEvent) {
         chooseCategory("Transportation");
     }
 
+    /**
+     * Handles click event for Shopping category.
+     *
+     * @param mouseEvent the mouse event
+     */
     @FXML
     public void chooseCategory3(MouseEvent mouseEvent) {
         chooseCategory("Shopping");
     }
 
+    /**
+     * Handles click event for Housing category.
+     *
+     * @param mouseEvent the mouse event
+     */
     @FXML
     public void chooseCategory4(MouseEvent mouseEvent) {
         chooseCategory("Housing");
     }
 
+    /**
+     * Handles click event for Education category.
+     *
+     * @param mouseEvent the mouse event
+     */
     @FXML
     public void chooseCategory5(MouseEvent mouseEvent) {
         chooseCategory("Education");
     }
 
+    /**
+     * Handles click event for Travel category.
+     *
+     * @param mouseEvent the mouse event
+     */
     @FXML
     public void chooseCategory6(MouseEvent mouseEvent) {
         chooseCategory("Travel");
     }
 
+    /**
+     * Handles click event for Gifts category.
+     *
+     * @param mouseEvent the mouse event
+     */
     @FXML
     public void chooseCategory7(MouseEvent mouseEvent) {
         chooseCategory("Gifts");
     }
 
+    /**
+     * Handles click event for Groceries category.
+     *
+     * @param mouseEvent the mouse event
+     */
     @FXML
     public void chooseCategory8(MouseEvent mouseEvent) {
         chooseCategory("Groceries");
     }
 
+    /**
+     * Handles account selection event.
+     *
+     * @param actionEvent the action event
+     */
     public void onAccountSelected(ActionEvent actionEvent) {
     }
 
+    /**
+     * Sets the listener for the close event.
+     *
+     * @param listener the listener to set
+     */
     @FXML
     public void setOnCloseListener(AddTransactionController.OnCloseListener listener) {
         this.closeListener = listener;
     }
 
+    /**
+     * Closes the add transaction panel and notifies the listener.
+     */
     public void closeAddTransaction() {
         if (closeListener != null) {
             closeListener.onCloseAddTransactionPanel();
         }
     }
 
+    /**
+     * Handles the save transaction button click.
+     * Validates input and saves the transaction.
+     *
+     * @param mouseEvent the mouse event
+     */
     @FXML
     public void handleSaveTransaction(MouseEvent mouseEvent) {
         String description = descriptionInput.getText();
@@ -271,7 +387,13 @@ public class AddTransactionController extends BaseController implements Initiali
         closeAddTransaction();
     }
 
+    /**
+     * Listener interface for close events.
+     */
     public interface OnCloseListener {
+        /**
+         * Called when the add transaction panel is closed.
+         */
         void onCloseAddTransactionPanel();
     }
 }

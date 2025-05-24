@@ -31,7 +31,12 @@ import java.util.Locale;
 import java.util.Map;
 
 public class DashboardController extends BaseController {
-    private final DashboardRequestHandler dashBoardRequestHandler = new DashboardRequestHandler(new AccountServiceImpl(JSONStorageServiceImpl.getInstance()), new TransactionServiceImpl(), new BudgetServiceImpl(JSONStorageServiceImpl.getInstance()));
+    private final DashboardRequestHandler dashBoardRequestHandler = new DashboardRequestHandler(
+            new AccountServiceImpl(JSONStorageServiceImpl.getInstance()),
+            new TransactionServiceImpl(),
+            new BudgetServiceImpl(JSONStorageServiceImpl.getInstance())
+    );
+
     @FXML
     Button quickAddButton;
     @FXML
@@ -76,12 +81,14 @@ public class DashboardController extends BaseController {
     private Label accountType1;
     @FXML
     private Label accountType2;
-
     @FXML
     private LineChart<String, Number> spendingTrends;
     @FXML
     private NumberAxis yAxis;
 
+    /**
+     * Initializes the dashboard controller. If userInfo is not set, waits for it to be set before initializing.
+     */
     @FXML
     void initialize() {
         if (userInfo == null) {
@@ -95,15 +102,18 @@ public class DashboardController extends BaseController {
         }
     }
 
+    /**
+     * Initializes dashboard data and UI components.
+     */
     private void init() {
         welcomeTextField.setText("Welcome back, " + userInfo.getFirstName() + "!");
         setDate();
         try {
             setDashboardBasicData();
-            setDashBoardTransactionData(); // TBI
-            setDashboardSpendTrendsData(); // TBI
+            setDashBoardTransactionData();
+            setDashboardSpendTrendsData();
             setDashBoardBudgetsData();
-            setDashboardAccountOverviewData(); // TBI
+            setDashboardAccountOverviewData();
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -134,12 +144,19 @@ public class DashboardController extends BaseController {
         spendingTrends.getData().add(series);
     }
 
+    /**
+     * Sets the current date in the date label.
+     */
     private void setDate() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEEE, MMMM d, yyyy", Locale.ENGLISH);
         String today = LocalDate.now().format(formatter);
         dateTextField.setText(today);
     }
 
+    /**
+     * Loads and displays basic dashboard data such as net worth, spending, income, and credit card due.
+     * @throws ServiceException if data retrieval fails
+     */
     private void setDashboardBasicData() throws ServiceException {
         DashboardRequestHandler.DashboardData dashboardData = dashBoardRequestHandler.getDashboardData(userInfo.getId(), LocalDate.now().getMonth());
         System.out.println("dashboardData: " + dashboardData);
@@ -149,16 +166,28 @@ public class DashboardController extends BaseController {
         creditCardDue.setText("$ " + dashboardData.getCreditCardDue());
     }
 
+    /**
+     * Loads and displays recent transaction data.
+     * @throws ServiceException if data retrieval fails
+     */
     private void setDashBoardTransactionData() throws ServiceException {
         TransactionService transactionService = new TransactionServiceImpl();
         List<TransactionDto> transactionInfo = transactionService.getTransactionsByUserId(userInfo.getId());
         System.out.println(transactionInfo);
     }
 
+    /**
+     * Loads and displays spending trends data.
+     * @throws ServiceException if data retrieval fails
+     */
     private void setDashboardSpendTrendsData() throws ServiceException {
-
+        // TODO: Implement actual data loading for spending trends
     }
 
+    /**
+     * Loads and displays budget progress for up to three categories.
+     * @throws ServiceException if data retrieval fails
+     */
     private void setDashBoardBudgetsData() throws ServiceException {
         Map<String, Double> budgetSpendingRatio = dashBoardRequestHandler.getBudgetSpendingRatio(userInfo.getId());
         int count = 0;
@@ -171,25 +200,31 @@ public class DashboardController extends BaseController {
                     budgetProgressCategoryLabel1.setText(category);
                     adjustRatioText(budgetProgressCategoryRate1, ratio);
                     adjustProgressBar(budgetProgressProgressBar1, ratio);
+                    break;
                 }
                 case 1: {
                     budgetProgressCategoryLabel2.setText(category);
                     adjustRatioText(budgetProgressCategoryRate2, ratio);
                     adjustProgressBar(budgetProgressProgressBar2, ratio);
+                    break;
                 }
                 case 2: {
                     budgetProgressCategoryLabel3.setText(category);
                     adjustRatioText(budgetProgressCategoryRate3, ratio);
                     adjustProgressBar(budgetProgressProgressBar3, ratio);
+                    break;
                 }
             }
             count++;
         }
     }
 
+    /**
+     * Loads and displays account overview for up to two accounts.
+     * @throws ServiceException if data retrieval fails
+     */
     private void setDashboardAccountOverviewData() throws ServiceException {
         List<Account> userAccount = dashBoardRequestHandler.getAccountsForUser(userInfo.getId());
-        // System.out.println("user Account: " + userAccount.getFirst());
         int count = 0;
         for (Account account : userAccount) {
             if (count == 2) break;
@@ -201,17 +236,24 @@ public class DashboardController extends BaseController {
                     accountBankName1.setText(accountBankName);
                     accountType1.setText(accountType);
                     accountBalance1.setText("$ " + accountBalance);
+                    break;
                 }
                 case 1: {
                     accountBankName2.setText(accountBankName);
                     accountType2.setText(accountType);
                     accountBalance2.setText("$ " + accountBalance);
+                    break;
                 }
             }
             count++;
         }
     }
 
+    /**
+     * Adjusts the style and text of a label based on the budget ratio.
+     * @param label the label to update
+     * @param ratio the budget ratio
+     */
     private void adjustRatioText(Label label, double ratio) {
         if (label != null) {
             String redTextClass = "text-red-500";
@@ -238,6 +280,11 @@ public class DashboardController extends BaseController {
         }
     }
 
+    /**
+     * Adjusts the style and progress of a progress bar based on the budget ratio.
+     * @param progressBar the progress bar to update
+     * @param ratio the budget ratio
+     */
     private void adjustProgressBar(ProgressBar progressBar, double ratio) {
         if (progressBar != null) {
             String redClass = "red-bar";
@@ -267,27 +314,57 @@ public class DashboardController extends BaseController {
         }
     }
 
+    /**
+     * Handles the quick add button action, navigating to the transaction page.
+     * @param actionEvent the action event
+     * @throws IOException if navigation fails
+     */
     @FXML
     public void quickAdd(ActionEvent actionEvent) throws IOException {
         goToTransaction(actionEvent);
     }
 
+    /**
+     * Navigates to the transactions page.
+     * @param actionEvent the action event
+     * @throws IOException if navigation fails
+     */
     public void goToTransaction(ActionEvent actionEvent) throws IOException {
         mainController.switchToTransactions();
     }
 
+    /**
+     * Navigates to the budgets page.
+     * @param actionEvent the action event
+     * @throws IOException if navigation fails
+     */
     public void goToBudget(ActionEvent actionEvent) throws IOException {
         mainController.switchToBudgets();
     }
 
+    /**
+     * Navigates to the accounts page.
+     * @param actionEvent the action event
+     * @throws IOException if navigation fails
+     */
     public void goToAccount(ActionEvent actionEvent) throws IOException {
         mainController.switchToAccounts();
     }
 
+    /**
+     * Navigates to the settings page.
+     * @param actionEvent the action event
+     * @throws IOException if navigation fails
+     */
     public void goToSettings(ActionEvent actionEvent) throws IOException {
         mainController.switchToSettings();
     }
 
+    /**
+     * Navigates to the analytics page.
+     * @param actionEvent the action event
+     * @throws IOException if navigation fails
+     */
     public void goToAnalytics(ActionEvent actionEvent) throws IOException {
         mainController.switchToAnalytics();
     }

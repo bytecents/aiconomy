@@ -18,40 +18,57 @@ import java.io.IOException;
 import java.util.Objects;
 import java.util.function.UnaryOperator;
 
+/**
+ * Controller for the first step of the signup flow.
+ * Handles user input for email and password, validation, and navigation to the next step.
+ */
 public class SignupFlowController1 {
 
+    /** Hyperlink to switch to the login page. */
     @FXML
     public Hyperlink loginEntry;
+
+    /** Button to continue to the next signup step. */
     @FXML
     public Button continueButton;
 
+    /** Text field for user email input. */
     @FXML
     public TextField emailField;
 
+    /** Text field for displaying password in plain text. */
     @FXML
     public TextField passwordTextField;
 
+    /** Password field for entering password securely. */
     @FXML
     public PasswordField passwordField;
 
+    /** Password field for confirming password. */
     @FXML
     public PasswordField confirmedPasswordField;
 
+    /** Checkbox for agreeing to the policy. */
     @FXML
     public CheckBox isAgreePolicy;
 
+    /** Flag to indicate whether the password is visible. */
     private boolean showPassword = false;
 
+    /** User data object for storing signup information. */
     @Setter
     private User userData;
 
-    @Setter  // Lombok generates the setter method for parentController
-    private SignupController parentController;  // Automatically generates a setter
+    /** Reference to the parent signup controller. */
+    @Setter
+    private SignupController parentController;
 
+    /**
+     * Initializes the controller, sets up input filters and default values.
+     */
     public void initialize() {
         UnaryOperator<TextFormatter.Change> filter = change -> {
             String passwordRegex = "[A-Za-z0-9@#\\$%&\\-_.!~]*";
-            // limitations
             if (change.getText().matches(passwordRegex)) {
                 return change;
             }
@@ -74,7 +91,11 @@ public class SignupFlowController1 {
         }
     }
 
-
+    /**
+     * Handles the continue button action, validates input and navigates to the next signup step.
+     * @param event the action event
+     * @throws IOException if loading the next FXML fails
+     */
     @FXML
     public void switchToNextStep(ActionEvent event) throws IOException {
         if (parentController != null) {
@@ -88,20 +109,27 @@ public class SignupFlowController1 {
             userData.setEmail(userInputEmail.trim());
             userData.setPassword(userInputPassword.trim());
 
-            parentController.loadSignupFlow("signupFlow2.fxml"); // switch to signupFlow2.fxml
-            parentController.loadSignupTip("signupTip2.fxml"); // switch to signupTip2.fxml
+            parentController.loadSignupFlow("signupFlow2.fxml");
+            parentController.loadSignupTip("signupTip2.fxml");
         } else {
             System.out.println("Error: Parent controller is null");
         }
     }
 
+    /**
+     * Validates the user input for email and password fields.
+     * @param userInputEmail the email input
+     * @param userInputPassword the password input
+     * @param userConfirmPassword the confirmed password input
+     * @return true if input is valid, false otherwise
+     */
     private boolean checkInput(String userInputEmail, String userInputPassword, String userConfirmPassword) {
         if (userInputEmail == null || userInputEmail.trim().isEmpty() || userInputPassword == null || userInputPassword.trim().isEmpty()) {
             CustomDialog.show("Invalid Field", "Email or password is empty", "error", "Fill them");
             return false;
         }
 
-        String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$"; // regular expression for email format
+        String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$";
         if (!userInputEmail.matches(emailRegex)) {
             CustomDialog.show("Invalid Field", "Invalid email address", "error", "Reset");
             return false;
@@ -114,7 +142,6 @@ public class SignupFlowController1 {
 
         if (!userInputPassword.equals(userConfirmPassword)) {
             CustomDialog.show("Invalid Password", "Passwords are inconsistent", "error", "Try again");
-//                System.out.println("Passwords are inconsistent");
             return false;
         }
         if (!isAgreePolicy.isSelected()) {
@@ -124,6 +151,11 @@ public class SignupFlowController1 {
         return true;
     }
 
+    /**
+     * Switches the scene to the login page.
+     * @param event the action event
+     * @throws IOException if loading the login FXML fails
+     */
     @FXML
     public void switchToLogin(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/login.fxml")));
@@ -139,6 +171,10 @@ public class SignupFlowController1 {
         stage.show();
     }
 
+    /**
+     * Handles the password visibility toggle.
+     * @param mouseEvent the mouse event
+     */
     @FXML
     public void handlePasswordVisibility(MouseEvent mouseEvent) {
         this.showPassword = !this.showPassword;

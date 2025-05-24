@@ -21,34 +21,65 @@ import lombok.Setter;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Controller for adding a new account.
+ * Handles the logic for the add account dialog, including form validation and saving the account.
+ */
 public class AddAccountController extends BaseController {
 
+    /**
+     * Handler for account-related requests.
+     */
     private final AccountRequestHandler accountRequestHandler = new AccountRequestHandler(new AccountServiceImpl(JSONStorageServiceImpl.getInstance()));
 
+    /**
+     * Save button in the dialog.
+     */
     public Button saveButton;
+
+    /**
+     * ComboBox for selecting the bank.
+     */
     @FXML
     private ComboBox<String> bankComboBox;
 
+    /**
+     * ComboBox for selecting the account type.
+     */
     @FXML
     private ComboBox<String> typeComboBox;
 
+    /**
+     * TextField for entering the account name.
+     */
     @FXML
     private TextField accountNameTextField;
 
+    /**
+     * TextField for entering the account balance.
+     */
     @FXML
     private TextField balanceTextField;
-    /*
-     * 只有当FXML中有StackPane并设置fx:id="rootPane"时才需要此方法
-     * 当前FXML中无此定义，应注释掉
+
+    /**
+     * Root pane for the dialog. Only required if the FXML defines a StackPane with fx:id="rootPane".
      */
     @Setter
     @FXML
     private StackPane rootPane;
+
+    /**
+     * Reference to the parent AccountsController.
+     */
     @FXML
     @Setter
     @Getter
     private AccountsController accountsController;
 
+    /**
+     * Initializes the controller after its root element has been completely processed.
+     * If userInfo is not available, initialization is deferred to the JavaFX application thread.
+     */
     @FXML
     public void initialize() {
         if (userInfo == null) {
@@ -62,20 +93,33 @@ public class AddAccountController extends BaseController {
         }
     }
 
+    /**
+     * Initializes the ComboBoxes with default values.
+     */
     private void init() {
         bankComboBox.setItems(FXCollections.observableArrayList("Chase", "Bank of America", "Wells Fargo", "Citibank"));
         typeComboBox.setItems(FXCollections.observableArrayList("Checking", "Saving", "Credit", "Investment"));
 
-        // default values
+        // Set default values
         bankComboBox.setValue(bankComboBox.getItems().getFirst());
         typeComboBox.setValue(typeComboBox.getItems().getFirst());
     }
 
+    /**
+     * Handles the cancel action, closing the dialog.
+     *
+     * @param event the action event triggered by clicking the cancel button
+     */
     @FXML
     private void onCancel(ActionEvent event) {
         closeDialog(event);
     }
 
+    /**
+     * Handles the save action, validating and saving the account.
+     *
+     * @param event the action event triggered by clicking the save button
+     */
     @FXML
     private void onSave(ActionEvent event) {
         if (!saveAccount()) {
@@ -84,9 +128,15 @@ public class AddAccountController extends BaseController {
         closeDialog(event);
     }
 
+    /**
+     * Validates the form fields.
+     *
+     * @return true if the form is valid, false otherwise
+     */
     private boolean checkForm() {
         if (accountNameTextField.getText() == null || accountNameTextField.getText().trim().isEmpty()) {
             CustomDialog.show("Error", "Account name cannot be empty!", "error", "Try Again");
+            return false;
         }
         String balanceText = balanceTextField.getText();
         if (balanceText == null || balanceText.trim().isEmpty()) {
@@ -107,6 +157,11 @@ public class AddAccountController extends BaseController {
         return true;
     }
 
+    /**
+     * Saves the account if the form is valid.
+     *
+     * @return true if the account was saved successfully, false otherwise
+     */
     private boolean saveAccount() {
         if (!checkForm()) {
             return false;
@@ -132,14 +187,17 @@ public class AddAccountController extends BaseController {
         return true;
     }
 
+    /**
+     * Closes the dialog and refreshes the parent account list.
+     *
+     * @param event the action event that triggered the close
+     */
     private void closeDialog(ActionEvent event) {
         if (rootPane != null) {
             rootPane.getChildren().removeIf(node ->
-                    node != rootPane.getChildren().get(0) // 保留主页面，移除弹窗和遮罩
+                    node != rootPane.getChildren().get(0) // Keep the main page, remove dialog and overlay
             );
         }
         accountsController.refresh();
     }
-
-
 }
