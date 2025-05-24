@@ -10,6 +10,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
@@ -59,6 +60,18 @@ public class AddBudgetController extends BaseController {
     public void setOnOpenListener(BudgetController.OnOpenListener listener) {
         this.openListener = listener;
     }
+    @FXML
+    private ToggleGroup optionGroup;
+
+    @FXML
+    private RadioButton option1RadioButton;
+
+    @FXML
+    private RadioButton option2RadioButton;
+
+    @FXML
+    private RadioButton option3RadioButton;
+
 
     @FXML
     public void initialize() {
@@ -72,6 +85,11 @@ public class AddBudgetController extends BaseController {
         } else {
             init();
         }
+        optionGroup = new ToggleGroup();
+
+        option1RadioButton.setToggleGroup(optionGroup);
+        option2RadioButton.setToggleGroup(optionGroup);
+        option3RadioButton.setToggleGroup(optionGroup);
     }
 
     private void init() {
