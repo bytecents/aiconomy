@@ -240,18 +240,19 @@
 
             <HBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
                 <RadioButton text="60%" fx:id="option1RadioButton"
-                             style="-fx-font-size: 14px; -fx-text-fill: #333333;"/>
+                             style="-fx-font-size: 14px; -fx-text-fill: #333333;" />
             </HBox>
 
             <HBox alignment="CENTER" HBox.hgrow="ALWAYS">
                 <RadioButton text="80%" fx:id="option2RadioButton"
-                             style="-fx-font-size: 14px; -fx-text-fill: #333333;"/>
+                             style="-fx-font-size: 14px; -fx-text-fill: #333333;" />
             </HBox>
 
             <HBox alignment="CENTER_RIGHT" HBox.hgrow="ALWAYS">
                 <RadioButton text="100%" fx:id="option3RadioButton"
-                             style="-fx-font-size: 14px; -fx-text-fill: #333333;"/>
+                             style="-fx-font-size: 14px; -fx-text-fill: #333333;" />
             </HBox>
+
         </HBox>
     </VBox>
     <VBox HBox.hgrow="ALWAYS" style="-fx-background-color: white; -fx-padding: 6;" spacing="20">
