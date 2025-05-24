@@ -76,6 +76,7 @@ public class DashboardController extends BaseController {
     private Label accountType1;
     @FXML
     private Label accountType2;
+
     @FXML
     private LineChart<String, Number> spendingTrends;
     @FXML
@@ -99,7 +100,7 @@ public class DashboardController extends BaseController {
         setDate();
         try {
             setDashboardBasicData();
-//            setDashBoardTransactionData(); // TBI
+            setDashBoardTransactionData(); // TBI
             setDashboardSpendTrendsData(); // TBI
             setDashBoardBudgetsData();
             setDashboardAccountOverviewData(); // TBI
