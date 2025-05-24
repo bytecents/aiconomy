@@ -55,8 +55,6 @@ public class AddBudgetController extends BaseController {
     private BudgetController.OnOpenListener openListener;
     private String selectedCategory;
     @FXML
-    private ToggleGroup optionGroup;
-    @FXML
     private RadioButton option1RadioButton;
     @FXML
     private RadioButton option2RadioButton;
@@ -83,10 +81,10 @@ public class AddBudgetController extends BaseController {
     }
 
     private void init() {
-        optionGroup = new ToggleGroup();
-        option1RadioButton.setToggleGroup(optionGroup);
-        option2RadioButton.setToggleGroup(optionGroup);
-        option3RadioButton.setToggleGroup(optionGroup);
+        toggleGroup = new ToggleGroup();
+        option1RadioButton.setToggleGroup(toggleGroup);
+        option2RadioButton.setToggleGroup(toggleGroup);
+        option3RadioButton.setToggleGroup(toggleGroup);
         option1RadioButton.setSelected(true);
     }
 
@@ -115,11 +113,25 @@ public class AddBudgetController extends BaseController {
             CustomDialog.show("Error", "Please select a category!", "error", "Try Again");
             return false;
         }
-        if (budgetAmountInput.getText() == null || budgetAmountInput.getText().trim().isEmpty()) {
+
+        String budgetText = budgetAmountInput.getText();
+        if (budgetText == null || budgetText.trim().isEmpty()) {
             CustomDialog.show("Error", "Please input budget amount!", "error", "Try Again");
             return false;
         }
-        if (optionGroup.getSelectedToggle() == null) {
+
+        try {
+            double budgetAmount = Double.parseDouble(budgetText.trim());
+            if (budgetAmount < 0) {
+                CustomDialog.show("Error", "Budget amount must be non-negative!", "error", "Try Again");
+                return false;
+            }
+        } catch (NumberFormatException e) {
+            CustomDialog.show("Error", "Budget amount must be a valid number!", "error", "Try Again");
+            return false;
+        }
+
+        if (toggleGroup.getSelectedToggle() == null) {
             CustomDialog.show("Error", "Please select an alert ratio!", "error", "Try Again");
             return false;
         }
@@ -131,7 +143,7 @@ public class AddBudgetController extends BaseController {
             return false;
         }
         try {
-            Toggle selectedToggle = optionGroup.getSelectedToggle();
+            Toggle selectedToggle = toggleGroup.getSelectedToggle();
             double alertRatio = 0.6;
             if (selectedToggle != null) {
                 RadioButton selectedRadioButton = (RadioButton) selectedToggle;

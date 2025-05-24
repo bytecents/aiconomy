@@ -2,9 +2,9 @@ package com.se.aiconomy.client.controller.budgets;
 
 //import com.alibaba.fastjson2.internal.asm.Label;
 
+import com.se.aiconomy.client.common.CustomDialog;
 import com.se.aiconomy.client.controller.BaseController;
 import com.se.aiconomy.server.handler.BudgetRequestHandler;
-import com.se.aiconomy.server.model.dto.budget.request.BudgetAddRequest;
 import com.se.aiconomy.server.model.dto.budget.request.BudgetUpdateRequest;
 import com.se.aiconomy.server.model.dto.budget.response.BudgetCategoryInfo;
 import javafx.application.Platform;
@@ -17,7 +17,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -25,6 +24,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import lombok.Getter;
 import lombok.Setter;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Objects;
@@ -92,6 +92,11 @@ public class BudgetUpdateCardController extends BaseController {
     }
 
     private void init() {
+        toggleGroup = new ToggleGroup();
+        option1RadioButton.setToggleGroup(toggleGroup);
+        option2RadioButton.setToggleGroup(toggleGroup);
+        option3RadioButton.setToggleGroup(toggleGroup);
+        option1RadioButton.setSelected(true);
     }
 
     @FXML
@@ -101,23 +106,65 @@ public class BudgetUpdateCardController extends BaseController {
 
     @FXML
     private void onSave(ActionEvent event) {
-        saveBudget();
+        if (!saveBudget()) {
+            return;
+        }
         closeDialog(event);
     }
 
-    private void saveBudget() {
+    private boolean checkForm() {
+        if (selectedCategory == null) {
+            CustomDialog.show("Error", "Please select a category!", "error", "Try Again");
+            return false;
+        }
+
+        String budgetText = budgetAmountInput.getText();
+        if (budgetText == null || budgetText.trim().isEmpty()) {
+            CustomDialog.show("Error", "Please input budget amount!", "error", "Try Again");
+            return false;
+        }
+
         try {
-            double budgetAmount = Double.parseDouble(budgetAmountInput.getText());
-            BudgetUpdateRequest budgetUpdateRequest = new BudgetUpdateRequest();
-            budgetUpdateRequest.setUserId(userInfo.getId());
-            budgetUpdateRequest.setBudgetCategory(selectedCategory);
-            budgetUpdateRequest.setBudgetAmount(budgetAmount);
-            budgetUpdateRequest.setAlertSettings(0.8);
-            budgetUpdateRequest.setNotes(additionalNotesInput.getText());
+            double budgetAmount = Double.parseDouble(budgetText.trim());
+            if (budgetAmount < 0) {
+                CustomDialog.show("Error", "Budget amount must be non-negative!", "error", "Try Again");
+                return false;
+            }
+        } catch (NumberFormatException e) {
+            CustomDialog.show("Error", "Budget amount must be a valid number!", "error", "Try Again");
+            return false;
+        }
+
+        if (toggleGroup.getSelectedToggle() == null) {
+            CustomDialog.show("Error", "Please select an alert ratio!", "error", "Try Again");
+            return false;
+        }
+        return true;
+    }
+
+    private boolean saveBudget() {
+        if (!checkForm()) {
+            return false;
+        }
+        try {
+            BudgetUpdateRequest budgetUpdateRequest = getBudgetUpdateRequest();
             budgetRequestHandler.handleBudgetUpdateRequest(budgetUpdateRequest);
         } catch (Exception e) {
             e.printStackTrace();
+            CustomDialog.show("Error", e.getMessage(), "error", "Try Again");
         }
+        return true;
+    }
+
+    private @NotNull BudgetUpdateRequest getBudgetUpdateRequest() {
+        double budgetAmount = Double.parseDouble(budgetAmountInput.getText());
+        BudgetUpdateRequest budgetUpdateRequest = new BudgetUpdateRequest();
+        budgetUpdateRequest.setUserId(userInfo.getId());
+        budgetUpdateRequest.setBudgetCategory(selectedCategory);
+        budgetUpdateRequest.setBudgetAmount(budgetAmount);
+        budgetUpdateRequest.setAlertSettings(Double.parseDouble(budgetAmountInput.getText()));
+        budgetUpdateRequest.setNotes(additionalNotesInput.getText());
+        return budgetUpdateRequest;
     }
 
     @FXML
