@@ -155,10 +155,10 @@
                     <StackPane prefHeight="50.0" prefWidth="50.0">
                         <Circle fill="#f3f4f6" radius="24.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0"/>
                         <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                            <Image url="@../../assets/Custom1.png"/>
+                            <Image url="@../../assets/shopping-basket.png"/>
                         </ImageView>
                     </StackPane>
-                    <Label text="Custom" alignment="CENTER" wrapText="true"
+                    <Label text="Groceries" alignment="CENTER" wrapText="true"
                            style="-fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #6b7280;"/>
                 </VBox>
             </GridPane>

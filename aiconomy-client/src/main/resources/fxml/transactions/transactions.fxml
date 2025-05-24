@@ -132,9 +132,9 @@
         <!-- Table Header -->
         <GridPane styleClass="gap-4 p-3-4-3-4 border-b rounded-t-xl border-gray-200 bg-gray-50 ">
             <columnConstraints>
-                <ColumnConstraints percentWidth="30"/>
                 <ColumnConstraints percentWidth="20"/>
-                <ColumnConstraints percentWidth="15"/>
+                <ColumnConstraints percentWidth="20"/>
+                <ColumnConstraints percentWidth="25"/>
                 <ColumnConstraints percentWidth="15"/>
                 <ColumnConstraints percentWidth="10"/>
                 <ColumnConstraints percentWidth="10"/>

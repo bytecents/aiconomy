@@ -90,7 +90,7 @@ public class TransactionsController extends BaseController implements Initializa
             }
             if (transactionTypeCombobox.getValue() != null && !transactionTypeCombobox.getValue().equals("All Accounts")) {
                 transactionsByUserId = transactionsByUserId.stream()
-                        .filter(transaction -> transaction.getIncomeOrExpense().equals(transactionTypeCombobox.getValue())).toList();
+                        .filter(transaction -> transaction.getAccountId().equals(transactionTypeCombobox.getValue())).toList();
             }
             transactionItems.getChildren().clear();
             for (TransactionDto transactionDto : transactionsByUserId) {
@@ -103,6 +103,7 @@ public class TransactionsController extends BaseController implements Initializa
                 TransactionItemController controller = loader.getController();
                 controller.setTransaction(transactionDto);
                 controller.setParentController(this);
+                controller.setUserInfo(userInfo);
                 transactionItems.getChildren().add(transactionItem);
             }
         } catch (Exception e) {
