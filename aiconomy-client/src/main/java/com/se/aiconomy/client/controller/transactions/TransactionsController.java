@@ -123,6 +123,8 @@ public class TransactionsController extends BaseController implements Initializa
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
+        } else {
+            System.out.println("Download canceled.");
         }
     }
 

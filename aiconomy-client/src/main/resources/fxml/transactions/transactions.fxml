@@ -55,26 +55,26 @@
                 Download import templates
             </Label>
             <HBox styleClass="gap-2 py-1" VBox.vgrow="ALWAYS">
-                <VBox alignment="CENTER" HBox.hgrow="ALWAYS"
+                <VBox alignment="CENTER" HBox.hgrow="ALWAYS" onMouseClicked="#downloadCSVTemplate"
                       styleClass="h-full cursor-pointer p-2-4-2-4 border border-blue-200 bg-blue-50 rounded-lg hover-bg-blue-100 gap-1">
                     <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                         <Image url="@/assets/file_blue.png" />
                     </ImageView>
-                    <Label styleClass="text-blue-600 text-sm font-roboto" onMouseClicked="#downloadCSVTemplate">CSV</Label>
+                    <Label styleClass="text-blue-600 text-sm font-roboto">CSV</Label>
                 </VBox>
-                <VBox alignment="CENTER" HBox.hgrow="ALWAYS"
+                <VBox alignment="CENTER" HBox.hgrow="ALWAYS" onMouseClicked="#downloadCSVTemplate"
                       styleClass="h-full cursor-pointer p-2-4-2-4 border border-green-200 bg-green-50 rounded-lg hover-bg-green-100 gap-1">
                     <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                         <Image url="@/assets/file _green.png" />
                     </ImageView>
-                    <Label styleClass="text-green-600 text-sm font-roboto" onMouseClicked="#downloadExcelTemplate">Excel</Label>
+                    <Label styleClass="text-green-600 text-sm font-roboto">Excel</Label>
                 </VBox>
-                <VBox alignment="CENTER" HBox.hgrow="ALWAYS"
+                <VBox alignment="CENTER" HBox.hgrow="ALWAYS" onMouseClicked="#downloadCSVTemplate"
                       styleClass="h-full cursor-pointer p-2-4-2-4 border border-yellow-200 bg-yellow-50 rounded-lg hover-bg-yellow-100 gap-1">
                     <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                         <Image url="@/assets/file _yellow.png" />
                     </ImageView>
-                    <Label styleClass="text-yellow-600 text-sm font-roboto" onMouseClicked="#downloadJsonTemplate">Json</Label>
+                    <Label styleClass="text-yellow-600 text-sm font-roboto">Json</Label>
                 </VBox>
             </HBox>
         </VBox>
