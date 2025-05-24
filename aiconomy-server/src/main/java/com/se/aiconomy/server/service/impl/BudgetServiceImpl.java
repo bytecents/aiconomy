@@ -146,7 +146,7 @@ public class BudgetServiceImpl implements BudgetService {
     }
 
     @Override
-    public int getLeftDays(String userId){
+    public int getLeftDays(String userId) {
         return 30 - LocalDateTime.now().getDayOfMonth();
     }
 
@@ -167,7 +167,7 @@ public class BudgetServiceImpl implements BudgetService {
         List<TransactionDto> transactions = getTransactionsByUserId(userId);
         double totalSpentByCategory = 0;
         for (TransactionDto transaction : transactions) {
-            if (transaction.getType().equals(category) && transaction.getIncomeOrExpense().equals("Expense")) {
+            if (transaction.getBillType().getDisplayName().equalsIgnoreCase(category) && transaction.getIncomeOrExpense().equals("Expense")) {
                 totalSpentByCategory += Double.parseDouble(transaction.getAmount());
             }
         }
