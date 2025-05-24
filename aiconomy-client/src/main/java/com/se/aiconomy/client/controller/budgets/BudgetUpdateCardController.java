@@ -12,10 +12,7 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.Label;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -160,6 +157,18 @@ public class BudgetUpdateCardController extends BaseController {
         }
         try {
             BudgetUpdateRequest budgetUpdateRequest = getBudgetUpdateRequest();
+            Toggle selectedToggle = toggleGroup.getSelectedToggle();
+            double alertRatio = 0.6;
+            if (selectedToggle != null) {
+                RadioButton selectedRadioButton = (RadioButton) selectedToggle;
+                String selectedAlertRatio = selectedRadioButton.getText();
+                alertRatio = Double.parseDouble(selectedAlertRatio.replace("%", "")) / 100.0;
+            }
+            budgetUpdateRequest.setAlertSettings(alertRatio);
+            budgetUpdateRequest.setUserId(userInfo.getId());
+            budgetUpdateRequest.setBudgetCategory(selectedCategory);
+            budgetUpdateRequest.setBudgetAmount(Double.parseDouble(budgetAmountInput.getText()));
+            budgetUpdateRequest.setNotes(additionalNotesInput.getText());
             budgetRequestHandler.handleBudgetUpdateRequest(budgetUpdateRequest);
         } catch (Exception e) {
             e.printStackTrace();

@@ -1,6 +1,7 @@
 package com.se.aiconomy.client.controller;
 
 import com.se.aiconomy.client.Application.StyleClassFixer;
+import com.se.aiconomy.client.common.MyFXMLLoader;
 import com.se.aiconomy.client.controller.ai.AiController;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -122,10 +123,9 @@ public class AnalyticsController extends BaseController implements Initializable
             return;
         }
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/ai/ai.fxml"));
+            MyFXMLLoader loader = new MyFXMLLoader("/fxml/ai/ai.fxml");
             Node view = loader.load();  // 加载 FXML 成为 Node
             AiController controller = loader.getController();
-            StyleClassFixer.fixStyleClasses(view);
             aiPanel.setContent(view);
 
             controller.setUserInfo(userInfo);

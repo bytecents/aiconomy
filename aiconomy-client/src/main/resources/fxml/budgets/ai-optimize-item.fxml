@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.text.TextFlow?>
+<?import javafx.scene.text.Text?>
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.se.aiconomy.client.controller.budgets.AiOptimizeItemController"
+      styleClass="p-4 border border-red-100 bg-red-50 rounded-lg shadow-sm"
+      stylesheets="/css/styles.css">
+    <HBox styleClass="pb-2" alignment="CENTER_LEFT">
+        <HBox styleClass="gap-3" alignment="CENTER_LEFT">
+<!--            <Region styleClass="w-8 h-8 bg-red-100 rounded-full" />-->
+            <VBox styleClass="gap-0_5" alignment="CENTER_LEFT">
+                <Label fx:id="categoryLabel" styleClass="font-medium text-base"/>
+                <Label fx:id="descriptionLabel" styleClass="text-xs text-red-700 break-words"/>
+            </VBox>
+        </HBox>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Label styleClass="text-xs p-1-2-1-2 bg-red-100 text-red-600 rounded-full" fx:id="priorityLabel"/>
+    </HBox>
+    <TextFlow lineSpacing="2">
+        <Text styleClass="text-xs text-gray-700" fx:id="detailsLabel"/>
+    </TextFlow>
+<!--    <Label styleClass="text-sm text-gray-700 pt-2 w-full" wrapText="true" />-->
+    <Label styleClass="pt-3 text-sm font-medium" fx:id="potentialSavingLabel"/>
+</VBox>
