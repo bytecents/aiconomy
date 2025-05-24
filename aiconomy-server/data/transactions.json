@@ -1,0 +1,3 @@
+{"schemaVersion":"1.0"}
+{"id":"a29374d6-d868-4ed6-a700-6d75d16a6fbb","time":[2025,5,24,12,10,37,531602400],"type":"Transportation","counterparty":null,"product":"Train","incomeOrExpense":"Expense","amount":"300","paymentMethod":null,"status":null,"merchantOrderId":null,"accountId":"account1","userId":"user13","remark":"remarks","billType":"TRANSPORTATION"}
+{"id":"e0edbba8-78b6-4749-86ab-cfb53e815380","time":[2025,5,24,12,10,39,189396600],"type":"Transportation","counterparty":null,"product":"Bus","incomeOrExpense":"Expense","amount":"400","paymentMethod":null,"status":null,"merchantOrderId":null,"accountId":"account1","userId":"user13","remark":"remarks","billType":"TRANSPORTATION"}

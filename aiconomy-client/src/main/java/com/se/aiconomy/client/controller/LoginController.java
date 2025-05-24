@@ -174,23 +174,23 @@ public class LoginController extends BaseController {
     @FXML
     private void loginTest(ActionEvent event) throws IOException {
         try {
-            UserInfo userInfo = userRequestHandler.handleLoginRequest(UserLoginRequest.builder().email("2022213670@bupt.cn").password("123456").build());
+            UserInfo userInfo = userRequestHandler.handleLoginRequest(UserLoginRequest.builder().email("2022213670@bupt.cn").password("test").build());
             setUserInfo(userInfo);
             switchToMain(event, userInfo);
             CustomDialog.show("Success", "Login successfully", "success", "OK");
         } catch (Exception e) {
             UserRegisterRequest userRegisterRequest = UserRegisterRequest.builder()
-                .email("2022213670@bupt.cn")
-                .password("123456")
-                .firstName("John")
-                .lastName("Doe")
-                .phoneNumber("1234567890")
-                .birthDate(LocalDate.of(1990, 1, 1))
-                .currency("USD")
-                .financialGoal(List.of("Save for retirement", "Buy a house"))
-                .monthlyIncome(5000.0)
-                .mainExpenseType(List.of("Rent", "Groceries"))
-                .build();
+                    .email("2022213670@bupt.cn")
+                    .password("test")
+                    .firstName("John")
+                    .lastName("Doe")
+                    .phoneNumber("1234567890")
+                    .birthDate(LocalDate.of(1990, 1, 1))
+                    .currency("USD")
+                    .financialGoal(List.of("Save for retirement", "Buy a house"))
+                    .monthlyIncome(5000.0)
+                    .mainExpenseType(List.of("Rent", "Groceries"))
+                    .build();
             System.out.println(userRequestHandler.handleRegisterRequest(userRegisterRequest));
 
             UserInfoRequest userInfoRequest = new UserInfoRequest();

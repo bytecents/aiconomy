@@ -502,47 +502,43 @@ public class TransactionServiceImpl implements TransactionService {
     public TransactionDto addTransactionManually(String userId, String incomeOrExpense, String amount,
                                                  LocalDateTime time, String product, String type, String accountId, String remark)
             throws ServiceException {
+        String id = UUID.randomUUID().toString();
+        Transaction transaction = new Transaction(
+                id,
+                time,
+                type,
+                null,
+                product,
+                incomeOrExpense,
+                amount,
+                "CNY",
+                null,
+                "SUCCESS",
+                product,
+                accountId,
+                remark
+        );
 
-        if (userId == null || userId.isEmpty()) {
-            throw new ServiceException("User ID cannot be null or empty", null);
-        }
-        if (incomeOrExpense == null || incomeOrExpense.isEmpty()) {
-            throw new ServiceException("Income or expense cannot be null or empty", null);
-        }
-        if (amount == null || amount.isEmpty()) {
-            throw new ServiceException("Amount cannot be null or empty", null);
-        }
-        if (time == null) {
-            throw new ServiceException("Transaction time cannot be null", null);
-        }
-        if (product == null || product.isEmpty()) {
-            throw new ServiceException("Product cannot be null or empty", null);
-        }
-        if (type == null || type.isEmpty()) {
-            throw new ServiceException("Transaction type cannot be null or empty", null);
-        }
-        if (accountId == null || accountId.isEmpty()) {
-            throw new ServiceException("Account ID cannot be null or empty", null);
-        }
+        // 使用分类服务对单个交易进行分类
+        List<Transaction> transactionList = Collections.singletonList(transaction);
+        List<DynamicBillType> billTypes = new TransactionClassificationService().classifyTransactions(transactionList);
+        DynamicBillType billType = billTypes.get(0);
 
-        // 创建 TransactionDto
-        TransactionDto transaction = new TransactionDto();
-        transaction.setId(UUID.randomUUID().toString()); // 设置唯一 ID
-        transaction.setUserId(userId);
-        transaction.setIncomeOrExpense(incomeOrExpense);
-        transaction.setAmount(amount);
-        transaction.setTime(time);
-        transaction.setProduct(product);
-        transaction.setType(type);
-        transaction.setAccountId(accountId);
-        transaction.setRemark(remark);
-        // 其他字段允许为空，设置为 null
-        transaction.setCounterparty(null);
-        transaction.setPaymentMethod(null);
-        transaction.setStatus(null);
-        transaction.setMerchantOrderId(null);
+        TransactionDto transactionDto = TransactionDto.builder()
+                .id(id)
+                .time(time)
+                .type(type)
+                .product(product)
+                .incomeOrExpense(incomeOrExpense)
+                .amount(amount)
+                .accountId(accountId)
+                .userId(userId)
+                .remark(remark)
+                .billType(billType)  // 设置 billType
+                .build();
 
-        return transactionDao.create(transaction);
+        transactionDao.create(transactionDto);
+        return transactionDto;
     }
 
     /**

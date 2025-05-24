@@ -99,7 +99,7 @@ public class BudgetServiceTest {
                 "Train",
                 "Transportation",
                 "account1",
-                "test");
+                "remarks");
         Assertions.assertTrue(budgetService.isBudgetExceeded(budget));
     }
 
@@ -120,7 +120,7 @@ public class BudgetServiceTest {
                 "Train",
                 "Transportation",
                 "account1",
-                "test");
+                "remarks");
         Assertions.assertTrue(budgetService.isAlertBudget(budget));
     }
 
@@ -161,7 +161,7 @@ public class BudgetServiceTest {
                 "Train",
                 "Transportation",
                 "account1",
-                "test");
+                "remarks");
         transactionService.addTransactionManually("user7",
                 "Expense",
                 "300",
@@ -169,7 +169,7 @@ public class BudgetServiceTest {
                 "Bus",
                 "Transportation",
                 "account1",
-                "test");
+                "remarks");
         Assertions.assertEquals(800, budgetService.getTotalSpent("user7"));
     }
 
@@ -190,7 +190,7 @@ public class BudgetServiceTest {
                 "Train",
                 "Transportation",
                 "account1",
-                "test");
+                "remarks");
         Assertions.assertEquals(500, budgetService.getMonthlySpent("user8"));
     }
 
@@ -219,7 +219,7 @@ public class BudgetServiceTest {
                 "Train",
                 "Transportation",
                 "account1",
-                "test");
+                "remarks");
         transactionService.addTransactionManually("user9",
                 "Expense",
                 "900",
@@ -227,7 +227,7 @@ public class BudgetServiceTest {
                 "Dinner",
                 "Food",
                 "account1",
-                "test");
+                "remarks");
         
         Assertions.assertEquals(2, budgetService.getTotalAlertCount("user9"));
     }
@@ -249,7 +249,7 @@ public class BudgetServiceTest {
                 "Train",
                 "Transportation",
                 "account1",
-                "test");
+                "remarks");
         
         double dailyAvailable = budgetService.getDailyAvailableBudget("user10");
         Assertions.assertTrue(dailyAvailable > 0);
@@ -309,7 +309,7 @@ public class BudgetServiceTest {
                 "Train",
                 "Transportation",
                 "account1",
-                "test");
+                "remarks");
         transactionService.addTransactionManually("user13",
                 "Expense",
                 "400",
@@ -317,7 +317,7 @@ public class BudgetServiceTest {
                 "Bus",
                 "Transportation",
                 "account1",
-                "test");
+                "remarks");
         
         Assertions.assertEquals(700, budgetService.getTotalSpentByCategory("user13", "Transportation"));
     }
