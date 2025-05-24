@@ -82,6 +82,7 @@ public class BudgetRequestHandler {
         try {
             // 构造 Budget 对象（假设是全量更新）
             Budget budget = budgetService.getBudgetByCategory(request.getUserId(), request.getBudgetCategory());
+
             budget.setUserId(request.getUserId());
             budget.setBudgetCategory(request.getBudgetCategory());
             budget.setBudgetAmount(request.getBudgetAmount());

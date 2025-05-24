@@ -1,17 +1,23 @@
 package com.se.aiconomy.client.controller.budgets;
 
+import com.se.aiconomy.client.common.MyFXMLLoader;
 import com.se.aiconomy.client.controller.BaseController;
+import com.se.aiconomy.client.controller.accounts.UpdateAccountController;
 import com.se.aiconomy.server.handler.BudgetRequestHandler;
 import com.se.aiconomy.server.model.dto.budget.request.BudgetRemoveRequest;
 import com.se.aiconomy.server.model.dto.budget.response.BudgetCategoryInfo;
 import javafx.animation.FadeTransition;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -21,6 +27,7 @@ import javafx.util.Duration;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.IOException;
 import java.text.DecimalFormat;
 
 public class BudgetCategoryCardController extends BaseController {
@@ -117,10 +124,27 @@ public class BudgetCategoryCardController extends BaseController {
     }
 
     private void onUpdateButtonClick() {
-        try {
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/budgets/budget_update_card.fxml"));
+        MyFXMLLoader loader = new MyFXMLLoader("/fxml/budgets/budget_update_card.fxml");
+        Parent dialogContent = loader.load();
+        BudgetUpdateCardController controller = loader.getController();
+        rootPane = budgetController.getRootPane();
+        controller.setRootPane(rootPane);
+        controller.setUserInfo(this.userInfo);
+        controller.setBudget(this.budgetCategoryInfo);
+        controller.setBudgetController(this.budgetController);
+        dialogContent.setStyle("-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 20;");
+        Region overlay = new Region();
+        overlay.setStyle("-fx-background-color: rgba(0,0,0,0.5);");
+        overlay.setPrefSize(rootPane.getWidth(), rootPane.getHeight());
+        StackPane dialogWrapper = new StackPane(dialogContent);
+        dialogWrapper.setMaxWidth(500);
+        dialogWrapper.setMaxHeight(600);
+        overlay.setOnMouseClicked((MouseEvent e) -> {
+            rootPane.getChildren().removeAll(overlay, dialogWrapper);
+        });
+
+        rootPane.getChildren().addAll(overlay, dialogWrapper);
     }
 
     private void onDeleteButtonClick() {

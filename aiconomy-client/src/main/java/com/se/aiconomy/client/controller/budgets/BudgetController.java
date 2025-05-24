@@ -1,5 +1,6 @@
 package com.se.aiconomy.client.controller.budgets;
 
+import com.se.aiconomy.client.common.MyFXMLLoader;
 import com.se.aiconomy.client.controller.BaseController;
 import com.se.aiconomy.server.handler.BudgetRequestHandler;
 import com.se.aiconomy.server.model.dto.budget.request.BudgetCategoryInfoRequest;
@@ -20,6 +21,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
+import lombok.Getter;
 import lombok.Setter;
 
 import java.io.IOException;
@@ -62,6 +64,8 @@ public class BudgetController extends BaseController {
     private Label remainingOrOverLabel;
     private BudgetCategoryInfo info;
     @FXML
+    @Setter
+    @Getter
     private StackPane rootPane; // 这个是 main.fxml 的最外层 StackPane
 
     @FXML
@@ -136,76 +140,71 @@ public class BudgetController extends BaseController {
     }
 
     private Node createBudgetCard(BudgetCategoryInfo info) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/budgets/budget_category_card.fxml"));
-            Node node = loader.load();
-            BudgetCategoryCardController controller = loader.getController();
-            controller.setBudgetController(this);
-            controller.setBudgetCategoryInfo(info);
-            controller.setRootPane(rootPane);
-            controller.setUserInfo(userInfo);
-            String imagePath;
-            String backgroundColor;
-            String progressBarStyle;
-            String percentageColorClass;
-            String categoryName = info.getCategoryName().toLowerCase();
+        MyFXMLLoader loader = new MyFXMLLoader("/fxml/budgets/budget_category_card.fxml");
+        Node node = loader.load();
+        BudgetCategoryCardController controller = loader.getController();
+        controller.setBudgetController(this);
+        controller.setBudgetCategoryInfo(info);
+        controller.setRootPane(rootPane);
+        controller.setUserInfo(userInfo);
+        String imagePath;
+        String backgroundColor;
+        String progressBarStyle;
+        String percentageColorClass;
+        String categoryName = info.getCategoryName().toLowerCase();
 
-            if (categoryName.contains("food") || categoryName.contains("dining")) {
-                imagePath = Objects.requireNonNull(getClass().getResource("/assets/FoodDining.png")).toExternalForm();
-                backgroundColor = "#e0f2fe";
-                percentageColorClass = "text-red-500";
-            } else if (categoryName.contains("education")) {
-                imagePath = Objects.requireNonNull(getClass().getResource("/assets/Education1_blue.png")).toExternalForm();
-                backgroundColor = "#e0f2fe";
-                percentageColorClass = "text-green-500";
-            } else if (categoryName.contains("transport")) {
-                imagePath = Objects.requireNonNull(getClass().getResource("/assets/Transportation.png")).toExternalForm();
-                backgroundColor = "#dcfce7";
-                percentageColorClass = "text-green-500";
-            } else if (categoryName.contains("shop")) {
-                imagePath = Objects.requireNonNull(getClass().getResource("/assets/Shopping.png")).toExternalForm();
-                backgroundColor = "#e0bbff";
-                percentageColorClass = "text-red-500";
-            } else if (categoryName.contains("entertain")) {
-                imagePath = Objects.requireNonNull(getClass().getResource("/assets/Entertainment.png")).toExternalForm();
-                backgroundColor = "#fef9c3";
-                percentageColorClass = "text-yellow-500";
-            } else if (categoryName.contains("utilit")) {
-                imagePath = Objects.requireNonNull(getClass().getResource("/assets/Utilities.png")).toExternalForm();
-                backgroundColor = "#ffedd5";
-                percentageColorClass = "text-orange-500";
-            } else if (categoryName.contains("gift")) {
-                imagePath = Objects.requireNonNull(getClass().getResource("/assets/Gift1_blue.png")).toExternalForm();
-                backgroundColor = "#e0f2fe";
-                percentageColorClass = "text-orange-500";
-            } else {
-                imagePath = Objects.requireNonNull(getClass().getResource("/assets/Other.png")).toExternalForm();
-                backgroundColor = "#f3f4f6";
-                percentageColorClass = "text-gray-500";
-            }
-            String budgetText = String.format("$%.2f / month", info.getBudgetAmount());
-            String percentageText = String.format("%.0f%% used", info.getUsedRatio() * 100);
-            String statusText;
-            if (info.getSpentAmount() > info.getBudgetAmount()) {
-                double over = info.getSpentAmount() - info.getBudgetAmount();
-                statusText = String.format("$%.2f over budget", over);
-            } else {
-                statusText = String.format("$%.2f left", info.getRemainingAmount());
-            }
-            controller.setCardData(
-                    info.getCategoryName(),
-                    budgetText,
-                    imagePath,
-                    backgroundColor,
-                    info.getUsedRatio(),
-                    percentageText,
-                    statusText
-            );
-            return node;
-        } catch (IOException e) {
-            showError("加载预算卡片失败：" + e.getMessage());
-            return new Label("加载失败");
+        if (categoryName.contains("food") || categoryName.contains("dining")) {
+            imagePath = Objects.requireNonNull(getClass().getResource("/assets/FoodDining.png")).toExternalForm();
+            backgroundColor = "#e0f2fe";
+            percentageColorClass = "text-red-500";
+        } else if (categoryName.contains("education")) {
+            imagePath = Objects.requireNonNull(getClass().getResource("/assets/Education1_blue.png")).toExternalForm();
+            backgroundColor = "#e0f2fe";
+            percentageColorClass = "text-green-500";
+        } else if (categoryName.contains("transport")) {
+            imagePath = Objects.requireNonNull(getClass().getResource("/assets/Transportation.png")).toExternalForm();
+            backgroundColor = "#dcfce7";
+            percentageColorClass = "text-green-500";
+        } else if (categoryName.contains("shop")) {
+            imagePath = Objects.requireNonNull(getClass().getResource("/assets/Shopping.png")).toExternalForm();
+            backgroundColor = "#e0bbff";
+            percentageColorClass = "text-red-500";
+        } else if (categoryName.contains("entertain")) {
+            imagePath = Objects.requireNonNull(getClass().getResource("/assets/Entertainment.png")).toExternalForm();
+            backgroundColor = "#fef9c3";
+            percentageColorClass = "text-yellow-500";
+        } else if (categoryName.contains("utilit")) {
+            imagePath = Objects.requireNonNull(getClass().getResource("/assets/Utilities.png")).toExternalForm();
+            backgroundColor = "#ffedd5";
+            percentageColorClass = "text-orange-500";
+        } else if (categoryName.contains("gift")) {
+            imagePath = Objects.requireNonNull(getClass().getResource("/assets/Gift1_blue.png")).toExternalForm();
+            backgroundColor = "#e0f2fe";
+            percentageColorClass = "text-orange-500";
+        } else {
+            imagePath = Objects.requireNonNull(getClass().getResource("/assets/Other.png")).toExternalForm();
+            backgroundColor = "#f3f4f6";
+            percentageColorClass = "text-gray-500";
         }
+        String budgetText = String.format("$%.2f / month", info.getBudgetAmount());
+        String percentageText = String.format("%.0f%% used", info.getUsedRatio() * 100);
+        String statusText;
+        if (info.getSpentAmount() > info.getBudgetAmount()) {
+            double over = info.getSpentAmount() - info.getBudgetAmount();
+            statusText = String.format("$%.2f over budget", over);
+        } else {
+            statusText = String.format("$%.2f left", info.getRemainingAmount());
+        }
+        controller.setCardData(
+                info.getCategoryName(),
+                budgetText,
+                imagePath,
+                backgroundColor,
+                info.getUsedRatio(),
+                percentageText,
+                statusText
+        );
+        return node;
     }
 
     private int getDaysLeftThisMonth() {
