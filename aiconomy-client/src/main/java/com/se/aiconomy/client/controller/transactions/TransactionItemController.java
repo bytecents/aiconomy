@@ -30,6 +30,7 @@ public class TransactionItemController {
     public void setTransaction(TransactionDto transaction) {
         this.transaction = transaction;
         String account = transaction.getAccountId();
+        System.out.println(transaction.getIncomeOrExpense());
         boolean isExpense = transaction.getIncomeOrExpense().equals("expense") || transaction.getIncomeOrExpense().equals("支出");
 
         String rawAmount = transaction.getAmount();
@@ -38,7 +39,7 @@ public class TransactionItemController {
         String amount = (isExpense ? "-" : "+") + "$" + df.format(Double.parseDouble(rawAmount));
         String description = transaction.getProduct();
         String remark = transaction.getRemark();
-        String category = transaction.getType();
+        String category = transaction.getBillType().getDisplayName();
         String date = transaction.getTime().toLocalDate().format(DateTimeFormatter.ofPattern("MMM d, uuuu", Locale.ENGLISH));
         if (isExpense) {
             amountLabel.getStyleClass().add("text-red-500");
