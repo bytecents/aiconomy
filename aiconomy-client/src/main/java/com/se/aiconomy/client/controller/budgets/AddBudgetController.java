@@ -2,6 +2,7 @@ package com.se.aiconomy.client.controller.budgets;
 
 //import com.alibaba.fastjson2.internal.asm.Label;
 
+import com.se.aiconomy.client.common.CustomDialog;
 import com.se.aiconomy.client.controller.BaseController;
 import com.se.aiconomy.server.handler.BudgetRequestHandler;
 import com.se.aiconomy.server.model.dto.budget.request.BudgetAddRequest;
@@ -9,10 +10,7 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.Label;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -22,6 +20,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import lombok.Getter;
 import lombok.Setter;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -55,23 +54,19 @@ public class AddBudgetController extends BaseController {
     private VBox vbox8;
     private BudgetController.OnOpenListener openListener;
     private String selectedCategory;
+    @FXML
+    private ToggleGroup optionGroup;
+    @FXML
+    private RadioButton option1RadioButton;
+    @FXML
+    private RadioButton option2RadioButton;
+    @FXML
+    private RadioButton option3RadioButton;
 
     @FXML
     public void setOnOpenListener(BudgetController.OnOpenListener listener) {
         this.openListener = listener;
     }
-    @FXML
-    private ToggleGroup optionGroup;
-
-    @FXML
-    private RadioButton option1RadioButton;
-
-    @FXML
-    private RadioButton option2RadioButton;
-
-    @FXML
-    private RadioButton option3RadioButton;
-
 
     @FXML
     public void initialize() {
@@ -85,14 +80,14 @@ public class AddBudgetController extends BaseController {
         } else {
             init();
         }
-        optionGroup = new ToggleGroup();
-
-        option1RadioButton.setToggleGroup(optionGroup);
-        option2RadioButton.setToggleGroup(optionGroup);
-        option3RadioButton.setToggleGroup(optionGroup);
     }
 
     private void init() {
+        optionGroup = new ToggleGroup();
+        option1RadioButton.setToggleGroup(optionGroup);
+        option2RadioButton.setToggleGroup(optionGroup);
+        option3RadioButton.setToggleGroup(optionGroup);
+        option1RadioButton.setSelected(true);
     }
 
     @FXML
@@ -109,24 +104,58 @@ public class AddBudgetController extends BaseController {
 
     @FXML
     private void onSave(ActionEvent event) {
-        addBudget();
+        if (!addBudget()) {
+            return;
+        }
         closeDialog(event);
     }
 
-    private void addBudget() {
+    private boolean checkForm() {
+        if (selectedCategory == null) {
+            CustomDialog.show("Error", "Please select a category!", "error", "Try Again");
+            return false;
+        }
+        if (budgetAmountInput.getText() == null || budgetAmountInput.getText().trim().isEmpty()) {
+            CustomDialog.show("Error", "Please input budget amount!", "error", "Try Again");
+            return false;
+        }
+        if (optionGroup.getSelectedToggle() == null) {
+            CustomDialog.show("Error", "Please select an alert ratio!", "error", "Try Again");
+            return false;
+        }
+        return true;
+    }
+
+    private boolean addBudget() {
+        if (!checkForm()) {
+            return false;
+        }
         try {
-            double budgetAmount = Double.parseDouble(budgetAmountInput.getText());
-            BudgetAddRequest budgetAddRequest = new BudgetAddRequest();
-            budgetAddRequest.setUserId(userInfo.getId());
-            budgetAddRequest.setBudgetCategory(selectedCategory);
-            budgetAddRequest.setBudgetAmount(budgetAmount);
-            budgetAddRequest.setAlertSettings(0.8);
-            budgetAddRequest.setNotes(additionalNotesInput.getText());
+            Toggle selectedToggle = optionGroup.getSelectedToggle();
+            double alertRatio = 0.6;
+            if (selectedToggle != null) {
+                RadioButton selectedRadioButton = (RadioButton) selectedToggle;
+                String selectedAlertRatio = selectedRadioButton.getText();
+                alertRatio = Double.parseDouble(selectedAlertRatio.replace("%", "")) / 100.0;
+            }
+            BudgetAddRequest budgetAddRequest = getBudgetAddRequest(alertRatio);
             budgetRequestHandler.handleBudgetAddRequest(budgetAddRequest);
         } catch (Exception e) {
             e.printStackTrace();
+            CustomDialog.show("Error", e.getMessage(), "error", "Try Again");
         }
+        return true;
+    }
 
+    private @NotNull BudgetAddRequest getBudgetAddRequest(double alertRatio) {
+        double budgetAmount = Double.parseDouble(budgetAmountInput.getText());
+        BudgetAddRequest budgetAddRequest = new BudgetAddRequest();
+        budgetAddRequest.setUserId(userInfo.getId());
+        budgetAddRequest.setBudgetCategory(selectedCategory);
+        budgetAddRequest.setBudgetAmount(budgetAmount);
+        budgetAddRequest.setAlertSettings(alertRatio);
+        budgetAddRequest.setNotes(additionalNotesInput.getText() == null ? "" : additionalNotesInput.getText());
+        return budgetAddRequest;
     }
 
     @FXML
