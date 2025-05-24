@@ -1,0 +1,32 @@
+[
+  {
+    "id": "12345",
+    "time": "2025-04-16T10:30:00",
+    "type": "消费",
+    "counterparty": "Walmart",
+    "product": "iPhone 15",
+    "incomeOrExpense": "支出",
+    "amount": "5999.99",
+    "paymentMethod": "微信支付",
+    "status": "成功",
+    "merchantOrderId": "7890",
+    "accountId": "acc1",
+    "userId": "AureliaSKY",
+    "remark": "购买iPhone 15"
+  },
+  {
+    "id": "67890",
+    "time": "2025-04-17T11:00:00",
+    "type": "工资",
+    "counterparty": "Company",
+    "product": "Salary",
+    "incomeOrExpense": "收入",
+    "amount": "10000.00",
+    "paymentMethod": "银行转账",
+    "status": "成功",
+    "merchantOrderId": "SAL123",
+    "accountId": "acc2",
+    "userId": "AureliaSKY",
+    "remark": "月度工资"
+  }
+]

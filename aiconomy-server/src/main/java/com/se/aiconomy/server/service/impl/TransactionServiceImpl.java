@@ -1,15 +1,15 @@
 package com.se.aiconomy.server.service.impl;
 
+
 import com.se.aiconomy.server.common.exception.ServiceException;
 import com.se.aiconomy.server.common.utils.CSVUtils;
 import com.se.aiconomy.server.common.utils.ExcelUtils;
+import com.se.aiconomy.server.common.utils.JsonUtils;
 import com.se.aiconomy.server.dao.TransactionDao;
-import com.se.aiconomy.server.langchain.common.model.BillType;
 import com.se.aiconomy.server.langchain.common.model.DynamicBillType;
 import com.se.aiconomy.server.langchain.common.model.Transaction;
 import com.se.aiconomy.server.langchain.service.classification.TransactionClassificationService;
 import com.se.aiconomy.server.model.dto.TransactionDto;
-import com.se.aiconomy.server.service.AccountService;
 import com.se.aiconomy.server.service.TransactionService;
 import lombok.*;
 import org.slf4j.Logger;
@@ -177,7 +177,7 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     /**
-     * 根据文件类型导入交易记录（CSV 或 Excel）
+     * 根据文件类型导入交易记录（CSV 或 Excel 或 Json）
      *
      * @param filePath 文件路径
      * @return 成功导入的交易记录列表
@@ -193,6 +193,8 @@ public class TransactionServiceImpl implements TransactionService {
                 transactions = readCSV(filePath);
             } else if ("xlsx".equalsIgnoreCase(fileExtension) || "xls".equalsIgnoreCase(fileExtension)) {
                 transactions = readExcel(filePath);
+            } else if ("json".equalsIgnoreCase(fileExtension)) {
+                transactions = readJson(filePath);
             } else {
                 // 抛出异常时，确保传递消息和 cause（第二个参数）
                 throw new ServiceException("Unsupported file type: " + fileExtension, null); // 无底层异常传 null
@@ -232,6 +234,62 @@ public class TransactionServiceImpl implements TransactionService {
      */
     private List<TransactionDto> readExcel(String filePath) throws IOException, ServiceException {
         return ExcelUtils.readExcel(filePath, TransactionDto.class);
+    }
+
+    //    从Json文件中导入交易记录
+    private List<TransactionDto> readJson(String filePath) throws IOException {
+        return JsonUtils.readJson(filePath);
+    }
+
+    @Override
+    public void exportTransactionsToJson(String filePath) throws ServiceException {
+        List<TransactionDto> transactions = transactionDao.findAll();
+        if (transactions.isEmpty()) {
+            log.warn("No transactions found to export");
+            throw new ServiceException("No transactions available to export", null);
+        }
+
+        try {
+            JsonUtils.writeJson(filePath, transactions);
+            log.info("Successfully exported {} transactions to JSON file: {}", transactions.size(), filePath);
+        } catch (IOException e) {
+            log.error("Failed to export transactions to JSON file: {}", filePath, e);
+            throw new ServiceException("Failed to export transactions to JSON file: " + filePath, e);
+        }
+    }
+
+    @Override
+    public void exportTransactionsToCsv(String filePath) throws ServiceException {
+        List<TransactionDto> transactions = transactionDao.findAll();
+        if (transactions.isEmpty()) {
+            log.warn("No transactions found to export");
+            throw new ServiceException("No transactions available to export", null);
+        }
+
+        try {
+            CSVUtils.writeCsv(filePath, transactions);
+            log.info("Successfully exported {} transactions to CSV file: {}", transactions.size(), filePath);
+        } catch (IOException e) {
+            log.error("Failed to export transactions to CSV file: {}", filePath, e);
+            throw new ServiceException("Failed to export transactions to CSV file: " + filePath, e);
+        }
+    }
+
+    @Override
+    public void exportTransactionsToExcel(String filePath) throws ServiceException {
+        List<TransactionDto> transactions = transactionDao.findAll();
+        if (transactions.isEmpty()) {
+            log.warn("No transactions found to export");
+            throw new ServiceException("No transactions available to export", null);
+        }
+
+        try {
+            ExcelUtils.writeExcel(filePath, transactions);
+            log.info("Successfully exported {} transactions to Excel file: {}", transactions.size(), filePath);
+        } catch (IOException e) {
+            log.error("Failed to export transactions to Excel file: {}", filePath, e);
+            throw new ServiceException("Failed to export transactions to Excel file: " + filePath, e);
+        }
     }
 
     /**
@@ -343,22 +401,26 @@ public class TransactionServiceImpl implements TransactionService {
      * 按交易对手统计交易金额
      */
     public Map<String, String> getCounterpartyStatistics() {
-        List<TransactionDto> allTransactions = transactionDao.findAll();
+        List<TransactionDto> transactions = transactionDao.findAll();
+        Map<String, Double> counterpartyTotals = new HashMap<>();
 
-        return allTransactions.stream()
-                .filter(t -> t.getCounterparty() != null)
-                .collect(Collectors.groupingBy(
-                        TransactionDto::getCounterparty,
-                        Collectors.collectingAndThen(
-                                Collectors.summingDouble(t -> Double.parseDouble(t.getAmount())),
-                                sum -> String.format("%.2f", sum)
-                        )
-                ));
+        for (TransactionDto tx : transactions) {
+            String counterparty = tx.getCounterparty();
+            if (counterparty != null && !counterparty.isEmpty()) {
+                double amount = Double.parseDouble(tx.getAmount());
+                counterpartyTotals.merge(counterparty, amount, Double::sum);
+            }
+        }
+
+        Map<String, String> statistics = new HashMap<>();
+        counterpartyTotals.forEach((key, value) -> statistics.put(key, value.toString()));
+        return statistics;
     }
 
     /**
      * 更新交易记录状态
      */
+    @Override
     public TransactionDto updateTransactionStatus(String transactionId, String newStatus) throws ServiceException {
         TransactionDto updated = transactionDao.updateStatus(transactionId, newStatus);
         if (updated == null) {
@@ -371,6 +433,7 @@ public class TransactionServiceImpl implements TransactionService {
      * 搜索交易记录
      * 支持按多个条件组合搜索
      */
+    @Override
     public List<TransactionDto> searchTransactions(TransactionSearchCriteria criteria) {
         List<TransactionDto> allTransactions = transactionDao.findAll();
 
@@ -415,42 +478,72 @@ public class TransactionServiceImpl implements TransactionService {
         return filteredTransactions;
     }
 
+    //手动添加交易记录
+//    public TransactionDto addTransactionManually(String userId, String incomeOrExpense, String amount,
+//                                                 LocalDateTime time, String product, String type, String accountId)
+//            throws ServiceException {
+//
+//        if (userId == null || incomeOrExpense == null || amount == null || type == null || accountId == null) {
+//            throw new ServiceException("Missing required fields for transaction", null);
+//        }
+//
+//        TransactionDto transaction = new TransactionDto();
+//        transaction.setUserId(userId);
+//        transaction.setIncomeOrExpense(incomeOrExpense);
+//        transaction.setAmount(amount);
+//        transaction.setTime(time != null ? time : LocalDateTime.now());
+//        transaction.setProduct(product);
+//        transaction.setType(type);
+//        transaction.setAccountId(accountId);
+//
+//        return transactionDao.create(transaction);
+//    }
     @Override
-    /**
-     * 手动添加交易记录
-     * @param userId 用户ID
-     * @param incomeOrExpense 收入或支出
-     * @param amount 金额
-     * @param time 交易时间
-     * @param product 产品名称
-     * @param type 交易类型
-     * @param accountId 账户ID
-     * @return 返回创建的 TransactionDto
-     * @throws ServiceException 如果创建交易时发生错误
-     */
     public TransactionDto addTransactionManually(String userId, String incomeOrExpense, String amount,
-                                                 LocalDateTime time, String product, String type, String accountId)
+                                                 LocalDateTime time, String product, String type, String accountId, String remark)
             throws ServiceException {
+        String id = UUID.randomUUID().toString();
+        Transaction transaction = new Transaction(
+                id,
+                time,
+                type,
+                null,
+                product,
+                incomeOrExpense,
+                amount,
+                "CNY",
+                null,
+                "SUCCESS",
+                product,
+                accountId,
+                remark
+        );
 
-        if (userId == null || incomeOrExpense == null || amount == null || type == null || accountId == null) {
-            throw new ServiceException("Missing required fields for transaction", null);
-        }
+        // 使用分类服务对单个交易进行分类
+        List<Transaction> transactionList = Collections.singletonList(transaction);
+        List<DynamicBillType> billTypes = new TransactionClassificationService().classifyTransactions(transactionList);
+        DynamicBillType billType = billTypes.get(0);
 
-        TransactionDto transaction = new TransactionDto();
-        transaction.setUserId(userId);
-        transaction.setIncomeOrExpense(incomeOrExpense);
-        transaction.setAmount(amount);
-        transaction.setTime(time != null ? time : LocalDateTime.now());
-        transaction.setProduct(product);
-        transaction.setType(type);
-        transaction.setAccountId(accountId);
+        TransactionDto transactionDto = TransactionDto.builder()
+                .id(id)
+                .time(time)
+                .type(type)
+                .product(product)
+                .incomeOrExpense(incomeOrExpense)
+                .amount(amount)
+                .accountId(accountId)
+                .userId(userId)
+                .remark(remark)
+                .billType(billType)  // 设置 billType
+                .build();
 
-        return transactionDao.create(transaction);
+        transactionDao.create(transactionDto);
+        return transactionDto;
     }
 
     /**
      * 内部类：交易搜索条件
-     */
+    */
     @Getter
     @Setter
     @NoArgsConstructor

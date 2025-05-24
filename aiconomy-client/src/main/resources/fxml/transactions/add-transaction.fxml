@@ -7,6 +7,8 @@
 <?import javafx.scene.layout.*?>
 
 <?import javafx.collections.FXCollections?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       stylesheets="/css/styles.css"
@@ -64,20 +66,24 @@
                 </columnConstraints>
 
                 <VBox GridPane.columnIndex="0" fx:id="category1" onMouseClicked="#chooseCategory1" alignment="CENTER" styleClass="cursor-pointer p-3 gap-1 bg-gray-50 rounded-lg border">
-                    <Region styleClass="w-6 h-6 bg-gray-600" />
-                    <Label styleClass="text-sm text-gray-600"> Food &amp; Dining </Label>
+                    <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                        <Image url="@/assets/FoodDining1.png" />
+                    </ImageView>                    <Label styleClass="text-sm text-gray-600"> Food &amp; Dining </Label>
                 </VBox>
                 <VBox GridPane.columnIndex="1" fx:id="category2" onMouseClicked="#chooseCategory2" alignment="CENTER" styleClass="cursor-pointer p-3 gap-1 bg-gray-50 rounded-lg border">
-                    <Region styleClass="w-6 h-6 bg-gray-600" />
-                    <Label styleClass="text-sm text-gray-600"> Transportation </Label>
+                    <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                        <Image url="@/assets/Transportation1.png" />
+                    </ImageView>                       <Label styleClass="text-sm text-gray-600"> Transportation </Label>
                 </VBox>
                 <VBox GridPane.columnIndex="2" fx:id="category3" onMouseClicked="#chooseCategory3" alignment="CENTER" styleClass="cursor-pointer p-3 gap-1 bg-gray-50 rounded-lg border">
-                    <Region styleClass="w-6 h-6 bg-gray-600" />
-                    <Label styleClass="text-sm text-gray-600"> Shopping </Label>
+                    <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                        <Image url="@/assets/Shopping1.png" />
+                    </ImageView>                       <Label styleClass="text-sm text-gray-600"> Shopping </Label>
                 </VBox>
                 <VBox GridPane.columnIndex="3" fx:id="category4" onMouseClicked="#chooseCategory4" alignment="CENTER" styleClass="cursor-pointer p-3 gap-1 bg-gray-50 rounded-lg border">
-                    <Region styleClass="w-6 h-6 bg-gray-600" />
-                    <Label styleClass="text-sm text-gray-600"> Entertainment </Label>
+                    <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                        <Image url="@/assets/Entertainment1.png" />
+                    </ImageView>                       <Label styleClass="text-sm text-gray-600"> Entertainment </Label>
                 </VBox>
 <!--                <Button-->
 <!--                        type="button"-->

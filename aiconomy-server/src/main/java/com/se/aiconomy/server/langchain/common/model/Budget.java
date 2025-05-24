@@ -1,15 +1,13 @@
 package com.se.aiconomy.server.langchain.common.model;
 
 import dev.langchain4j.model.output.structured.Description;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.List;
 
 @Setter
 @Getter
+@ToString
 public class Budget {
 
     @Description("The total budget allocated for the month or period.")
@@ -30,11 +28,13 @@ public class Budget {
 
     @Setter
     @Getter
+    @ToString
+    @NoArgsConstructor
     @AllArgsConstructor
     public static class CategoryBudget {
 
         @Description("The category to which the budget is allocated (e.g., Food & Dining, Transportation).")
-        private BillType category;
+        private DynamicBillType category;
 
         @Description("The allocated budget for this category.")
         private double budget;

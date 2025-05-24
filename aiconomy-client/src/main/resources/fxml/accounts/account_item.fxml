@@ -1,0 +1,42 @@
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.Circle?>
+<HBox xmlns:fx="http://javafx.com/fxml/1" alignment="CENTER_LEFT" spacing="12"
+      xmlns="http://javafx.com/javafx/23.0.1"
+      fx:controller="com.se.aiconomy.client.controller.accounts.AccountItemController"
+      style="-fx-padding: 12; -fx-background-color: #FFFFFF; -fx-border-color: #E5E7EB; -fx-border-radius: 8; -fx-background-radius: 8;">
+
+    <!-- Left side: Icon + Info -->
+    <StackPane prefHeight="50.0" prefWidth="50.0">
+        <Circle fx:id="iconCircle" radius="24.0" stroke="BLACK" strokeWidth="0.0"/>
+        <ImageView fx:id="iconImage" fitHeight="24.0" fitWidth="24.0" preserveRatio="true"/>
+    </StackPane>
+
+    <VBox spacing="4">
+        <Label fx:id="bankNameLabel" styleClass="text-base font-bold"/>
+        <Label fx:id="accountNameLabel" styleClass="text-sm text-gray-500"/>
+        <Label fx:id="accountTypeLabel" styleClass="text-sm text-gray-400"/>
+    </VBox>
+
+    <Region HBox.hgrow="ALWAYS"/>
+
+    <!-- Right side: Balance info -->
+    <VBox alignment="CENTER_RIGHT" spacing="4">
+        <HBox alignment="CENTER_LEFT" spacing="8">
+            <Label fx:id="balanceLabel" styleClass="text-base font-bold"/>
+            <Label fx:id="creditLimitLabel" styleClass="text-sm text-gray-500"/>
+        </HBox>
+        <HBox alignment="CENTER_LEFT" spacing="8">
+            <Label fx:id="currentDebtLabel" styleClass="text-sm text-red-500"/>
+            <Label fx:id="paymentDueDateLabel" styleClass="text-sm text-gray-500"/>
+        </HBox>
+        <HBox alignment="CENTER_LEFT" spacing="8">
+            <Label fx:id="minimumPaymentLabel" styleClass="text-sm text-gray-500"/>
+            <Label fx:id="statusLabel" styleClass="text-sm text-green-500"/>
+        </HBox>
+    </VBox>
+    <Button onAction="#onUpdateButtonClicked" text="Update"
+            style="-fx-background-color: #2563eb; -fx-background-radius: 12px;" textFill="WHITE">
+    </Button>
+</HBox>

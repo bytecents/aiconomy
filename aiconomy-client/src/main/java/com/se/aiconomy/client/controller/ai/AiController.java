@@ -2,6 +2,7 @@ package com.se.aiconomy.client.controller.ai;
 
 import com.se.aiconomy.client.Application.StyleClassFixer;
 import com.se.aiconomy.client.common.MyFXMLLoader;
+import com.se.aiconomy.client.controller.BaseController;
 import com.se.aiconomy.server.langchain.common.config.Locale;
 import com.se.aiconomy.server.langchain.service.chat.ChatService;
 import javafx.application.Platform;
@@ -23,16 +24,25 @@ import java.util.ArrayList;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
-public class AiController implements Initializable {
-    @FXML private Button sendBtn;
-    @FXML private TextField inputField;
-    @FXML private Button[] questionBtns;
-    @FXML private FlowPane questionBtnContainer;
-    @FXML private VBox messageContent;
-    @FXML private VBox insightContent;
-    @FXML private ScrollPane messagePanel;
-
+public class AiController extends BaseController implements Initializable {
+    public ArrayList<Message> messageList = new ArrayList<>();
+    ChatService chatService = new ChatService();
+    @FXML
+    private Button sendBtn;
+    @FXML
+    private TextField inputField;
+    @FXML
+    private Button[] questionBtns;
+    @FXML
+    private FlowPane questionBtnContainer;
+    @FXML
+    private VBox messageContent;
+    @FXML
+    private VBox insightContent;
+    @FXML
+    private ScrollPane messagePanel;
     private boolean isGenerating = false;
+    private OnCloseListener closeListener;
 
     public void handleSend(MouseEvent mouseEvent) {
         String input = inputField.getText();
@@ -57,31 +67,10 @@ public class AiController implements Initializable {
         }
     }
 
-    public interface OnCloseListener {
-        void onCloseAiPanel();
-    }
-
-    private OnCloseListener closeListener;
-
     @FXML
     public void setOnCloseListener(OnCloseListener listener) {
         this.closeListener = listener;
     }
-
-
-    ChatService chatService = new ChatService();
-
-    public static class Message {
-        public String content;
-        public boolean isUserMessage;
-
-        public Message(String content, boolean isUserMessage) {
-            this.content = content;
-            this.isUserMessage = isUserMessage;
-        }
-    }
-
-    public ArrayList<Message> messageList = new ArrayList<>();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -121,6 +110,7 @@ public class AiController implements Initializable {
         updateSendDisable();
         Message aiMessage = new Message("Generating...", false);
         messageList.add(aiMessage);
+        chatService.setUserId(this.getUserInfo().getId());
         chatService.stream(content, Locale.EN,
                 partialResponse -> {
                     if (Objects.equals(messageList.getLast().content, "Generating...")) {
@@ -169,8 +159,7 @@ public class AiController implements Initializable {
                     UserMessageController userMessageController = loader.getController();
                     userMessageController.setContent(message.content);
                     messageContent.getChildren().add(root);
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             } else {
@@ -182,8 +171,7 @@ public class AiController implements Initializable {
                     aiMessageController.setContent(message.content);
 
                     messageContent.getChildren().add(root);
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
@@ -201,6 +189,20 @@ public class AiController implements Initializable {
     public void closeAiPanel() {
         if (closeListener != null) {
             closeListener.onCloseAiPanel();
+        }
+    }
+
+    public interface OnCloseListener {
+        void onCloseAiPanel();
+    }
+
+    public static class Message {
+        public String content;
+        public boolean isUserMessage;
+
+        public Message(String content, boolean isUserMessage) {
+            this.content = content;
+            this.isUserMessage = isUserMessage;
         }
     }
 }

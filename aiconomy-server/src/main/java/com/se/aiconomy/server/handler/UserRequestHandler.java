@@ -63,8 +63,6 @@ public class UserRequestHandler {
 
         User user;
         try {
-            System.out.println(request.getEmail());
-            System.out.println(request.getPassword());
             user = userService.login(request.getEmail(), request.getPassword());
             logger.info("User successfully logged in: {}", request.getEmail());
         } catch (Exception e) {
@@ -163,18 +161,18 @@ public class UserRequestHandler {
      */
     private UserInfo convertToUserInfo(User user) {
         return new UserInfo(
-            user.getId(),
-            user.getEmail(),
-            user.getAvatarUrl(),
-            user.getFirstName(),
-            user.getLastName(),
-            user.getPhone(),
-            user.getBirthDate(),
-            user.getCurrency(),
-            user.getFinancialGoal(),
-            user.getMonthlyIncome(),
-            user.getMainExpenseType(),
-            user.getBillTypes()
+                user.getId(),
+                user.getEmail(),
+                user.getAvatarUrl(),
+                user.getFirstName(),
+                user.getLastName(),
+                user.getPhone(),
+                user.getBirthDate(),
+                user.getCurrency(),
+                user.getFinancialGoal(),
+                user.getMonthlyIncome(),
+                user.getMainExpenseType(),
+                user.getBillTypes()
         );
     }
 }

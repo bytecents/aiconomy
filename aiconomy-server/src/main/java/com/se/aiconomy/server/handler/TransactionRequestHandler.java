@@ -74,26 +74,90 @@ public class TransactionRequestHandler {
         return transactions;
     }
 
-    /**
-     * 手动添加交易记录
-     * @param userId 用户ID
-     * @param incomeOrExpense 收入或支出
-     * @param amount 金额
-     * @param time 交易时间
-     * @param  product 产品名称
-     * @param type 交易类型
-     * @param accountId 账户ID
-     * @return 返回创建的 TransactionDto
-     * @throws ServiceException 如果保存交易记录时发生错误
-     */
+    // 根据账户 ID 获取交易记录
+    public List<TransactionDto> handleGetTransactionsByAccountId(String userId, String accountId) throws ServiceException {
+        if (userId == null || userId.isEmpty()) {
+            throw new ServiceException("User ID cannot be null or empty", null);
+        }
+        if (accountId == null || accountId.isEmpty()) {
+            throw new ServiceException("Account ID cannot be null or empty", null);
+        }
+        return transactionService.getTransactionsByAccountId(accountId, userId);
+    }
+
+    // 按条件搜索交易记录
+    public List<TransactionDto> handleSearchTransactions(TransactionServiceImpl.TransactionSearchCriteria criteria) throws ServiceException {
+        if (criteria == null) {
+            throw new ServiceException("Search criteria cannot be null", null);
+        }
+        return transactionService.searchTransactions(criteria);
+    }
+
+    // 导出交易记录到 CSV 文件
+    public void handleExportTransactionsToCsv(String filePath) throws ServiceException {
+        if (filePath == null || filePath.isEmpty()) {
+            throw new ServiceException("File path cannot be null or empty", null);
+        }
+        transactionService.exportTransactionsToCsv(filePath);
+    }
+
+    // 导出交易记录到 Excel 文件
+    public void handleExportTransactionsToExcel(String filePath) throws ServiceException {
+        if (filePath == null || filePath.isEmpty()) {
+            throw new ServiceException("File path cannot be null or empty", null);
+        }
+        transactionService.exportTransactionsToExcel(filePath);
+    }
+
+    // 更新交易状态
+    public TransactionDto handleUpdateTransactionStatus(String transactionId, String status) throws ServiceException {
+        if (transactionId == null || transactionId.isEmpty()) {
+            throw new ServiceException("Transaction ID cannot be null or empty", null);
+        }
+        if (status == null || status.isEmpty()) {
+            throw new ServiceException("Status cannot be null or empty", null);
+        }
+        return transactionService.updateTransactionStatus(transactionId, status);
+    }
+
+    // 删除交易记录
+    public void handleDeleteTransaction(String transactionId) throws ServiceException {
+        if (transactionId == null || transactionId.isEmpty()) {
+            throw new ServiceException("Transaction ID cannot be null or empty", null);
+        }
+        transactionService.deleteTransaction(transactionId);
+    }
+
+    // 获取交易对象
+    public Map<String, String> handleGetCounterpartyStatistics() {
+        return transactionService.getCounterpartyStatistics();
+    }
+
+    // 手动添加交易记录
     public TransactionDto handleAddTransactionManually(String userId, String incomeOrExpense, String amount,
-                                                       LocalDateTime time, String product, String type, String accountId)
+                                                       LocalDateTime time, String product, String type, String accountId, String remark)
             throws ServiceException {
         if (userId == null || userId.isEmpty()) {
             throw new ServiceException("User ID cannot be null or empty", null);
         }
-        return transactionService.addTransactionManually(userId, incomeOrExpense, amount, time, product, type, accountId);
+        if (incomeOrExpense == null || incomeOrExpense.isEmpty()) {
+            throw new ServiceException("Income or expense cannot be null or empty", null);
+        }
+        if (amount == null || amount.isEmpty()) {
+            throw new ServiceException("Amount cannot be null or empty", null);
+        }
+        if (time == null) {
+            throw new ServiceException("Transaction time cannot be null", null);
+        }
+        if (product == null || product.isEmpty()) {
+            throw new ServiceException("Product cannot be null or empty", null);
+        }
+        if (type == null || type.isEmpty()) {
+            throw new ServiceException("Transaction type cannot be null or empty", null);
+        }
+        if (accountId == null || accountId.isEmpty()) {
+            throw new ServiceException("Account ID cannot be null or empty", null);
+        }
+        return transactionService.addTransactionManually(userId, incomeOrExpense, amount, time, product, type, accountId, remark);
     }
-
-//    public TransactionDto updateTransaction
 }

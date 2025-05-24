@@ -2,13 +2,11 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.Font?>
-
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.shape.Circle?>
-<StackPane fx:id="rootPane" xmlns:fx="http://javafx.com/fxml" fx:controller="com.se.aiconomy.client.controller.BudgetController">
+<?import javafx.scene.shape.*?>
+<StackPane xmlns:fx="http://javafx.com/fxml" fx:id="rootPane"
+           fx:controller="com.se.aiconomy.client.controller.budgets.BudgetController">
     <VBox fx:id="mainVBox" styleClass="p-8">
         <padding>
             <Insets top="20" right="20" bottom="20" left="20"/>
@@ -35,29 +33,30 @@
             <!-- Card 1 Total Budget-->
             <VBox styleClass="card p-6" GridPane.columnIndex="0">
                 <Label text="Total Budget" styleClass="text-sm text-gray-500 pb-2 font-roboto"/>
-                <Label text="\$5,000.00" styleClass="text-2xl font-bold text-gray-900 pb-2"/>
-                <Label text="Used 64.8%" styleClass="text-sm text-gray-500 font-roboto"/>
+                <Label fx:id="totalBudgetLabel" text="\$5,000.00" styleClass="text-2xl font-bold text-gray-900 pb-2"/>
+                <Label fx:id="totalUsedRatioLabel" text="Used 64.8%" styleClass="text-sm text-gray-500 font-roboto"/>
             </VBox>
 
             <!-- Card 2 Spent-->
             <VBox styleClass="card p-6" GridPane.columnIndex="1">
                 <Label text="Spent" styleClass="text-sm text-gray-500 pb-2 font-roboto"/>
-                <Label text="\$3,240.50" styleClass="text-2xl font-bold text-gray-900 pb-2"/>
-                <Label text="Left $1,759.50" styleClass="text-sm text-gray-500 font-roboto"/>
+                <Label fx:id="totalSpentLabel" text="\$3,240.50" styleClass="text-2xl font-bold text-gray-900 pb-2"/>
+                <Label fx:id="remainingLabel" text="Left $1,759.50" styleClass="text-sm text-gray-500 font-roboto"/>
             </VBox>
 
             <!-- Card 3 Alerts-->
             <VBox styleClass="card p-6" GridPane.columnIndex="2">
                 <Label text="Alerts" styleClass="text-sm text-gray-500 pb-2 font-roboto"/>
-                <Label text="2" styleClass="text-2xl font-bold text-red-500 pb-2"/>
+                <Label fx:id="alertsLabel" text="2" styleClass="text-2xl font-bold text-red-500 pb-2"/>
                 <Label text="Over Budget" styleClass="text-sm text-gray-500 font-roboto"/>
             </VBox>
 
             <!-- Card 4 Daily Available-->
             <VBox styleClass="card p-6" GridPane.columnIndex="3">
                 <Label text="Daily Available" styleClass="text-sm text-gray-500 pb-2 font-roboto"/>
-                <Label text="\$58.65" styleClass="text-2xl font-bold text-gray-900 pb-2"/>
-                <Label text="30 days left" styleClass="text-sm text-gray-500 font-roboto"/>
+                <Label fx:id="dailyAvailableBudgetLabel" text="\$58.65"
+                       styleClass="text-2xl font-bold text-gray-900 pb-2"/>
+                <Label fx:id="daysLeftLabel" text="30 days left" styleClass="text-sm text-gray-500 font-roboto"/>
             </VBox>
         </GridPane>
         <!-- Budget Management -->
@@ -74,7 +73,7 @@
                 </HBox>
 
                 <!-- 卡片区域：两列，每列三个 -->
-                <GridPane hgap="20" vgap="20" style="-fx-padding: 10;">
+                <GridPane fx:id="budgetCardsContainer" hgap="20" vgap="20" style="-fx-padding: 10;">
                     <columnConstraints>
                         <ColumnConstraints percentWidth="50"/>
                         <ColumnConstraints percentWidth="50"/>
@@ -90,12 +89,12 @@
                             <HBox alignment="CENTER_LEFT" styleClass="gap-3">
 
                                 <StackPane prefHeight="50.0" prefWidth="50.0">
-                                <Circle fill="#e0f2fe" radius="24.0" stroke="BLACK" strokeType="INSIDE"
-                                        strokeWidth="0.0"/>
-                                <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true"
-                                           preserveRatio="true">
-                                    <Image url="@../assets/FoodDining.png"/>
-                                </ImageView>
+                                    <Circle fill="#e0f2fe" radius="24.0" stroke="BLACK" strokeType="INSIDE"
+                                            strokeWidth="0.0"/>
+                                    <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true"
+                                               preserveRatio="true">
+                                        <Image url="@../../assets/FoodDining.png"/>
+                                    </ImageView>
                                 </StackPane>
                                 <VBox styleClass="gap-0_5" HBox.hgrow="NEVER">
                                     <Label text="Food &amp; Dining" styleClass="font-medium text-base"/>
@@ -132,7 +131,7 @@
                                             strokeWidth="0.0"/>
                                     <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true"
                                                preserveRatio="true">
-                                        <Image url="@../assets/Transportation.png"/>
+                                        <Image url="@../../assets/Transportation.png"/>
                                     </ImageView>
                                 </StackPane>
                                 <VBox styleClass="gap-0_5" HBox.hgrow="NEVER">
@@ -171,7 +170,7 @@
                                             strokeWidth="0.0"/>
                                     <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true"
                                                preserveRatio="true">
-                                        <Image url="@../assets/Shopping.png"/>
+                                        <Image url="@../../assets/Shopping.png"/>
                                     </ImageView>
                                 </StackPane>
                                 <VBox styleClass="gap-0_5" HBox.hgrow="NEVER">
@@ -206,7 +205,7 @@
                                             strokeWidth="0.0"/>
                                     <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true"
                                                preserveRatio="true">
-                                        <Image url="@../assets/Entertainment.png"/>
+                                        <Image url="@../../assets/Entertainment.png"/>
                                     </ImageView>
                                 </StackPane>
 
@@ -246,7 +245,7 @@
                                             strokeWidth="0.0"/>
                                     <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true"
                                                preserveRatio="true">
-                                        <Image url="@../assets/Utilities.png"/>
+                                        <Image url="@../../assets/Utilities.png"/>
                                     </ImageView>
                                 </StackPane>
 
@@ -284,7 +283,7 @@
                                             strokeWidth="0.0"/>
                                     <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true"
                                                preserveRatio="true">
-                                        <Image url="@../assets/Other.png"/>
+                                        <Image url="@../../assets/Other.png"/>
                                     </ImageView>
                                 </StackPane>
 

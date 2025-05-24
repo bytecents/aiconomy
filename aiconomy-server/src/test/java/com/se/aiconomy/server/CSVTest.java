@@ -39,6 +39,6 @@ public class CSVTest {
         assertEquals("微信支付", transaction.getPaymentMethod(), "TransactionDto payment method should be '微信支付'");
         assertEquals("成功", transaction.getStatus(), "TransactionDto status should be '成功'");
         assertEquals("7890", transaction.getMerchantOrderId(), "TransactionDto merchant order ID should be '7890'");
-//        assertEquals("购买iPhone 15", transaction.getRemark(), "TransactionDto remark should be '购买iPhone 15'");
+        assertEquals("购买iPhone 15", transaction.getRemark(), "TransactionDto remark should be '购买iPhone 15'");
     }
 }

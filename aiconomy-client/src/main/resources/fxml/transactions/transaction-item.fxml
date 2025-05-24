@@ -27,7 +27,7 @@
         <Region styleClass="w-10 h-10 rounded-lg bg-red-100" />
         <VBox alignment="CENTER_LEFT">
             <Label fx:id="descriptionLabel" styleClass="text-base font-medium" />
-<!--            <Label fx:id="remarkLabel" styleClass="text-sm text-gray-500">Online Shopping</Label>-->
+            <Label fx:id="remarkLabel" styleClass="text-sm text-gray-500">Online Shopping</Label>
         </VBox>
     </HBox>
     <Label fx:id="dateLabel" GridPane.columnIndex="1" styleClass="text-sm font-roboto text-gray-600" />
@@ -48,7 +48,7 @@
         <Label fx:id="amountLabel" styleClass="text-sm font-medium" />
     </HBox>
     <HBox alignment="CENTER_RIGHT" GridPane.columnIndex="5">
-        <Button styleClass="w-6 h-6 bg-transparent border-none hover-bg-gray-100 cursor-pointer"> </Button>
+        <Button styleClass="w-6 h-6 bg-transparent border-none hover-bg-gray-100 cursor-pointer" onMouseClicked="#deleteTransaction"> </Button>
     </HBox>
 </GridPane>
 

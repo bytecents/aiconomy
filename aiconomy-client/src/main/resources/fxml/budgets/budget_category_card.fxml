@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.Circle?>
+<VBox xmlns:fx="http://javafx.com/fxml"
+      xmlns="http://javafx.com/javafx"
+      fx:controller="com.se.aiconomy.client.controller.budgets.BudgetCategoryCardController"
+      stylesheets="/css/styles.css"
+      styleClass="card p-6" spacing="5"
+      style="-fx-background-color: white; -fx-padding: 15; -fx-background-radius: 10;">
+
+    <HBox alignment="CENTER_LEFT" styleClass="p-3 gap-3 hover-bg-gray-50 rounded-lg cursor-pointer">
+        <HBox alignment="CENTER_LEFT" styleClass="gap-3">
+            <StackPane prefHeight="50.0" prefWidth="50.0">
+                <Circle fx:id="circle" radius="24.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0"/>
+                <ImageView fx:id="icon" fitHeight="24.0" fitWidth="24.0" preserveRatio="true"/>
+            </StackPane>
+            <VBox styleClass="gap-0_5" HBox.hgrow="NEVER">
+                <Label fx:id="categoryLabel" styleClass="font-medium text-base"/>
+                <Label fx:id="budgetLabel" styleClass="text-sm text-gray-500 font-roboto"/>
+            </VBox>
+        </HBox>
+        <Region HBox.hgrow="ALWAYS"/>
+        <StackPane fx:id="clickableIcon" styleClass="clickable-icon" style="-fx-cursor: hand; -fx-padding: 0;">
+            <Label text="⋯" style="-fx-font-size: 30px; -fx-font-weight: bold; -fx-text-fill: black;"/>
+        </StackPane>
+    </HBox>
+
+    <ProgressBar fx:id="progressBar" maxWidth="Infinity" VBox.vgrow="NEVER"/>
+
+    <HBox alignment="CENTER_LEFT" VBox.vgrow="NEVER">
+        <Label fx:id="percentageLabel"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Label fx:id="statusLabel" styleClass="text-sm text-gray-500"/>
+    </HBox>
+</VBox>

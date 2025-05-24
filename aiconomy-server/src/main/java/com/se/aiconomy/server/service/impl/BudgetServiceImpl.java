@@ -38,8 +38,18 @@ public class BudgetServiceImpl implements BudgetService {
 
     @Override
     public void removeBudget(String budgetId) {
-        Optional<Budget> budget = jsonStorageService.findById(budgetId, Budget.class);
-        budget.ifPresent(value -> jsonStorageService.delete(value, Budget.class));
+        String categoty = "";
+        String userId = "";
+        List<Budget> budgets = jsonStorageService.findAll(Budget.class);
+        for (Budget budget : budgets) {
+            if (budget.getId().equals(budgetId)) {
+                categoty = budget.getBudgetCategory();
+                userId = budget.getUserId();
+                break;
+            }
+        }
+        Budget budget = getBudgetByCategory(userId, categoty);
+        jsonStorageService.delete(budget, Budget.class);
     }
 
     @Override
@@ -64,6 +74,17 @@ public class BudgetServiceImpl implements BudgetService {
     public List<Budget> getBudgetsByUserId(String userId) {
         List<Budget> budgets = jsonStorageService.findAll(Budget.class);
         return budgets.stream().filter(budget -> budget.getUserId().equals(userId)).toList();
+    }
+
+    @Override
+    public Budget getBudgetByCategory(String userId, String category) {
+        List<Budget> budgets = getBudgetsByUserId(userId);
+        for (Budget budget : budgets) {
+            if (budget.getBudgetCategory().equals(category)) {
+                return budget;
+            }
+        }
+        return null;
     }
 
     @Override
@@ -135,7 +156,7 @@ public class BudgetServiceImpl implements BudgetService {
     }
 
     @Override
-    public int getLeftDays(String userId){
+    public int getLeftDays(String userId) {
         return 30 - LocalDateTime.now().getDayOfMonth();
     }
 
@@ -156,7 +177,23 @@ public class BudgetServiceImpl implements BudgetService {
         List<TransactionDto> transactions = getTransactionsByUserId(userId);
         double totalSpentByCategory = 0;
         for (TransactionDto transaction : transactions) {
-            if (transaction.getType().equals(category) && transaction.getIncomeOrExpense().equals("Expense")) {
+            boolean categoryMatches = false;
+            
+            // 检查 type 字段
+            if (transaction.getType() != null && 
+                transaction.getType().equalsIgnoreCase(category)) {
+                categoryMatches = true;
+            }
+            
+            // 检查 billType.getDisplayName
+            if (!categoryMatches && 
+                transaction.getBillType() != null && 
+                transaction.getBillType().getDisplayName() != null &&
+                transaction.getBillType().getDisplayName().equalsIgnoreCase(category)) {
+                categoryMatches = true;
+            }
+            
+            if (categoryMatches && transaction.getIncomeOrExpense().equals("Expense")) {
                 totalSpentByCategory += Double.parseDouble(transaction.getAmount());
             }
         }
