@@ -32,7 +32,7 @@ public class TransactionDao extends AbstractDao<TransactionDto> {
         return instance;
     }
 
-//    create a transtcion record
+    // create a transtcion record
     @Override
     public TransactionDto create(TransactionDto transaction) {
         if (transaction.getTime() == null) {
@@ -50,8 +50,8 @@ public class TransactionDao extends AbstractDao<TransactionDto> {
     public List<TransactionDto> findByType(String type) {
         log.debug("Finding transactions of type: {}", type);
         return findAll().stream()
-            .filter(t -> type.equals(t.getType()))
-            .collect(Collectors.toList());
+                .filter(t -> type.equals(t.getType()))
+                .collect(Collectors.toList());
     }
 
     /**
@@ -63,8 +63,8 @@ public class TransactionDao extends AbstractDao<TransactionDto> {
     public List<TransactionDto> findByStatus(String status) {
         log.debug("Finding transactions with status: {}", status);
         return findAll().stream()
-            .filter(t -> status.equals(t.getStatus()))
-            .collect(Collectors.toList());
+                .filter(t -> status.equals(t.getStatus()))
+                .collect(Collectors.toList());
     }
 
     /**
@@ -77,8 +77,8 @@ public class TransactionDao extends AbstractDao<TransactionDto> {
     public List<TransactionDto> findByTimeRange(LocalDateTime startTime, LocalDateTime endTime) {
         log.debug("Finding transactions between {} and {}", startTime, endTime);
         return findAll().stream()
-            .filter(t -> !t.getTime().isBefore(startTime) && !t.getTime().isAfter(endTime))
-            .collect(Collectors.toList());
+                .filter(t -> !t.getTime().isBefore(startTime) && !t.getTime().isAfter(endTime))
+                .collect(Collectors.toList());
     }
 
     /**
@@ -90,8 +90,8 @@ public class TransactionDao extends AbstractDao<TransactionDto> {
     public List<TransactionDto> findByCounterparty(String counterparty) {
         log.debug("Finding transactions with counterparty: {}", counterparty);
         return findAll().stream()
-            .filter(t -> counterparty.equals(t.getCounterparty()))
-            .collect(Collectors.toList());
+                .filter(t -> counterparty.equals(t.getCounterparty()))
+                .collect(Collectors.toList());
     }
 
     /**
@@ -103,8 +103,8 @@ public class TransactionDao extends AbstractDao<TransactionDto> {
     public List<TransactionDto> findByPaymentMethod(String paymentMethod) {
         log.debug("Finding transactions with payment method: {}", paymentMethod);
         return findAll().stream()
-            .filter(t -> paymentMethod.equals(t.getPaymentMethod()))
-            .collect(Collectors.toList());
+                .filter(t -> paymentMethod.equals(t.getPaymentMethod()))
+                .collect(Collectors.toList());
     }
 
     /**
@@ -116,8 +116,8 @@ public class TransactionDao extends AbstractDao<TransactionDto> {
     public List<TransactionDto> findByMerchantOrderId(String merchantOrderId) {
         log.debug("Finding transactions with merchant order ID: {}", merchantOrderId);
         return findAll().stream()
-            .filter(t -> merchantOrderId.equals(t.getMerchantOrderId()))
-            .collect(Collectors.toList());
+                .filter(t -> merchantOrderId.equals(t.getMerchantOrderId()))
+                .collect(Collectors.toList());
     }
 
     /**
@@ -129,8 +129,8 @@ public class TransactionDao extends AbstractDao<TransactionDto> {
     public List<TransactionDto> findByIncomeOrExpense(String incomeOrExpense) {
         log.debug("Finding transactions of type: {}", incomeOrExpense);
         return findAll().stream()
-            .filter(t -> incomeOrExpense.equals(t.getIncomeOrExpense()))
-            .collect(Collectors.toList());
+                .filter(t -> incomeOrExpense.equals(t.getIncomeOrExpense()))
+                .collect(Collectors.toList());
     }
 
     /**
@@ -142,8 +142,8 @@ public class TransactionDao extends AbstractDao<TransactionDto> {
     public List<TransactionDto> findByProduct(String product) {
         log.debug("Finding transactions for product: {}", product);
         return findAll().stream()
-            .filter(t -> product.equals(t.getProduct()))
-            .collect(Collectors.toList());
+                .filter(t -> product.equals(t.getProduct()))
+                .collect(Collectors.toList());
     }
 
     /**
@@ -170,15 +170,15 @@ public class TransactionDao extends AbstractDao<TransactionDto> {
     public List<TransactionDto> searchByRemark(String keyword) {
         log.debug("Searching transactions with remark containing: {}", keyword);
         return findAll().stream()
-            .filter(t -> t.getRemark() != null && t.getRemark().contains(keyword))
-            .collect(Collectors.toList());
+                .filter(t -> t.getRemark() != null && t.getRemark().contains(keyword))
+                .collect(Collectors.toList());
     }
 
     public List<TransactionDto> findByUserId(String userId) {
         log.debug("Finding transactions for user ID: {}", userId);
         return findAll().stream()
-            .filter(t -> userId.equals(t.getUserId()))
-            .collect(Collectors.toList());
+                .filter(t -> userId.equals(t.getUserId()))
+                .collect(Collectors.toList());
     }
 
     /**

@@ -2,8 +2,21 @@ package com.se.aiconomy.server.langchain.service.chat;
 
 import com.se.aiconomy.server.langchain.common.prompt.BasePromptTemplate;
 
+/**
+ * The {@code Prompt} class provides localized prompt templates for an intelligent financial assistant.
+ * It supports English, Chinese, and Japanese, and is used to generate system messages for AI chat models.
+ * <p>
+ * The prompt guides the AI assistant to answer a wide range of finance-related questions, such as budget optimization,
+ * spending analysis, savings recommendations, and overall financial health insights. It also supports dynamic
+ * insertion of user-specific information (e.g., user ID) into the prompt.
+ * </p>
+ */
 public class Prompt extends BasePromptTemplate {
 
+    /**
+     * English prompt template for the financial assistant.
+     * Supports dynamic insertion of user ID if provided.
+     */
     private static final String PROMPT_TEMPLATE_EN = """
                 You are an intelligent financial assistant capable of providing insightful answers to a wide range of finance-related questions. Your goal is to help users manage their finances effectively and answer queries related to their budgets, spending, savings, and overall financial health.
             
@@ -33,6 +46,10 @@ public class Prompt extends BasePromptTemplate {
                 {% if user_id %}UserId: {{ user_id }}.{% endif %}
             """;
 
+    /**
+     * Chinese prompt template for the financial assistant.
+     * Supports dynamic insertion of user ID if provided.
+     */
     private static final String PROMPT_TEMPLATE_CN = """
                 您是一个智能财务助手，能够为用户提供广泛的财务相关问题的有价值的解答。您的目标是帮助用户有效地管理财务，回答有关预算、支出、储蓄以及整体财务健康的问题。
             
@@ -62,6 +79,10 @@ public class Prompt extends BasePromptTemplate {
                 {% if user_id %}用户的ID为：{{ user_id }}。{% endif %}
             """;
 
+    /**
+     * Japanese prompt template for the financial assistant.
+     * Supports dynamic insertion of user ID if provided.
+     */
     private static final String PROMPT_TEMPLATE_JP = """
                 あなたは、ユーザーの財務に関するさまざまな質問に対して有益な回答を提供できる、インテリジェントな財務アシスタントです。あなたの目標は、ユーザーが財務を効果的に管理できるように支援し、予算、支出、貯蓄、そして全体的な財務健康に関する質問に答えることです。
             
@@ -91,6 +112,9 @@ public class Prompt extends BasePromptTemplate {
                 {% if user_id %}ユーザのIDは：{{ user_id }}です。{% endif %}
             """;
 
+    /**
+     * Constructs a new {@code Prompt} instance with all supported language templates.
+     */
     public Prompt() {
         super(PROMPT_TEMPLATE_CN, PROMPT_TEMPLATE_EN, PROMPT_TEMPLATE_JP);
     }

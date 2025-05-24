@@ -1,6 +1,5 @@
 package com.se.aiconomy.server.service.impl;
 
-
 import com.se.aiconomy.server.common.exception.ServiceException;
 import com.se.aiconomy.server.common.utils.CSVUtils;
 import com.se.aiconomy.server.common.utils.ExcelUtils;
@@ -23,17 +22,26 @@ import java.util.stream.Collectors;
 import static com.se.aiconomy.server.common.utils.FileUtils.getFileExtension;
 
 /**
- * 交易记录服务类，提供交易记录的业务逻辑处理
+ * Service implementation for handling transaction records and related business logic.
  */
 public class TransactionServiceImpl implements TransactionService {
     private static final Logger log = LoggerFactory.getLogger(TransactionServiceImpl.class);
 
     private final TransactionDao transactionDao;
 
+    /**
+     * Default constructor initializing the TransactionDao instance.
+     */
     public TransactionServiceImpl() {
         this.transactionDao = TransactionDao.getInstance();
     }
 
+    /**
+     * Classifies a list of TransactionDto objects using the TransactionClassificationService.
+     *
+     * @param transactions the list of TransactionDto to classify
+     * @return a list of maps pairing Transaction and DynamicBillType
+     */
     @Override
     public List<Map<Transaction, DynamicBillType>> classifyTransactions(List<TransactionDto> transactions) {
         List<Transaction> transactionList = transactions.stream()
@@ -66,6 +74,13 @@ public class TransactionServiceImpl implements TransactionService {
         return classifiedTransactions;
     }
 
+    /**
+     * Extracts and classifies transactions from a CSV file.
+     *
+     * @param filePath the path to the CSV file
+     * @return a list of classified transactions
+     * @throws ServiceException if reading the file fails
+     */
     @Override
     public List<Map<Transaction, DynamicBillType>> extractTransactionFromCSV(String filePath) throws ServiceException {
         List<TransactionDto> transactions;
@@ -78,6 +93,13 @@ public class TransactionServiceImpl implements TransactionService {
         return classifyTransactions(transactions);
     }
 
+    /**
+     * Extracts and classifies transactions from an Excel file.
+     *
+     * @param filePath the path to the Excel file
+     * @return a list of classified transactions
+     * @throws ServiceException if reading the file fails
+     */
     @Override
     public List<Map<Transaction, DynamicBillType>> extractTransactionFromExcel(String filePath) throws ServiceException {
         List<TransactionDto> transactions;
@@ -90,12 +112,24 @@ public class TransactionServiceImpl implements TransactionService {
         return classifyTransactions(transactions);
     }
 
-    // TODO: 实现从 JSON 字符串中提取交易记录的方法
+    /**
+     * @param jsonString the JSON string containing transactions
+     * @return a list of classified transactions
+     * @throws ServiceException if extraction fails
+     */
     @Override
     public List<Map<Transaction, DynamicBillType>> extractTransactionFromJson(String jsonString) throws ServiceException {
         return null;
     }
 
+    /**
+     * Saves classified transactions for a user.
+     *
+     * @param userId                 the user ID
+     * @param classifiedTransactions the list of classified transactions
+     * @return the saved classified transactions
+     * @throws ServiceException if saving fails
+     */
     @Override
     public List<Map<Transaction, DynamicBillType>> saveTransaction(String userId, List<Map<Transaction, DynamicBillType>> classifiedTransactions) throws ServiceException {
         List<TransactionDto> transactionDtos = new ArrayList<>();
@@ -131,6 +165,15 @@ public class TransactionServiceImpl implements TransactionService {
         return classifiedTransactions;
     }
 
+    /**
+     * Saves classified transactions for a user and account.
+     *
+     * @param userId                 the user ID
+     * @param accountId              the account ID
+     * @param classifiedTransactions the list of classified transactions
+     * @return the saved classified transactions
+     * @throws ServiceException if saving fails
+     */
     @Override
     public List<Map<Transaction, DynamicBillType>> saveTransaction(String userId, String accountId, List<Map<Transaction, DynamicBillType>> classifiedTransactions) throws ServiceException {
         List<TransactionDto> transactionDtos = new ArrayList<>();
@@ -166,6 +209,13 @@ public class TransactionServiceImpl implements TransactionService {
         return classifiedTransactions;
     }
 
+    /**
+     * Retrieves all transactions for a given user ID.
+     *
+     * @param userId the user ID
+     * @return a list of TransactionDto
+     * @throws ServiceException if no transactions are found
+     */
     @Override
     public List<TransactionDto> getTransactionsByUserId(String userId) throws ServiceException {
         List<TransactionDto> transactionDtos = transactionDao.findByUserId(userId);
@@ -177,18 +227,17 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     /**
-     * 根据文件类型导入交易记录（CSV 或 Excel 或 Json）
+     * Imports transactions from a file (CSV, Excel, or JSON) based on file extension.
      *
-     * @param filePath 文件路径
-     * @return 成功导入的交易记录列表
-     * @throws ServiceException 服务异常
+     * @param filePath the file path
+     * @return the list of imported transactions
+     * @throws ServiceException if import fails
      */
     public List<TransactionDto> importTransactions(String filePath) throws ServiceException {
-        String fileExtension = getFileExtension(filePath);  // 获取文件扩展名
+        String fileExtension = getFileExtension(filePath);
         List<TransactionDto> transactions;
 
         try {
-            // 根据文件扩展名判断文件类型，选择使用相应的导入工具
             if ("csv".equalsIgnoreCase(fileExtension)) {
                 transactions = readCSV(filePath);
             } else if ("xlsx".equalsIgnoreCase(fileExtension) || "xls".equalsIgnoreCase(fileExtension)) {
@@ -196,51 +245,58 @@ public class TransactionServiceImpl implements TransactionService {
             } else if ("json".equalsIgnoreCase(fileExtension)) {
                 transactions = readJson(filePath);
             } else {
-                // 抛出异常时，确保传递消息和 cause（第二个参数）
-                throw new ServiceException("Unsupported file type: " + fileExtension, null); // 无底层异常传 null
+                throw new ServiceException("Unsupported file type: " + fileExtension, null);
             }
 
-            // 处理交易记录逻辑
             return processImportedTransactions(transactions);
 
         } catch (IOException e) {
-            // 捕获 IOException 异常时传递它作为 cause
-            throw new ServiceException("Failed to read file: " + filePath, e);  // 将 IOException 作为 cause
+            throw new ServiceException("Failed to read file: " + filePath, e);
         } catch (Exception e) {
-            // 捕获任何其他异常，并将其作为 cause
-            throw new ServiceException("Unexpected error during import", e);  // 将 Exception 作为 cause
+            throw new ServiceException("Unexpected error during import", e);
         }
     }
 
-
     /**
-     * 从 CSV 文件导入交易记录
+     * Reads transactions from a CSV file.
      *
-     * @param filePath 文件路径
-     * @return 导入的交易记录列表
-     * @throws IOException 文件读取异常
+     * @param filePath the file path
+     * @return the list of TransactionDto
+     * @throws IOException if reading fails
      */
     private List<TransactionDto> readCSV(String filePath) throws IOException {
         return CSVUtils.readCsv(filePath, TransactionDto.class);
     }
 
     /**
-     * 从 Excel 文件导入交易记录
+     * Reads transactions from an Excel file.
      *
-     * @param filePath 文件路径
-     * @return 导入的交易记录列表
-     * @throws IOException      文件读取异常
-     * @throws ServiceException 服务异常
+     * @param filePath the file path
+     * @return the list of TransactionDto
+     * @throws IOException      if reading fails
+     * @throws ServiceException if reading fails
      */
     private List<TransactionDto> readExcel(String filePath) throws IOException, ServiceException {
         return ExcelUtils.readExcel(filePath, TransactionDto.class);
     }
 
-    //    从Json文件中导入交易记录
+    /**
+     * Reads transactions from a JSON file.
+     *
+     * @param filePath the file path
+     * @return the list of TransactionDto
+     * @throws IOException if reading fails
+     */
     private List<TransactionDto> readJson(String filePath) throws IOException {
         return JsonUtils.readJson(filePath);
     }
 
+    /**
+     * Exports all transactions to a JSON file.
+     *
+     * @param filePath the file path to export to
+     * @throws ServiceException if export fails
+     */
     @Override
     public void exportTransactionsToJson(String filePath) throws ServiceException {
         List<TransactionDto> transactions = transactionDao.findAll();
@@ -258,6 +314,12 @@ public class TransactionServiceImpl implements TransactionService {
         }
     }
 
+    /**
+     * Exports all transactions to a CSV file.
+     *
+     * @param filePath the file path to export to
+     * @throws ServiceException if export fails
+     */
     @Override
     public void exportTransactionsToCsv(String filePath) throws ServiceException {
         List<TransactionDto> transactions = transactionDao.findAll();
@@ -275,6 +337,12 @@ public class TransactionServiceImpl implements TransactionService {
         }
     }
 
+    /**
+     * Exports all transactions to an Excel file.
+     *
+     * @param filePath the file path to export to
+     * @throws ServiceException if export fails
+     */
     @Override
     public void exportTransactionsToExcel(String filePath) throws ServiceException {
         List<TransactionDto> transactions = transactionDao.findAll();
@@ -293,39 +361,35 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     /**
-     * 处理导入的交易记录
+     * Processes imported transactions, generating IDs and timestamps if missing, and saves them.
      *
-     * @param transactions 导入的交易记录
-     * @return 处理后的交易记录列表
+     * @param transactions the list of imported transactions
+     * @return the list of valid transactions
+     * @throws ServiceException if saving fails
      */
     private List<TransactionDto> processImportedTransactions(List<TransactionDto> transactions) throws ServiceException {
         List<TransactionDto> validTransactions = new ArrayList<>();
 
-        // 处理每一条记录
         for (TransactionDto transaction : transactions) {
-            // 生成ID（如果不存在）
             if (transaction.getId() == null || transaction.getId().isEmpty()) {
                 transaction.setId(UUID.randomUUID().toString());
             }
 
-            // 设置时间（如果不存在）
             if (transaction.getTime() == null) {
                 transaction.setTime(LocalDateTime.now());
             }
 
-            // 添加到有效记录列表
             validTransactions.add(transaction);
             log.debug("Valid transaction processed: {}", transaction);
         }
 
-        // 批量保存有效交易记录
         if (!validTransactions.isEmpty()) {
             try {
-                batchSave(validTransactions);  // 调用 batchSave 并处理 ServiceException
+                batchSave(validTransactions);
                 log.info("Successfully imported {} transactions", validTransactions.size());
             } catch (ServiceException e) {
                 log.error("Failed to save transactions: {}", e.getMessage(), e);
-                throw e;  // 重新抛出异常，或者做其他异常处理
+                throw e;
             }
         } else {
             log.warn("No valid transactions found to import");
@@ -334,9 +398,11 @@ public class TransactionServiceImpl implements TransactionService {
         return validTransactions;
     }
 
-
     /**
-     * 批量保存交易记录
+     * Batch saves a list of transactions.
+     *
+     * @param transactions the list of transactions to save
+     * @throws ServiceException if saving fails
      */
     private void batchSave(List<TransactionDto> transactions) throws ServiceException {
         try {
@@ -345,19 +411,27 @@ public class TransactionServiceImpl implements TransactionService {
             }
         } catch (Exception e) {
             log.error("Failed to save transactions: {}", e.getMessage(), e);
-            throw new ServiceException("数据保存失败", e); // 这里传递了底层异常 e
+            throw new ServiceException("Data save failed", e);
         }
     }
 
     /**
-     * 获取指定时间范围内的交易记录
+     * Retrieves transactions within a specified date range.
+     *
+     * @param startTime the start time
+     * @param endTime   the end time
+     * @return the list of transactions in the date range
      */
     public List<TransactionDto> getTransactionsByDateRange(LocalDateTime startTime, LocalDateTime endTime) {
         return transactionDao.findByTimeRange(startTime, endTime);
     }
 
     /**
-     * 获取指定时间范围内的收支统计
+     * Gets income and expense statistics within a specified date range.
+     *
+     * @param startTime the start time
+     * @param endTime   the end time
+     * @return a map containing totalIncome, totalExpense, and netAmount
      */
     public Map<String, String> getIncomeAndExpenseStatistics(LocalDateTime startTime, LocalDateTime endTime) {
         List<TransactionDto> transactions = getTransactionsByDateRange(startTime, endTime);
@@ -381,7 +455,9 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     /**
-     * 获取按支付方式分组的交易统计
+     * Gets transaction statistics grouped by payment method.
+     *
+     * @return a map of payment method to total amount
      */
     public Map<String, String> getPaymentMethodStatistics() {
         List<TransactionDto> allTransactions = transactionDao.findAll();
@@ -398,7 +474,9 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     /**
-     * 按交易对手统计交易金额
+     * Gets transaction statistics grouped by counterparty.
+     *
+     * @return a map of counterparty to total amount
      */
     public Map<String, String> getCounterpartyStatistics() {
         List<TransactionDto> transactions = transactionDao.findAll();
@@ -418,7 +496,12 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     /**
-     * 更新交易记录状态
+     * Updates the status of a transaction.
+     *
+     * @param transactionId the transaction ID
+     * @param newStatus     the new status
+     * @return the updated TransactionDto
+     * @throws ServiceException if the transaction is not found
      */
     @Override
     public TransactionDto updateTransactionStatus(String transactionId, String newStatus) throws ServiceException {
@@ -430,8 +513,10 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     /**
-     * 搜索交易记录
-     * 支持按多个条件组合搜索
+     * Searches for transactions matching the given criteria.
+     *
+     * @param criteria the search criteria
+     * @return a list of matching transactions
      */
     @Override
     public List<TransactionDto> searchTransactions(TransactionSearchCriteria criteria) {
@@ -443,7 +528,10 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     /**
-     * 删除交易记录
+     * Deletes a transaction by its ID.
+     *
+     * @param transactionId the transaction ID
+     * @throws ServiceException if the transaction is not found
      */
     public void deleteTransaction(String transactionId) throws ServiceException {
         Optional<TransactionDto> transaction = transactionDao.findById(transactionId);
@@ -455,20 +543,19 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     /**
-     * 根据 accountId 获取所有的交易记录
+     * Retrieves all transactions associated with a specific accountId and userId.
      *
-     * @param accountId 账户 ID, userId 用户Id
-     * @return 返回与 accountId 关联的所有交易记录的 TransactionDto 列表
-     * @throws ServiceException 如果未找到相关交易记录
+     * @param accountId the account ID
+     * @param userId    the user ID
+     * @return a list of TransactionDto for the account and user
+     * @throws ServiceException if no transactions are found
      */
     public List<TransactionDto> getTransactionsByAccountId(String accountId, String userId) throws ServiceException {
 
-        // 获取所有交易记录
         List<TransactionDto> allTransactions = transactionDao.findAll();
 
-        // 过滤出 accountId 符合条件的交易记录
         List<TransactionDto> filteredTransactions = allTransactions.stream()
-                .filter(transaction -> accountId.equals(transaction.getAccountId()) && userId.equals(transaction.getUserId())) // 根据 accountId 和 userId 过滤
+                .filter(transaction -> accountId.equals(transaction.getAccountId()) && userId.equals(transaction.getUserId()))
                 .collect(Collectors.toList());
 
         if (filteredTransactions.isEmpty()) {
@@ -478,6 +565,20 @@ public class TransactionServiceImpl implements TransactionService {
         return filteredTransactions;
     }
 
+    /**
+     * Adds a transaction manually.
+     *
+     * @param userId          the user ID
+     * @param incomeOrExpense income or expense type
+     * @param amount          the transaction amount
+     * @param time            the transaction time
+     * @param product         the product
+     * @param type            the transaction type
+     * @param accountId       the account ID
+     * @param remark          remarks
+     * @return the created TransactionDto
+     * @throws ServiceException if required fields are missing
+     */
     @Override
     public TransactionDto addTransactionManually(String userId, String incomeOrExpense, String amount,
                                                  LocalDateTime time, String product, String type, String accountId, String remark)
@@ -501,8 +602,8 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     /**
-     * 内部类：交易搜索条件
-    */
+     * Inner class representing search criteria for transactions.
+     */
     @Getter
     @Setter
     @NoArgsConstructor
@@ -518,6 +619,12 @@ public class TransactionServiceImpl implements TransactionService {
         private String incomeOrExpense;
         private String product;
 
+        /**
+         * Checks if a transaction matches the search criteria.
+         *
+         * @param transaction the transaction to check
+         * @return true if the transaction matches, false otherwise
+         */
         public boolean matches(TransactionDto transaction) {
             return (type == null || type.equals(transaction.getType())) &&
                    (counterparty == null || counterparty.equals(transaction.getCounterparty())) &&

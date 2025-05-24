@@ -5,6 +5,13 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+/**
+ * Request DTO for retrieving user information.
+ * <p>
+ * This class is used to encapsulate the request for fetching user information.
+ * It extends {@link BaseRequest} and does not contain any additional fields.
+ * </p>
+ */
 @Getter
 @Setter
 @ToString
