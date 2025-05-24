@@ -177,7 +177,23 @@ public class BudgetServiceImpl implements BudgetService {
         List<TransactionDto> transactions = getTransactionsByUserId(userId);
         double totalSpentByCategory = 0;
         for (TransactionDto transaction : transactions) {
-            if (transaction.getBillType().getDisplayName().equalsIgnoreCase(category) && transaction.getIncomeOrExpense().equals("Expense")) {
+            boolean categoryMatches = false;
+            
+            // 检查 type 字段
+            if (transaction.getType() != null && 
+                transaction.getType().equalsIgnoreCase(category)) {
+                categoryMatches = true;
+            }
+            
+            // 检查 billType.getDisplayName
+            if (!categoryMatches && 
+                transaction.getBillType() != null && 
+                transaction.getBillType().getDisplayName() != null &&
+                transaction.getBillType().getDisplayName().equalsIgnoreCase(category)) {
+                categoryMatches = true;
+            }
+            
+            if (categoryMatches && transaction.getIncomeOrExpense().equals("Expense")) {
                 totalSpentByCategory += Double.parseDouble(transaction.getAmount());
             }
         }
