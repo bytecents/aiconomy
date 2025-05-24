@@ -6,6 +6,11 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.text.TextFlow?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       styleClass="border-l border-gray-200 bg-gray-50 min-w-96"
@@ -22,5 +27,34 @@
         <Button text="×" onAction="#closeAiOptimizePanel"
                 styleClass="bg-transparent hover-bg-gray-200 border-none p-0 text-gray-900 text-base rounded-lg w-6 h-6 cursor-pointer"/>
     </HBox>
+    <VBox styleClass="gap-6 px-6">
+        <VBox styleClass="p-4 bg-purple-50 rounded-lg border border-purple-200 shadow-sm">
+            <HBox alignment="CENTER_LEFT" styleClass="gap-3">
+<!--                <Region styleClass="w-10 h-10 bg-purple-100 rounded-full" />-->
+                <StackPane prefHeight="40.0" prefWidth="40.0">
+                    <Circle fill="#EDE9FE" radius="24.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0"/>
+                    <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                        <Image url="/assets/sparkle.png"/>
+                    </ImageView>
+                </StackPane>
+                <VBox styleClass="gap-1" alignment="CENTER_LEFT">
+                    <Label fx:id="optimizeStatus" styleClass="font-medium text-base text-gray-900">Analysing...</Label>
+                    <TextFlow fx:id="potentialSaving" lineSpacing="2" visible="false" managed="false">
+                        <Text fx:id="potentialSavingLabel" styleClass="text-xs text-gray-600">
+                            Found potential monthly savings of $350
+                        </Text>
+                    </TextFlow>
+                </VBox>
+            </HBox>
+            <ProgressBar styleClass="pt-3 purple-bar bg-gray-100 rounded-full" fx:id="healthScoreBar" maxWidth="Infinity"/>
+            <Label fx:id="healthScore" styleClass="text-xs text-purple-700 break-words pt-3" visible="false" managed="false">
+                Budget health score: 65/100
+            </Label>
+        </VBox>
+        <Label fx:id="recommendationLabel" styleClass="font-medium text-base text-gray-700" visible="false" managed="false">Smart Recommendations</Label>
+        <VBox fx:id="recommendations" styleClass="gap-6 pb-6">
+            <!-- Recommendations will be dynamically added here -->
+        </VBox>
+    </VBox>
 
 </VBox>
