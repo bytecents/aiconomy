@@ -14,6 +14,7 @@ import com.se.aiconomy.server.storage.service.JSONStorageService;
 import com.se.aiconomy.server.storage.service.impl.JSONStorageServiceImpl;
 
 import java.time.Month;
+import java.util.LinkedHashMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -67,38 +68,36 @@ public class DashboardRequestHandler {
     }
 
     /**
-     * 获取用户的预算分类的支出/预算比例
+     * 获取用户的预算分类的支出/预算比例，并按比例降序排序
      * @param userId 用户 ID
-     * @return 一个包含Food, Shopping, Transportation三个类别的支出/预算比例的 Map
+     * @return 一个包含所有预算类别的支出/预算比例的 Map，按比例降序排序
      * @throws ServiceException 如果处理过程中发生错误
      */
     public Map<String, Double> getBudgetSpendingRatio(String userId) throws ServiceException {
         // 获取与用户相关的所有预算
         List<Budget> budgets = budgetService.getBudgetsByUserId(userId);
 
-        // 初始化用于存储比例的 Map
+        // 计算每个预算类别的支出/预算比例
         Map<String, Double> spendingRatios = new HashMap<>();
-
-        // 定义要处理的预算类别
-        String[] categories = {"Food", "Shopping", "Transportation"};
-
-        // 遍历这些类别
-        for (String category : categories) {
-            // 获取每个类别的总预算和总支出
+        for (Budget budget : budgets) {
+            String category = budget.getBudgetCategory();
             double totalBudget = budgetService.getTotalBudgetByCategory(userId, category);
             double totalSpent = budgetService.getTotalSpentByCategory(userId, category);
 
-            // 防止除以0，避免出现除数为0的情况
-            if (totalBudget != 0) {
-                // 计算并存储支出/预算比例
-                double spendingRatio = totalSpent / totalBudget;
-                spendingRatios.put(category, spendingRatio);
-            } else {
-                spendingRatios.put(category, 0.0);  // 如果预算为0，比例为0
-            }
+            // 防止除以0
+            double spendingRatio = (totalBudget != 0) ? totalSpent / totalBudget : 0.0;
+            spendingRatios.put(category, spendingRatio);
         }
 
-        return spendingRatios;
+        // 按比例降序排序
+        return spendingRatios.entrySet().stream()
+                .sorted((e1, e2) -> Double.compare(e2.getValue(), e1.getValue())) // 降序排序
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        Map.Entry::getValue,
+                        (e1, e2) -> e1, // 合并函数（处理键冲突，保留第一个值）
+                        LinkedHashMap::new
+                ));
     }
 
     /**
