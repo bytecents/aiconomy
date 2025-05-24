@@ -6,6 +6,9 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.shape.Circle?>
 <?import java.lang.String?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.LineChart?>
 <VBox xmlns:fx="http://javafx.com/fxml/1"
       id="Content"
       xmlns="http://javafx.com/javafx/23.0.1"
@@ -142,7 +145,7 @@
             <HBox alignment="CENTER_LEFT" styleClass="gap-3">
                 <Label text="Spending Trends" styleClass="font-semibold text-base text-gray-900"/>
                 <Region HBox.hgrow="ALWAYS"/>
-                <ComboBox fx:id="trendSelect" styleClass="text-sm font-roboto">
+                <ComboBox fx:id="trendSelect" styleClass="text-sm font-roboto" >
                     <items>
                         <FXCollections fx:factory="observableArrayList">
                             <String fx:value="Last 7 Days"/>
@@ -154,7 +157,18 @@
 
             <!-- Chart Placeholder -->
             <StackPane styleClass="bg-gray-50 rounded-lg" VBox.vgrow="ALWAYS">
-                <Label text="Trend Chart Area" styleClass="text-gray-400"/>
+                <LineChart fx:id="spendingTrends"
+                           legendVisible="false"
+                           createSymbols="false"
+                           stylesheets="/css/chart.css"
+                >
+                    <xAxis>
+                        <CategoryAxis />
+                    </xAxis>
+                    <yAxis>
+                        <NumberAxis fx:id="yAxis" />
+                    </yAxis>
+                </LineChart>
             </StackPane>
         </VBox>
 
