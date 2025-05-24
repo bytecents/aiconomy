@@ -278,6 +278,8 @@
                     <!-- 按钮纵向排列 -->
                     <VBox spacing="10" alignment="CENTER">
                         <Button text="Log Out"
+                                fx:id="logoutButton"
+                                onAction="#logout"
                                 style="-fx-graphic-text-gap: 8px; -fx-cursor: hand;"
                                 styleClass="bg-red-100 text-red-500"
                                 maxWidth="350">
