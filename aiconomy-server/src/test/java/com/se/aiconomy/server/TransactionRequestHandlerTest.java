@@ -9,9 +9,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -25,7 +22,7 @@ class TransactionRequestHandlerTest {
 
     @BeforeEach
     void setUp() {
-        // 初始化 TransactionServiceImpl（无参构造函数）
+        // 初始化 TransactionServiceImpl
         transactionService = new TransactionServiceImpl();
         // 初始化 TransactionRequestHandler
         transactionRequestHandler = new TransactionRequestHandler(transactionService);
@@ -33,7 +30,6 @@ class TransactionRequestHandlerTest {
 
     @Test
     void testHandleAddTransactionManually_ValidInput() throws ServiceException {
-        // 准备输入，类似 createTestTransaction
         String userId = TEST_USER;
         String incomeOrExpense = "支出";
         String amount = "5999.00";
@@ -59,34 +55,5 @@ class TransactionRequestHandlerTest {
         assertEquals(type, result.getType(), "交易类型应匹配");
         assertEquals(accountId, result.getAccountId(), "账户 ID 应匹配");
         assertEquals(remark, result.getRemark(), "备注应匹配");
-    }
-}
-
-// 临时内存实现的 TransactionDao
-class InMemoryTransactionDao implements TransactionDao {
-    private final List<TransactionDto> transactions = new ArrayList<>();
-
-    @Override
-    public TransactionDto create(TransactionDto transaction) {
-        transactions.add(transaction);
-        return transaction;
-    }
-
-    @Override
-    public List<TransactionDto> findAll() {
-        return new ArrayList<>(transactions);
-    }
-
-    public static InMemoryTransactionDao getInstance() {
-        return new InMemoryTransactionDao();
-    }
-}
-
-// TransactionDao 接口
-interface TransactionDao {
-    TransactionDto create(TransactionDto transaction);
-    List<TransactionDto> findAll();
-    static TransactionDao getInstance() {
-        return InMemoryTransactionDao.getInstance();
     }
 }
