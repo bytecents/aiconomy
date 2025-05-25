@@ -1,29 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.layout.Region?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.control.Hyperlink?>
-<?import javafx.scene.control.ComboBox?>
 <?import javafx.collections.FXCollections?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.shape.Circle?>
 <?import java.lang.String?>
-<?import javafx.scene.chart.NumberAxis?>
-<?import javafx.scene.chart.CategoryAxis?>
-<?import javafx.scene.chart.LineChart?>
-<?import java.lang.String?>
-<?import javafx.scene.chart.NumberAxis?>
-<?import javafx.scene.chart.CategoryAxis?>
-<?import javafx.scene.chart.LineChart?>
 <VBox xmlns:fx="http://javafx.com/fxml/1"
       id="Content"
       xmlns="http://javafx.com/javafx/23.0.1"
@@ -51,28 +36,28 @@
         <VBox styleClass="card p-6" GridPane.columnIndex="0">
             <Label text="Net Worth" styleClass="text-sm text-gray-500 pb-2 font-roboto"/>
             <Label fx:id="netWorth" text="\$125,380.50" styleClass="text-2xl font-bold text-gray-900 pb-2"/>
-            <Label text="↑2.5% this month" styleClass="text-sm text-green-500 font-roboto"/>
+            <!--            <Label text="↑2.5% this month" styleClass="text-sm text-green-500 font-roboto"/>-->
         </VBox>
 
         <!-- Card 2 -->
         <VBox styleClass="card p-6" GridPane.columnIndex="1">
             <Label text="Monthly Spending" styleClass="text-sm text-gray-500 pb-2 font-roboto"/>
             <Label fx:id="monthlySpending" text="\$3,240.50" styleClass="text-2xl font-bold text-gray-900 pb-2"/>
-            <Label text="Budget left $1,759.50" styleClass="text-sm text-gray-500 font-roboto"/>
+            <!--            <Label text="Budget left $1,759.50" styleClass="text-sm text-gray-500 font-roboto"/>-->
         </VBox>
 
         <!-- Card 3 -->
         <VBox styleClass="card p-6" GridPane.columnIndex="2">
             <Label text="Monthly Income" styleClass="text-sm text-gray-500 pb-2 font-roboto"/>
             <Label fx:id="monthlyIncome" text="\$8,650.00" styleClass="text-2xl font-bold text-gray-900 pb-2"/>
-            <Label text="↑8% vs last month" styleClass="text-sm text-green-500 font-roboto"/>
+            <!--            <Label text="↑8% vs last month" styleClass="text-sm text-green-500 font-roboto"/>-->
         </VBox>
 
         <!-- Card 4 -->
         <VBox styleClass="card p-6" GridPane.columnIndex="3">
             <Label text="Credit Card Due" styleClass="text-sm text-gray-500 pb-2 font-roboto"/>
             <Label fx:id="creditCardDue" text="\$15,000.00" styleClass="text-2xl font-bold text-red-500 pb-2"/>
-            <Label text="Due on 25th" styleClass="text-sm text-gray-500 font-roboto"/>
+            <!--            <Label text="Due on 25th" styleClass="text-sm text-gray-500 font-roboto"/>-->
         </VBox>
     </GridPane>
 
@@ -96,23 +81,25 @@
             </HBox>
 
             <!-- Transaction List -->
-            <VBox styleClass="gap-3">
+            <VBox fx:id="transactionListVBox" styleClass="gap-3">
                 <!-- Transaction Item 1 -->
-                <HBox alignment="CENTER_LEFT" styleClass="p-3 gap-3 hover-bg-gray-50 rounded-lg cursor-pointer">
+                <HBox fx:id="transactionItem1" alignment="CENTER_LEFT"
+                      styleClass="p-3 gap-3 hover-bg-gray-50 rounded-lg cursor-pointer">
                     <!-- Left side -->
                     <HBox alignment="CENTER_LEFT" styleClass="gap-3">
                         <!-- Icon -->
                         <StackPane prefHeight="50.0" prefWidth="50.0">
                             <Circle fill="#fee2e2" radius="24.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0"/>
                             <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                                <Image url="@../assets/out_FoodDining.png"/>
+                                <Image url="@../assets/transactions.png"/>
                             </ImageView>
                         </StackPane>
                         <!-- Text -->
                         <VBox styleClass="gap-0_5">
 
-                            <Label text="Starbucks" styleClass="font-medium text-base"/>
-                            <Label text="Food &amp; Dining" styleClass="text-sm text-gray-500 font-roboto"/>
+                            <Label fx:id="transactionTitle1" text="Starbucks" styleClass="font-medium text-base"/>
+                            <Label fx:id="transactionCategory1" text="Food &amp; Dining"
+                                   styleClass="text-sm text-gray-500 font-roboto"/>
                         </VBox>
                     </HBox>
 
@@ -120,26 +107,29 @@
 
                     <!-- Right side -->
                     <VBox alignment="CENTER_RIGHT" styleClass="gap-0_5">
-                        <Label text="-$32.00" styleClass="font-medium text-red-500 text-base"/>
-                        <Label text="10:30 AM" styleClass="text-sm text-gray-500 font-roboto"/>
+                        <Label fx:id="transactionAmount1" text="-$32.00"
+                               styleClass="font-medium text-red-500 text-base"/>
+                        <Label fx:id="transactionTime1" text="10:30 AM" styleClass="text-sm text-gray-500 font-roboto"/>
                     </VBox>
                 </HBox>
 
                 <!-- Transaction Item 2 -->
-                <HBox alignment="CENTER_LEFT" styleClass="p-3 gap-3 hover-bg-gray-50 rounded-lg cursor-pointer">
+                <HBox fx:id="transactionItem2" alignment="CENTER_LEFT"
+                      styleClass="p-3 gap-3 hover-bg-gray-50 rounded-lg cursor-pointer">
                     <!-- Left side -->
                     <HBox alignment="CENTER_LEFT" styleClass="gap-3">
                         <!-- Icon -->
                         <StackPane prefHeight="50.0" prefWidth="50.0">
                             <Circle fill="#dcfce7" radius="24.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0"/>
                             <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                                <Image url="@../assets/income.png"/>
+                                <Image url="@../assets/transactions.png"/>
                             </ImageView>
                         </StackPane>
                         <!-- Text -->
                         <VBox styleClass="gap-0_5">
-                            <Label text="Salary Deposit" styleClass="font-medium text-base"/>
-                            <Label text="Income" styleClass="text-sm text-gray-500 font-roboto"/>
+                            <Label fx:id="transactionTitle2" text="Salary Deposit" styleClass="font-medium text-base"/>
+                            <Label fx:id="transactionCategory2" text="Income"
+                                   styleClass="text-sm text-gray-500 font-roboto"/>
                         </VBox>
                     </HBox>
 
@@ -147,8 +137,10 @@
 
                     <!-- Right side -->
                     <VBox alignment="CENTER_RIGHT" styleClass="gap-0_5">
-                        <Label text="+$8,650.00" styleClass="font-medium text-green-500 text-base"/>
-                        <Label text="Yesterday" styleClass="text-sm text-gray-500 font-roboto"/>
+                        <Label fx:id="transactionAmount2" text="+$8,650.00"
+                               styleClass="font-medium text-green-500 text-base"/>
+                        <Label fx:id="transactionTime2" text="Yesterday"
+                               styleClass="text-sm text-gray-500 font-roboto"/>
                     </VBox>
                 </HBox>
 
@@ -178,10 +170,10 @@
                            stylesheets="/css/chart.css"
                 >
                     <xAxis>
-                        <CategoryAxis />
+                        <CategoryAxis/>
                     </xAxis>
                     <yAxis>
-                        <NumberAxis fx:id="yAxis" />
+                        <NumberAxis fx:id="yAxis"/>
                     </yAxis>
                 </LineChart>
             </StackPane>
@@ -196,7 +188,7 @@
             </HBox>
 
             <!-- Budget Items -->
-            <VBox styleClass="gap-4">
+            <VBox fx:id="budgetProgressVBox" styleClass="gap-4">
                 <!-- Food & Dining -->
                 <VBox styleClass="gap-1_5">
                     <HBox alignment="CENTER_LEFT" styleClass="gap-3 text-sm font-roboto pb-2">
@@ -242,9 +234,10 @@
             </HBox>
 
             <!-- Accounts List -->
-            <VBox styleClass="gap-3">
+            <VBox fx:id="accountOverviewVBox" styleClass="gap-3">
                 <!-- Checking Account -->
-                <HBox alignment="CENTER_LEFT" styleClass="p-3 gap-3 hover-bg-gray-50 rounded-lg cursor-pointer">
+                <HBox fx:id="accountCard1" alignment="CENTER_LEFT"
+                      styleClass="p-3 gap-3 hover-bg-gray-50 rounded-lg cursor-pointer">
                     <!-- Left side -->
                     <HBox alignment="CENTER_LEFT" styleClass="gap-3">
                         <StackPane prefHeight="50.0" prefWidth="50.0">
@@ -266,7 +259,8 @@
                 </HBox>
 
                 <!-- Savings Account -->
-                <HBox alignment="CENTER_LEFT" styleClass="p-3 gap-3 hover-bg-gray-50 rounded-lg cursor-pointer">
+                <HBox fx:id="accountCard2" alignment="CENTER_LEFT"
+                      styleClass="p-3 gap-3 hover-bg-gray-50 rounded-lg cursor-pointer">
                     <!-- Left side -->
                     <HBox alignment="CENTER_LEFT" styleClass="gap-3">
                         <StackPane prefHeight="50.0" prefWidth="50.0">

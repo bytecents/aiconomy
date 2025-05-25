@@ -13,22 +13,24 @@ import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
-import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
+import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.util.StringConverter;
 
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 
 public class DashboardController extends BaseController {
     private final DashboardRequestHandler dashBoardRequestHandler = new DashboardRequestHandler(
@@ -36,7 +38,12 @@ public class DashboardController extends BaseController {
             new TransactionServiceImpl(),
             new BudgetServiceImpl(JSONStorageServiceImpl.getInstance())
     );
-
+    private final Label noTransactionLabel = new Label("You don’t seem to have any transactions yet.");
+    private final Hyperlink createTransactionLink = new Hyperlink("Create one");
+    private final Label noBudgetLabel = new Label("You don’t seem to have any budgets yet.");
+    private final Hyperlink createBudgetLink = new Hyperlink("Create one");
+    private final Label noAccountLabel = new Label("You don’t seem to have any accounts yet.");
+    private final Hyperlink createAccountLink = new Hyperlink("Create one");
     @FXML
     Button quickAddButton;
     @FXML
@@ -51,6 +58,30 @@ public class DashboardController extends BaseController {
     private Label monthlyIncome;
     @FXML
     private Label creditCardDue;
+    @FXML
+    private VBox transactionListVBox; // 包含 transactionItem1, item2 或提示内容的容器
+    @FXML
+    private HBox transactionItem1;
+    @FXML
+    private HBox transactionItem2;
+    @FXML
+    private Label transactionTitle1;
+    @FXML
+    private Label transactionCategory1;
+    @FXML
+    private Label transactionAmount1;
+    @FXML
+    private Label transactionTime1;
+    @FXML
+    private Label transactionTitle2;
+    @FXML
+    private Label transactionCategory2;
+    @FXML
+    private Label transactionAmount2;
+    @FXML
+    private Label transactionTime2;
+    @FXML
+    private VBox budgetProgressVBox;
     @FXML
     private Label budgetProgressCategoryLabel1;
     @FXML
@@ -69,6 +100,12 @@ public class DashboardController extends BaseController {
     private Label budgetProgressCategoryRate3;
     @FXML
     private ProgressBar budgetProgressProgressBar3;
+    @FXML
+    private VBox accountOverviewVBox;
+    @FXML
+    private HBox accountCard1;
+    @FXML
+    private HBox accountCard2;
     @FXML
     private Label accountBankName1;
     @FXML
@@ -108,6 +145,28 @@ public class DashboardController extends BaseController {
     private void init() {
         welcomeTextField.setText("Welcome back, " + userInfo.getFirstName() + "!");
         setDate();
+        createTransactionLink.setOnAction(event -> {
+            try {
+                goToTransaction(event);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+
+        createBudgetLink.setOnAction(event -> {
+            try {
+                goToBudget(event);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+        createAccountLink.setOnAction(event -> {
+            try {
+                goToAccount(event);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
         try {
             setDashboardBasicData();
             setDashBoardTransactionData();
@@ -117,6 +176,98 @@ public class DashboardController extends BaseController {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    /**
+     * Sets the current date in the date label.
+     */
+    private void setDate() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEEE, MMMM d, yyyy", Locale.ENGLISH);
+        String today = LocalDate.now().format(formatter);
+        dateTextField.setText(today);
+    }
+
+    /**
+     * Loads and displays basic dashboard data such as net worth, spending, income, and credit card due.
+     *
+     * @throws ServiceException if data retrieval fails
+     */
+    private void setDashboardBasicData() throws ServiceException {
+        DashboardRequestHandler.DashboardData dashboardData = dashBoardRequestHandler.getDashboardData(userInfo.getId(), LocalDate.now().getMonth());
+        System.out.println("dashboardData: " + dashboardData);
+        netWorth.setText("$ " + dashboardData.getNetWorth());
+        monthlySpending.setText("$ " + dashboardData.getMonthlySpending());
+        monthlyIncome.setText("$ " + dashboardData.getMonthlyIncome());
+        creditCardDue.setText("$ " + dashboardData.getCreditCardDue());
+    }
+
+    /**
+     * Loads and displays recent transaction data.
+     *
+     * @throws ServiceException if data retrieval fails
+     */
+    private void setDashBoardTransactionData() throws ServiceException {
+        List<TransactionDto> transactions = new ArrayList<>();
+
+        try {
+            TransactionService transactionService = new TransactionServiceImpl();
+            transactions = transactionService.getTransactionsByUserId(userInfo.getId());
+
+        } catch (ServiceException e) {
+            if (e.getMessage() != null && e.getMessage().contains("No transactions found for user ID")) {
+                transactions = new ArrayList<>();
+            } else {
+                System.out.println(e.getMessage());
+                return;
+            }
+        } finally {
+            transactionListVBox.getChildren().clear();
+            if (transactions.isEmpty()) {
+                VBox emptyBox = new VBox(5, noTransactionLabel, createTransactionLink);
+                emptyBox.setAlignment(Pos.CENTER_LEFT);
+                transactionListVBox.getChildren().add(emptyBox);
+                return;
+            }
+
+            HBox[] items = {transactionItem1, transactionItem2};
+            Label[][] labels = {
+                    {transactionTitle1, transactionCategory1, transactionAmount1, transactionTime1},
+                    {transactionTitle2, transactionCategory2, transactionAmount2, transactionTime2}
+            };
+
+            int index = 0;
+            for (TransactionDto tx : transactions) {
+                if (index >= 2) break;
+
+                String title = tx.getProduct();
+                String category = tx.getBillType().getDisplayName();
+                String time = formatTime(tx.getTime());
+                String amount = (tx.getIncomeOrExpense().equalsIgnoreCase("Income") ? "+" : "-") + "$" + tx.getAmount();
+                String amountStyle = tx.getIncomeOrExpense().equalsIgnoreCase("Income") ? "text-green-500" : "text-red-500";
+
+                labels[index][0].setText(title);
+                labels[index][1].setText(category);
+                labels[index][2].setText(amount);
+                labels[index][2].getStyleClass().setAll("font-medium", amountStyle, "text-base");
+                labels[index][3].setText(time);
+
+                items[index].setVisible(true);
+                transactionListVBox.getChildren().add(items[index]); // 重新添加可见项
+                index++;
+            }
+
+            for (int i = index; i < 2; i++) {
+                items[i].setVisible(false);
+            }
+        }
+    }
+
+    /**
+     * Loads and displays spending trends data.
+     *
+     * @throws ServiceException if data retrieval fails
+     */
+    private void setDashboardSpendTrendsData() {
         spendingTrends.setLegendVisible(false);
 
         yAxis.setTickLabelFormatter(new StringConverter<Number>() {
@@ -145,112 +296,127 @@ public class DashboardController extends BaseController {
     }
 
     /**
-     * Sets the current date in the date label.
-     */
-    private void setDate() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEEE, MMMM d, yyyy", Locale.ENGLISH);
-        String today = LocalDate.now().format(formatter);
-        dateTextField.setText(today);
-    }
-
-    /**
-     * Loads and displays basic dashboard data such as net worth, spending, income, and credit card due.
-     * @throws ServiceException if data retrieval fails
-     */
-    private void setDashboardBasicData() throws ServiceException {
-        DashboardRequestHandler.DashboardData dashboardData = dashBoardRequestHandler.getDashboardData(userInfo.getId(), LocalDate.now().getMonth());
-        System.out.println("dashboardData: " + dashboardData);
-        netWorth.setText("$ " + dashboardData.getNetWorth());
-        monthlySpending.setText("$ " + dashboardData.getMonthlySpending());
-        monthlyIncome.setText("$ " + dashboardData.getMonthlyIncome());
-        creditCardDue.setText("$ " + dashboardData.getCreditCardDue());
-    }
-
-    /**
-     * Loads and displays recent transaction data.
-     * @throws ServiceException if data retrieval fails
-     */
-    private void setDashBoardTransactionData() throws ServiceException {
-        TransactionService transactionService = new TransactionServiceImpl();
-        List<TransactionDto> transactionInfo = transactionService.getTransactionsByUserId(userInfo.getId());
-        System.out.println(transactionInfo);
-    }
-
-    /**
-     * Loads and displays spending trends data.
-     * @throws ServiceException if data retrieval fails
-     */
-    private void setDashboardSpendTrendsData() throws ServiceException {
-        // TODO: Implement actual data loading for spending trends
-    }
-
-    /**
      * Loads and displays budget progress for up to three categories.
+     *
      * @throws ServiceException if data retrieval fails
      */
-    private void setDashBoardBudgetsData() throws ServiceException {
-        Map<String, Double> budgetSpendingRatio = dashBoardRequestHandler.getBudgetSpendingRatio(userInfo.getId());
-        int count = 0;
-        for (Map.Entry<String, Double> categoryInfo : budgetSpendingRatio.entrySet()) {
-            if (count == 3) break;
-            String category = categoryInfo.getKey();
-            double ratio = categoryInfo.getValue();
-            switch (count) {
-                case 0: {
-                    budgetProgressCategoryLabel1.setText(category);
-                    adjustRatioText(budgetProgressCategoryRate1, ratio);
-                    adjustProgressBar(budgetProgressProgressBar1, ratio);
-                    break;
-                }
-                case 1: {
-                    budgetProgressCategoryLabel2.setText(category);
-                    adjustRatioText(budgetProgressCategoryRate2, ratio);
-                    adjustProgressBar(budgetProgressProgressBar2, ratio);
-                    break;
-                }
-                case 2: {
-                    budgetProgressCategoryLabel3.setText(category);
-                    adjustRatioText(budgetProgressCategoryRate3, ratio);
-                    adjustProgressBar(budgetProgressProgressBar3, ratio);
-                    break;
-                }
+
+    private void setDashBoardBudgetsData() {
+        Map<String, Double> budgetSpendingRatio;
+
+        try {
+            budgetSpendingRatio = dashBoardRequestHandler.getBudgetSpendingRatio(userInfo.getId());
+        } catch (ServiceException e) {
+            if (e.getMessage() != null && e.getMessage().contains("No budgets found")) {
+                budgetSpendingRatio = new HashMap<>();
+            } else {
+                System.out.println(e.getMessage());
+                return;
             }
-            count++;
+        }
+        Label[] labels = {
+                budgetProgressCategoryLabel1,
+                budgetProgressCategoryLabel2,
+                budgetProgressCategoryLabel3
+        };
+        Label[] rates = {
+                budgetProgressCategoryRate1,
+                budgetProgressCategoryRate2,
+                budgetProgressCategoryRate3
+        };
+        ProgressBar[] bars = {
+                budgetProgressProgressBar1,
+                budgetProgressProgressBar2,
+                budgetProgressProgressBar3
+        };
+
+        if (budgetSpendingRatio.isEmpty()) {
+            budgetProgressVBox.getChildren().clear();
+
+            VBox emptyBox = new VBox(5, noBudgetLabel, createBudgetLink);
+            emptyBox.setAlignment(Pos.CENTER_LEFT);
+            budgetProgressVBox.getChildren().add(emptyBox);
+            return;
+        }
+
+        int index = 0;
+        for (Map.Entry<String, Double> entry : budgetSpendingRatio.entrySet()) {
+            if (index >= 3) break;
+
+            labels[index].setText(entry.getKey());
+            adjustRatioText(rates[index], entry.getValue());
+            adjustProgressBar(bars[index], entry.getValue());
+
+            labels[index].setVisible(true);
+            rates[index].setVisible(true);
+            bars[index].setVisible(true);
+            index++;
+        }
+
+        // 隐藏未使用的项
+        for (int i = index; i < 3; i++) {
+            labels[i].setVisible(false);
+            rates[i].setVisible(false);
+            bars[i].setVisible(false);
         }
     }
 
     /**
      * Loads and displays account overview for up to two accounts.
+     *
      * @throws ServiceException if data retrieval fails
      */
-    private void setDashboardAccountOverviewData() throws ServiceException {
-        List<Account> userAccount = dashBoardRequestHandler.getAccountsForUser(userInfo.getId());
-        int count = 0;
-        for (Account account : userAccount) {
-            if (count == 2) break;
-            String accountBankName = account.getBankName();
-            String accountType = account.getAccountType();
-            double accountBalance = account.getBalance();
-            switch (count) {
-                case 0: {
-                    accountBankName1.setText(accountBankName);
-                    accountType1.setText(accountType);
-                    accountBalance1.setText("$ " + accountBalance);
-                    break;
-                }
-                case 1: {
-                    accountBankName2.setText(accountBankName);
-                    accountType2.setText(accountType);
-                    accountBalance2.setText("$ " + accountBalance);
-                    break;
-                }
+    private void setDashboardAccountOverviewData() {
+        List<Account> userAccount = new ArrayList<>();
+
+        try {
+            userAccount = dashBoardRequestHandler.getAccountsForUser(userInfo.getId());
+        } catch (ServiceException e) {
+            if (e.getMessage() != null && e.getMessage().contains("No accounts found for user ID")) {
+                userAccount = new ArrayList<>(); // 用空列表继续流程
+            } else {
+                System.out.println(e.getMessage());
+                return;
             }
-            count++;
+        } finally {
+            accountOverviewVBox.getChildren().clear(); // 清空所有旧数据
+
+            if (userAccount.isEmpty()) {
+                VBox emptyBox = new VBox(5, noAccountLabel, createAccountLink);
+                emptyBox.setAlignment(Pos.CENTER_LEFT);
+                accountOverviewVBox.getChildren().add(emptyBox);
+                return;
+            }
+
+            Label[] bankNames = {accountBankName1, accountBankName2};
+            Label[] types = {accountType1, accountType2};
+            Label[] balances = {accountBalance1, accountBalance2};
+            HBox[] cards = {accountCard1, accountCard2}; // 每个账户卡片（外层 HBox）
+
+            int count = 0;
+            for (Account account : userAccount) {
+                if (count >= 2) break;
+
+                bankNames[count].setText(account.getBankName());
+                types[count].setText(account.getAccountType());
+                balances[count].setText("$ " + account.getBalance());
+
+                cards[count].setVisible(true);
+                accountOverviewVBox.getChildren().add(cards[count]);
+
+                count++;
+            }
+
+            // 隐藏多余账户卡
+            for (int i = count; i < 2; i++) {
+                cards[i].setVisible(false);
+            }
         }
     }
 
     /**
      * Adjusts the style and text of a label based on the budget ratio.
+     *
      * @param label the label to update
      * @param ratio the budget ratio
      */
@@ -282,8 +448,9 @@ public class DashboardController extends BaseController {
 
     /**
      * Adjusts the style and progress of a progress bar based on the budget ratio.
+     *
      * @param progressBar the progress bar to update
-     * @param ratio the budget ratio
+     * @param ratio       the budget ratio
      */
     private void adjustProgressBar(ProgressBar progressBar, double ratio) {
         if (progressBar != null) {
@@ -316,6 +483,7 @@ public class DashboardController extends BaseController {
 
     /**
      * Handles the quick add button action, navigating to the transaction page.
+     *
      * @param actionEvent the action event
      * @throws IOException if navigation fails
      */
@@ -326,6 +494,7 @@ public class DashboardController extends BaseController {
 
     /**
      * Navigates to the transactions page.
+     *
      * @param actionEvent the action event
      * @throws IOException if navigation fails
      */
@@ -335,6 +504,7 @@ public class DashboardController extends BaseController {
 
     /**
      * Navigates to the budgets page.
+     *
      * @param actionEvent the action event
      * @throws IOException if navigation fails
      */
@@ -344,6 +514,7 @@ public class DashboardController extends BaseController {
 
     /**
      * Navigates to the accounts page.
+     *
      * @param actionEvent the action event
      * @throws IOException if navigation fails
      */
@@ -353,6 +524,7 @@ public class DashboardController extends BaseController {
 
     /**
      * Navigates to the settings page.
+     *
      * @param actionEvent the action event
      * @throws IOException if navigation fails
      */
@@ -362,10 +534,21 @@ public class DashboardController extends BaseController {
 
     /**
      * Navigates to the analytics page.
+     *
      * @param actionEvent the action event
      * @throws IOException if navigation fails
      */
     public void goToAnalytics(ActionEvent actionEvent) throws IOException {
         mainController.switchToAnalytics();
+    }
+
+    /**
+     * reformat the date
+     *
+     * @param time time to be formatted to "yyyy-MM-dd".
+     * @return formatted date
+     */
+    private String formatTime(LocalDateTime time) {
+        return time.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
     }
 }
