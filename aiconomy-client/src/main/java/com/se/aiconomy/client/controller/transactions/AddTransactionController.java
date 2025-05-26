@@ -23,7 +23,10 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.ResourceBundle;
 import java.util.function.UnaryOperator;
 
 /**
@@ -33,70 +36,116 @@ import java.util.function.UnaryOperator;
 @Setter
 public class AddTransactionController extends BaseController implements Initializable {
 
-    /** VBox for Food & Dining category. */
+    /**
+     * VBox for Food & Dining category.
+     */
     @FXML
     private VBox category1;
-    /** VBox for Transportation category. */
+    /**
+     * VBox for Transportation category.
+     */
     @FXML
     private VBox category2;
-    /** VBox for Shopping category. */
+    /**
+     * VBox for Shopping category.
+     */
     @FXML
     private VBox category3;
-    /** VBox for Housing category. */
+    /**
+     * VBox for Housing category.
+     */
     @FXML
     private VBox category4;
-    /** VBox for Education category. */
+    /**
+     * VBox for Education category.
+     */
     @FXML
     private VBox category5;
-    /** VBox for Travel category. */
+    /**
+     * VBox for Travel category.
+     */
     @FXML
     private VBox category6;
-    /** VBox for Gifts category. */
+    /**
+     * VBox for Gifts category.
+     */
     @FXML
     private VBox category7;
-    /** VBox for Groceries category. */
+    /**
+     * VBox for Groceries category.
+     */
     @FXML
     private VBox category8;
-    /** Map of category names to their corresponding VBox. */
+    /**
+     * Map of category names to their corresponding VBox.
+     */
     @FXML
     private Map<String, VBox> categoryList = new java.util.HashMap<>();
 
-    /** Panel containing all categories. */
+    /**
+     * Panel containing all categories.
+     */
     @FXML
     private VBox categoryPanel;
-    /** ComboBox for selecting an account. */
+    /**
+     * ComboBox for selecting an account.
+     */
     @FXML
     private ComboBox<String> accountComboBox;
-    /** TextField for transaction description. */
+    /**
+     * TextField for transaction description.
+     */
     @FXML
     private TextField descriptionInput;
-    /** DatePicker for selecting the transaction date. */
+    /**
+     * DatePicker for selecting the transaction date.
+     */
     @FXML
     private DatePicker datePicker;
-    /** TextField for entering the transaction amount. */
+    /**
+     * TextField for entering the transaction amount.
+     */
     @FXML
     private TextField amountInput;
-    /** Button to select income type. */
+    /**
+     * Button to select income type.
+     */
     @FXML
     private Button incomeBtn;
-    /** Button to select expense type. */
+    /**
+     * Button to select expense type.
+     */
     @FXML
     private Button expenseBtn;
-    /** Root pane for dialogs and overlays. */
+    /**
+     * Root pane for dialogs and overlays.
+     */
     @FXML
     private StackPane rootPane;
 
-    /** Handler for account-related requests. */
+    /**
+     * Handler for account-related requests.
+     */
     private AccountRequestHandler accountHandler = new AccountRequestHandler();
-    /** Handler for transaction-related requests. */
+    /**
+     * Handler for transaction-related requests.
+     */
     private TransactionRequestHandler handler = new TransactionRequestHandler();
-    /** Flag indicating if the transaction is an expense. */
+    /**
+     * Flag indicating if the transaction is an expense.
+     */
     private boolean isExpense = true;
-    /** The currently chosen category. */
+    /**
+     * The currently chosen category.
+     */
     private String chosenCategory;
-    /** Reference to the parent controller. */
+    /**
+     * Reference to the parent controller.
+     */
     private BaseController parentController;
-    /** Listener for close events. */
+    /**
+     * Listener for close events.
+     */
     private AddTransactionController.OnCloseListener closeListener;
 
     /**
@@ -244,7 +293,7 @@ public class AddTransactionController extends BaseController implements Initiali
     }
 
     /**
-     * Handles click event for Food & Dining category.
+     * Handles click event for Food &amp; Dining category.
      *
      * @param mouseEvent the mouse event
      */
