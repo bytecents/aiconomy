@@ -8,72 +8,36 @@ AIconomy 是一个金融管理应用程序，通过直观的用户界面提供�
 项目由三个主要模块组成：
 
 ```
-.
-├── README.cn.md                             # 中文文档
-├── README.md                                # 英文文档
-├── aiconomy-client/                         # 客户端模块
-│   ├── pom.xml                              # 客户端模块 Maven 配置
-│   └── src/
-│       ├── main/
-│       │   ├── java/
-│       │   │   └── com/se/aiconomy/client/
-│       │   │       ├── Application/         # 应用程序入口和配置
-│       │   │       ├── common/              # 公共工具和辅助类
-│       │   │       │   └── utils/           # 工具类（如 CSV 处理）
-│       │   │       ├── controller/          # JavaFX 控制器，处理 UI 交互
-│       │   │       ├── model/               # 数据模型
-│       │   │       │   └── dto/             # 数据传输对象
-│       │   │       └── service/             # 客户端业务逻辑服务
-│       │   └── resources/
-│       │       ├── assets/                  # 静态资源（图片）
-│       │       ├── fxml/                    # JavaFX 布局文件
-│       │       └── log4j2.xml               # 日志配置
-│       └── test/                            # 测试目录
+├── README.md                    # 项目文档（英文版）
+├── README.cn.md                 # 项目文档（中文版）
+├── aiconomy-client              # JavaFX 客户端应用程序
+│   ├── package.txt              # 依赖项清单 
+│   ├── pom.xml                  # Maven构建配置
+│   ├── src/main                 # 主源代码目录
+│   │   ├── java/com/se/aiconomy/client  # 客户端
+│   │   │   ├── Application      # 启动类
+│   │   │   ├── common           # 公共工具类
+│   │   │   └── controller       # UI控制器
+│   │   └── resources            # 客户端资源文件
+│   │       ├── assets           # 静态资源 
+│   │       ├── css              # 样式表
+│   │       └── fxml             # FXML界面布局文件 
 │
-├── aiconomy-langchain/                      # AI 功能模块
-│   ├── pom.xml                              # LangChain 模块 Maven 配置
-│   └── src/
-│       ├── main/
-│       │   ├── java/
-│       │   │   └── com/se/aiconomy/langchain/
-│       │   │       ├── AIServices/          # AI 服务实现
-│       │   │       │   └── classification/  # 分类服务
-│       │   │       ├── chains/              # AI 处理链
-│       │   │       │   └── chat/            # 聊天功能
-│       │   │       ├── common/              # 公共组件
-│       │   │       │   ├── chain/           # 基础链框架
-│       │   │       │   ├── config/          # 配置管理
-│       │   │       │   ├── model/           # 模型配置
-│       │   │       │   ├── prompt/          # 提示词模板
-│       │   │       │   └── utils/           # 工具类
-│       │   │       └── models/              # AI 模型定义
-│       │   └── resources/
-│       └── test/                            # 测试目录
-│           └── java/
-│               └── com/se/aiconomy/langchain/
-│                   ├── AIservices/          # AI 服务测试
-│                   ├── chain/               # 链处理测试
-│                   └── utils/               # 工具类测试
+├── aiconomy-server              # 服务端
+│   ├── pom.xml                  # Maven构建配置
+│   ├── src/main                 # 主源代码与资源目录
+│   │   ├── java/com/se/aiconomy/server  # 服务端代码库
+│   │   │   ├── common/utils     # 核心工具类（CSV/Excel/JSON/文件处理）
+│   │   │   ├── handler          # 请求处理器
+│   │   │   └── model            # 数据模型（DTO/实体类）
+│   │   └── resources/data       # JSON数据存储目录
 │
-├── aiconomy-server/                         # 服务器模块
-│   ├── pom.xml                              # 服务器模块 Maven 配置
-│   └── src/
-│       ├── main/
-│       │   └── java/
-│       │       └── com/se/aiconomy/server/
-│       │           ├── common/              # 公共组件
-│       │           │   ├── config/          # 服务器配置
-│       │           │   ├── exception/       # 异常处理
-│       │           │   └── utils/           # 工具类
-│       │           ├── dao/                 # 数据访问对象
-│       │           ├── handler/             # 请求处理器
-│       │           ├── model/               # 数据模型
-│       │           │   ├── dto/             # 数据传输对象
-│       │           │   └── entity/          # 数据库实体
-│       │           └── service/             # 业务逻辑服务
-│       └── test/                            # 测试目录
+├── data                         # 持久化数据存储目录
+│   ├── BankAccounts.json        # 银行账户记录
+│   ├── Budgets.json             # 预算配置
+│   └── transactions.json        # 交易历史记录
 │
-└── pom.xml                                  # 根 Maven 配置文件
+└── pom.xml                      # Maven父项目管理配置
 ```
 
 ## 开发指南
@@ -118,12 +82,17 @@ mvn javafx:run
 
 - **Application**: 包含主应用程序类（`AIconomyApplication.java`）
 - **Controllers**: 处理用户界面逻辑
-    - `AccountsController.java`
-    - `AnalyticsController.java`
-    - `BudgetsController.java`
-    - `DashboardController.java`
-    - `SettingsController.java`
-    - `TransactionsController.java`
+  - `AccountsController`
+  - `AnalyticsController`
+  - `BaseController`
+  - `BudgetsController`
+  - `DashboardController`
+  - `LoginController`
+  - `SettingsController`
+  - `TransactionsController`
+  - `AIController`
+  - `SignupController`
+  - `SidebarController`
 - **Services**: 客户端业务逻辑
 - **Resources**: FXML 布局和资源文件
 
@@ -135,26 +104,21 @@ mvn javafx:run
 - **DAO**: 处理数据持久化
 - **Common**: 共享工具和配置
 
-#### 3.3 LangChain 模块 (aiconomy-langchain)
-
-- **AIServices**: AI 服务实现
-    - 分类服务
-    - 数据分析服务
-- **Chains**: 处理链实现
-- **Models**: AI 模型定义
-- **Common**: 共享配置和工具
-
 ### 4. UI 结构（客户端模块）
 
 客户端模块使用 JavaFX 和 FXML 定义 UI：
 
-- `main.fxml`: 主应用程序布局
-- `dashboard.fxml`: 仪表盘视图
-- `accounts.fxml`: 账户管理
-- `analytics.fxml`: 财务分析
-- `budgets.fxml`: 预算管理
-- `transactions.fxml`: 交易历史
-- `settings.fxml`: 应用程序设置
+- `Main`: 主应用程序布局
+- `Dashboard`: 仪表盘视图
+- `Accounts`: 账户管理
+- `Analytics`: 财务分析
+- `Budgets`: 预算管理
+- `Transactions`: 交易历史
+- `Settings`: 应用程序设置
+- `Signup`: 注册管理
+- `AI`: 智能分析
+- `Analytics`: 交易可视化
+- `Login`: 用户认证
 
 ### 5. 配置
 
@@ -162,7 +126,6 @@ mvn javafx:run
 
 - 客户端：`src/main/resources/log4j2.xml`
 - 服务器：`common/config` 中的配置文件
-- LangChain：`common/config` 中的 AI 模型配置
 
 ### 6. 测试
 
@@ -212,36 +175,42 @@ mvn javafx:run
 
 #### 前端开发
 - **胡诚成**
-    - 数据分析模块（含AI交互界面）
-    - 交易页面
-    - 与钟悠豪共同开发主页界面
+  - 数据分析模块（含AI交互界面）
+  - 交易页面
+  - 与钟悠豪共同开发主页界面
+  - 预算AI交互功能
 
 - **杨羽婕**
-    - 预算功能开发
-    - 预算页面
+  - 预算页面
+  - 账户页面
+  - 设置页面
 
 - **钟悠豪**
-    - 用户管理系统
-    - 与胡诚成共同开发主页界面
+  - 用户管理系统
+  - 与胡诚成共同开发主页界面
+  - 与杨羽婕共同开发账户页面
 
 #### 后端开发
 - **李诗予**
-    - 预算功能实现
-    - 与时珂熠共同开发账户系统
-    - 用户管理系统
+  - 预算功能实现
+  - 与时珂熠共同开发账户系统
+  - 用户管理系统
+  - 设置功能
 
 - **时珂熠**
-    - 交易处理系统
-    - 与李诗予共同开发账户系统
+  - 交易处理系统
+  - 与李诗予共同开发账户系统
+  - 主页面请求处理
 
 - **赵哲昀**
-    - 基于AI的交易处理
-    - 交易分类
+  - 基于AI的交易处理
+  - 交易分类
+  - 冲突处理
 
 #### 协作部分
-- **主页集成**: 胡诚成 & 钟悠豪 & 杨羽婕 (前端) ↔ 时珂熠 (后端)
+- **主页集成**: 胡诚成 & 钟悠豪 (前端) ↔ 时珂熠 (后端)
 - **AI技术对接**: 胡诚成 (前端) ↔ 赵哲昀 (后端AI)
 - **交易系统**: 胡诚成 (前端) ↔ 时珂熠 & 赵哲昀 (后端)
 - **预算系统**: 杨羽婕 & 钟悠豪 (前端) ↔ 李诗予 (后端)
-- **账户系统**: 钟悠豪 (前端) ↔ 时珂熠 & 李诗予 (后端)
-- **用户管理系统**: 钟悠豪 (前端) ↔ 李诗予 (后端)
+- **账户系统**: 钟悠豪 (前端) ↔ 时珂熠 & 李诗予 & 时珂熠 (后端)
+- **用户管理系统**: 钟悠豪 & 杨羽婕 (前端) ↔ 李诗予 (后端)

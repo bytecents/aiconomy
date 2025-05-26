@@ -15,72 +15,36 @@ microservices architecture with separate client, server, and AI modules, ensurin
 The project is organized into three main modules:
 
 ```
-.
-├── README.cn.md                             # Chinese documentation
-├── README.md                                # English documentation
-├── aiconomy-client/                         # Client module
-│   ├── pom.xml                              # Client module Maven configuration
-│   └── src/
-│       ├── main/
-│       │   ├── java/
-│       │   │   └── com/se/aiconomy/client/
-│       │   │       ├── Application/         # Application entry and configuration
-│       │   │       ├── common/              # Common utilities and helpers
-│       │   │       │   └── utils/           # Utility classes (e.g., CSV processing)
-│       │   │       ├── controller/          # JavaFX controllers for UI interaction
-│       │   │       ├── model/               # Data models
-│       │   │       │   └── dto/             # Data Transfer Objects
-│       │   │       └── service/             # Client business logic services
-│       │   └── resources/
-│       │       ├── assets/                  # Static resources (images)
-│       │       ├── fxml/                    # JavaFX layout files
-│       │       └── log4j2.xml               # Logging configuration
-│       └── test/                            # Test directory
+├── README.md                    # Project documentation (English)
+├── README.cn.md                 # Project documentation (Chinese)
+├── aiconomy-client              # JavaFX client application
+│   ├── package.txt              # Dependency list 
+│   ├── pom.xml                  # Maven build configuration
+│   ├── src/main                 # Main source
+│   │   ├── java/com/se/aiconomy/client  # Client service
+│   │   │   ├── Application      # startup classes
+│   │   │   ├── common           # Shared utilities
+│   │   │   └── controller       # UI controllers
+│   │   └── resources            # Client resources
+│   │       ├── assets           # Static assets 
+│   │       ├── css              # Stylesheets
+│   │       └── fxml             # FXML UI layouts 
 │
-├── aiconomy-langchain/                      # AI functionality module
-│   ├── pom.xml                              # LangChain module Maven configuration
-│   └── src/
-│       ├── main/
-│       │   ├── java/
-│       │   │   └── com/se/aiconomy/langchain/
-│       │   │       ├── AIServices/          # AI service implementations
-│       │   │       │   └── classification/  # Classification services
-│       │   │       ├── chains/              # AI processing chains
-│       │   │       │   └── chat/            # Chat functionality
-│       │   │       ├── common/              # Common components
-│       │   │       │   ├── chain/           # Base chain framework
-│       │   │       │   ├── config/          # Configuration management
-│       │   │       │   ├── model/           # Model configurations
-│       │   │       │   ├── prompt/          # Prompt templates
-│       │   │       │   └── utils/           # Utility classes
-│       │   │       └── models/              # AI model definitions
-│       │   └── resources/
-│       └── test/                            # Test directory
-│           └── java/
-│               └── com/se/aiconomy/langchain/
-│                   ├── AIservices/          # AI service tests
-│                   ├── chain/               # Chain processing tests
-│                   └── utils/               # Utility tests
+├── aiconomy-server              # Backend service
+│   ├── pom.xml                  # Maven build configuration
+│   ├── src/main                 # Main source/resources
+│   │   ├── java/com/se/aiconomy/server  # Server codebase
+│   │   │   ├── common/utils     # Core utilities (CSV/Excel/JSON/File)
+│   │   │   ├── handler          # Request handlers
+│   │   │   └── model            # Data models (DTOs/Entities)
+│   │   └── resources/data       # JSON data storage directory
 │
-├── aiconomy-server/                         # Server module
-│   ├── pom.xml                              # Server module Maven configuration
-│   └── src/
-│       ├── main/
-│       │   └── java/
-│       │       └── com/se/aiconomy/server/
-│       │           ├── common/              # Common components
-│       │           │   ├── config/          # Server configurations
-│       │           │   ├── exception/       # Exception handling
-│       │           │   └── utils/           # Utility classes
-│       │           ├── dao/                 # Data Access Objects
-│       │           ├── handler/             # Request handlers
-│       │           ├── model/               # Data models
-│       │           │   ├── dto/             # Data Transfer Objects
-│       │           │   └── entity/          # Database entities
-│       │           └── service/             # Business logic services
-│       └── test/                            # Test directory
+├── data                         # Persistent data storage
+│   ├── BankAccounts.json        # Bank account records
+│   ├── Budgets.json             # Budget configurations
+│   └── transactions.json        # Transaction history
 │
-└── pom.xml                                  # Root Maven configuration file
+└── pom.xml                      # Maven configuration
 ```
 
 ## Development Guide
@@ -125,12 +89,17 @@ mvn javafx:run
 
 - **Application**: Contains the main application class (`AIconomyApplication.java`)
 - **Controllers**: Handle user interface logic
-    - `AccountsController.java`
-    - `AnalyticsController.java`
-    - `BudgetsController.java`
-    - `DashboardController.java`
-    - `SettingsController.java`
-    - `TransactionsController.java`
+  - `AccountsController`
+  - `AnalyticsController`
+  - `BaseController`
+  - `BudgetsController`
+  - `DashboardController`
+  - `LoginController`
+  - `SettingsController`
+  - `TransactionsController`
+  - `AIController`
+  - `SignupController`
+  - `SidebarController`
 - **Services**: Client-side business logic
 - **Resources**: FXML layouts and assets
 
@@ -142,26 +111,21 @@ mvn javafx:run
 - **DAO**: Handle data persistence
 - **Common**: Shared utilities and configurations
 
-#### 3.3 LangChain Module (aiconomy-langchain)
-
-- **AIServices**: AI service implementations
-    - Classification services
-    - Data analysis services
-- **Chains**: Processing chain implementations
-- **Models**: AI model definitions
-- **Common**: Shared configurations and utilities
-
 ### 4. UI Structure (Client Module)
 
 The client module uses JavaFX with FXML for UI definition:
 
-- `main.fxml`: Main application layout
-- `dashboard.fxml`: Dashboard view
-- `accounts.fxml`: Accounts management
-- `analytics.fxml`: Financial analytics
-- `budgets.fxml`: Budget management
-- `transactions.fxml`: Transaction history
-- `settings.fxml`: Application settings
+- `Main`: Main application layout
+- `Dashboard.`: Dashboard view
+- `Accounts`: Accounts management
+- `Analytics`: Financial analytics
+- `Budgets`: Budget management
+- `Transactions`: Transaction history
+- `Settings`: Application settings
+- `Signup`: Register management
+- `AI`: Intelligent analytics
+- `Analytics`: Transaction visualization
+- `Login`: User authentication
 
 ### 5. Configuration
 
@@ -169,7 +133,6 @@ Each module has its own configuration files:
 
 - Client: `src/main/resources/log4j2.xml`
 - Server: Configuration files in `common/config`
-- LangChain: AI model configurations in `common/config`
 
 ### 6. Testing
 
@@ -202,7 +165,6 @@ We welcome contributions to any of the modules:
 
 - **Client**: Depends on Server module for data access
 - **Server**: Depends on LangChain module for AI features
-- **LangChain**: Independent module for AI/ML processing
 
 ### 9. Logging
 
@@ -222,33 +184,40 @@ All modules use Log4j2 for logging. Configuration files are located in each modu
   - Analytics module with AI interaction interface
   - Transaction page
   - Dashboard co-development with Zhong
+  - Budget module with AI interaction interface
 
 - **Yujie Yang**
-  - Budget development
   - Budget page
+  - Account page
+  - Settings page
 
 - **Youhao Zhong**
   - User management system
   - Dashboard co-development with Hu
+  - Accounts co-development with Yang
+  - Budget module
 
 #### Backend Development
 - **Shiyu Li**
-  - Budget implementation
+  - Budget system implementation
   - Account co-development with Shi
   - User management system
+  - Settings service
 
 - **Keyi Shi**
   - Transaction processing system
   - Account co-development with Li
+  - Dashboard request handling
 
 - **Zheyun Zhao**
-    - AI-powered transaction processing
-    - Transaction classification
+  - AI-powered transaction processing
+  - Transaction classification
+  - Conflict resolution
 
 #### Key Collaborations
-- **Dashboard Integration**: Hu & Zhong & Yang (Frontend) ↔ Shi (Backend)
+- **Dashboard Integration**: Hu & Zhong (Frontend) ↔ Shi (Backend)
 - **AI Pipeline**: Hu (Frontend) ↔ Zhao (Backend AI)
 - **Transaction System**: Hu (Frontend) ↔ Shi & Zhao (Backend)
 - **Budget System**: Yang & Zhong (Frontend) ↔ Li (Backend)
-- **Account System**: Zhong (Fronted) ↔ Shi & Li (Backend)
-- **User Management System**: Zhong (Frontend) ↔ Li (Backend)
+- **Account System**: Zhong (Fronted) ↔ Shi & Li & Shi (Backend)
+- **User Management System**: Zhong & Yang (Frontend) ↔ Li (Backend)
